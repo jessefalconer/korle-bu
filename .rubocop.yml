@@ -1,0 +1,90 @@
+require: rubocop-rails
+
+# This file contains rule exceptions that we want to fix eventually.
+inherit_from: .rubocop_todo.yml
+
+
+AllCops:
+  Exclude:
+    - "bin/**/*"
+    - "db/**/*"
+    - "node_modules/**/*"
+    - "vendor/**/*" # for Circle CI's benefit
+
+Layout/DefEndAlignment:
+  EnforcedStyleAlignWith: def
+  AutoCorrect: true
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+  AutoCorrect: true
+
+Metrics/ParameterLists:
+  Exclude:
+    - "app/exporters/**/*"
+    - "app/helpers/**/*"
+    - "app/mailers/**/*"
+    - "app/workers/**/*"
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Rails:
+  Enabled: true
+
+Rails/Output:
+  Exclude:
+    - "config/deploy.rb"
+    - "lib/data_populator.rb"
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - "spec/**/*"
+
+Rails/UnknownEnv:
+  Environments:
+    - demo
+    - development
+    - production
+    - sandbox
+    - staging
+    - test
+    - testing
+
+# Currently, we prefer to use less documentation than RuboCop suggests.
+Style/Documentation: { Enabled: false }
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+# Different situations call for different format strings. Requiring
+# the same style in all cases is too restrictive.
+Style/FormatStringToken: { Enabled: false }
+
+# With Metrics/LineLength disabled, this rule requires very long lines.
+Style/IfUnlessModifier: { Enabled: false }
+
+Style/SingleLineMethods:
+  AllowIfMethodIsEmpty: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  Enabled: true
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/EmptyCaseCondition:
+  Enabled: false
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false

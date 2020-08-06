@@ -1,0 +1,126 @@
+# This file contains new (to us) RuboCop rules which have yet to be implemented.
+# When time permits, consider creating a branch to enable one or more of these
+# rules and update our codebase to pass.
+
+
+# This rule can be implemented automatically, but it's a large diff.
+Layout/HashAlignment: { Enabled: false }
+
+# As-is we align method calls on a case-by-base basis. If the results aren't too
+# ugly, it may be better to implement this rule.
+Layout/MultilineMethodCallIndentation: { Enabled: false }
+
+# This rule is only disabled because there are currently too many violations.
+# see http://wiki.c2.com/?AbcMetric
+Metrics/AbcSize: { Enabled: false }
+
+# This rule is only disabled because there are currently too many violations.
+Metrics/BlockLength: { Enabled: false }
+
+# This rule is only disabled because there are currently too many
+# violations. This rule can't be automatically fixed, but it can be fixed by
+# hand without much thought. You only need to nest inside module blocks, instead
+# of Module::Class style.
+Style/ClassAndModuleChildren: { Enabled: false }
+
+# This rule is only disabled because there are currently too many violations. It
+# would be nice to be able to enable this one though, as many other RuboCop
+# rules use this rule for their automatic-formatting feature.
+Metrics/LineLength: { Enabled: false }
+
+# This rule is only disabled because there are currently too many violations.
+Metrics/MethodLength: { Enabled: false }
+
+# Decide whether we ever want to implement this particular rule. It requires all
+# exception variables to be named "e".
+Naming/RescuedExceptionsVariableName: { Enabled: false }
+
+# This rule is only disabled because there are currently too many violations.
+Rails/HasManyOrHasOneDependent: { Enabled: false }
+
+# This is probably a good rule to implement and we only have these few
+# helpers which currently violate it.
+Rails/HelperInstanceVariable:
+  Exclude:
+    - "app/helpers/application_helper.rb"
+    - "app/helpers/email_templates_helper.rb"
+    - "app/helpers/notes_helper.rb"
+    - "app/helpers/previous_change_worker_helper.rb"
+    - "app/helpers/svg_helper.rb"
+    - "app/helpers/terminology_helper.rb"
+    - "app/helpers/currency_helper.rb"
+
+
+################################################################################
+# "Grandfathered" Exceptions
+#
+# This section contains exceptions for certain, older files. For the most part,
+# these are the files which violated some rules so badly when we began to use
+# RuboCop that there wasn't time to fix them. Someday a hero will come and make
+# these files compiant, so they can be removed from these lists.
+#
+# You may add new entries here, but please an aproriate amount of shame when
+# doing so.
+################################################################################
+Metrics/ClassLength:
+  # These "grandfathered" classes can be refactored on a case-by-case basis
+  Max: 250
+  Exclude:
+    - "app/models/contract.rb"
+    - "app/models/company.rb"
+    - "app/models/contact.rb"
+    - "app/models/inventory.rb"
+    - "app/models/contact_project_membership.rb"
+    - "app/models/docusign_client.rb"
+    - "app/models/project.rb"
+    - "app/models/report.rb"
+    - "app/models/widgets/widget.rb"
+    - "lib/data_populator.rb"
+    - "app/controllers/projects/contracts_controller.rb"
+
+Metrics/CyclomaticComplexity:
+    Max: 10
+    Exclude:
+    - "app/helpers/**/*"
+    - "app/presenters/**/*"
+    - "lib/data_populator.rb"
+
+Metrics/ModuleLength:
+  Exclude:
+    - "app/controllers/authorization.rb"
+    - "app/helpers/application_helper.rb"
+    - "app/models/concerns/demo_data.rb"
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - "app/controllers/api/v1/contacts_controller.rb"
+    - "app/controllers/api/v1/inventories_controller.rb"
+    - "app/controllers/authorization.rb"
+    - "app/controllers/projects/contract_files_controller.rb"
+    - "app/controllers/projects/interactions_controller.rb"
+    - "app/controllers/projects/notes_controller.rb"
+    - "app/controllers/projects_controller.rb"
+    - "app/controllers/signups_controller.rb"
+    - "app/helpers/email_templates_helper.rb"
+    - "app/helpers/notes_helper.rb"
+    - "app/importers/application_importer.rb"
+    - "app/importers/contact_importer.rb"
+    - "app/mailers/contact_mailer.rb"
+    - "app/mailers/email_mailer.rb"
+    - "app/models/contact_project_mass_updater.rb"
+    - "app/models/email.rb"
+    - "app/models/inbound_email.rb"
+    - "app/models/inventory.rb"
+    - "app/models/project.rb"
+    - "app/models/stripe_manager.rb"
+    - "app/presenters/contact_group_presenter.rb"
+    - "lib/data_populator.rb"
+
+Rails/HasAndBelongsToMany:
+  Exclude:
+    - "app/models/contract.rb"
+    - "app/models/inventory.rb"
+    - "app/models/inventory_addon.rb"
+    - "app/models/registration_form.rb"
+    - "app/models/user.rb"
+    - "app/models/user_project_membership.rb"
