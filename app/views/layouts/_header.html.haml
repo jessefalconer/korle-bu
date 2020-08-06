@@ -1,7 +1,26 @@
-- if logged_in?
-  %h1
-    You are Logged In, #{current_user.email}
-  = button_to "Log Out", "/logout", method: :get
-- else
-  = button_to "Login", '/login', method: :get
-  = button_to "Sign Up", '/users/new', method: :get
+-# .container
+-#   .row
+-#     - if logged_in?
+-#       .col-6
+-#         %h1
+-#           You are Logged In, #{current_user.email}
+-#       .col-6
+-#         = button_to "Log Out", "/logout", method: :get
+-#     - else
+-#       .col-6
+-#         = button_to "Login", '/login', method: :get
+-#       .col-6
+-#         = button_to "Sign Up", '/users/new', method: :get
+%nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0.shadow
+  - if logged_in?
+    %a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3{:href => "#"}= current_user.first_name
+  - else
+    %a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3{:href => "/users/new", method: :get} Sign Up
+  %button.navbar-toggler.position-absolute.d-md-none.collapsed{"aria-controls" => "sidebarMenu", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#sidebarMenu", "data-toggle" => "collapse", :type => "button"}
+    %span.navbar-toggler-icon
+  %ul.navbar-nav.px-3
+    %li.nav-item.text-nowrap
+      - if logged_in?
+        %a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3{:href => "/logout", method: :get} Log Out
+      - else
+        %a.navbar-brand.col-md-3.col-lg-2.mr-0.px-3{:href => "/login", method: :get} Log In

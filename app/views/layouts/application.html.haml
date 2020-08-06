@@ -1,8 +1,9 @@
 !!!
 %html
   %head
-    %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
-    %title Kbnf
+    %meta{content: "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+    %meta{:content => "width=device-width, initial-scale=1, shrink-to-fit=no", :name => "viewport"}
+    %title Korle-bu
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
@@ -10,8 +11,6 @@
   %body
     = render "layouts/header"
 
-    #container
-      #content
-        - flash.each do |type, message|
-          %div{class: "flash #{type}"}= message
-    = yield
+    .container-fluid
+      .row
+        = yield
