@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class SessionsController < ApplicationController
-  skip_before_action :authorized, only: %i[new create welcome]
+  skip_before_action :authorized, only: %i[new create]
 
   def new
   end
@@ -10,7 +10,7 @@ class SessionsController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user&.authenticate(params[:password])
       session[:user_id] = @user.id
-      redirect_to "/welcome"
+      redirect_to index_path
     else
       redirect_to :root, flash: { error: "Email or password incorrect." }
     end
@@ -24,9 +24,6 @@ class SessionsController < ApplicationController
   def login
   end
 
-  def welcome
-  end
-
-  def page_requires_login
+  def index
   end
 end

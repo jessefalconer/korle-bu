@@ -1,21 +1,22 @@
-.col-12
+.col-12.center
   %h3 Create an account
-.col-12
+.col-12.center
   = form_for @user do |f|
     = f.label :email
-    %br/
+    %br
     = f.text_field :email
-    %br/
+    %br
     = f.label :first_name
-    %br/
+    %br
     = f.text_field :first_name
-    %br/
+    %br
     = f.label :last_name
-    %br/
+    %br
     = f.text_field :last_name
-    %br/
+    %br
     = f.label :password
-    %br/
+    %br
     = f.password_field :password
-    %br/
+    %br
+    %br
     = f.submit

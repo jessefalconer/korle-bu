@@ -10,13 +10,11 @@ class UsersController < ApplicationController
   def create
     @user = User.create(user_params)
     if @user.errors.any?
-      message = { error: @user.errors.full_messages.to_sentence }
+      redirect_to new_user_path, flash: { error: @user.errors }
     else
       session[:user_id] = @user.id
-      message = { success: "User creation successful." }
+      redirect_to index_path, flash: { success: "User creation successful." }
     end
-
-    redirect_to :root, flash: message
   end
 
   private

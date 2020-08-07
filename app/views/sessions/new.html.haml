@@ -1,6 +1,14 @@
-= form_tag '/login' do
-  = label_tag :email
-  = text_field_tag :email
-  = label_tag :password
-  = password_field_tag :password
-  = submit_tag "Login"
+.col-12.center
+  %h3 Log In
+.col-12.center
+  = form_tag login_path do
+    = label_tag :email
+    %br
+    = text_field_tag :email
+    %br
+    = label_tag :password
+    %br
+    = password_field_tag :password
+    %br
+    %br
+    = submit_tag "Login"

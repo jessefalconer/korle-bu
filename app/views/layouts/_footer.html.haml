@@ -1,0 +1,8 @@
+#footer
+  - flash.each do |type, messages|
+    - if type == "error" && messages.kind_of?(Array)
+      .center{class: "flash #{type}"} Errors:
+      - messages.each do |message|
+        .center{class: "flash #{type}"}= message[0].capitalize.humanize + " " + message[1][0]
+    - else
+      .center{class: "flash #{type}"}= messages
