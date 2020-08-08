@@ -1,0 +1,37 @@
+= form_for @warehouse do |f|
+  = f.label :name
+  %br
+  = f.text_field :name
+  %br
+  = f.label :street
+  %br
+  = f.text_field :street
+  %br
+  = f.label :city
+  %br
+  = f.text_field :city
+  %br
+  = f.label :province
+  %br
+  = f.text_field :province
+  %br
+  = f.label :postal_code
+  %br
+  = f.text_field :postal_code
+  %br
+  = f.label :country
+  %br
+  = f.text_field :country
+  %br
+  = f.label :status
+  %br
+  = f.select :status, options_for_select(Warehouse::STATUSES, @shipment.status), include_blank: ""
+  %br
+  = f.label :notes
+  %br
+  = f.text_field :notes
+  %br
+  %br
+  %br
+  = back_button(warehouses_path, "Cancel")
+  = submit_button("Save")

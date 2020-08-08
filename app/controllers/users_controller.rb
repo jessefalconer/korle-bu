@@ -2,6 +2,7 @@
 
 class UsersController < ApplicationController
   skip_before_action :authorized, only: %i[new create]
+  before_action :existing_session, only: %i[new create]
 
   def new
     @user = User.new
@@ -21,5 +22,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.require(:user).permit(:email, :password, :last_name, :first_name)
+  end
+
+  def existing_session
+    redirect_to index_path if logged_in?
   end
 end

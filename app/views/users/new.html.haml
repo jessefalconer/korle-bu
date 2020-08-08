@@ -1,6 +1,6 @@
 .col-12.center
-  %h3 Create an account
-.col-12.center
+  %br
+  %br
   = form_for @user do |f|
     = f.label :email
     %br
@@ -19,4 +19,5 @@
     = f.password_field :password
     %br
     %br
-    = f.submit
+    %br
+    = submit_button("Create")

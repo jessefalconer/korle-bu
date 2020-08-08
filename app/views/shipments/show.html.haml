@@ -1,0 +1,27 @@
+%br
+.col-12.center
+  = back_button(shipments_path, "Shipments")
+  = delete_button(shipment_path(@shipment))
+  = edit_button(edit_shipment_path(@shipment))
+.col-12.center
+  %table
+    %caption
+      %strong
+        #{@shipment.name}
+    %thead
+      %tr
+        %th{:scope => "col"} Custom UID
+        %th{:scope => "col"} Name
+        %th{:scope => "col"} Status
+        %th{:scope => "col"} Receiver
+        %th{:scope => "col"} Shipper
+    %tbody
+      %tr
+        %td{"data-label" => "Custom UID"}= @shipment.custom_uid
+        %td{"data-label" => "Name"}= @shipment.name
+        %td{"data-label" => "Status"}= @shipment.status
+        %td{"data-label" => "Receiver"}= @shipment.receiving_warehouse.name
+        %td{"data-label" => "Shipper"}= @shipment.shipping_warehouse.name
+
+.col-12.center
+  = next_button(shipment_containers_path(@shipment), "Containers")

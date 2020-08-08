@@ -1,0 +1,28 @@
+%br
+.col-12.center
+  = back_button(shipment_container_pallet_boxes_path, "Pallets")
+  = delete_button(shipment_container_pallet_box_path(@shipment, @container, @pallet, @box))
+  = edit_button(edit_shipment_container_pallet_box_path(@shipment, @container, @pallet, @box))
+
+.col-12.center
+  %table
+    %caption Viewing pallet #{@box.name}
+    %thead
+      %tr
+        %th{:scope => "col"} ID
+        %th{:scope => "col"} Name
+        %th{:scope => "col"} Status
+        %th{:scope => "col"} Notes
+        %th{:scope => "col"} Receiver
+        %th{:scope => "col"} Shipper
+    %tbody
+      %tr
+        %td{"data-label" => "ID"}= @box.id
+        %td{"data-label" => "Name"}= @box.name
+        %td{"data-label" => "Status"}= @box.status
+        %td{"data-label" => "Notes"}= @box.notes
+        %td{"data-label" => "Receiver"}= @box.pallet.container.shipment.receiving_warehouse.name
+        %td{"data-label" => "Shipper"}= @box.pallet.container.shipment.shipping_warehouse.name
+
+.col-12.center
+  = next_button(shipment_container_pallet_boxes_path(@shipment, @container, @pallet), "Items")

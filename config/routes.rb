@@ -8,5 +8,19 @@ Rails.application.routes.draw do
   post "login", to: "sessions#create"
   get "logout", to: "sessions#destroy"
   get "index", to: "sessions#index"
-  get "authorized", to: "sessions#page_requires_login"
+
+  get "container_list", to: "containers#list"
+  get "pallet_list", to: "pallets#list"
+  resources :warehouses
+  resources :containerized_items
+  resources :palletized_items
+  resources :boxed_items
+  resources :shipments do
+    resources :containers do
+      resources :pallets do
+        resources :boxes do
+        end
+      end
+    end
+  end
 end

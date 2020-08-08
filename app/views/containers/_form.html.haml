@@ -1,0 +1,17 @@
+= form_for [@shipment, @container] do |f|
+  = f.label :name
+  %br
+  = f.text_field :name
+  %br
+  = f.label :status
+  %br
+  = f.text_field :status
+  %br
+  = f.label :notes
+  %br
+  = f.text_field :notes
+  %br
+  %br
+  %br
+  = back_button(shipment_containers_path, "Cancel")
+  = submit_button("Save")

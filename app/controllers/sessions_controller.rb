@@ -2,6 +2,7 @@
 
 class SessionsController < ApplicationController
   skip_before_action :authorized, only: %i[new create]
+  before_action :existing_session, only: %i[new create]
 
   def new
   end
@@ -10,7 +11,7 @@ class SessionsController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user&.authenticate(params[:password])
       session[:user_id] = @user.id
-      redirect_to index_path
+      redirect_to index_path, flash: { success: "Successfully logged in." }
     else
       redirect_to :root, flash: { error: "Email or password incorrect." }
     end
@@ -25,5 +26,11 @@ class SessionsController < ApplicationController
   end
 
   def index
+  end
+
+  private
+
+  def existing_session
+    redirect_to index_path if logged_in?
   end
 end

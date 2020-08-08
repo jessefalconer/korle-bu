@@ -1,6 +1,6 @@
 .col-12.center
-  %h3 Log In
-.col-12.center
+  %br
+  %br
   = form_tag login_path do
     = label_tag :email
     %br
@@ -11,4 +11,5 @@
     = password_field_tag :password
     %br
     %br
-    = submit_tag "Login"
+    %br
+    = submit_button("Login")

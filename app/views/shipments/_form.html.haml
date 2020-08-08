@@ -1,0 +1,29 @@
+= form_for @shipment do |f|
+  = f.label :name
+  %br
+  = f.text_field :name
+  %br
+  = f.label :custom_uid
+  %br
+  = f.number_field :custom_uid
+  %br
+  = f.label :status
+  %br
+  = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), include_blank: ""
+  %br
+  = f.label :receiving_warehouse_id
+  %br
+  = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), include_blank: ""
+  %br
+  = f.label :shipping_warehouse_id
+  %br
+  = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), include_blank: ""
+  %br
+  = f.label :notes
+  %br
+  = f.text_field :notes
+  %br
+  %br
+  %br
+  = back_button(shipments_path, "Cancel")
+  = submit_button("Save")

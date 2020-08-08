@@ -1,0 +1,25 @@
+.col-12.center
+  %table
+    %caption All Containers
+    %thead
+      %tr
+        %th{:scope => "col"} ID
+        %th{:scope => "col"} Name
+        %th{:scope => "col"} Status
+        %th{:scope => "col"} Notes
+        %th{:scope => "col"} Receiver
+        %th{:scope => "col"} Shipper
+        %th{:scope => "col"}
+    %tbody
+      - @containers.each do |container|
+        %tr
+          %td{"data-label" => "ID"}= container.id
+          %td{"data-label" => "Name"}= container.name
+          %td{"data-label" => "Status"}= container.status
+          %td{"data-label" => "Notes"}= container.notes
+          %td{"data-label" => "Receiver"}= container.shipment.receiving_warehouse.name
+          %td{"data-label" => "Shipper"}= container.shipment.shipping_warehouse.name
+          %td{"data-label" => "Action"}
+            = table_button("View", shipment_container_path(container.shipment, container))
+.col-12.left
+  = back_button(index_path)

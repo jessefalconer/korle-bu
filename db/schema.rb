@@ -10,10 +10,121 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_06_053435) do
+ActiveRecord::Schema.define(version: 2020_08_07_195348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "boxed_items", force: :cascade do |t|
+    t.integer "quantity"
+    t.boolean "expires"
+    t.datetime "expiry_date"
+    t.integer "custom_uid"
+    t.bigint "box_id"
+    t.bigint "item_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["box_id"], name: "index_boxed_items_on_box_id"
+    t.index ["item_id"], name: "index_boxed_items_on_item_id"
+    t.index ["user_id"], name: "index_boxed_items_on_user_id"
+  end
+
+  create_table "boxes", force: :cascade do |t|
+    t.string "status"
+    t.string "notes"
+    t.string "name"
+    t.integer "custom_uid"
+    t.bigint "user_id"
+    t.bigint "container_id"
+    t.bigint "pallet_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["container_id"], name: "index_boxes_on_container_id"
+    t.index ["pallet_id"], name: "index_boxes_on_pallet_id"
+    t.index ["user_id"], name: "index_boxes_on_user_id"
+  end
+
+  create_table "containerized_items", force: :cascade do |t|
+    t.integer "quantity"
+    t.boolean "expires"
+    t.datetime "expiry_date"
+    t.integer "custom_uid"
+    t.bigint "container_id"
+    t.bigint "item_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["container_id"], name: "index_containerized_items_on_container_id"
+    t.index ["item_id"], name: "index_containerized_items_on_item_id"
+    t.index ["user_id"], name: "index_containerized_items_on_user_id"
+  end
+
+  create_table "containers", force: :cascade do |t|
+    t.string "status"
+    t.string "notes"
+    t.string "name"
+    t.integer "custom_uid"
+    t.bigint "user_id"
+    t.bigint "shipment_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["shipment_id"], name: "index_containers_on_shipment_id"
+    t.index ["user_id"], name: "index_containers_on_user_id"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "notes"
+    t.string "name"
+    t.string "category"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_items_on_user_id"
+  end
+
+  create_table "palletized_items", force: :cascade do |t|
+    t.integer "quantity"
+    t.boolean "expires"
+    t.datetime "expiry_date"
+    t.integer "custom_uid"
+    t.bigint "pallet_id"
+    t.bigint "item_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_id"], name: "index_palletized_items_on_item_id"
+    t.index ["pallet_id"], name: "index_palletized_items_on_pallet_id"
+    t.index ["user_id"], name: "index_palletized_items_on_user_id"
+  end
+
+  create_table "pallets", force: :cascade do |t|
+    t.string "status"
+    t.string "notes"
+    t.string "name"
+    t.integer "custom_uid"
+    t.bigint "user_id"
+    t.bigint "container_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["container_id"], name: "index_pallets_on_container_id"
+    t.index ["user_id"], name: "index_pallets_on_user_id"
+  end
+
+  create_table "shipments", force: :cascade do |t|
+    t.string "status"
+    t.string "notes"
+    t.string "name"
+    t.integer "custom_uid"
+    t.bigint "user_id"
+    t.bigint "receiving_warehouse_id"
+    t.bigint "shipping_warehouse_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["receiving_warehouse_id"], name: "index_shipments_on_receiving_warehouse_id"
+    t.index ["shipping_warehouse_id"], name: "index_shipments_on_shipping_warehouse_id"
+    t.index ["user_id"], name: "index_shipments_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email"
@@ -25,4 +136,22 @@ ActiveRecord::Schema.define(version: 2020_08_06_053435) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "warehouses", force: :cascade do |t|
+    t.string "status"
+    t.string "notes"
+    t.string "name"
+    t.string "street"
+    t.string "postal_code"
+    t.string "city"
+    t.string "province"
+    t.string "country"
+    t.integer "identifier"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_warehouses_on_user_id"
+  end
+
+  add_foreign_key "shipments", "warehouses", column: "receiving_warehouse_id"
+  add_foreign_key "shipments", "warehouses", column: "shipping_warehouse_id"
 end

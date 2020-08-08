@@ -1,0 +1,25 @@
+%br
+.col-12.center
+  = back_button(index_path)
+  = link_button("Start a New Shipment", new_shipment_path)
+.col-12.center
+  %table
+    %caption Shipments
+    %thead
+      %tr
+        %th{:scope => "col"} Custom UID
+        %th{:scope => "col"} Name
+        %th{:scope => "col"} Status
+        %th{:scope => "col"} Receiver
+        %th{:scope => "col"} Shipper
+        %th{:scope => "col"}
+    %tbody
+      - @shipments.each do |shipment|
+        %tr
+          %td{"data-label" => "Custom UID"}= shipment.custom_uid
+          %td{"data-label" => "Name"}= shipment.name
+          %td{"data-label" => "Status"}= shipment.status
+          %td{"data-label" => "Receiver"}= shipment.receiving_warehouse.name
+          %td{"data-label" => "Shipper"}= shipment.shipping_warehouse.name
+          %td{"data-label" => "Action"}
+            = table_button("View", shipment_path(shipment))

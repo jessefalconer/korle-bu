@@ -1,2 +1,30 @@
 .col-12.center
-  %h1 Welcome
+  %h2 Welcome, #{current_user.first_name}.
+
+.col-4
+  .vertical-menu
+    .card
+      Manage
+      %i.fa.fa-lg.fa-cog
+    = link_to("Warehouses", warehouses_path)
+    = link_to("Items", warehouses_path)
+    = link_to("Users", warehouses_path)
+
+.col-4
+  .vertical-menu
+    .card
+      Browse All
+      %i.fa.fa-lg.fa-binoculars
+    = link_to("Shipments", shipments_path)
+    = link_to("Containers", container_list_path)
+    = link_to("Pallets", pallet_list_path)
+    = link_to("Boxes", warehouses_path)
+
+.col-4
+  .vertical-menu
+    .card
+      Create
+      %i.fa.fa-lg.fa-ship
+    = link_to("Unassigned Container", warehouses_path)
+    = link_to("Unassigned Pallet", shipments_path)
+    = link_to("Unassigned Box", warehouses_path)
