@@ -6,7 +6,7 @@
 
 .col-12.center
   %table
-    %caption Viewing pallet #{@box.name}
+    %caption Viewing box #{@box.name}
     %thead
       %tr
         %th{:scope => "col"} ID
@@ -25,4 +25,5 @@
         %td{"data-label" => "Shipper"}= @box.pallet.container.shipment.shipping_warehouse.name
 
 .col-12.center
-  = next_button(shipment_container_pallet_boxes_path(@shipment, @container, @pallet), "Items")
+  - if @box.items.none?
+    %h3 There are no items assigned to this box!

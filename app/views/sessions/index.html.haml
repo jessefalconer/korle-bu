@@ -7,8 +7,9 @@
       Manage
       %i.fa.fa-lg.fa-cog
     = link_to("Warehouses", warehouses_path)
-    = link_to("Items", warehouses_path)
-    = link_to("Users", warehouses_path)
+    = link_to("Items", item_list_path)
+    = link_to("Categories", warehouses_path)
+    = link_to("Users", item_list_path)
 
 .col-4
   .vertical-menu
@@ -28,3 +29,4 @@
     = link_to("Unassigned Container", warehouses_path)
     = link_to("Unassigned Pallet", shipments_path)
     = link_to("Unassigned Box", warehouses_path)
+    = link_to("New Item", warehouses_path)

@@ -45,6 +45,15 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
     t.index ["user_id"], name: "index_boxes_on_user_id"
   end
 
+  create_table "categories", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_categories_on_user_id"
+  end
+
   create_table "containerized_items", force: :cascade do |t|
     t.integer "quantity"
     t.boolean "expires"
@@ -61,9 +70,9 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "containers", force: :cascade do |t|
+    t.string "name"
     t.string "status"
     t.string "notes"
-    t.string "name"
     t.integer "custom_uid"
     t.bigint "user_id"
     t.bigint "shipment_id"
@@ -74,12 +83,27 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "items", force: :cascade do |t|
+    t.string "object"
+    t.string "brand"
+    t.string "standardized_size"
+    t.float "concentration"
+    t.string "concentration_units"
+    t.string "concentration_description"
+    t.float "numerical_size_1"
+    t.string "numerical_units_1"
+    t.string "numerical_description_1"
+    t.float "numerical_size_2"
+    t.string "numerical_units_2"
+    t.string "numerical_description_2"
+    t.integer "packaged_quantity"
+    t.string "generated_name"
     t.string "notes"
-    t.string "name"
-    t.string "category"
+    t.boolean "verified"
     t.bigint "user_id"
+    t.bigint "category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["category_id"], name: "index_items_on_category_id"
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
@@ -99,9 +123,9 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "pallets", force: :cascade do |t|
+    t.string "name"
     t.string "status"
     t.string "notes"
-    t.string "name"
     t.integer "custom_uid"
     t.bigint "user_id"
     t.bigint "container_id"
@@ -112,9 +136,9 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "shipments", force: :cascade do |t|
+    t.string "name"
     t.string "status"
     t.string "notes"
-    t.string "name"
     t.integer "custom_uid"
     t.bigint "user_id"
     t.bigint "receiving_warehouse_id"
@@ -138,7 +162,7 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
 
   create_table "warehouses", force: :cascade do |t|
     t.string "status"
-    t.string "notes"
+    t.string "description"
     t.string "name"
     t.string "street"
     t.string "postal_code"

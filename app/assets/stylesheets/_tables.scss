@@ -26,6 +26,19 @@ table th,
 table td {
   padding: .625em;
   text-align: center;
+  hyphens: auto;
+}
+
+table td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+table td:hover {
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: initial;
 }
 
 table th {

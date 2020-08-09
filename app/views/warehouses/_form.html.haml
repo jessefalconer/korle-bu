@@ -25,11 +25,11 @@
   %br
   = f.label :status
   %br
-  = f.select :status, options_for_select(Warehouse::STATUSES, @shipment.status), include_blank: ""
+  = f.select :status, options_for_select(Warehouse::STATUSES, @warehouse.status), include_blank: ""
   %br
-  = f.label :notes
+  = f.label :description
   %br
-  = f.text_field :notes
+  = f.text_field :description
   %br
   %br
   %br

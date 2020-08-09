@@ -1,0 +1,39 @@
+.col-4.left
+  %br
+  = back_button(index_path)
+.col-4.center
+  %h3
+    All Items
+.col-4
+
+.col-12.center
+  %table
+    %thead
+      %tr
+        %th{:scope => "col"} Brand
+        %th{:scope => "col"} Object
+        %th{:scope => "col"} Std Size
+        %th{:scope => "col"} Package
+        %th{:scope => "col"} Num Size 1
+        %th{:scope => "col"} Num Size 2
+        %th{:scope => "col"} Concentration
+        %th{:scope => "col"} Category
+        %th{:scope => "col"} Verified
+        %th{:scope => "col"} Created By
+        %th{:scope => "col"} Created At
+        %th{:scope => "col"} .
+    %tbody
+      - @items.each do |item|
+        %tr
+          %td{"data-label" => "Brand"}= item.brand || "."
+          %td{"data-label" => "Object"}= item.object || "."
+          %td{"data-label" => "Std Size"}= item.standardized_size || "."
+          %td{"data-label" => "Package"}= item.package || "."
+          %td{"data-label" => "Num Size 1"}= item.numerical_1_phrase || "."
+          %td{"data-label" => "Num Size 2"}= item.numerical_2_phrase || "."
+          %td{"data-label" => "Concentration"}= item.concentration_phrase || "."
+          %td{"data-label" => "Category"}= item.category || "."
+          %td{"data-label" => "Verified"}= item.verified
+          %td{"data-label" => "Created By"}= item.user.first_name
+          %td{"data-label" => "Created At"}= item.created_at.strftime("%Y-%m-%d")
+          %td{"data-label" => "Action"} .

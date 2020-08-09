@@ -8,6 +8,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
         create_pallets
         create_boxes
         create_items
+        create_categories
         create_boxed_items
         create_palletized_items
         create_containerized_items
@@ -19,6 +20,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
         drop_table :containers
         drop_table :shipments
         drop_table :warehouses
+        drop_table :categories
         drop_table :items
         drop_table :boxed_items
         drop_table :palletized_items
@@ -30,7 +32,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
   def create_warehouses
     create_table :warehouses do |t|
       t.string :status
-      t.string :notes
+      t.string :description
       t.string :name
       t.string :street
       t.string :postal_code
@@ -47,9 +49,9 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_shipments
     create_table :shipments do |t|
+      t.string :name
       t.string :status
       t.string :notes
-      t.string :name
       t.integer :custom_uid
 
       t.belongs_to :user
@@ -62,9 +64,9 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_containers
     create_table :containers do |t|
+      t.string :name
       t.string :status
       t.string :notes
-      t.string :name
       t.integer :custom_uid
 
       t.belongs_to :user
@@ -76,9 +78,9 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_pallets
     create_table :pallets do |t|
+      t.string :name
       t.string :status
       t.string :notes
-      t.string :name
       t.integer :custom_uid
 
       t.belongs_to :user
@@ -105,9 +107,41 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_items
     create_table :items do |t|
+      t.string :object
+      t.string :brand
+
+      t.string :standardized_size
+
+      t.float :concentration
+      t.string :concentration_units
+      t.string :concentration_description
+
+
+      t.float :numerical_size_1
+      t.string :numerical_units_1
+      t.string :numerical_description_1
+
+      t.float :numerical_size_2
+      t.string :numerical_units_2
+      t.string :numerical_description_2
+
+      t.integer :packaged_quantity
+
+      t.string :generated_name
       t.string :notes
+      t.boolean :verified
+
+      t.belongs_to :user
+      t.belongs_to :category, index: true
+
+      t.timestamps
+    end
+  end
+
+  def create_categories
+    create_table :categories do |t|
       t.string :name
-      t.string :category
+      t.string :description
 
       t.belongs_to :user
 

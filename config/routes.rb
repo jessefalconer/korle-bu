@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 
   get "container_list", to: "containers#list"
   get "pallet_list", to: "pallets#list"
+  get "item_list", to: "items#list"
+  resources :boxed_items
+
   resources :warehouses
   resources :containerized_items
   resources :palletized_items

@@ -7,4 +7,5 @@ class Box < ApplicationRecord
   belongs_to :pallet, optional: true
 
   has_many :boxed_items
+  has_many :items, through: :boxed_items
 end
