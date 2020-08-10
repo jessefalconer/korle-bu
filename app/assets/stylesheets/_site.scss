@@ -69,7 +69,7 @@ select {
   font-size: 1.375rem;
   border: 1px solid grey;
   border-radius: 3px;
-  width: 240px;
+  width: 237.5px;
   height: 40px;
 }
 
@@ -269,4 +269,26 @@ $breakpoint-large: 60em; // 960px
   .hidden-sm {
     display: block;
   }
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 2px solid #02a556;
+}
+
+.separator::before {
+  margin-right: .5rem;
+}
+
+.separator::after {
+  margin-left: .5rem;
 }

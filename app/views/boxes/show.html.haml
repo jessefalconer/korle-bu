@@ -24,6 +24,32 @@
         %td{"data-label" => "Receiver"}= @box.pallet.container.shipment.receiving_warehouse.name
         %td{"data-label" => "Shipper"}= @box.pallet.container.shipment.shipping_warehouse.name
 
-.col-12.center
-  - if @box.items.none?
+
+- if @box.boxed_items.none?
+  .col-12.center
     %h3 There are no items assigned to this box!
+.col-12.center
+  = render "boxed_items/search_form"
+.col-12
+  = render "items/form"
+
+- if @box.boxed_items.any?
+  .col-12
+    .separator Saved Items
+    = form_for @box, url: box_boxed_item_path(@box) do |f|
+      - @box.boxed_items.each do |bi|
+        = f.fields_for :boxed_items, bi do |ff|
+          .row.stat-row.center
+            .col-12-sm.col-4.stat-box
+              %h6= bi.generated_name
+            .col-12-sm.col-3.stat-box
+              = ff.text_field :expiry_date, value: bi.expiry_date&.strftime("%Y-%m-%d"), class: "date-input"
+            .col-12-sm.col-3.stat-box
+              = ff.number_field :quantity, value: bi.quantity, class: "number-input"
+            .col-12-sm.col-2
+              %label.checkbox-container
+                Delete
+                = ff.check_box :_destroy, checked: "unchecked", type: "checkbox"
+                %span.checkmark
+      .right
+        = submit_button("Update")

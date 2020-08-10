@@ -1,0 +1,6 @@
+= form_tag(item_search_path, method: "get", remote: true) do
+  = text_field_tag :search, params[:search], placeholder: "Enter search term"
+  = hidden_field_tag :existing_item_ids, @box.items.ids
+  = hidden_field_tag :box_id, @box.id
+  = submit_tag "Search"
+#search-results

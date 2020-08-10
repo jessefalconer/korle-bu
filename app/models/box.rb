@@ -8,4 +8,6 @@ class Box < ApplicationRecord
 
   has_many :boxed_items
   has_many :items, through: :boxed_items
+
+  accepts_nested_attributes_for :boxed_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 end

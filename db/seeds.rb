@@ -1,10 +1,3 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
 User.create(email: "jfalconer3.14@gmail.com",
                   password_digest: "123456",
                   first_name: "Jesse",
@@ -81,3 +74,30 @@ Item.create(brand: nil,
             verified: false,
             user_id: 1
             )
+
+CATEGORIES = [
+  "Hospital Pieces",
+  "Hospital Equipment",
+  "Hospital Maintenance",
+  "Office Furniture",
+  "Hospital Linen",
+  "Medical Supplies - Misc",
+  "Medical Supplies - Ophthalmology & ENT",
+  "Medical Supplies - Neuro Surgery",
+  "Medical Supplies - Anaesthesiology",
+  "Medical Supplies - Operating Room",
+  "Medical Supplies - Pulmonary and Cardiology",
+  "Medical Supplies - Nursing Supplies",
+  "Medical Supplies - Gastro, Intestinal and Urology",
+  "Medical Supplies - Obstetrics and Gynaecology",
+  "Medical Supplies - Orthopaedics",
+  "Hospital Administration",
+  "Hygiene Products",
+  "Staff Physical Activity Supplies",
+  "Staff Accomodation",
+  "Housekeeping Department",
+  "Pediatrics",
+  "Bags Blankets"
+].each do |cat|
+  Category.create(name: cat, user_id: 1, description: Faker::Lorem.sentence)
+end

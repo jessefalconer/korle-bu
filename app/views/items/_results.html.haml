@@ -1,0 +1,21 @@
+.separator Results
+- if @search_results_items.size > 10
+  .col-12
+    Your search yielded too many results. Try adding another keyword.
+- elsif @search_results_items.none?
+  .col-12
+    None found. Try another keyword.
+- else
+  - @search_results_items.each do |item|
+    = form_for box, url: box_boxed_items_path(box.id), method: :post do |f|
+      .row.stat-row.center
+        .col-12-sm.col-4.stat-box
+          %h6= item.generated_name
+        .col-12-sm.col-3.stat-box
+          = f.text_field :expiry_date, value: "", class: "date-input"
+        .col-12-sm.col-3.stat-box
+          = f.number_field :quantity, value: 0, class: "number-input"
+          = f.hidden_field :item_id, value: item.id
+        .col-12-sm.col-2
+          = submit_button("Add")
+    .right

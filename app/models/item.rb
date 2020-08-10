@@ -1,6 +1,13 @@
 # frozen_string_literal: true
 
 class Item < ApplicationRecord
+  include PgSearch::Model
+
+  pg_search_scope :search_by_generated_name, against: [:generated_name],
+    using: {
+      tsearch: { prefix: true }
+    }
+
   belongs_to :user, optional: false
   belongs_to :category, optional: true
 
@@ -11,7 +18,7 @@ class Item < ApplicationRecord
 
   UNITS = VOLUMES + LENGTHS + MASSES
 
-  RATIOS = %w[%]
+  RATIOS = %w[%] # rubocop:disable Style/MutableConstant
 
   MASSES.each { |m| VOLUMES.each { |v| RATIOS << "#{m}/#{v}" } }
 

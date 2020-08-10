@@ -12,12 +12,15 @@ Rails.application.routes.draw do
   get "container_list", to: "containers#list"
   get "pallet_list", to: "pallets#list"
   get "item_list", to: "items#list"
-  resources :boxed_items
+  get "item_search", to: "items#search"
 
   resources :warehouses
   resources :containerized_items
   resources :palletized_items
-  resources :boxed_items
+  resources :items
+  resources :boxes do
+    resources :boxed_items
+  end
   resources :shipments do
     resources :containers do
       resources :pallets do

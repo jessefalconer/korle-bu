@@ -32,7 +32,7 @@
           %td{"data-label" => "Num Size 1"}= item.numerical_1_phrase || "."
           %td{"data-label" => "Num Size 2"}= item.numerical_2_phrase || "."
           %td{"data-label" => "Concentration"}= item.concentration_phrase || "."
-          %td{"data-label" => "Category"}= item.category || "."
+          %td{"data-label" => "Category"}= item.category&.name || "."
           %td{"data-label" => "Verified"}= item.verified
           %td{"data-label" => "Created By"}= item.user.first_name
           %td{"data-label" => "Created At"}= item.created_at.strftime("%Y-%m-%d")

@@ -1,0 +1,65 @@
+.separator New Item
+= form_for Item.new, url: items_path do |f|
+  .row.stat-row.new-item
+    &nbsp; e.g. Uline, Nitrile Gloves, XXL
+  .row.stat-row.new-item
+    .col-12-sm.col-4.stat-box
+      = f.label :brand
+      = f.text_field :brand
+    .col-12-sm.col-4.stat-box
+      = f.label :object, "Item"
+      = f.text_field :object
+    .col-12-sm.col-4.stat-box
+      = f.label :standardized_size, "Size"
+      = f.select :standardized_size, options_for_select(Item::STANDARD_SIZES), include_blank: ""
+  .row.stat-row.new-item
+    &nbsp; e.g. 0.5, g/mL, Gel
+  .row.stat-row.new-item
+    .col-12-sm.col-4.stat-box
+      = f.label :concentration
+      = f.number_field :concentration, min: 0
+    .col-12-sm.col-4.stat-box
+      = f.label :concentration_units, "Units"
+      = f.select :concentration_units, options_for_select(Item::RATIOS), include_blank: ""
+    .col-12-sm.col-4.stat-box
+      = f.label :concentration_description, "Description"
+      = f.text_field :concentration_description
+  .row.stat-row.new-item
+    &nbsp; e.g. 0.25, mm, Needles
+  .row.stat-row.new-item
+    .col-12-sm.col-4.stat-box
+      = f.label :numerical_size_1, "Size 1"
+      = f.number_field :numerical_size_1, min: 0
+    .col-12-sm.col-4.stat-box
+      = f.label :numerical_units_1, "Units 1"
+      = f.select :numerical_units_1, options_for_select(Item::UNITS), include_blank: ""
+    .col-12-sm.col-4.stat-box
+      = f.label :numerical_description_1, "Description 1"
+      = f.text_field :numerical_description_1
+  .row.stat-row.new-item
+    &nbsp; e.g. 25, mL, Powder
+  .row.stat-row.new-item
+    .col-12-sm.col-4.stat-box
+      = f.label :numerical_size_2, "Size 2"
+      = f.number_field :numerical_size_2, min: 0
+    .col-12-sm.col-4.stat-box
+      = f.label :numerical_units_2, "Units 2"
+      = f.select :numerical_units_2, options_for_select(Item::UNITS), include_blank: ""
+    .col-12-sm.col-4.stat-box
+      = f.label :numerical_description_2, "Description 2"
+      = f.text_field :numerical_description_2
+  .row.stat-row.new-item
+    &nbsp; e.g. input "6" here for a 6-pack of 0.25mm Needles
+  .row.stat-row.new-item
+    .col-12-sm.col-4.stat-box
+      = f.label :packaged_quantity, "Packaged #"
+      = f.number_field :packaged_quantity, min: 1
+    .col-12-sm.col-4.stat-box
+      = f.label :category
+      = f.select :category, options_from_collection_for_select(Category.order(:name), :id, :name), include_blank: ""
+    .col-12-sm.col-4.stat-box
+      = f.label :notes
+      = f.text_field :notes
+      = hidden_field_tag :redirect, request.original_url
+  .right
+    = submit_button("Create")
