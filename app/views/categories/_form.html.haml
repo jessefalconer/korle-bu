@@ -1,0 +1,13 @@
+= form_for @category do |f|
+  = f.label :name
+  %br
+  = f.text_field :name
+  %br
+  = f.label :description
+  %br
+  = f.text_field :description
+  %br
+  %br
+  %br
+  = back_button(categories_path, "Cancel")
+  = submit_button("Save")

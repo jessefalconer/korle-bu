@@ -2,9 +2,7 @@
 
 class BoxesController < ApplicationController
   before_action :set_box, only: %i[show destroy edit update]
-  before_action :set_pallet
-  before_action :set_container
-  before_action :set_shipment
+  before_action :set_variables, except: %i[list]
 
   def new
     @box = Box.new
@@ -17,6 +15,10 @@ class BoxesController < ApplicationController
 
   def index
     @boxes = @pallet.boxes
+  end
+
+  def list
+    @boxes = Box.all
   end
 
   def show
@@ -45,8 +47,10 @@ class BoxesController < ApplicationController
     @box = Box.find(params[:id])
   end
 
-  def set_pallet
+  def set_variables
     @pallet = Pallet.find(params[:pallet_id])
+    @container = @pallet.container || Container.find(params[:container_id])
+    @shipment = @container.shipment || Shipment.find(params[:shipment_id])
   end
 
   def set_container

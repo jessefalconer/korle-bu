@@ -2,7 +2,6 @@
 
 Rails.application.routes.draw do
   root "sessions#new"
-  resources :users, only: %i[new create]
 
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
@@ -12,21 +11,39 @@ Rails.application.routes.draw do
   get "container_list", to: "containers#list"
   get "pallet_list", to: "pallets#list"
   get "item_list", to: "items#list"
+  get "box_list", to: "boxes#list"
+
   get "item_search", to: "items#search"
 
-  resources :warehouses
-  resources :containerized_items
-  resources :palletized_items
+  resources :categories
   resources :items
-  resources :boxes do
-    resources :boxed_items
-  end
-  resources :shipments do
-    resources :containers do
-      resources :pallets do
-        resources :boxes do
-        end
-      end
+  resources :users
+  resources :warehouses
+
+  concern :boxable_items do
+    resources :boxes do
+      resources :boxed_items
     end
+  end
+
+  concern :palletable_items do
+    resources :pallets do
+      resources :palletized_items
+      concerns :boxable_items
+    end
+  end
+
+  concern :containable_items do
+    resources :containers do
+      resources :containerized_items
+      concerns :palletable_items
+    end
+  end
+
+  concerns :boxable_items
+  concerns :palletable_items
+  concerns :containable_items
+  resources :shipments do
+    concerns :containable_items
   end
 end

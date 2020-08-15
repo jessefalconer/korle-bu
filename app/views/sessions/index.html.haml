@@ -8,8 +8,8 @@
       %i.fa.fa-lg.fa-cog
     = link_to("Warehouses", warehouses_path)
     = link_to("Items", item_list_path)
-    = link_to("Categories", warehouses_path)
-    = link_to("Users", item_list_path)
+    = link_to("Categories", categories_path)
+    = link_to("Users", users_path)
 
 .col-4
   .vertical-menu
@@ -19,7 +19,7 @@
     = link_to("Shipments", shipments_path)
     = link_to("Containers", container_list_path)
     = link_to("Pallets", pallet_list_path)
-    = link_to("Boxes", warehouses_path)
+    = link_to("Boxes", box_list_path)
 
 .col-4
   .vertical-menu
@@ -29,4 +29,4 @@
     = link_to("Unassigned Container", warehouses_path)
     = link_to("Unassigned Pallet", shipments_path)
     = link_to("Unassigned Box", warehouses_path)
-    = link_to("New Item", warehouses_path)
+    = link_to("Input New Item", new_item_path)

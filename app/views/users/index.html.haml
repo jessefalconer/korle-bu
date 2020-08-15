@@ -1,0 +1,22 @@
+%br
+.col-12.center
+  = back_button(index_path)
+.col-12.center
+  %table
+    %caption Users
+    %thead
+      %tr
+        %th{:scope => "col"} Name
+        %th{:scope => "col"} Email
+        %th{:scope => "col"} Phone
+        %th{:scope => "col"} Role
+        %th{:scope => "col"}
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td{"data-label" => "Name"}= user.name
+          %td{"data-label" => "Email"}= user.email
+          %td{"data-label" => "Phone"}= user.phone
+          %td{"data-label" => "Role"} Unavailable
+          %td{"data-label" => "Action"}
+            = table_button("View", user_path(user))
