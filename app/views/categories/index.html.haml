@@ -21,3 +21,7 @@
           %td{"data-label" => "Created At"}= category.created_at.strftime("%Y-%m-%d")
           %td{"data-label" => "Action"}
             = table_button("View", category_path(category))
+
+.col-12.center
+  .separator
+    = paginate @categories

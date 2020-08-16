@@ -5,7 +5,7 @@ class PalletsController < ApplicationController
   before_action :set_variables, except: %i[list]
 
   def list
-    @pallets = Pallet.all
+    @pallets = Pallet.all.page params[:page]
   end
 
   def new
@@ -18,7 +18,7 @@ class PalletsController < ApplicationController
   end
 
   def index
-    @pallets = @container.pallets
+    @pallets = @container.pallets.page params[:page]
   end
 
   def show
@@ -40,7 +40,7 @@ class PalletsController < ApplicationController
   private
 
   def pallet_params
-    params.require(:pallet).permit(:name, :status, :notes)
+    params.require(:pallet).permit(:name, :status, :notes, :container_id)
   end
 
   def set_pallet

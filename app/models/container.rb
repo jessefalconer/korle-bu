@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Container < ApplicationRecord
+  paginates_per 10
+
   belongs_to :user, optional: false
   belongs_to :shipment, optional: false
 

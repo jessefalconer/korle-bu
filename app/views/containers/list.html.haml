@@ -23,3 +23,7 @@
             = table_button("View", shipment_container_path(container.shipment, container))
 .col-12.left
   = back_button(index_path)
+
+.col-12.center
+  .separator
+    = paginate @containers

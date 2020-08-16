@@ -10,4 +10,6 @@ class Pallet < ApplicationRecord
   accepts_nested_attributes_for :palletized_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :unnassigned, -> { where(container_id: nil) }
+
+  paginates_per 10
 end

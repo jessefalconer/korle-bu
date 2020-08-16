@@ -3,6 +3,8 @@
 class Item < ApplicationRecord
   include PgSearch::Model
 
+  paginates_per 10
+
   pg_search_scope :search_by_generated_name, against: [:generated_name],
     using: {
       tsearch: { prefix: true }

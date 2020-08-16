@@ -23,3 +23,6 @@
           %td{"data-label" => "Shipper"}= shipment.shipping_warehouse.name
           %td{"data-label" => "Action"}
             = table_button("View", shipment_path(shipment))
+.col-12.center
+  .separator
+    = paginate @shipments

@@ -11,6 +11,10 @@
   %br
   = f.text_field :notes
   %br
+  = f.label "Move to Container"
+  %br
+  = f.select :container_id, options_from_collection_for_select(@shipment.containers.order(:name), :id, :name, @pallet.container_id), include_blank: ""
+  %br
   %br
   %br
   = back_button(shipment_container_pallets_path, "Cancel")

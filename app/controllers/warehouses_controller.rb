@@ -13,7 +13,7 @@ class WarehousesController < ApplicationController
   end
 
   def index
-    @warehouses = Warehouse.all
+    @warehouses = Warehouse.all.page params[:page]
   end
 
   def show

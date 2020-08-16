@@ -13,4 +13,6 @@ class Box < ApplicationRecord
 
   scope :loose_box, -> { where(pallet_id: nil).where.not(container_id: nil) }
   scope :unassigned, -> { where(pallet_id: nil, container_id: nil) }
+
+  paginates_per 10
 end

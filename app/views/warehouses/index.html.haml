@@ -21,3 +21,7 @@
           %td{"data-label" => "Status"}= warehouse.status
           %td{"data-label" => "Action"}
             = table_button("View", warehouse_path(warehouse))
+
+.col-12.center
+  .separator
+    = paginate @warehouses

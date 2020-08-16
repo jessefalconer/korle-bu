@@ -14,11 +14,11 @@ class BoxesController < ApplicationController
   end
 
   def index
-    @boxes = @pallet.boxes
+    @boxes = @pallet.boxes.page params[:page]
   end
 
   def list
-    @boxes = Box.all
+    @boxes = Box.all.page params[:page]
   end
 
   def show

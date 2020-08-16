@@ -3,6 +3,8 @@
 class Shipment < ApplicationRecord
   STATUSES = ["Not Started", "In Progress", "Ready to Ship", "In Transit", "Received"].freeze
 
+  paginates_per 10
+
   belongs_to :user, optional: false
 
   belongs_to :receiving_warehouse, class_name: "Warehouse", optional: false

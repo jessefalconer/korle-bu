@@ -13,7 +13,7 @@ class ItemsController < ApplicationController
   end
 
   def list
-    @items = Item.all
+    @items = Item.all.page params[:page]
   end
 
   def search
@@ -23,7 +23,7 @@ class ItemsController < ApplicationController
         format.js { render partial: "search-results", locals: { box: Box.find(params[:box_id]) } }
       end
     else
-      @items = Item.all
+      @items = Item.all.page params[:page]
     end
   end
 

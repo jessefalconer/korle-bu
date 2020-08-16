@@ -20,3 +20,6 @@
           %td{"data-label" => "Role"} Unavailable
           %td{"data-label" => "Action"}
             = table_button("View", user_path(user))
+.col-12.center
+  .separator
+    = paginate @users

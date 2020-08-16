@@ -3,7 +3,7 @@
     .row
       - if logged_in?
         .col-6-sm.left
-          %a{:href => "#"}= current_user.first_name
+          %a{href: index_path}= current_user.first_name
         .col-6-sm.right
           = link_to "Log Out", logout_path
       - else

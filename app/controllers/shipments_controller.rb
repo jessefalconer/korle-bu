@@ -13,7 +13,7 @@ class ShipmentsController < ApplicationController
   end
 
   def index
-    @shipments = Shipment.all
+    @shipments = Shipment.all.page params[:page]
   end
 
   def show

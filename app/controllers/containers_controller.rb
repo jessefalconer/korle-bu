@@ -5,7 +5,7 @@ class ContainersController < ApplicationController
   before_action :set_shipment, except: %i[list]
 
   def list
-    @containers = Container.all
+    @containers = Container.all.page params[:page]
   end
 
   def new
@@ -18,7 +18,7 @@ class ContainersController < ApplicationController
   end
 
   def index
-    @containers = @shipment.containers
+    @containers = @shipment.containers.page params[:page]
   end
 
   def show
