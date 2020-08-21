@@ -1,31 +1,32 @@
-%br
-.col-12.center
-  = back_button(shipment_container_path(@shipment, @container))
-  = link_button("Add Pallet", new_shipment_container_pallet_path(@shipment, @container))
-.col-12.center
-  %table
-    %caption Shipment ##{@shipment.id} / Container ##{@container.id} / Pallets
-    %thead
-      %tr
-        %th{:scope => "col"} ID
-        %th{:scope => "col"} Name
-        %th{:scope => "col"} Status
-        %th{:scope => "col"} Notes
-        %th{:scope => "col"} Receiver
-        %th{:scope => "col"} Shipper
-        %th{:scope => "col"}
-    %tbody
-      - @pallets.each do |pallet|
+.content
+  .header
+    %h1.page-title Pallets
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active #{params[:display]&.titleize} Pallets
+  .main-content
+    .btn-toolbar.list-toolbar
+      = link_button("New Pallet", new_pallet_path, "pull-left")
+    %table.table
+      %thead
         %tr
-          %td{"data-label" => "ID"}= pallet.id
-          %td{"data-label" => "Name"}= pallet.name
-          %td{"data-label" => "Status"}= pallet.status
-          %td{"data-label" => "Notes"}= pallet.notes
-          %td{"data-label" => "Receiver"}= pallet.container.shipment.receiving_warehouse.name
-          %td{"data-label" => "Shipper"}= pallet.container.shipment.shipping_warehouse.name
-          %td{"data-label" => "Action"}
-            = table_button("View", shipment_container_pallet_path(@shipment, @container, pallet))
+          %th Custom ID
+          %th Name
+          %th Status
+          %th Receiver
+          %th Shipper
+          %th Created At
+      %tbody
+        - @pallets.each do |pallet|
+          %tr
+            %td= pallet.custom_uid
+            %td
+              = link_to pallet_path(pallet) do
+                = pallet.name
+            %td= pallet.status
+            %td= pallet.container.shipment.receiving_warehouse.name
+            %td= pallet.container.shipment.shipping_warehouse.name
+            %td= pallet.created_at.strftime("%Y-%m-%d")
 
-.col-12.center
-  .separator
     = paginate @pallets

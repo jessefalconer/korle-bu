@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class ItemsController < ApplicationController
+  before_action :set_item, only: %i[show destroy edit update]
+
   def new
+    @item = Item.new
   end
 
   def create
@@ -10,9 +13,6 @@ class ItemsController < ApplicationController
   end
 
   def index
-  end
-
-  def list
     @items = Item.all.page params[:page]
   end
 
@@ -31,6 +31,8 @@ class ItemsController < ApplicationController
   end
 
   def update
+    @item.update(item_params)
+    redirect_to items_path
   end
 
   def destroy
@@ -40,5 +42,9 @@ class ItemsController < ApplicationController
 
   def item_params
     params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description, :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2, :packaged_quantity, :category_id, :notes)
+  end
+
+  def set_item
+    @item = Item.find(params[:id])
   end
 end

@@ -1,4 +1,14 @@
-.col-12.center
-  %h3 New Box
-.col-12.center
-  = render "form"
+.content
+  .header
+    %h1.page-title Boxes
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Boxes", containers_path
+      %li.active New Box
+  .main-content
+    .row
+      .col-md-4
+        %br
+        = render partial: "form", locals: { no_edit: false, delete: false }

@@ -12,9 +12,37 @@
  *
  */
 // SIMPLE GRID - SASS/SCSS
-@import "statics";
-@import "site";
-@import "tables";
-@import "buttons";
-@import "main_menu";
-@import "stat_boxes";
+// @import "statics";
+// @import "site";
+// @import "tables";
+// @import "buttons";
+// @import "main_menu";
+// @import "stat_boxes";
+// @import "elements";
+// @import "isotope";
+
+@import "premium";
+@import "theme";
+@import "bootstrap";
+@import "font-awesome";
+
+#line-chart {
+  height: 300px;
+  width: 800px;
+  margin: 0px auto;
+  margin-top: 1em;
+}
+
+.navbar-default .navbar-brand,
+.navbar-default .navbar-brand:hover {
+  color: #fff;
+}
+
+// Utility
+
+.margin-bottom-sm {
+  margin-bottom: 10px;
+}
+.margin-bottom-md {
+  margin-bottom: 15px;
+}

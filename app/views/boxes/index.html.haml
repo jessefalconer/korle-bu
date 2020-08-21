@@ -1,31 +1,32 @@
-%br
-.col-12.center
-  = back_button(shipment_container_pallet_path(@shipment, @container, @pallet))
-  = link_button("Add Box", new_shipment_container_pallet_box_path(@shipment, @container, @pallet))
-.col-12.center
-  %table
-    %caption Shipment ##{@shipment.id} / Container ##{@container.id} / Pallet ##{@pallet.id} / Boxes
-    %thead
-      %tr
-        %th{:scope => "col"} ID
-        %th{:scope => "col"} Name
-        %th{:scope => "col"} Status
-        %th{:scope => "col"} Notes
-        %th{:scope => "col"} Receiver
-        %th{:scope => "col"} Shipper
-        %th{:scope => "col"}
-    %tbody
-      - @boxes.each do |box|
+.content
+  .header
+    %h1.page-title Boxes
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active #{params[:display]&.titleize} Boxes
+  .main-content
+    .btn-toolbar.list-toolbar
+      = link_button("New Box", new_box_path, "pull-left")
+    %table.table
+      %thead
         %tr
-          %td{"data-label" => "ID"}= box.id
-          %td{"data-label" => "Name"}= box.name
-          %td{"data-label" => "Status"}= box.status
-          %td{"data-label" => "Notes"}= box.notes
-          %td{"data-label" => "Receiver"}= box.pallet.container.shipment.receiving_warehouse.name
-          %td{"data-label" => "Shipper"}= box.pallet.container.shipment.shipping_warehouse.name
-          %td{"data-label" => "Action"}
-            = table_button("View", shipment_container_pallet_box_path(@shipment, @container, @pallet, box))
+          %th Custom ID
+          %th Name
+          %th Status
+          %th.hidden-sm.hidden-xs Receiver
+          %th.hidden-sm.hidden-xs Shipper
+          %th Created By
+      %tbody
+        - @boxes.each do |box|
+          %tr
+            %td= box.custom_uid
+            %td
+              = link_to box_path(box) do
+                = box.name
+            %td= box.status
+            %td.hidden-sm.hidden-xs= box.pallet&.container&.shipment&.receiving_warehouse&.name
+            %td.hidden-sm.hidden-xs= box.pallet&.container&.shipment&.shipping_warehouse&.name
+            %td= box.user.name
 
-.col-12.center
-  .separator
     = paginate @boxes

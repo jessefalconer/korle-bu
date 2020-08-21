@@ -1,0 +1,30 @@
+.content
+  .header
+    %h1.page-title Items
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active Items
+  .main-content
+    .btn-toolbar.list-toolbar
+      = link_button("New Item", new_item_path, "pull-left")
+    %table.table
+      %thead
+        %tr
+          %th Name
+          %th Category
+          %th Created By
+          %th Created By
+          %th Verified
+      %tbody
+        - @items.each do |item|
+          %tr
+            %td
+              = link_to item_path(item) do
+                = item.generated_name
+            %td= item.category&.name
+            %td= item.user.name
+            %td= item.created_at.strftime("%Y-%m-%d")
+            %td= item.verified
+
+    = paginate @items

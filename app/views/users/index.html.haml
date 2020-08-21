@@ -1,25 +1,30 @@
-%br
-.col-12.center
-  = back_button(index_path)
-.col-12.center
-  %table
-    %caption Users
-    %thead
-      %tr
-        %th{:scope => "col"} Name
-        %th{:scope => "col"} Email
-        %th{:scope => "col"} Phone
-        %th{:scope => "col"} Role
-        %th{:scope => "col"}
-    %tbody
-      - @users.each do |user|
+.content
+  .header
+    %h1.page-title Users
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active Users
+  .main-content
+    .btn-toolbar.list-toolbar
+      = link_button("New User", new_user_path, "pull-left")
+    %table.table
+      %thead
         %tr
-          %td{"data-label" => "Name"}= user.name
-          %td{"data-label" => "Email"}= user.email
-          %td{"data-label" => "Phone"}= user.phone
-          %td{"data-label" => "Role"} Unavailable
-          %td{"data-label" => "Action"}
-            = table_button("View", user_path(user))
-.col-12.center
-  .separator
+          %th Name
+          %th Email
+          %th Phone
+          %th Role
+          %th Created At
+      %tbody
+        - @users.each do |user|
+          %tr
+            %td
+              = link_to user_path(user) do
+                = user.name
+            %td= user.email
+            %td= user.phone
+            %td Unavailable
+            %td= user.created_at.strftime("%Y-%m-%d")
+
     = paginate @users

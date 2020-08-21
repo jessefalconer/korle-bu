@@ -1,31 +1,32 @@
-%br
-.col-12.center
-  = back_button(shipment_path(@shipment))
-  = link_button("Add Container", new_shipment_container_path(@shipment))
-.col-12.center
-  %table
-    %caption Shipment ##{@shipment.id} / Containers
-    %thead
-      %tr
-        %th{:scope => "col"} ID
-        %th{:scope => "col"} Name
-        %th{:scope => "col"} Status
-        %th{:scope => "col"} Notes
-        %th{:scope => "col"} Receiver
-        %th{:scope => "col"} Shipper
-        %th{:scope => "col"}
-    %tbody
-      - @containers.each do |container|
+.content
+  .header
+    %h1.page-title Containers
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active #{params[:display]&.titleize} Containers
+  .main-content
+    .btn-toolbar.list-toolbar
+      = link_button("New Container", new_container_path, "pull-left")
+    %table.table
+      %thead
         %tr
-          %td{"data-label" => "ID"}= container.id
-          %td{"data-label" => "Name"}= container.name
-          %td{"data-label" => "Status"}= container.status
-          %td{"data-label" => "Notes"}= container.notes
-          %td{"data-label" => "Receiver"}= container.shipment.receiving_warehouse.name
-          %td{"data-label" => "Shipper"}= container.shipment.shipping_warehouse.name
-          %td{"data-label" => "Action"}
-            = table_button("View", shipment_container_path(@shipment, container))
+          %th Custom ID
+          %th Name
+          %th Status
+          %th Receiver
+          %th Shipper
+          %th Created At
+      %tbody
+        - @containers.each do |container|
+          %tr
+            %td= container.custom_uid
+            %td
+              = link_to container_path(container) do
+                = container.name
+            %td= container.status
+            %td= container.shipment.receiving_warehouse.name
+            %td= container.shipment.shipping_warehouse.name
+            %td= container.created_at.strftime("%Y-%m-%d")
 
-.col-12.center
-  .separator
     = paginate @containers

@@ -1,4 +1,14 @@
-.col-12.center
-  %h3 New Pallet
-.col-12.center
-  = render "form"
+.content
+  .header
+    %h1.page-title Containers
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Containers", containers_path
+      %li.active New Container
+  .main-content
+    .row
+      .col-md-4
+        %br
+        = render partial: "form", locals: { no_edit: false, delete: false }

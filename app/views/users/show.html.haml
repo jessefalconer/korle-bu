@@ -1,17 +1,24 @@
-%br
-.col-12.center
-  = back_button(users_path, "Users")
-  = delete_button(user_path(@user))
-.col-12.center
-  %table
-    %caption= @user.name
-    %thead
-      %tr
-        %th{:scope => "col"} Email
-        %th{:scope => "col"} Phone
-        %th{:scope => "col"} Role
-    %tbody
-      %tr
-        %td{"data-label" => "Email"}= @user.email
-        %td{"data-label" => "Phone"}= @user.phone
-        %td{"data-label" => "Role"} Unavailable
+.content
+  .header
+    %h1.page-title Users
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Users", users_path
+      %li.active= @user.name
+  .main-content
+    %ul.nav.nav-tabs
+      %li.active
+        %a{data: {toggle: "tab"}, href: "#view"} View
+      %li
+        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+    .row
+      .col-md-4
+        %br
+        #myTabContent.tab-content
+          #view.tab-pane.active.in
+            = render partial: "form", locals: { no_edit: true, delete: true, create_password: false }
+
+          #edit.tab-pane.fade
+            = render partial: "form", locals: { no_edit: false, delete: false, create_password: false }

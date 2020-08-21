@@ -1,47 +1,32 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
-  def submit_button(text, data = {})
-    button_tag(type: "submit", class: "button submit", data: data) do
-      content_tag(:span, text, class: "button-text") + content_tag(:i, "", class: "fa fa-arrow-right")
+  def edit_icon(path)
+    link_to(path) do
+      content_tag(:i, "", class: "fa fa-pencil")
     end
   end
 
-  def link_button(text, path, data = {})
-    link_to(path, class: "button submit", data: data) do
-      content_tag(:span, text, class: "button-text") + content_tag(:i, "", class: "fa fa-arrow-right")
+  def delete_icon(path, confirm_text)
+    link_to(path, data: { confirm: confirm_text }, method: :delete) do
+      content_tag(:i, "", class: "fa fa-trash")
     end
   end
 
-  def table_button(text, path, data = {})
-    link_to(path, class: "button view", data: data) do
-      content_tag(:span, text, class: "button-text") + content_tag(:i, "", class: "fa fa-arrow-right")
+  def delete_button(path, confirm_text)
+    content_tag(:a, "Delete", href: path, class: "btn btn-danger", data: { confirm: confirm_text, method: :delete })
+  end
+
+  def link_button(text, path, side = "", data = {})
+    link_to(path, class: "btn btn-primary #{side}", data: data) do
+      content_tag(:span, text)
     end
   end
 
-  def delete_button(path, _data = {})
-    link_to(path, class: "button delete", method: :delete) do
-      content_tag(:span, "Delete", class: "button-text") + content_tag(:i, "", class: "fa fa-trash")
-    end
-  end
-
-  def edit_button(path, data = {})
-    link_to(path, class: "button submit", data: data) do
-      content_tag(:span, "Edit", class: "button-text") + content_tag(:i, "", class: "fa fa-arrow-right")
-    end
-  end
-
-  def back_button(path, text = "Back", data = {})
-    link_to(path, class: "button view", data: data) do
-      content_tag(:i, "", class: "fa fa-arrow-left") + content_tag(:span, text, class: "button-text")
-    end
-  end
-
-  def next_button(path, text = "Back", data = {})
-    link_to(path, class: "button view", data: data) do
-      content_tag(:i, "", class: "fa fa-arrow-down") +
-        content_tag(:span, text, class: "button-text") +
-        content_tag(:i, "", class: "fa fa-arrow-down")
+  def submit_button(text, side = "")
+    button_tag(type: "submit", class: "btn btn-primary") do
+      content_tag(:i, "", class: "fa fa-save") +
+      content_tag(:span, " " + text)
     end
   end
 end

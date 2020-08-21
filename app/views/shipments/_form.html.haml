@@ -1,29 +1,33 @@
+- user = @shipment.user&.name || current_user.name
+- time = @shipment.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
 = form_for @shipment do |f|
-  = f.label :name
-  %br
-  = f.text_field :name
-  %br
-  = f.label :custom_uid
-  %br
-  = f.number_field :custom_uid
-  %br
-  = f.label :status
-  %br
-  = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), include_blank: ""
-  %br
-  = f.label :receiving_warehouse_id
-  %br
-  = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), include_blank: ""
-  %br
-  = f.label :shipping_warehouse_id
-  %br
-  = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), include_blank: ""
-  %br
-  = f.label :notes
-  %br
-  = f.text_field :notes
-  %br
-  %br
-  %br
-  = back_button(shipments_path, "Cancel")
-  = submit_button("Save")
+  .form-group
+    = f.label :name
+    = f.text_field :name, disabled: no_edit, class: "form-control"
+  .form-group
+    = f.label :custom_uid
+    = f.number_field :custom_uid, disabled: no_edit, class: "form-control"
+  .form-group
+    = f.label :status
+    = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
+  .form-group
+    = f.label :receiving_warehouse_id
+    = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
+  .form-group
+    = f.label :shipping_warehouse_id
+    = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
+  .form-group
+    = f.label :notes
+    = f.text_field :notes, disabled: no_edit, class: "form-control"
+  .form-group
+    %label Created By
+    = f.text_field :user, value: user, disabled: true, class: "form-control"
+  .form-group
+    %label Created At
+    = f.text_field :created_at, value: time, disabled: true, class: "form-control"
+
+  .btn-toolbar.list-toolbar
+    - if delete
+      = delete_button(shipment_path(@shipment), "Are you sure you want to delete #{@shipment.name}? This cannot be reversed")
+    - else
+      = submit_button("Save")

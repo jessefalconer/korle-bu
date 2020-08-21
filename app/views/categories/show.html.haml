@@ -1,19 +1,24 @@
-%br
-.col-12.center
-  = back_button(categories_path, "Categories")
-  = delete_button(category_path(@category))
-  = edit_button(edit_category_path(@category))
-.col-12.center
-  %table
-    %thead
-      %tr
-        %th{:scope => "col"} Name
-        %th{:scope => "col"} Description
-        %th{:scope => "col"} Created By
-        %th{:scope => "col"} Created At
-    %tbody
-      %tr
-        %td{"data-label" => "Name"}= @category.name
-        %td{"data-label" => "Description"}= @category.description
-        %td{"data-label" => "Created By"}= @category.user.name
-        %td{"data-label" => "Created At"}= @category.created_at.strftime("%Y-%m-%d")
+.content
+  .header
+    %h1.page-title Categories
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Categories", categories_path
+      %li.active= @category.name
+  .main-content
+    %ul.nav.nav-tabs
+      %li.active
+        %a{data: {toggle: "tab"}, href: "#view"} View
+      %li
+        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+    .row
+      .col-md-4
+        %br
+        #myTabContent.tab-content
+          #view.tab-pane.active.in
+            = render partial: "form", locals: { no_edit: true, delete: true }
+
+          #edit.tab-pane.fade
+            = render partial: "form", locals: { no_edit: false, delete: false }

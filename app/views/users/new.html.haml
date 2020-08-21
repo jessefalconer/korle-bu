@@ -1,23 +1,14 @@
-.col-12.center
-  %br
-  %br
-  = form_for @user do |f|
-    = f.label :email
-    %br
-    = f.text_field :email
-    %br
-    = f.label :first_name
-    %br
-    = f.text_field :first_name
-    %br
-    = f.label :last_name
-    %br
-    = f.text_field :last_name
-    %br
-    = f.label :password
-    %br
-    = f.password_field :password
-    %br
-    %br
-    %br
-    = submit_button("Create")
+.content
+  .header
+    %h1.page-title Users
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Users", users_path
+      %li.active New User
+  .main-content
+    .row
+      .col-md-4
+        %br
+        = render partial: "form", locals: { no_edit: false, delete: false, create_password: true }

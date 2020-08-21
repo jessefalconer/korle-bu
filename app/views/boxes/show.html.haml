@@ -1,55 +1,87 @@
-%br
-.col-12.center
-  = back_button(shipment_container_pallet_boxes_path, "Pallets")
-  = delete_button(shipment_container_pallet_box_path(@shipment, @container, @pallet, @box))
-  = edit_button(edit_shipment_container_pallet_box_path(@shipment, @container, @pallet, @box))
 
-.col-12.center
-  %table
-    %caption Viewing box #{@box.name}
-    %thead
-      %tr
-        %th{:scope => "col"} ID
-        %th{:scope => "col"} Name
-        %th{:scope => "col"} Status
-        %th{:scope => "col"} Notes
-        %th{:scope => "col"} Receiver
-        %th{:scope => "col"} Shipper
-    %tbody
-      %tr
-        %td{"data-label" => "ID"}= @box.id
-        %td{"data-label" => "Name"}= @box.name
-        %td{"data-label" => "Status"}= @box.status
-        %td{"data-label" => "Notes"}= @box.notes
-        %td{"data-label" => "Receiver"}= @box.pallet.container.shipment.receiving_warehouse.name
-        %td{"data-label" => "Shipper"}= @box.pallet.container.shipment.shipping_warehouse.name
-
-
-- if @box.boxed_items.none?
-  .col-12.center
-    %h3 There are no items assigned to this box!
-.col-12.center
+-# .col-12.center
   = render "boxed_items/search_form"
 -# .col-12
 -#   = render "items/form"
+-#
+-# - if @box.boxed_items.any?
+-#   .col-12
+-#     .separator Saved Items
+-#     = form_for @box, url: box_boxed_item_path(@box) do |f|
+-#       - @box.boxed_items.each do |bi|
+-#         = f.fields_for :boxed_items, bi do |ff|
+-#           .row.stat-row.center
+-#             .col-12-sm.col-4.stat-box
+-#               %h6= bi.generated_name
+-#             .col-12-sm.col-3.stat-box
+-#               = ff.text_field :expiry_date, value: bi.expiry_date&.strftime("%Y-%m-%d"), class: "date-input"
+-#             .col-12-sm.col-3.stat-box
+-#               = ff.number_field :quantity, value: bi.quantity, class: "number-input"
+-#             .col-12-sm.col-2
+-#               %label.checkbox-container
+-#                 Delete
+-#                 = ff.check_box :_destroy, checked: "unchecked", type: "checkbox"
+-#                 %span.checkmark
+-#       .right
+-#         = submit_button("Update")
 
-- if @box.boxed_items.any?
-  .col-12
-    .separator Saved Items
-    = form_for @box, url: box_boxed_item_path(@box) do |f|
-      - @box.boxed_items.each do |bi|
-        = f.fields_for :boxed_items, bi do |ff|
-          .row.stat-row.center
-            .col-12-sm.col-4.stat-box
-              %h6= bi.generated_name
-            .col-12-sm.col-3.stat-box
-              = ff.text_field :expiry_date, value: bi.expiry_date&.strftime("%Y-%m-%d"), class: "date-input"
-            .col-12-sm.col-3.stat-box
-              = ff.number_field :quantity, value: bi.quantity, class: "number-input"
-            .col-12-sm.col-2
-              %label.checkbox-container
-                Delete
-                = ff.check_box :_destroy, checked: "unchecked", type: "checkbox"
-                %span.checkmark
-      .right
-        = submit_button("Update")
+.content
+  .header
+    %h1.page-title Boxes
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Boxes", boxes_path
+      %li.active= @box.name
+  .main-content
+    %ul.nav.nav-tabs
+      %li.active
+        %a{data: {toggle: "tab"}, href: "#view"} View
+      %li
+        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+      %li
+        %a{data: {toggle: "tab"}, href: "#items"} Modify Items
+      %li
+        %a{data: {toggle: "tab"}, href: "#add"} Add Items
+    .row
+      .col-md-4
+        %br
+        #myTabContent.tab-content
+          #view.tab-pane.active.in
+            = render partial: "form", locals: { no_edit: true, delete: true }
+
+          #edit.tab-pane.fade
+            = render partial: "form", locals: { no_edit: false, delete: false }
+
+          #items.tab-pane.fade
+            = render partial: "form", locals: { no_edit: false, delete: false }
+
+          #add.tab-pane.fade
+            = render "boxed_items/search_form"
+
+      .col-md-8
+        %br
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#widget1container"}
+            Items in this Box
+          - if @box.boxed_items.any?
+            #widget1container.collapse.in
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th Name
+                    %th Expiry Date
+                    %th Quantity
+                %tbody
+                  - @box.boxed_items.each do |bi|
+                    %tr
+                      %td
+                        = link_to item_path(bi.item) do
+                          = bi.generated_name
+                      %td= bi.expiry_date&.strftime("%Y-%m-%d")
+                      %td= bi.quantity
+          - else
+            #widget1container.collapse.in.panel-body
+              %h4 No items.
+              -# = link_button("Add a Pallet", new_pallet_path, "pull-left")

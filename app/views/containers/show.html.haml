@@ -1,28 +1,72 @@
-%br
-.col-12.center
-  = back_button(shipment_containers_path, "Containers")
-  = delete_button(shipment_container_path(@shipment, @container))
-  = edit_button(edit_shipment_container_path(@shipment, @container))
+.content
+  .header
+    %h1.page-title Containers
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Containers", containers_path
+      %li.active= @container.name
+  .main-content
+    %ul.nav.nav-tabs
+      %li.active
+        %a{data: {toggle: "tab"}, href: "#view"} View
+      %li
+        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+    .row
+      .col-md-4
+        %br
+        #myTabContent.tab-content
+          #view.tab-pane.active.in
+            = render partial: "form", locals: { no_edit: true, delete: true }
 
-.col-12.center
-  %table
-    %caption Viewing container #{@container.name}
-    %thead
-      %tr
-        %th{:scope => "col"} ID
-        %th{:scope => "col"} Name
-        %th{:scope => "col"} Status
-        %th{:scope => "col"} Notes
-        %th{:scope => "col"} Receiver
-        %th{:scope => "col"} Shipper
-    %tbody
-      %tr
-        %td{"data-label" => "ID"}= @container.id
-        %td{"data-label" => "Name"}= @container.name
-        %td{"data-label" => "Status"}= @container.status
-        %td{"data-label" => "Notes"}= @container.notes
-        %td{"data-label" => "Receiver"}= @container.shipment.receiving_warehouse.name
-        %td{"data-label" => "Shipper"}= @container.shipment.shipping_warehouse.name
+          #edit.tab-pane.fade
+            = render partial: "form", locals: { no_edit: false, delete: false }
 
-.col-12.center
-  = next_button(shipment_container_pallets_path(@shipment, @container), "Pallets")
+      .col-md-8
+        %br
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#widget1container"}
+            Pallets in this Container
+          - if @container.pallets.any?
+            #widget1container.collapse.in
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th Custom ID
+                    %th Name
+                    %th Status
+                %tbody
+                  - @container.pallets.each do |pallet|
+                    %tr
+                      %td= pallet.custom_uid
+                      %td
+                        = link_to pallet_path(pallet) do
+                          = pallet.name
+                      %td= pallet.status
+          - else
+            #widget1container.collapse.in.panel-body
+              %h4 No pallets.
+              = link_button("Add a Pallet", new_pallet_path, "pull-left")
+        %br
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#widget1container"}
+            Loose Items in this Container
+          - if @container.containerized_items.any?
+            #widget1container.collapse.in
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th Custom ID
+                    %th Name
+                    %th Status
+                %tbody
+                  - @container.containerized_items.each do |item|
+                    %tr
+                      %td= item.generated_name
+                      %td= item.expiry_date
+                      %td= item.quantity
+          - else
+            #widget1container.collapse.in.panel-body
+              %h4 No items.
+              = link_button("Add an Item", new_pallet_path, "pull-left")

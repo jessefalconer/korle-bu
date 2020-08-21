@@ -8,3 +8,10 @@ require("@rails/activestorage").start()
 require("channels")
 
 import "../packs/errors";
+import "../packs/bootstrap";
+
+$(function () {
+  var uls = $('.sidebar-nav > ul > *').clone();
+  uls.addClass('visible-xs');
+  $('#main-menu').append(uls.clone());
+});

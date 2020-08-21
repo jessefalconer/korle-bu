@@ -2,7 +2,6 @@
 
 class ContainersController < ApplicationController
   before_action :set_container, only: %i[show destroy edit update]
-  before_action :set_shipment, except: %i[list]
 
   def list
     @containers = Container.all.page params[:page]
@@ -13,12 +12,12 @@ class ContainersController < ApplicationController
   end
 
   def create
-    @shipment.containers.create(container_params.merge(user: current_user))
-    redirect_to shipment_containers_path
+    Container.create(container_params.merge(user: current_user))
+    redirect_to containers_path
   end
 
   def index
-    @containers = @shipment.containers.page params[:page]
+    @containers = Container.all.page params[:page]
   end
 
   def show
@@ -29,12 +28,12 @@ class ContainersController < ApplicationController
 
   def update
     @container.update(container_params)
-    redirect_to shipment_container_path(@container)
+    redirect_to container_path(@container)
   end
 
   def destroy
     @container.destroy
-    redirect_to shipment_containers_path
+    redirect_to containers_path
   end
 
   private
@@ -45,9 +44,5 @@ class ContainersController < ApplicationController
 
   def set_container
     @container = Container.find(params[:id])
-  end
-
-  def set_shipment
-    @shipment = Shipment.find(params[:shipment_id])
   end
 end

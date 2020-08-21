@@ -1,0 +1,26 @@
+.dialog
+  .panel.panel-default
+    %p.panel-heading.no-collapse Sign Up
+    .panel-body
+      = form_for @user, url: create_public_user_path do |f|
+        .form-group
+          %label First Name
+          = f.text_field :first_name, class: "form-control span12"
+        .form-group
+          %label Last Name
+          = f.text_field :last_name, class: "form-control span12"
+        .form-group
+          %label Email Address
+          = f.text_field :email, class: "form-control span12"
+        .form-group
+          %label Phone Number
+          = f.text_field :phone, class: "form-control span12"
+        .form-group
+          %label Password
+          = f.password_field :password, class: "form-control span12"
+        .form-group
+          = submit_button("Sign Up")
+        .clearfix
+    %p.panel-heading.no-collapse
+      = link_to login_path do
+        Sign In

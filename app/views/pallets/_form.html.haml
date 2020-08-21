@@ -1,21 +1,27 @@
-= form_for [@shipment, @container, @pallet] do |f|
-  = f.label :name
-  %br
-  = f.text_field :name
-  %br
-  = f.label :status
-  %br
-  = f.text_field :status
-  %br
-  = f.label :notes
-  %br
-  = f.text_field :notes
-  %br
-  = f.label "Move to Container"
-  %br
-  = f.select :container_id, options_from_collection_for_select(@shipment.containers.order(:name), :id, :name, @pallet.container_id), include_blank: ""
-  %br
-  %br
-  %br
-  = back_button(shipment_container_pallets_path, "Cancel")
-  = submit_button("Save")
+- user = @pallet.user&.name || current_user.name
+- time = @pallet.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
+= form_for @pallet do |f|
+  .form-group
+    = f.label :name
+    = f.text_field :name, disabled: no_edit, class: "form-control"
+  .form-group
+    = f.label :status
+    = f.text_field :status, disabled: no_edit, class: "form-control"
+  .form-group
+    = f.label :notes
+    = f.text_field :notes, disabled: no_edit, class: "form-control"
+  .form-group
+    = f.label "Move to Container"
+    = f.select :container_id, options_from_collection_for_select(Container.all.order(:name), :id, :name, @pallet.container_id), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
+  .form-group
+    %label Created By
+    = f.text_field :user, value: user, disabled: true, class: "form-control"
+  .form-group
+    %label Created At
+    = f.text_field :created_at, value: time, disabled: true, class: "form-control"
+
+  .btn-toolbar.list-toolbar
+    - if delete
+      = delete_button(pallet_path(@pallet), "Are you sure you want to delete #{@pallet.name}? This cannot be reversed")
+    - else
+      = submit_button("Save")

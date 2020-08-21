@@ -1,6 +1,14 @@
-.col-12.center
-  %h3 New Category
-.col-12.center
-  %br
-  %br
-  = render "form"
+.content
+  .header
+    %h1.page-title Categories
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Categories", categories_path
+      %li.active New Category
+  .main-content
+    .row
+      .col-md-4
+        %br
+        = render partial: "form", locals: { no_edit: false, delete: false }

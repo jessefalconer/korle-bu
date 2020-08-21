@@ -1,27 +1,50 @@
-%br
-.col-12.center
-  = back_button(shipments_path, "Shipments")
-  = delete_button(shipment_path(@shipment))
-  = edit_button(edit_shipment_path(@shipment))
-.col-12.center
-  %table
-    %caption
-      %strong
-        #{@shipment.name}
-    %thead
-      %tr
-        %th{:scope => "col"} Custom UID
-        %th{:scope => "col"} Name
-        %th{:scope => "col"} Status
-        %th{:scope => "col"} Receiver
-        %th{:scope => "col"} Shipper
-    %tbody
-      %tr
-        %td{"data-label" => "Custom UID"}= @shipment.custom_uid
-        %td{"data-label" => "Name"}= @shipment.name
-        %td{"data-label" => "Status"}= @shipment.status
-        %td{"data-label" => "Receiver"}= @shipment.receiving_warehouse.name
-        %td{"data-label" => "Shipper"}= @shipment.shipping_warehouse.name
+.content
+  .header
+    %h1.page-title Shipments
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Shipments", shipments_path
+      %li.active= @shipment.name
+  .main-content
+    %ul.nav.nav-tabs
+      %li.active
+        %a{data: {toggle: "tab"}, href: "#view"} View
+      %li
+        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+    .row
+      .col-md-4
+        %br
+        #myTabContent.tab-content
+          #view.tab-pane.active.in
+            = render partial: "form", locals: { no_edit: true, delete: true }
 
-.col-12.center
-  = next_button(shipment_containers_path(@shipment), "Containers")
+          #edit.tab-pane.fade
+            = render partial: "form", locals: { no_edit: false, delete: false }
+
+      .col-md-8
+        %br
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#widget1container"}
+            Containers in this Shipment
+          - if @shipment.containers.any?
+            #widget1container.collapse.in
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th Custom ID
+                    %th Name
+                    %th Status
+                %tbody
+                  - @shipment.containers.each do |container|
+                    %tr
+                      %td= container.custom_uid
+                      %td
+                        = link_to container_path(container) do
+                          = container.name
+                      %td= container.status
+          - else
+            #widget1container.collapse.in.panel-body
+              %h4 No containers.
+              = link_button("Add a Container", new_container_path, "pull-left")

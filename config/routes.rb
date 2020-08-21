@@ -8,12 +8,11 @@ Rails.application.routes.draw do
   get "logout", to: "sessions#destroy"
   get "index", to: "sessions#index"
 
-  get "container_list", to: "containers#list"
-  get "pallet_list", to: "pallets#list"
-  get "item_list", to: "items#list"
-  get "box_list", to: "boxes#list"
+  get "signup", to: "users#signup"
+  post "create_public_user", to: "users#create_public_user"
 
   get "item_search", to: "items#search"
+  get "reconcile", to: "items#reconcile"
 
   resources :categories
   resources :items

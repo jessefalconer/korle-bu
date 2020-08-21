@@ -1,27 +1,28 @@
-%br
-.col-12.center
-  = back_button(index_path)
-  = link_button("Add a Category", new_category_path)
-.col-12.center
-  %table
-    %caption Categories
-    %thead
-      %tr
-        %th{:scope => "col"} Name
-        %th{:scope => "col"} Description
-        %th{:scope => "col"} Created By
-        %th{:scope => "col"} Created At
-        %th{:scope => "col"}
-    %tbody
-      - @categories.each do |category|
+.content
+  .header
+    %h1.page-title Categories
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active Categories
+  .main-content
+    .btn-toolbar.list-toolbar
+      = link_button("New Category", new_category_path, "pull-left")
+    %table.table
+      %thead
         %tr
-          %td{"data-label" => "Name"}= category.name
-          %td{"data-label" => "Description"}= category.description
-          %td{"data-label" => "Created By"}= category.user.name
-          %td{"data-label" => "Created At"}= category.created_at.strftime("%Y-%m-%d")
-          %td{"data-label" => "Action"}
-            = table_button("View", category_path(category))
+          %th Name
+          %th Description
+          %th Created By
+          %th Created At
+      %tbody
+        - @categories.each do |category|
+          %tr
+            %td
+              = link_to category_path(category) do
+                = category.name
+            %td= category.description
+            %td= category.user.name
+            %td= category.created_at.strftime("%Y-%m-%d")
 
-.col-12.center
-  .separator
     = paginate @categories

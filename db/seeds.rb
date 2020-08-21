@@ -1,4 +1,4 @@
-User.create(email: "jfalconer3.14@gmail.com",
+User.create!(email: "jfalconer13.14@gmail.com",
                   password_digest: "123456",
                   first_name: "Jesse",
                   last_name: "Falconer"

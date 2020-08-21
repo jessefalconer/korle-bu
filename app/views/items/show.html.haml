@@ -1,0 +1,24 @@
+.content
+  .header
+    %h1.page-title Items
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Items", items_path
+      %li.active= @item.generated_name
+  .main-content
+    %ul.nav.nav-tabs
+      %li.active
+        %a{data: {toggle: "tab"}, href: "#view"} View
+      %li
+        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+    .row
+      .col-md-4
+        %br
+        #myTabContent.tab-content
+          #view.tab-pane.active.in
+            = render partial: "form", locals: { no_edit: true, delete: true }
+
+          #edit.tab-pane.fade
+            = render partial: "form", locals: { no_edit: false, delete: false }
