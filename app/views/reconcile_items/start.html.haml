@@ -1,0 +1,83 @@
+.content
+  .header
+    %h1.page-title Reconcile Items
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active Reconcile Items
+  .main-content
+    .row
+      .col-xs-12
+        %br
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#item"}
+            Comparing #{@item.generated_name} (Unverified)
+          .collapse.in{id: "item"}
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th Item
+                  %th Created By
+                  %th Created At
+                  %th Instances Used
+                  %th Show Instances
+              %tbody
+                %tr
+                  %td
+                    = link_to item_path(@item) do
+                      %p= @item.generated_name
+                  %td
+                    = link_to user_path(@item.user) do
+                      %p= @item.user.name
+                  %td
+                    %p= @item.created_at.strftime("%Y-%m-%d")
+                  %td
+                    %p= @overview.item_instances(@item)
+                  %td
+                    %p Search
+
+        - if @items.any?
+          .panel.panel-default
+            %a.panel-heading{data: {toggle: "collapse"}, href: "#items"}
+              Compare with #{@items.size} Related Items
+            .collapse.in{id: "items"}
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th Item
+                    %th Created By
+                    %th Created At
+                    %th Instances Used
+                    %th Show Instances
+                    %th Match
+                    %th Select
+                %tbody
+                  - @items.each do |k, v|
+                    - item = Item.find(k)
+                    %tr
+                      %td
+                        = link_to item_path(item) do
+                          %p= item.generated_name
+                      %td
+                        = link_to user_path(item.user) do
+                          %p= item.user.name
+                      %td
+                        %p= item.created_at.strftime("%Y-%m-%d")
+                      %td
+                        %p= @overview.item_instances(item)
+                      %td
+                        %p Search
+                      %td
+                        %p= @overview.match_percentage(v, item)
+                      %td
+                        = link_button("Confirm Merge >>", reconcile_confirm_path(@item, item), "center-block")
+        - else
+          %p No suggestions found. Try searching for an item.
+    .row
+      .col-xs-12.col-md-6.col-lg-4
+        = render "search_form"
+
+    .row
+      .col-xs-12
+        %br
+        #search-results

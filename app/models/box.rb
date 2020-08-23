@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Box < ApplicationRecord
+  STATUSES = %w[Not\ Started Packing Completed].freeze
+
   belongs_to :user, optional: false
   # TODO: these optional trues are status=unassigned
   belongs_to :container, optional: true
@@ -13,6 +15,13 @@ class Box < ApplicationRecord
 
   scope :loose_box, -> { where(pallet_id: nil).where.not(container_id: nil) }
   scope :unassigned, -> { where(pallet_id: nil, container_id: nil) }
+
+  delegate :container, to: :pallet, allow_nil: true
+  delegate :shipment, to: :pallet, allow_nil: true
+
+  validates :name, :custom_uid, :user, presence: true
+  validates :custom_uid, :name, uniqueness: true
+  validates :status, inclusion: { in: STATUSES }
 
   paginates_per 10
 end

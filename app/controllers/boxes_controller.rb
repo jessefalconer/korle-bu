@@ -4,12 +4,14 @@ class BoxesController < ApplicationController
   before_action :set_box, only: %i[show destroy edit update]
 
   def new
-    @box = Box.new
+    cid = Box.all.pluck(:custom_uid).max.to_i + 1
+    name = "BOX-#{cid}"
+    @box = Box.new(custom_uid: cid, name: name, status: Box::STATUSES[0])
   end
 
   def create
-    Box.create(box_params.merge(user: current_user))
-    redirect_to boxes_path
+    box = Box.create(box_params.merge(user: current_user))
+    redirect_to box_path(box)
   end
 
   def index
@@ -35,7 +37,7 @@ class BoxesController < ApplicationController
   private
 
   def box_params
-    params.require(:box).permit(:name, :status, :notes)
+    params.require(:box).permit(:name, :status, :notes, :custom_uid, :pallet_id)
   end
 
   def set_box

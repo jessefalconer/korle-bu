@@ -12,7 +12,11 @@ Rails.application.routes.draw do
   post "create_public_user", to: "users#create_public_user"
 
   get "item_search", to: "items#search"
-  get "reconcile", to: "items#reconcile"
+  get "item_search_form", to: "items#search_form"
+  get "reconcile_overview", to: "reconcile_items#show"
+  get "reconcile/:id", to: "reconcile_items#start", as: :reconcile_start
+  get "reconcile/:id/confirm/:target_id", to: "reconcile_items#confirm", as: :reconcile_confirm
+  get "reconcile/:id/execute_reconcile/:target_id", to: "reconcile_items#execute", as: :execute_reconcile
 
   resources :categories
   resources :items

@@ -4,12 +4,14 @@ class ShipmentsController < ApplicationController
   before_action :set_shipment, only: %i[show destroy edit update]
 
   def new
-    @shipment = Shipment.new(custom_uid: Shipment.count + 1)
+    cid = Shipment.all.pluck(:custom_uid).max.to_i + 1
+    name = "SHIPMENT-#{cid}"
+    @shipment = Shipment.new(custom_uid: cid, name: name, status: Shipment::STATUSES[0])
   end
 
   def create
-    Shipment.create(shipment_params.merge(user: current_user))
-    redirect_to shipments_path
+    shipment = Shipment.create(shipment_params.merge(user: current_user))
+    redirect_to shipment_path(shipment)
   end
 
   def index
@@ -35,7 +37,7 @@ class ShipmentsController < ApplicationController
   private
 
   def shipment_params
-    params.require(:shipment).permit(:name, :status, :notes, :receiving_warehouse_id, :shipping_warehouse_id, :custom_uid)
+    params.require(:shipment).permit(:name, :status, :notes, :custom_uid, :receiving_warehouse_id, :shipping_warehouse_id)
   end
 
   def set_shipment

@@ -1,16 +1,10 @@
-= form_tag(item_search_path, method: "get", remote: true, class: "input-group search pull-right span12") do
-  = hidden_field_tag :existing_item_ids, @box.items.ids
-  = hidden_field_tag :box_id, @box.id
+= form_tag(item_search_form_path, method: "get", remote: true, class: "input-group search span12") do
+  = hidden_field_tag :id, @box.id
+  = hidden_field_tag :model, "Box"
   .input-group
-    = text_field_tag :search, params[:search], placeholder: "Enter search term", class: "form-control span12"
+    = text_field_tag :search, params[:search], placeholder: "Enter search term", class: "form-control"
     %span.input-group-btn.span12
       = submit_tag "Search", class: "btn btn-primary" do
         %i.fa.fa-search
-#search-results
 
--# .input-group.search.pull-right.hidden-sm.hidden-xs
--#   .input-group
--#     %input.form-control{:type => "text"}/
--#     %span.input-group-btn
--#       %button.btn.btn-primary{:type => "button"}
--#         %i.fa.fa-search
+#search-results

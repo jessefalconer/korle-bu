@@ -1,0 +1,29 @@
+- if @search_results_items.none?
+  .form-group.padding-top-small
+    No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
+  .form-group.padding-top-small
+    %span Still unable to find your item?
+    = link_button("New Item", new_item_path, "pull-right")
+- else
+  - @search_results_items.each do |item|
+    = form_for record, url: form_path, method: :post do |f|
+      .row.padding-top-small
+        .col-xs-12
+          .form-group
+            %p.margin-bottom-0= item.generated_name
+        .form-group
+          .col-xs-6
+            = f.text_field :expiry_date, value: "", class: "form-control"
+        .col-xs-3
+          .form-group
+            = f.number_field :quantity, value: 0, class: "form-control"
+            = f.hidden_field :item_id, value: item.id
+        .col-xs-3
+          .btn-toolbar.list-toolbar
+            = submit_button(" Add", "pull-right")
+
+  .row.border-bottom.padding-top-small.padding-bottom-small
+    .col-xs-8.padding-bottom-small.padding-top-small
+      %span Unable to find an item?
+    .col-xs-4
+      = link_button("New Item", new_item_path, "pull-right")

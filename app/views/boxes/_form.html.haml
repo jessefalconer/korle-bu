@@ -1,18 +1,22 @@
 - user = @box.user&.name || current_user.name
 - time = @box.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
+- pallet_id = @box.pallet_id.presence || params[:pallet_id]
 = form_for @box do |f|
   .form-group
     = f.label :name
     = f.text_field :name, disabled: no_edit, class: "form-control"
   .form-group
+    %label Custom ID
+    = f.number_field :custom_uid, min: 0, disabled: no_edit, class: "form-control"
+  .form-group
     = f.label :status
-    = f.text_field :status, disabled: no_edit, class: "form-control"
+    = f.select :status, options_for_select(Box::STATUSES, @box.status), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
   .form-group
     = f.label :notes
     = f.text_field :notes, disabled: no_edit, class: "form-control"
   .form-group
-    = f.label "Move to Pallet"
-    = f.select :container_id, options_from_collection_for_select(Pallet.all.order(:name), :id, :name, @box.pallet_id), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
+    %label Pallet Assignment
+    = f.select :pallet_id, options_from_collection_for_select(Pallet.all.order(:name), :id, :name, pallet_id), { include_blank: "Unassigned" }, { disabled: no_edit, class: "form-control" }
   .form-group
     %label Created By
     = f.text_field :user, value: user, disabled: true, class: "form-control"

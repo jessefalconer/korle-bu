@@ -3,17 +3,15 @@
 class PalletsController < ApplicationController
   before_action :set_pallet, only: %i[show destroy edit update]
 
-  def list
-    @pallets = Pallet.all.page params[:page]
-  end
-
   def new
-    @pallet = Pallet.new
+    cid = Pallet.all.pluck(:custom_uid).max.to_i + 1
+    name = "PALLET-#{cid}"
+    @pallet = Pallet.new(custom_uid: cid, name: name, status: Pallet::STATUSES[0])
   end
 
   def create
-    Pallet.create(pallet_params.merge(user: current_user))
-    redirect_to pallets_path
+    pallet = Pallet.create(pallet_params.merge(user: current_user))
+    redirect_to pallet_path(pallet)
   end
 
   def index
@@ -39,7 +37,7 @@ class PalletsController < ApplicationController
   private
 
   def pallet_params
-    params.require(:pallet).permit(:name, :status, :notes, :container_id)
+    params.require(:pallet).permit(:name, :status, :notes, :custom_uid, :container_id)
   end
 
   def set_pallet

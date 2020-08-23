@@ -1,7 +1,12 @@
-User.create!(email: "jfalconer13.14@gmail.com",
+User.create!(email: "jesse@email.com",
                   password_digest: "123456",
                   first_name: "Jesse",
                   last_name: "Falconer"
+                  )
+User.create!(email: "aaron@email.com",
+                  password_digest: "123456",
+                  first_name: "Aaron",
+                  last_name: "Fedora"
                   )
 Warehouse.create(name: "KBNF-HQ",
                 street: Faker::Address.street_address,

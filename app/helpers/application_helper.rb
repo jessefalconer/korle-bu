@@ -24,9 +24,17 @@ module ApplicationHelper
   end
 
   def submit_button(text, side = "")
-    button_tag(type: "submit", class: "btn btn-primary") do
+    button_tag(type: "submit", class: "btn btn-primary #{side}") do
       content_tag(:i, "", class: "fa fa-save") +
       content_tag(:span, " " + text)
     end
+  end
+
+  def present(model)
+    klass = "#{model.class}Presenter".constantize
+    presenter = klass.new(model, self)
+    yield(presenter) if block_given?
+
+    return presenter
   end
 end

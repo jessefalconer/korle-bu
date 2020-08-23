@@ -1,0 +1,10 @@
+= form_tag(item_search_form_path, method: "get", remote: true, class: "input-group search span12") do
+  = hidden_field_tag :id, @container.id
+  = hidden_field_tag :model, "Container"
+  .input-group
+    = text_field_tag :search, params[:search], placeholder: "Enter search term", class: "form-control"
+    %span.input-group-btn.span12
+      = submit_tag "Search", class: "btn btn-primary" do
+        %i.fa.fa-search
+
+#search-results

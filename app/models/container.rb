@@ -1,15 +1,22 @@
 # frozen_string_literal: true
 
 class Container < ApplicationRecord
-  paginates_per 10
+  STATUSES = %w[Not\ Started Packing Completed].freeze
 
   belongs_to :user, optional: false
-  belongs_to :shipment, optional: false
+  belongs_to :shipment, optional: true
 
   has_many :pallets
   has_many :containerized_items
+  has_many :items, through: :containerized_items
 
   accepts_nested_attributes_for :containerized_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
-  scope :unnassigned, -> { where(shipment_id: nil) }
+  scope :unassigned, -> { where(shipment_id: nil) }
+
+  validates :name, :custom_uid, :user, presence: true
+  validates :custom_uid, :name, uniqueness: true
+  validates :status, inclusion: { in: STATUSES }
+
+  paginates_per 10
 end

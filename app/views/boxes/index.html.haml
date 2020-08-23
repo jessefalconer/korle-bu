@@ -25,8 +25,8 @@
               = link_to box_path(box) do
                 = box.name
             %td= box.status
-            %td.hidden-sm.hidden-xs= box.pallet&.container&.shipment&.receiving_warehouse&.name
-            %td.hidden-sm.hidden-xs= box.pallet&.container&.shipment&.shipping_warehouse&.name
+            %td.hidden-sm.hidden-xs= box&.shipment&.receiving_warehouse&.name
+            %td.hidden-sm.hidden-xs= box&.shipment&.shipping_warehouse&.name
             %td= box.user.name
 
     = paginate @boxes

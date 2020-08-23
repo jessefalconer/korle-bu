@@ -13,8 +13,10 @@
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
+      %li
+        %a{data: {toggle: "tab"}, href: "#items"} Add Items
     .row
-      .col-md-4
+      .col-md-5
         %br
         #myTabContent.tab-content
           #view.tab-pane.active.in
@@ -23,13 +25,29 @@
           #edit.tab-pane.fade
             = render partial: "form", locals: { no_edit: false, delete: false }
 
-      .col-md-8
+          #items.tab-pane.fade
+            = render "containerized_items/search_form"
+
+      .col-md-7
         %br
+        %br
+        - present(@container) do |container|
+          .panel.panel-default
+            %a.panel-heading{data: {toggle: "collapse"}, href: "#location"}
+              Location Details
+            #location.collapse.in
+              %table.table.list
+                %tbody
+                  %tr
+                    %td
+                      %p Shipment
+                    = container.shipment_location
+
         .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#widget1container"}
-            Pallets in this Container
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
+            Pallets in this Container (#{@container.pallets.size})
           - if @container.pallets.any?
-            #widget1container.collapse.in
+            #pallets.collapse.in
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -45,28 +63,29 @@
                           = pallet.name
                       %td= pallet.status
           - else
-            #widget1container.collapse.in.panel-body
+            #pallets.collapse.in.panel-body
               %h4 No pallets.
-              = link_button("Add a Pallet", new_pallet_path, "pull-left")
-        %br
+              = link_button("Add a Pallet", new_pallet_path(container_id: @container.id), "pull-left")
+
         .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#widget1container"}
-            Loose Items in this Container
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containerizeditems"}
+            Loose Items on this Container (#{@container.containerized_items.size})
           - if @container.containerized_items.any?
-            #widget1container.collapse.in
+            #containerizeditems.collapse.in
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
-                    %th Custom ID
                     %th Name
-                    %th Status
+                    %th Expiry Date
+                    %th Quantity
                 %tbody
-                  - @container.containerized_items.each do |item|
+                  - @container.containerized_items.each do |ci|
                     %tr
-                      %td= item.generated_name
-                      %td= item.expiry_date
-                      %td= item.quantity
+                      %td
+                        = link_to item_path(ci.item) do
+                          = ci.generated_name
+                      %td= ci.expiry_date&.strftime("%Y-%m-%d")
+                      %td= ci.quantity
           - else
-            #widget1container.collapse.in.panel-body
-              %h4 No items.
-              = link_button("Add an Item", new_pallet_path, "pull-left")
+            #containerizeditems.collapse.in.panel-body
+              %h5 Add loose items to this container from the tab.

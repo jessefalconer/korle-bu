@@ -5,8 +5,8 @@
     = f.label :name
     = f.text_field :name, disabled: no_edit, class: "form-control"
   .form-group
-    = f.label :custom_uid
-    = f.number_field :custom_uid, disabled: no_edit, class: "form-control"
+    %label Custom ID
+    = f.number_field :custom_uid, min: 0, disabled: no_edit, class: "form-control"
   .form-group
     = f.label :status
     = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), { include_blank: "" }, { disabled: no_edit, class: "form-control" }

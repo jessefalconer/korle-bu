@@ -1,30 +1,3 @@
-
--# .col-12.center
-  = render "boxed_items/search_form"
--# .col-12
--#   = render "items/form"
--#
--# - if @box.boxed_items.any?
--#   .col-12
--#     .separator Saved Items
--#     = form_for @box, url: box_boxed_item_path(@box) do |f|
--#       - @box.boxed_items.each do |bi|
--#         = f.fields_for :boxed_items, bi do |ff|
--#           .row.stat-row.center
--#             .col-12-sm.col-4.stat-box
--#               %h6= bi.generated_name
--#             .col-12-sm.col-3.stat-box
--#               = ff.text_field :expiry_date, value: bi.expiry_date&.strftime("%Y-%m-%d"), class: "date-input"
--#             .col-12-sm.col-3.stat-box
--#               = ff.number_field :quantity, value: bi.quantity, class: "number-input"
--#             .col-12-sm.col-2
--#               %label.checkbox-container
--#                 Delete
--#                 = ff.check_box :_destroy, checked: "unchecked", type: "checkbox"
--#                 %span.checkmark
--#       .right
--#         = submit_button("Update")
-
 .content
   .header
     %h1.page-title Boxes
@@ -41,13 +14,11 @@
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
       %li
-        %a{data: {toggle: "tab"}, href: "#items"} Modify Items
-      %li
-        %a{data: {toggle: "tab"}, href: "#add"} Add Items
+        %a{data: {toggle: "tab"}, href: "#items"} Add Items
     .row
-      .col-md-4
+      .col-md-5
         %br
-        #myTabContent.tab-content
+        .tab-content
           #view.tab-pane.active.in
             = render partial: "form", locals: { no_edit: true, delete: true }
 
@@ -55,18 +26,36 @@
             = render partial: "form", locals: { no_edit: false, delete: false }
 
           #items.tab-pane.fade
-            = render partial: "form", locals: { no_edit: false, delete: false }
-
-          #add.tab-pane.fade
             = render "boxed_items/search_form"
 
-      .col-md-8
+      .col-md-7
         %br
+        - present(@box) do |box|
+          .panel.panel-default
+            %a.panel-heading{data: {toggle: "collapse"}, href: "#location"}
+              Location Details
+            #location.collapse.in
+              %table.table.list
+                %tbody
+                  %tr
+                    %td
+                      %p Pallet
+                    = box.pallet_location
+
+                  %tr
+                    %td
+                      %p Container
+                    = box.container_location
+                  %tr
+                    %td
+                      %p Shipment
+                    = box.shipment_location
+
         .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#widget1container"}
-            Items in this Box
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxeditems"}
+            Items in this Box (#{@box.boxed_items.size})
           - if @box.boxed_items.any?
-            #widget1container.collapse.in
+            #boxeditems.collapse.in
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -82,6 +71,5 @@
                       %td= bi.expiry_date&.strftime("%Y-%m-%d")
                       %td= bi.quantity
           - else
-            #widget1container.collapse.in.panel-body
-              %h4 No items.
-              -# = link_button("Add a Pallet", new_pallet_path, "pull-left")
+            #boxeditems.collapse.in.panel-body
+              %h5 Add items to this box from the tab.

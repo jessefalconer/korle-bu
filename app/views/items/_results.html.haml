@@ -1,21 +1,34 @@
-.separator Results
-- if @search_results_items.size > 10
-  .col-12
-    Your search yielded too many results. Try adding another keyword.
-- elsif @search_results_items.none?
-  .col-12
-    None found. Try another keyword.
+- if @search_results_items.none?
+  .form-group.padding-top-small
+    No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
 - else
-  - @search_results_items.each do |item|
-    = form_for box, url: box_boxed_items_path(box.id), method: :post do |f|
-      .row.stat-row.center
-        .col-12-sm.col-4.stat-box
-          %h6= item.generated_name
-        .col-12-sm.col-3.stat-box
-          = f.text_field :expiry_date, value: "", class: "date-input"
-        .col-12-sm.col-3.stat-box
-          = f.number_field :quantity, value: 0, class: "number-input"
-          = f.hidden_field :item_id, value: item.id
-        .col-12-sm.col-2
-          = submit_button("Add")
-    .right
+  .panel.panel-default
+    %a.panel-heading{data: {toggle: "collapse"}, href: "#items"}
+      Compare with #{@search_results_items.size} Related Items
+    .collapse.in{id: "items"}
+      %table.table.table-bordered.table-striped
+        %thead
+          %tr
+            %th Item
+            %th Created By
+            %th Created At
+            %th Instances Used
+            %th Show Instances
+            %th Select
+        %tbody
+          - @search_results_items.each do |item|
+            %tr
+              %td
+                = link_to item_path(item) do
+                  %p= item.generated_name
+              %td
+                = link_to user_path(item.user) do
+                  %p= item.user.name
+              %td
+                %p= item.created_at.strftime("%Y-%m-%d")
+              %td
+                %p= ReconcileItem.new(item.user).item_instances(item)
+              %td
+                %p Search
+              %td
+                = link_button("Confirm Merge >>", reconcile_confirm_path(record, item), "center-block")

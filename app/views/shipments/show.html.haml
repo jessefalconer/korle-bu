@@ -14,7 +14,7 @@
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
-      .col-md-4
+      .col-md-5
         %br
         #myTabContent.tab-content
           #view.tab-pane.active.in
@@ -23,13 +23,14 @@
           #edit.tab-pane.fade
             = render partial: "form", locals: { no_edit: false, delete: false }
 
-      .col-md-8
+      .col-md-7
+        %br
         %br
         .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#widget1container"}
-            Containers in this Shipment
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#containers"}
+            Containers in this Shipment (#{@shipment.containers.size})
           - if @shipment.containers.any?
-            #widget1container.collapse.in
+            #containers.collapse.in
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -45,6 +46,52 @@
                           = container.name
                       %td= container.status
           - else
-            #widget1container.collapse.in.panel-body
+            #containers.collapse.in.panel-body
               %h4 No containers.
-              = link_button("Add a Container", new_container_path, "pull-left")
+              = link_button("Add a Container", new_container_path(shipment_id: @shipment.id), "pull-left")
+
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
+            Pallets in all Containers (#{@shipment.pallets.size})
+          - if @shipment.pallets.any?
+            #pallets.collapse.in
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th Custom ID
+                    %th Name
+                    %th Status
+                %tbody
+                  - @shipment.pallets.each do |pallet|
+                    %tr
+                      %td= pallet.custom_uid
+                      %td
+                        = link_to pallet_path(pallet) do
+                          = pallet.name
+                      %td= pallet.status
+          - else
+            #pallets.collapse.in.panel-body
+              %h4 No pallets.
+
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
+            Boxes on all Pallets (#{@shipment.boxes.size})
+          - if @shipment.boxes.any?
+            #boxes.collapse.in
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th Custom ID
+                    %th Name
+                    %th Status
+                %tbody
+                  - @shipment.boxes.each do |box|
+                    %tr
+                      %td= box.custom_uid
+                      %td
+                        = link_to box_path(box) do
+                          = box.name
+                      %td= box.status
+          - else
+            #boxes.collapse.in.panel-body
+              %h4 No boxes.

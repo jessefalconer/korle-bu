@@ -3,17 +3,15 @@
 class ContainersController < ApplicationController
   before_action :set_container, only: %i[show destroy edit update]
 
-  def list
-    @containers = Container.all.page params[:page]
-  end
-
   def new
-    @container = Container.new
+    cid = Container.all.pluck(:custom_uid).max.to_i + 1
+    name = "CONTAINER-#{cid}"
+    @container = Container.new(custom_uid: cid, name: name, status: Container::STATUSES[0])
   end
 
   def create
-    Container.create(container_params.merge(user: current_user))
-    redirect_to containers_path
+    container = Container.create(container_params.merge(user: current_user))
+    redirect_to container_path(container)
   end
 
   def index
@@ -39,7 +37,7 @@ class ContainersController < ApplicationController
   private
 
   def container_params
-    params.require(:container).permit(:name, :status, :notes)
+    params.require(:container).permit(:name, :status, :notes, :custom_uid, :shipment_id)
   end
 
   def set_container

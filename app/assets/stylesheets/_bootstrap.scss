@@ -5822,6 +5822,7 @@ input[type="button"].btn-block {
   position: relative;
   display: table;
   border-collapse: separate;
+  width: 100%;
 
   .form-control {
     position: relative;
@@ -6642,7 +6643,7 @@ select[multiple].input-group-sm {
   .navbar-nav {
     >li {
       >a {
-        color: #777;
+        color: #fff;
 
         &:hover {
           color: #333;
