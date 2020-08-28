@@ -10,16 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_07_195348) do
+ActiveRecord::Schema.define(version: 2020_08_23_211117) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
   create_table "boxed_items", force: :cascade do |t|
-    t.integer "quantity"
-    t.boolean "expires"
+    t.integer "quantity", default: 0, null: false
     t.datetime "expiry_date"
-    t.integer "custom_uid"
     t.bigint "box_id"
     t.bigint "item_id"
     t.bigint "user_id"
@@ -31,9 +50,9 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "boxes", force: :cascade do |t|
-    t.string "status"
-    t.string "notes"
-    t.string "name"
+    t.string "status", limit: 255
+    t.string "notes", default: "Not Started", null: false
+    t.string "name", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
     t.bigint "container_id"
@@ -46,8 +65,8 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string "name"
-    t.string "description"
+    t.string "name", limit: 255
+    t.string "description", limit: 255
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -55,10 +74,8 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "containerized_items", force: :cascade do |t|
-    t.integer "quantity"
-    t.boolean "expires"
+    t.integer "quantity", default: 0, null: false
     t.datetime "expiry_date"
-    t.integer "custom_uid"
     t.bigint "container_id"
     t.bigint "item_id"
     t.bigint "user_id"
@@ -70,9 +87,9 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "containers", force: :cascade do |t|
-    t.string "name"
-    t.string "status"
-    t.string "notes"
+    t.string "name", limit: 255
+    t.string "status", default: "Not Started", null: false
+    t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
     t.bigint "shipment_id"
@@ -83,22 +100,25 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "items", force: :cascade do |t|
-    t.string "object"
-    t.string "brand"
-    t.string "standardized_size"
+    t.string "object", limit: 255
+    t.string "brand", limit: 255
+    t.string "standardized_size", limit: 255
     t.float "concentration"
-    t.string "concentration_units"
-    t.string "concentration_description"
+    t.string "concentration_units", limit: 255
+    t.string "concentration_description", limit: 255
     t.float "numerical_size_1"
-    t.string "numerical_units_1"
-    t.string "numerical_description_1"
+    t.string "numerical_units_1", limit: 255
+    t.string "numerical_description_1", limit: 255
     t.float "numerical_size_2"
-    t.string "numerical_units_2"
-    t.string "numerical_description_2"
+    t.string "numerical_units_2", limit: 255
+    t.string "numerical_description_2", limit: 255
     t.integer "packaged_quantity"
     t.string "generated_name"
-    t.string "notes"
-    t.boolean "verified"
+    t.string "generated_name_with_keywords"
+    t.string "notes", limit: 255
+    t.string "keywords", limit: 255
+    t.boolean "verified", default: false, null: false
+    t.boolean "flagged", default: false, null: false
     t.bigint "user_id"
     t.bigint "category_id"
     t.datetime "created_at", precision: 6, null: false
@@ -108,10 +128,8 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "palletized_items", force: :cascade do |t|
-    t.integer "quantity"
-    t.boolean "expires"
+    t.integer "quantity", default: 0, null: false
     t.datetime "expiry_date"
-    t.integer "custom_uid"
     t.bigint "pallet_id"
     t.bigint "item_id"
     t.bigint "user_id"
@@ -123,9 +141,9 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "pallets", force: :cascade do |t|
-    t.string "name"
-    t.string "status"
-    t.string "notes"
+    t.string "name", limit: 255
+    t.string "status", default: "Not Started", null: false
+    t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
     t.bigint "container_id"
@@ -136,9 +154,9 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "shipments", force: :cascade do |t|
-    t.string "name"
-    t.string "status"
-    t.string "notes"
+    t.string "name", limit: 255
+    t.string "status", default: "Not Started", null: false
+    t.text "notes"
     t.integer "custom_uid"
     t.bigint "user_id"
     t.bigint "receiving_warehouse_id"
@@ -151,31 +169,35 @@ ActiveRecord::Schema.define(version: 2020_08_07_195348) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email"
-    t.string "first_name"
-    t.string "last_name"
-    t.string "phone"
-    t.string "password_digest"
+    t.string "email", limit: 255
+    t.string "first_name", limit: 255
+    t.string "last_name", limit: 255
+    t.string "phone", limit: 255
+    t.string "password_digest", limit: 255
+    t.string "status", limit: 255, default: "Not Activated", null: false
+    t.text "notes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "role", default: "Volunteer", null: false
   end
 
   create_table "warehouses", force: :cascade do |t|
-    t.string "status"
-    t.string "description"
-    t.string "name"
-    t.string "street"
-    t.string "postal_code"
-    t.string "city"
-    t.string "province"
-    t.string "country"
-    t.integer "identifier"
+    t.string "status", default: "Active", null: false
+    t.string "description", limit: 255
+    t.string "name", limit: 255
+    t.string "street", limit: 255
+    t.string "postal_code", limit: 255
+    t.string "city", limit: 255
+    t.string "province", limit: 255
+    t.string "country", limit: 255
+    t.integer "custom_uid"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_warehouses_on_user_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "shipments", "warehouses", column: "receiving_warehouse_id"
   add_foreign_key "shipments", "warehouses", column: "shipping_warehouse_id"
 end

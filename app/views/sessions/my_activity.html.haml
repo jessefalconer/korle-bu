@@ -1,0 +1,171 @@
+.content
+  .header
+    %h1.page-title My Activity
+    %ul.breadcrumb
+      %li
+        = link_to index_path do
+          Home
+      %li.active My Activity
+  .main-content
+    .row
+      .col-xs-12
+        %br
+        .panel.panel-default
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxes"}
+            My Boxes (#{@boxes.size})
+          .collapse{id: "boxes"}
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th Custom ID
+                  %th Name
+                  %th Created At
+                  %th Status
+                  %th Boxed Items
+              %tbody
+                - @boxes.each do |box|
+                  %tr
+                    %td
+                      %p= box.custom_uid
+                    %td
+                      = link_to box_path(box) do
+                        %p= box.name
+                    %td
+                      %p= box.created_at.strftime("%Y-%m-%d")
+                    %td
+                      %p= box.status
+                    %td
+                      %p= box.boxed_items.size
+        .panel.panel-default
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallets"}
+            My Pallets (#{@pallets.size})
+          .collapse{id: "pallets"}
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th Custom ID
+                  %th Name
+                  %th Created At
+                  %th Status
+                  %th Palletized Items
+              %tbody
+                - @pallets.each do |pallet|
+                  %tr
+                    %td
+                      %p= pallet.custom_uid
+                    %td
+                      = link_to pallet_path(pallet) do
+                        %p= pallet.name
+                    %td
+                      %p= pallet.created_at.strftime("%Y-%m-%d")
+                    %td
+                      %p= pallet.status
+                    %td
+                      %p= pallet.palletized_items.size
+        .panel.panel-default
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containers"}
+            My Containers (#{@containers.size})
+          .collapse{id: "containers"}
+            %table.table.table-bordered.table-striped
+              %thead
+                %tr
+                  %th Custom ID
+                  %th Name
+                  %th Created At
+                  %th Status
+                  %th Containerized Items
+              %tbody
+                - @containers.each do |container|
+                  %tr
+                    %td
+                      %p= container.custom_uid
+                    %td
+                      = link_to pallet_path(container) do
+                        %p= container.name
+                    %td
+                      %p= container.created_at.strftime("%Y-%m-%d")
+                    %td
+                      %p= container.status
+                    %td
+                      %p= container.containerized_items.size
+        .panel.panel-default
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxed_items"}
+            My Boxed Items (#{@boxed_items.size})
+          .collapse{id: "boxed_items"}
+            %table.table.list
+              %tbody
+                %thead
+                  %tr
+                    %th Quantity
+                    %th Name
+                    %th
+                    %th Container
+                    %th Date
+                - @boxed_items.each do |item|
+                  %tr
+                    %td
+                      %p= item.quantity
+                    %td
+                      = link_to item_path(item.item_id) do
+                        = item.generated_name
+                    %td
+                      %i.fa.fa-arrow-right
+                    %td
+                      = link_to box_path(item.box) do
+                        = item.box.name
+                    %td
+                      %p= item.created_at.strftime("%Y-%m-%d")
+        .panel.panel-default
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletized_items"}
+            My Palletized Items (#{@palletized_items.size})
+          .collapse{id: "palletized_items"}
+            %table.table.list
+              %tbody
+                %thead
+                  %tr
+                    %th Quantity
+                    %th Name
+                    %th
+                    %th Container
+                    %th Date
+                - @palletized_items.each do |item|
+                  %tr
+                    %td
+                      %p= item.quantity
+                    %td
+                      = link_to item_path(item.item_id) do
+                        = item.generated_name
+                    %td
+                      %i.fa.fa-arrow-right
+                    %td
+                      = link_to pallet_path(item.pallet) do
+                        = item.pallet.name
+                    %td
+                      %p= item.created_at.strftime("%Y-%m-%d")
+        .panel.panel-default
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containerized_items"}
+            My Containerized Items (#{@containerized_items.size})
+          .collapse{id: "containerized_items"}
+            %table.table.list
+              %tbody
+                %thead
+                  %tr
+                    %th Quantity
+                    %th Name
+                    %th
+                    %th Container
+                    %th Date
+                - @containerized_items.each do |item|
+                  %tr
+                    %td
+                      %p= item.quantity
+                    %td
+                      = link_to item_path(item.item_id) do
+                        = item.generated_name
+                    %td
+                      %i.fa.fa-arrow-right
+                    %td
+                      = link_to container_path(item.container) do
+                        = item.container.name
+                    %td
+                      %p= item.created_at.strftime("%Y-%m-%d")

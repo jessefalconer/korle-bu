@@ -1,0 +1,31 @@
+.content
+  .header
+    %h1.page-title Containerized Items
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Boxes", containers_path
+      %li
+        = link_to @container.name, container_path(@container)
+      %li.active Containerized Items
+  .main-content
+    %ul.nav.nav-tabs
+      %li.active
+        %a{data: {toggle: "tab"}, href: "#manage"} Manage
+      %li
+        %a{data: {toggle: "tab"}, href: "#search"} Search
+      %li
+        %a{data: {toggle: "tab"}, href: "#new"} New
+    .row
+      .col-xs-12
+        %br
+        .tab-content
+          #manage.tab-pane.active.in
+            = render "containerized_items/manage_form"
+
+          #search.tab-pane.fade
+            = render "containerized_items/search_form"
+
+          #new.tab-pane.fade
+            = render "containerized_items/add_new_form"

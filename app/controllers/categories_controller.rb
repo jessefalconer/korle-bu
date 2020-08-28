@@ -1,15 +1,20 @@
 # frozen_string_literal: true
 
 class CategoriesController < ApplicationController
-  before_action :set_category, only: %i[show destroy edit update]
+  before_action :set_category, only: %i[show destroy update]
 
   def new
     @category = Category.new
   end
 
   def create
-    Category.create(category_params.merge(user: current_user))
-    redirect_to categories_path
+    category = Category.new(category_params.merge(user: current_user))
+
+    if category.save
+      redirect_to category_path(category), flash: { success: "Category creation successful." }
+    else
+      redirect_to categories_path, flash: { error: "Failed to create new category: #{category.errors.full_messages.to_sentence}" }
+    end
   end
 
   def index
@@ -19,17 +24,17 @@ class CategoriesController < ApplicationController
   def show
   end
 
-  def edit
-  end
-
   def update
-    @category.update(category_params)
-    redirect_to categories_path
+    if @category.update(category_params)
+      redirect_to category_path(@category), flash: { success: "Category update successful." }
+    else
+      redirect_to category_path(@category), flash: { error: "Failed to update category: #{@category.errors.full_messages.to_sentence}" }
+    end
   end
 
   def destroy
     @category.destroy
-    redirect_to categories_path
+    redirect_to categories_path, flash: { success: "Category deletion successful." }
   end
 
   private

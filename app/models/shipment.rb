@@ -7,7 +7,7 @@ class Shipment < ApplicationRecord
   belongs_to :receiving_warehouse, class_name: "Warehouse", optional: false
   belongs_to :shipping_warehouse, class_name: "Warehouse", optional: false
 
-  has_many :containers
+  has_many :containers, dependent: :nullify
   has_many :pallets, through: :containers
   has_many :boxes, through: :pallets
 

@@ -1,10 +1,11 @@
 .navbar.navbar-default{role: "navigation"}
   .navbar-header
-    %button.navbar-toggle.collapsed{data: {target: ".navbar-collapse", toggle: "collapse"}, type: "button"}
-      %span.sr-only Toggle navigation
-      %span.icon-bar
-      %span.icon-bar
-      %span.icon-bar
+    - if current_user
+      %button.navbar-toggle.collapsed{data: {target: ".navbar-collapse", toggle: "collapse"}, type: "button"}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
     = link_to index_path do
       %span.navbar-brand
         Korle-Bu
@@ -180,7 +181,7 @@
               New
 
       %li
-        %a.nav-header
+        = link_to my_activity_path, class: "nav-header" do
           %i.fa.fa-fw.fa-history
           My Activity
-          %span.label.label-info +3
+          %i.fa.fa-caret-right.pull-right

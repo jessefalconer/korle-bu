@@ -15,3 +15,8 @@ $(function () {
   uls.addClass('visible-xs');
   $('#main-menu').append(uls.clone());
 });
+$(document).ready(function () {
+    $(".datepicker").datepicker({
+      dateFormat: "yy-mm-dd"
+    });
+});

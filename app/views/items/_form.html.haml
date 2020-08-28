@@ -1,3 +1,4 @@
+- @item ||= item
 - user = @item.user&.name || current_user.name
 - time = @item.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
 = form_for @item do |f|
@@ -38,7 +39,7 @@
     = f.label :numerical_description_2, "Description 2"
     = f.text_field :numerical_description_2, disabled: no_edit, class: "form-control"
   .form-group
-    = f.label :packaged_quantity, "Packaged #"
+    = f.label :packaged_quantity, "Packaged Quantity"
     = f.number_field :packaged_quantity, min: 1, step: "any", disabled: no_edit, class: "form-control"
   .form-group
     = f.label :category
@@ -58,6 +59,6 @@
 
   .btn-toolbar.list-toolbar
     - if delete
-      = delete_button(item_path(@item), "Are you sure you want to delete #{@item.generated_name}? This cannot be reversed")
+      = delete_button(item_path(@item), "Are you sure you want to delete #{@item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
     - else
       = submit_button("Save")

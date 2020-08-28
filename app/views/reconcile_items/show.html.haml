@@ -14,23 +14,23 @@
         %br
         - @overview.unverified_items.each do |item|
           .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#item#{item.id}"}
+            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#rec-#{item.id}"}
               #{item.generated_name}
-            .collapse{id: "item#{item.id}"}
+            .collapse{id: "rec-#{item.id}"}
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
-                    %th Item
+                    %th
                     %th Created By
                     %th Created At
                     %th Instances Used
                     %th Show Instances
-                    %th Reconciliation
+                    %th Reconcile
                 %tbody
                   %tr
                     %td
                       = link_to item_path(item) do
-                        %p Verify / Edit
+                        %p Edit
                     %td
                       = link_to user_path(item.user) do
                         %p= item.user.name
@@ -42,3 +42,39 @@
                       %p Search
                     %td
                       = link_button("Start >>", reconcile_start_path(item), "center-block")
+    .row
+      .col-xs-12
+        %h3 Uncategorized Items (#{@overview.uncategorized_items.size})
+    .row
+      .col-xs-12
+        %br
+        - @overview.uncategorized_items.each do |item|
+          .panel.panel-default
+            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#cate-#{item.id}"}
+              #{item.generated_name}
+            .collapse{id: "cate-#{item.id}"}
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th
+                    %th Created By
+                    %th Created At
+                    %th Instances Used
+                    %th Show Instances
+                    %th Verified
+                %tbody
+                  %tr
+                    %td
+                      = link_to item_path(item) do
+                        %p Edit
+                    %td
+                      = link_to user_path(item.user) do
+                        %p= item.user.name
+                    %td
+                      %p= item.created_at.strftime("%Y-%m-%d")
+                    %td
+                      %p= @overview.item_instances(item)
+                    %td
+                      %p Search
+                    %td
+                      %p= item.verified

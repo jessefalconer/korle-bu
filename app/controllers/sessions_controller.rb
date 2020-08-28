@@ -28,6 +28,15 @@ class SessionsController < ApplicationController
   def index
   end
 
+  def my_activity
+    @boxes = Box.where(user: current_user).order(:created_at).reverse
+    @boxed_items = BoxedItem.where(user: current_user).order(:created_at).reverse
+    @pallets = Pallet.where(user: current_user).order(:created_at).reverse
+    @palletized_items = PalletizedItem.where(user: current_user).order(:created_at).reverse
+    @containers = Container.where(user: current_user).order(:created_at).reverse
+    @containerized_items = ContainerizedItem.where(user: current_user).order(:created_at).reverse
+  end
+
   private
 
   def existing_session

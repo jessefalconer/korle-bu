@@ -14,7 +14,8 @@
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
       %li
-        %a{data: {toggle: "tab"}, href: "#items"} Add Items
+        = link_to box_manage_items_path(@box) do
+          Add Items
     .row
       .col-md-5
         %br
@@ -24,9 +25,6 @@
 
           #edit.tab-pane.fade
             = render partial: "form", locals: { no_edit: false, delete: false }
-
-          #items.tab-pane.fade
-            = render "boxed_items/search_form"
 
       .col-md-7
         %br

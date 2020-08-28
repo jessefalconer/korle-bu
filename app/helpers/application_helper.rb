@@ -13,8 +13,8 @@ module ApplicationHelper
     end
   end
 
-  def delete_button(path, confirm_text)
-    content_tag(:a, "Delete", href: path, class: "btn btn-danger", data: { confirm: confirm_text, method: :delete })
+  def delete_button(path, confirm_text, classes = "")
+    content_tag(:a, "Delete", href: path, class: "btn btn-danger #{classes}", data: { confirm: confirm_text, method: :delete })
   end
 
   def link_button(text, path, side = "", data = {})
@@ -26,7 +26,7 @@ module ApplicationHelper
   def submit_button(text, side = "")
     button_tag(type: "submit", class: "btn btn-primary #{side}") do
       content_tag(:i, "", class: "fa fa-save") +
-      content_tag(:span, " " + text)
+        content_tag(:span, " " + text)
     end
   end
 
@@ -35,6 +35,6 @@ module ApplicationHelper
     presenter = klass.new(model, self)
     yield(presenter) if block_given?
 
-    return presenter
+    presenter
   end
 end

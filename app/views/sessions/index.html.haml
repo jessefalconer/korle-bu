@@ -3,25 +3,32 @@
     %h1.page-title Dashboard
     %ul.breadcrumb
       %li
-        %a{:href => "index.html"} Home
+        = link_to index_path do
+          Home
       %li.active Dashboard
   .main-content
     .panel.panel-default
-      %a.panel-heading{"data-toggle" => "collapse", :href => "#page-stats"} Latest Stats
+      %a.panel-heading{data: {toggle: "collapse"}, href: "#page-stats"} Latest Stats (30 Days)
       #page-stats.panel-collapse.panel-body.collapse.in
         .row
-          .col-md-3.col-sm-6
-            %h2 12
-            %h4.text-muted.text-center New Items
-          .col-md-3.col-sm-6
-            %h2 4
-            %h4.text-muted.text-center Self-flagged
-          .col-md-3.col-sm-6
-            %h2 31
-            %h4.text-muted.text-center Boxes Packed
-          .col-md-3.col-sm-6
-            %h2 142
-            %h4.text-muted.text-center Items Total
+          .col-md-2.col-sm-6.col-xs-6
+            %h3.text-center= Item.where(verified: false).count
+            %h5.text-muted.text-center Unverified Items
+          .col-md-2.col-sm-6.col-xs-6
+            %h3.text-center= Item.where(category: nil).count
+            %h5.text-muted.text-center Uncategorized Items
+          .col-md-2.col-sm-6.col-xs-6
+            %h3.text-center= BoxedItem.where("created_at > ?", 30.days.ago).count + PalletizedItem.where("created_at > ?", 30.days.ago).count + ContainerizedItem.where("created_at > ?", 30.days.ago).count
+            %h5.text-muted.text-center Packed Items
+          .col-md-2.col-sm-6.col-xs-6
+            %h3.text-center= Item.where("created_at > ?", 30.days.ago).count
+            %h5.text-muted.text-center New Items
+          .col-md-2.col-sm-6.col-xs-6
+            %h3.text-center= Box.where("created_at > ?", 30.days.ago).count
+            %h5.text-muted.text-center New Boxes
+          .col-md-2.col-sm-6.col-xs-6
+            %h3.text-center= Pallet.where("created_at > ?", 30.days.ago).count
+            %h5.text-muted.text-center New Pallets
     .row
       .col-sm-6.col-md-6
         .panel.panel-default
@@ -31,20 +38,22 @@
           %table.table.table-bordered.table-striped
             %thead
               %tr
-                %th First Name
-                %th Last Name
-                %th Phone #
+                %th Name
+                %th Email
+                %th Role
             %tbody
-              - User.first(5).each do |user|
+              - User.order(:created_at).reverse.first(5).each do |user|
                 %tr
                   %td= user.name
-                  %td= user.email
-                  %td= user.phone
+                  %td
+                    = link_to user_path(user) do
+                      = user.email
+                  %td= user.role
 
       .col-sm-6.col-md-6
         .panel.panel-default
-          %a.panel-heading{"data-toggle" => "collapse", :href => "#widget1container"} Personal Notes
-          #widget1container.panel-body.collapse.in
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#notes"} Personal Notes
+          #notes.panel-body.collapse.in
             %p
               Let a user create personal notes?
             %p
@@ -63,43 +72,16 @@
             Recently Added Items
           %table.table.list
             %tbody
-              %tr
-                %td
-                  %a{:href => "#"}
-                    %p.title Item 1
-                  %p.info Category
-                %td
-                  %p Date: 7/19/2012
-                  %a{:href => "#"} User.name
-                %td
-                  %p.text-danger.h3.pull-right{:style => "margin-top: 12px;"} VALUE
-              %tr
-                %td
-                  %a{:href => "#"}
-                    %p.title Item 2
-                  %p.info Category
-                %td
-                  %p Date: 7/19/2012
-                  %a{:href => "#"} User.name
-                %td
-                  %p.text-danger.h3.pull-right{:style => "margin-top: 12px;"} VALUE
-              %tr
-                %td
-                  %a{:href => "#"}
-                    %p.title Item 3
-                  %p.info Category
-                %td
-                  %p Date: 7/19/2012
-                  %a{:href => "#"} User.name
-                %td
-                  %p.text-danger.h3.pull-right{:style => "margin-top: 12px;"} VALUE
-              %tr
-                %td
-                  %a{:href => "#"}
-                    %p.title Item 4
-                  %p.info Category
-                %td
-                  %p Date: 7/19/2012
-                  %a{:href => "#"} User.name
-                %td
-                  %p.text-danger.h3.pull-right{:style => "margin-top: 12px;"} VALUE
+              - Item.order(:created_at).reverse.first(10).each do |item|
+                %tr
+                  %td
+                    = link_to item_path(item) do
+                      %p.title= item.generated_name
+                    %p.info= item&.category&.name
+                  %td
+                    %p= item.created_at&.strftime("%Y-%m-%d")
+                    = link_to user_path(item.user) do
+                      = item.user.name
+                  %td
+                    %p Usage Count:
+                    %p= BoxedItem.where(item_id: item.id).count + PalletizedItem.where(item_id: item.id).count + ContainerizedItem.where(item_id: item.id).count

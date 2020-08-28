@@ -13,9 +13,9 @@ class PalletPresenter < BasePresenter
         content_tag(:p, "")
       end
     end +
-    content_tag(:td) do
-      content_tag(:p, status, class: "pull-right")
-    end
+      content_tag(:td) do
+        content_tag(:p, status, class: "pull-right")
+      end
   end
 
   def shipment_location
@@ -30,8 +30,8 @@ class PalletPresenter < BasePresenter
         content_tag(:p, "")
       end
     end +
-    content_tag(:td) do
-      content_tag(:p, status, class: "pull-right")
-    end
+      content_tag(:td) do
+        content_tag(:p, status, class: "pull-right")
+      end
   end
 end

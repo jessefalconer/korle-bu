@@ -13,6 +13,10 @@ class Item < ApplicationRecord
   belongs_to :user, optional: false
   belongs_to :category, optional: true
 
+  has_many :boxed_items, dependent: :destroy
+  has_many :palletized_items, dependent: :destroy
+  has_many :containerized_items, dependent: :destroy
+
   STANDARD_SIZES = %w[XXXS XXS XS S M L XL XL XXL Assorted].freeze
   VOLUMES = %w[mL dL L floz cc qt pt gal].freeze
   LENGTHS = %w[nm μm mm cm m km ga in ft].freeze
@@ -23,8 +27,6 @@ class Item < ApplicationRecord
   RATIOS = %w[%] # rubocop:disable Style/MutableConstant
 
   MASSES.each { |m| VOLUMES.each { |v| RATIOS << "#{m}/#{v}" } }
-
-  DESCRIPTION_SUGGESTIONS = %w[needle tube can pill spray powder vial].freeze
 
   after_validation do
     sanitize_whitespace

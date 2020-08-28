@@ -31,15 +31,15 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_warehouses
     create_table :warehouses do |t|
-      t.string :status
-      t.string :description
-      t.string :name
-      t.string :street
-      t.string :postal_code
-      t.string :city
-      t.string :province
-      t.string :country
-      t.integer :identifier
+      t.string :status, null: false, default: "Active"
+      t.string :description, limit: 255
+      t.string :name, limit: 255
+      t.string :street, limit: 255
+      t.string :postal_code, limit: 255
+      t.string :city, limit: 255
+      t.string :province, limit: 255
+      t.string :country, limit: 255
+      t.integer :custom_uid
 
       t.belongs_to :user
 
@@ -49,9 +49,9 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_shipments
     create_table :shipments do |t|
-      t.string :name
-      t.string :status
-      t.string :notes
+      t.string :name, limit: 255
+      t.string :status, null: false, default: "Not Started"
+      t.text :notes
       t.integer :custom_uid
 
       t.belongs_to :user
@@ -64,9 +64,9 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_containers
     create_table :containers do |t|
-      t.string :name
-      t.string :status
-      t.string :notes
+      t.string :name, limit: 255
+      t.string :status, null: false, default: "Not Started"
+      t.string :notes, limit: 255
       t.integer :custom_uid
 
       t.belongs_to :user
@@ -78,9 +78,9 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_pallets
     create_table :pallets do |t|
-      t.string :name
-      t.string :status
-      t.string :notes
+      t.string :name, limit: 255
+      t.string :status, null: false, default: "Not Started"
+      t.string :notes, limit: 255
       t.integer :custom_uid
 
       t.belongs_to :user
@@ -92,9 +92,9 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_boxes
     create_table :boxes do |t|
-      t.string :status
-      t.string :notes
-      t.string :name
+      t.string :status, limit: 255
+      t.string :notes, null: false, default: "Not Started"
+      t.string :name, limit: 255
       t.integer :custom_uid
 
       t.belongs_to :user
@@ -107,29 +107,32 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_items
     create_table :items do |t|
-      t.string :object
-      t.string :brand
+      t.string :object, limit: 255
+      t.string :brand, limit: 255
 
-      t.string :standardized_size
+      t.string :standardized_size, limit: 255
 
       t.float :concentration
-      t.string :concentration_units
-      t.string :concentration_description
+      t.string :concentration_units, limit: 255
+      t.string :concentration_description, limit: 255
 
 
       t.float :numerical_size_1
-      t.string :numerical_units_1
-      t.string :numerical_description_1
+      t.string :numerical_units_1, limit: 255
+      t.string :numerical_description_1, limit: 255
 
       t.float :numerical_size_2
-      t.string :numerical_units_2
-      t.string :numerical_description_2
+      t.string :numerical_units_2, limit: 255
+      t.string :numerical_description_2, limit: 255
 
       t.integer :packaged_quantity
 
       t.string :generated_name
-      t.string :notes
-      t.boolean :verified
+      t.string :generated_name_with_keywords
+      t.string :notes, limit: 255
+      t.string :keywords, limit: 255
+      t.boolean :verified, null: false, default: false
+      t.boolean :flagged, null: false, default: false
 
       t.belongs_to :user
       t.belongs_to :category, index: true
@@ -140,8 +143,8 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_categories
     create_table :categories do |t|
-      t.string :name
-      t.string :description
+      t.string :name, limit: 255
+      t.string :description, limit: 255
 
       t.belongs_to :user
 
@@ -151,10 +154,8 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_boxed_items
     create_table :boxed_items do |t|
-      t.integer :quantity
-      t.boolean :expires
+      t.integer :quantity, null: false, default: 0
       t.datetime :expiry_date
-      t.integer :custom_uid
 
       t.belongs_to :box
       t.belongs_to :item
@@ -166,10 +167,8 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_palletized_items
     create_table :palletized_items do |t|
-      t.integer :quantity
-      t.boolean :expires
+      t.integer :quantity, null: false, default: 0
       t.datetime :expiry_date
-      t.integer :custom_uid
 
       t.belongs_to :pallet
       t.belongs_to :item
@@ -181,10 +180,8 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_containerized_items
     create_table :containerized_items do |t|
-      t.integer :quantity
-      t.boolean :expires
+      t.integer :quantity, null: false, default: 0
       t.datetime :expiry_date
-      t.integer :custom_uid
 
       t.belongs_to :container
       t.belongs_to :item

@@ -1,11 +1,13 @@
 class CreateUsers < ActiveRecord::Migration[6.0]
   def change
     create_table :users do |t|
-      t.string :email
-      t.string :first_name
-      t.string :last_name
-      t.string :phone
-      t.string :password_digest
+      t.string :email, limit: 255
+      t.string :first_name, limit: 255
+      t.string :last_name, limit: 255
+      t.string :phone, limit: 255
+      t.string :password_digest, limit: 255
+      t.string :status, limit: 255, null: false, default: "Not Activated"
+      t.text :notes
 
       t.timestamps
     end

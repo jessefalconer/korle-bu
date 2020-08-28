@@ -1,10 +1,10 @@
 User.create!(email: "jesse@email.com",
-                  password_digest: "123456",
+                  password_digest: BCrypt::Password.create("123456"),
                   first_name: "Jesse",
                   last_name: "Falconer"
                   )
 User.create!(email: "aaron@email.com",
-                  password_digest: "123456",
+                  password_digest: BCrypt::Password.create("123456"),
                   first_name: "Aaron",
                   last_name: "Fedora"
                   )

@@ -1,0 +1,12 @@
+= form_for @box, url: box_add_with_item_path, method: :post do |f|
+  .row.padding-top-small
+    .col-xs-6
+      .form-group
+        %label Expiry Date
+        = text_field_tag :expiry_date, "", { class: "form-control datepicker" }
+    .col-xs-6
+      .form-group
+        %label Quantity
+        = number_field_tag :quantity, 0, { class: "form-control", min: 1}
+
+  = render partial: "items/form", locals: { item: Item.new, no_edit: false, delete: false }

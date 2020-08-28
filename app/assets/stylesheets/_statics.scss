@@ -6,22 +6,6 @@ nav {
   }
 }
 
-#footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  .flash {
-    padding: 1em 0em 1em 0em;
-    color: white;
-
-    &.error {
-      background-color: #ff4d4d;
-    }
-    &.success {
-      background-color: #02a556;
-    }
-  }
-}
 .pagination {
   background-color: white;
   color: black;

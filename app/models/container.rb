@@ -6,13 +6,14 @@ class Container < ApplicationRecord
   belongs_to :user, optional: false
   belongs_to :shipment, optional: true
 
-  has_many :pallets
-  has_many :containerized_items
+  has_many :pallets, dependent: :nullify
+  has_many :containerized_items, dependent: :destroy
   has_many :items, through: :containerized_items
 
   accepts_nested_attributes_for :containerized_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :unassigned, -> { where(shipment_id: nil) }
+  scope :recent, -> { where("created_at > ?", 30.days.ago) }
 
   validates :name, :custom_uid, :user, presence: true
   validates :custom_uid, :name, uniqueness: true

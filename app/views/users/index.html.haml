@@ -24,7 +24,7 @@
                 = user.name
             %td= user.email
             %td= user.phone
-            %td Unavailable
+            %td= user.role
             %td= user.created_at.strftime("%Y-%m-%d")
 
     = paginate @users

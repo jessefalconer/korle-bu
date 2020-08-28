@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   post "login", to: "sessions#create"
   get "logout", to: "sessions#destroy"
   get "index", to: "sessions#index"
+  get "my_activity", to: "sessions#my_activity"
 
   get "signup", to: "users#signup"
   post "create_public_user", to: "users#create_public_user"
@@ -25,12 +26,16 @@ Rails.application.routes.draw do
 
   concern :boxable_items do
     resources :boxes do
+      get "manage_items", to: "boxed_items#manage"
+      post "add_with_item", to: "boxed_items#add_with_item"
       resources :boxed_items
     end
   end
 
   concern :palletable_items do
     resources :pallets do
+      get "manage_items", to: "palletized_items#manage"
+      post "add_with_item", to: "palletized_items#add_with_item"
       resources :palletized_items
       concerns :boxable_items
     end
@@ -38,6 +43,8 @@ Rails.application.routes.draw do
 
   concern :containable_items do
     resources :containers do
+      get "manage_items", to: "containerized_items#manage"
+      post "add_with_item", to: "containerized_items#add_with_item"
       resources :containerized_items
       concerns :palletable_items
     end

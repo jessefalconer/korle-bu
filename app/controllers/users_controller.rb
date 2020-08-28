@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   skip_before_action :authorized, only: %i[new signup create_public_user]
-  before_action :set_user, only: %i[show destroy edit update]
+  before_action :set_user, only: %i[show destroy update]
   before_action :existing_session, only: %i[signup create_public_user]
 
   def new
@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   def create
     @user = User.create(user_params)
     if @user.errors.any?
-      redirect_to new_user_path, flash: { error: @user.errors }
+      redirect_to new_user_path, flash: { error: @user.errors.full_messages.to_sentence }
     else
       redirect_to users_path, flash: { success: "User creation successful." }
     end
@@ -26,13 +26,16 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user.update(user_params)
-    redirect_to users_path
+    if @user.update(user_params)
+      redirect_to users_path, flash: { success: "User update successful." }
+    else
+      redirect_to users_path, flash: { error: @user.errors.full_messages.to_sentence }
+    end
   end
 
   def destroy
     @user.destroy
-    redirect_to users_path
+    redirect_to users_path, flash: { success: "User deletion successful." }
   end
 
   def signup
@@ -42,7 +45,7 @@ class UsersController < ApplicationController
   def create_public_user
     @user = User.create(user_params)
     if @user.errors.any?
-      redirect_to new_user_path, flash: { error: @user.errors }
+      redirect_to signup_path, flash: { error: @user.errors.full_messages.to_sentence }
     else
       session[:user_id] = @user.id
       redirect_to index_path, flash: { success: "User creation successful." }

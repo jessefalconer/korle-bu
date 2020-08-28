@@ -1,15 +1,20 @@
 # frozen_string_literal: true
 
 class ItemsController < ApplicationController
-  before_action :set_item, only: %i[show destroy edit update]
+  before_action :set_item, only: %i[show destroy update]
 
   def new
     @item = Item.new
   end
 
   def create
-    Item.create(item_params.merge(user: current_user))
-    redirect_to params[:redirect]
+    item = Item.new(item_params.merge(user: current_user))
+
+    if item.save
+      redirect_to item_path(item), flash: { success: "Item creation successful." }
+    else
+      redirect_to items_path, flash: { error: "Failed to create new item: #{item.errors.full_messages.to_sentence}" }
+    end
   end
 
   def index
@@ -40,11 +45,16 @@ class ItemsController < ApplicationController
   end
 
   def update
-    @item.update(item_params)
-    redirect_to items_path
+    if @item.update(item_params)
+      redirect_to item_path(@item), flash: { success: "Item update successful." }
+    else
+      redirect_to item_path(@item), flash: { error: "Failed to update item: #{@item.errors.full_messages.to_sentence}" }
+    end
   end
 
   def destroy
+    @item.destroy
+    redirect_to items_path, flash: { success: "Item deletion successful." }
   end
 
   private
@@ -57,8 +67,6 @@ class ItemsController < ApplicationController
       pallet_palletized_items_path(record.id)
     when "Container"
       container_containerized_items_path(record.id)
-    else
-      nil
     end
   end
 

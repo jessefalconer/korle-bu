@@ -1,15 +1,20 @@
 # frozen_string_literal: true
 
 class WarehousesController < ApplicationController
-  before_action :set_warehouse, only: %i[show destroy edit update]
+  before_action :set_warehouse, only: %i[show destroy update]
 
   def new
     @warehouse = Warehouse.new
   end
 
   def create
-    warehouse = Warehouse.create(warehouse_params.merge(user_id: current_user.id))
-    redirect_to warehouse_path(warehouse)
+    warehouse = Warehouse.new(warehouse_params.merge(user: current_user))
+
+    if warehouse.save
+      redirect_to warehouse_path(warehouse), flash: { success: "Warehouse creation successful." }
+    else
+      redirect_to warehouses_path, flash: { error: "Failed to create new warehouse: #{warehouse.errors.full_messages.to_sentence}" }
+    end
   end
 
   def index
@@ -19,17 +24,17 @@ class WarehousesController < ApplicationController
   def show
   end
 
-  def edit
-  end
-
   def update
-    @warehouse.update(warehouse_params)
-    redirect_to warehouse_path(@warehouse)
+    if @warehouse.update(warehouse_params)
+      redirect_to warehouse_path(@warehouse), flash: { success: "Warehouse update successful." }
+    else
+      redirect_to warehouse_path(@warehouse), flash: { error: "Failed to update warehouse: #{@warehouse.errors.full_messages.to_sentence}" }
+    end
   end
 
   def destroy
     @warehouse.destroy
-    redirect_to warehouses_path
+    redirect_to warehouses_path, flash: { success: "Warehouse deletion successful." }
   end
 
   private
