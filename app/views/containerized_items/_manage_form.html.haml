@@ -1,3 +1,5 @@
+- if @container.containerized_items.none?
+  %p Use the tabs to search or create a new item.
 - @container.containerized_items.each do |item|
   = form_for [@container, item], method: :patch do |f|
     .panel.panel-default

@@ -20,8 +20,8 @@
                   %th Custom ID
                   %th Name
                   %th Created At
-                  %th Status
-                  %th Boxed Items
+                  %th.hidden-xs Status
+                  %th.hidden-xs Boxed Items
               %tbody
                 - @boxes.each do |box|
                   %tr
@@ -32,10 +32,11 @@
                         %p= box.name
                     %td
                       %p= box.created_at.strftime("%Y-%m-%d")
-                    %td
+                    %td.hidden-xs
                       %p= box.status
-                    %td
+                    %td.hidden-xs
                       %p= box.boxed_items.size
+
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallets"}
             My Pallets (#{@pallets.size})
@@ -46,8 +47,8 @@
                   %th Custom ID
                   %th Name
                   %th Created At
-                  %th Status
-                  %th Palletized Items
+                  %th.hidden-xs Status
+                  %th.hidden-xs Palletized Items
               %tbody
                 - @pallets.each do |pallet|
                   %tr
@@ -58,10 +59,11 @@
                         %p= pallet.name
                     %td
                       %p= pallet.created_at.strftime("%Y-%m-%d")
-                    %td
+                    %td.hidden-xs
                       %p= pallet.status
-                    %td
+                    %td.hidden-xs
                       %p= pallet.palletized_items.size
+
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containers"}
             My Containers (#{@containers.size})
@@ -72,8 +74,8 @@
                   %th Custom ID
                   %th Name
                   %th Created At
-                  %th Status
-                  %th Containerized Items
+                  %th.hidden-xs Status
+                  %th.hidden-xs Containerized Items
               %tbody
                 - @containers.each do |container|
                   %tr
@@ -84,10 +86,11 @@
                         %p= container.name
                     %td
                       %p= container.created_at.strftime("%Y-%m-%d")
-                    %td
+                    %td.hidden-xs
                       %p= container.status
-                    %td
+                    %td.hidden-xs
                       %p= container.containerized_items.size
+
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxed_items"}
             My Boxed Items (#{@boxed_items.size})
@@ -96,25 +99,26 @@
               %tbody
                 %thead
                   %tr
-                    %th Quantity
+                    %th.hidden-xs Quantity
                     %th Name
-                    %th
-                    %th Container
+                    %th.hidden-xs
+                    %th Box
                     %th Date
                 - @boxed_items.each do |item|
                   %tr
-                    %td
+                    %td.hidden-xs
                       %p= item.quantity
                     %td
                       = link_to item_path(item.item_id) do
                         = item.generated_name
-                    %td
+                    %td.hidden-xs
                       %i.fa.fa-arrow-right
                     %td
                       = link_to box_path(item.box) do
                         = item.box.name
                     %td
                       %p= item.created_at.strftime("%Y-%m-%d")
+
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletized_items"}
             My Palletized Items (#{@palletized_items.size})
@@ -123,25 +127,26 @@
               %tbody
                 %thead
                   %tr
-                    %th Quantity
+                    %th.hidden-xs Quantity
                     %th Name
-                    %th
-                    %th Container
+                    %th.hidden-xs
+                    %th Pallet
                     %th Date
                 - @palletized_items.each do |item|
                   %tr
-                    %td
+                    %td.hidden-xs
                       %p= item.quantity
                     %td
                       = link_to item_path(item.item_id) do
                         = item.generated_name
-                    %td
+                    %td.hidden-xs
                       %i.fa.fa-arrow-right
                     %td
                       = link_to pallet_path(item.pallet) do
                         = item.pallet.name
                     %td
                       %p= item.created_at.strftime("%Y-%m-%d")
+
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containerized_items"}
             My Containerized Items (#{@containerized_items.size})
@@ -150,19 +155,19 @@
               %tbody
                 %thead
                   %tr
-                    %th Quantity
+                    %th.hidden-xs Quantity
                     %th Name
-                    %th
+                    %th.hidden-xs
                     %th Container
                     %th Date
                 - @containerized_items.each do |item|
                   %tr
-                    %td
+                    %td.hidden-xs
                       %p= item.quantity
                     %td
                       = link_to item_path(item.item_id) do
                         = item.generated_name
-                    %td
+                    %td.hidden-xs
                       %i.fa.fa-arrow-right
                     %td
                       = link_to container_path(item.container) do

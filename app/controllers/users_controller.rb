@@ -27,9 +27,9 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to users_path, flash: { success: "User update successful." }
+      redirect_to user_path(@user), flash: { success: "User update successful." }
     else
-      redirect_to users_path, flash: { error: @user.errors.full_messages.to_sentence }
+      redirect_to user_path(@user), flash: { error: @user.errors.full_messages.to_sentence }
     end
   end
 
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :last_name, :first_name, :phone)
+    params.require(:user).permit(:email, :password, :last_name, :first_name, :phone, :role, :status, :notes)
   end
 
   def existing_session

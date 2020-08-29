@@ -20,10 +20,10 @@ class BoxesController < ApplicationController
   end
 
   def index
-    if params[:display]
-      @boxes = Box.send(params[:display]).page params[:page]
+    @boxes = if params[:display]
+      Box.send(params[:display]).page params[:page]
     else
-      @boxes = Box.all.page params[:page]
+      Box.all.page params[:page]
     end
   end
 

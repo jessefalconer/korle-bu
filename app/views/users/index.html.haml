@@ -13,9 +13,9 @@
         %tr
           %th Name
           %th Email
-          %th Phone
+          %th.hidden-xs Phone
           %th Role
-          %th Created At
+          %th.hidden-xs Created At
       %tbody
         - @users.each do |user|
           %tr
@@ -23,8 +23,8 @@
               = link_to user_path(user) do
                 = user.name
             %td= user.email
-            %td= user.phone
+            %td.hidden-xs= user.phone
             %td= user.role
-            %td= user.created_at.strftime("%Y-%m-%d")
+            %td.hidden-xs= user.created_at.strftime("%Y-%m-%d")
 
     = paginate @users

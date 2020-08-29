@@ -13,8 +13,8 @@
         %tr
           %th Name
           %th Category
-          %th Created By
-          %th Created By
+          %th.hidden-xs Created By
+          %th.hidden-xs Created At
           %th Verified
       %tbody
         - @items.each do |item|
@@ -23,8 +23,8 @@
               = link_to item_path(item) do
                 = item.generated_name
             %td= item.category&.name
-            %td= item.user.name
-            %td= item.created_at.strftime("%Y-%m-%d")
-            %td= item.verified
+            %td.hidden-xs= item.user.name
+            %td.hidden-xs= item.created_at.strftime("%Y-%m-%d")
+            %td= item.verified.to_s.capitalize
 
     = paginate @items

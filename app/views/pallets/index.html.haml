@@ -14,9 +14,9 @@
           %th Custom ID
           %th Name
           %th Status
-          %th Receiver
-          %th Shipper
-          %th Created At
+          %th.hidden-xs Receiver
+          %th.hidden-xs Shipper
+          %th.hidden-xs Created At
       %tbody
         - @pallets.each do |pallet|
           %tr
@@ -25,8 +25,8 @@
               = link_to pallet_path(pallet) do
                 = pallet.name
             %td= pallet.status
-            %td= pallet.shipment&.receiving_warehouse&.name
-            %td= pallet.shipment&.shipping_warehouse&.name
-            %td= pallet.created_at.strftime("%Y-%m-%d")
+            %td.hidden-xs= pallet.shipment&.receiving_warehouse&.name
+            %td.hidden-xs= pallet.shipment&.shipping_warehouse&.name
+            %td.hidden-xs= pallet.created_at.strftime("%Y-%m-%d")
 
     = paginate @pallets

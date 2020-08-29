@@ -17,6 +17,8 @@ class Item < ApplicationRecord
   has_many :palletized_items, dependent: :destroy
   has_many :containerized_items, dependent: :destroy
 
+  has_one_attached :photo
+
   STANDARD_SIZES = %w[XXXS XXS XS S M L XL XL XXL Assorted].freeze
   VOLUMES = %w[mL dL L floz cc qt pt gal].freeze
   LENGTHS = %w[nm μm mm cm m km ga in ft].freeze

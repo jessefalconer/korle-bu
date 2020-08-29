@@ -14,11 +14,23 @@
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
-      .col-md-4
-        %br
-        #myTabContent.tab-content
-          #view.tab-pane.active.in
-            = render partial: "form", locals: { no_edit: true, delete: true }
+      #myTabContent.tab-content
+        #view.tab-pane.active.in
+          %br
+          = render partial: "form", locals: { no_edit: true, delete: true }
 
-          #edit.tab-pane.fade
-            = render partial: "form", locals: { no_edit: false, delete: false }
+        #edit.tab-pane.fade
+          %br
+          = render partial: "form", locals: { no_edit: false, delete: false }
+      -# .col-md-8
+      -#   %br
+      -#   .form-group
+      -#     %label Attached Photos
+      -#     - if @item.photo.attached?
+      -#       %img{src: url_for(@item.photo), style: "width: 100%;"}
+      -#       = form_for @item do
+      -#         .form-group
+      -#           = check_box_tag :delete_photo, class: "form-control"
+      -#           %label Delete Photo
+
+      -#         = submit_button("Confirm", "pull-left")

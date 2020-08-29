@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   get "reconcile/:id", to: "reconcile_items#start", as: :reconcile_start
   get "reconcile/:id/confirm/:target_id", to: "reconcile_items#confirm", as: :reconcile_confirm
   get "reconcile/:id/execute_reconcile/:target_id", to: "reconcile_items#execute", as: :execute_reconcile
+  get "reconcile/:id/item_instances", to: "reconcile_items#item_instances", as: :item_instances
 
   resources :categories
   resources :items

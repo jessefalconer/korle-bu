@@ -14,9 +14,9 @@
           %th Custom ID
           %th Name
           %th Status
-          %th Receiver
-          %th Shipper
-          %th Created At
+          %th.hidden-xs Receiver
+          %th.hidden-xs Shipper
+          %th.hidden-xs Created At
       %tbody
         - @containers.each do |container|
           %tr
@@ -25,8 +25,8 @@
               = link_to container_path(container) do
                 = container.name
             %td= container.status
-            %td= container.shipment&.receiving_warehouse&.name
-            %td= container.shipment&.shipping_warehouse&.name
-            %td= container.created_at.strftime("%Y-%m-%d")
+            %td.hidden-xs= container.shipment&.receiving_warehouse&.name
+            %td.hidden-xs= container.shipment&.shipping_warehouse&.name
+            %td.hidden-xs= container.created_at.strftime("%Y-%m-%d")
 
     = paginate @containers

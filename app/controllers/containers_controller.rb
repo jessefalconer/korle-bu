@@ -20,10 +20,10 @@ class ContainersController < ApplicationController
   end
 
   def index
-    if params[:display]
-      @containers = Container.send(params[:display]).page params[:page]
+    @containers = if params[:display]
+      Container.send(params[:display]).page params[:page]
     else
-      @containers = Container.all.page params[:page]
+      Container.all.page params[:page]
     end
   end
 

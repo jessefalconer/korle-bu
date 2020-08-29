@@ -20,16 +20,8 @@
             %i.fa.fa-caret-down
           %ul.dropdown-menu
             %li
-              %a{:href => "./"} My Account
-            %li.divider
-            %li.dropdown-header Admin Panel
-            %li
-              %a{:href => "./"} Users
-            %li
-              %a{:href => "./"} Security
-            %li
-              %a{:href => "./", :tabindex => "-1"} Payments
-            %li.divider
+              = link_to user_path(current_user) do
+                My Account
             %li
               = link_to logout_path do
                 Logout
@@ -44,6 +36,10 @@
           %i.fa.fa-collapse
       %li.hidden-sm.hidden-md.hidden-lg
         %ul.user-menu.nav.nav-list.collapse
+          %li
+            = link_to user_path(current_user) do
+              %span.fa.fa-caret-right
+              My Account
           %li
             = link_to logout_path do
               %span.fa.fa-caret-right
@@ -172,7 +168,7 @@
               %span.fa.fa-caret-right
               Unassigned
           %li
-            = link_to boxes_path(display: :unassigned) do
+            = link_to boxes_path(display: :recent) do
               %span.fa.fa-caret-right
               Recently Created
           %li

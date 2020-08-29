@@ -1,27 +1,40 @@
 - time = @user.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
-= form_for @user do |f|
-  .form-group
-    %label First Name
-    = f.text_field :first_name, disabled: no_edit, class: "form-control"
-  .form-group
-    %label Last Name
-    = f.text_field :last_name, disabled: no_edit, class: "form-control"
-  .form-group
-    %label Email
-    = f.text_field :email, disabled: no_edit, class: "form-control"
-  .form-group
-    %label Phone Number
-    = f.text_field :phone, disabled: no_edit, class: "form-control"
-  -if create_password
-    .form-group
-      %label Password
-      = f.password_field :password, class: "form-control"
-  .form-group
-    %label Created At
-    = f.text_field :created_at, value: time, disabled: true, class: "form-control"
 
-  .btn-toolbar.list-toolbar
-    - if delete
-      = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed")
-    - else
-      = submit_button("Save")
+= form_for @user do |f|
+  .col-xs-12.col-sm-6
+    .form-group
+      %label First Name
+      = f.text_field :first_name, disabled: no_edit, class: "form-control"
+    .form-group
+      %label Last Name
+      = f.text_field :last_name, disabled: no_edit, class: "form-control"
+    .form-group
+      %label Email
+      = f.text_field :email, disabled: no_edit, class: "form-control"
+    .form-group
+      %label Phone Number
+      = f.text_field :phone, disabled: no_edit, class: "form-control"
+    .form-group
+      %label Role
+      = f.select(:role, options_for_select(User::ROLES, @user.role), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+    .form-group
+      %label Status
+      = f.select(:status, options_for_select(User::STATUSES, @user.status), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+    -if create_password
+      .form-group
+        %label Password
+        = f.password_field :password, class: "form-control"
+    .form-group
+      %label Created At
+      = f.text_field :created_at, value: time, disabled: true, class: "form-control"
+  .col-xs-12.col-sm-6
+    .form-group
+      %label Notes
+      = f.text_area :notes, disabled: no_edit || (current_user.id != @user.id), class: "form-control", style: "height: 475px;"
+
+  .col-xs-12
+    .btn-toolbar.list-toolbar
+      - if delete && current_user != @user
+        = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed")
+      - elsif !delete
+        = submit_button("Save")

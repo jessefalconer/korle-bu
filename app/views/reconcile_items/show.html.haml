@@ -12,69 +12,118 @@
     .row
       .col-xs-12
         %br
-        - @overview.unverified_items.each do |item|
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#rec-#{item.id}"}
-              #{item.generated_name}
-            .collapse{id: "rec-#{item.id}"}
-              %table.table.table-bordered.table-striped
-                %thead
-                  %tr
-                    %th
-                    %th Created By
-                    %th Created At
-                    %th Instances Used
-                    %th Show Instances
-                    %th Reconcile
-                %tbody
-                  %tr
-                    %td
-                      = link_to item_path(item) do
-                        %p Edit
-                    %td
-                      = link_to user_path(item.user) do
-                        %p= item.user.name
-                    %td
-                      %p= item.created_at.strftime("%Y-%m-%d")
-                    %td
-                      %p= @overview.item_instances(item)
-                    %td
-                      %p Search
-                    %td
-                      = link_button("Start >>", reconcile_start_path(item), "center-block")
+        - if @overview.unverified_items.any?
+          %p Select an item to verify OR merge with an existing item.
+          - @overview.unverified_items.each do |item|
+            .panel.panel-default
+              %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#rec-#{item.id}"}
+                #{item.generated_name}
+              .collapse{id: "rec-#{item.id}"}
+                %table.table.table-bordered.table-striped
+                  %thead
+                    %tr
+                      %th Created By
+                      %th Created At
+                      %th Instances Used
+                      %th Instances
+                      %th
+                      %th
+                  %tbody
+                    %tr
+                      %td
+                        = link_to user_path(item.user) do
+                          %p= item.user.name
+                      %td
+                        %p= item.created_at.strftime("%Y-%m-%d")
+                      %td
+                        %p= @overview.item_instances(item)
+                      %td
+                        = link_button("Search", item_instances_path(item), "center-block")
+                      %td
+                        = link_button("Verify", item_path(item), "center-block")
+                      %td
+                        = link_button("Reconcile", reconcile_start_path(item), "center-block")
+        - else
+          %p You're all up to date!
+
     .row
       .col-xs-12
         %h3 Uncategorized Items (#{@overview.uncategorized_items.size})
     .row
       .col-xs-12
         %br
-        - @overview.uncategorized_items.each do |item|
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#cate-#{item.id}"}
-              #{item.generated_name}
-            .collapse{id: "cate-#{item.id}"}
-              %table.table.table-bordered.table-striped
-                %thead
-                  %tr
-                    %th
-                    %th Created By
-                    %th Created At
-                    %th Instances Used
-                    %th Show Instances
-                    %th Verified
-                %tbody
-                  %tr
-                    %td
-                      = link_to item_path(item) do
-                        %p Edit
-                    %td
-                      = link_to user_path(item.user) do
-                        %p= item.user.name
-                    %td
-                      %p= item.created_at.strftime("%Y-%m-%d")
-                    %td
-                      %p= @overview.item_instances(item)
-                    %td
-                      %p Search
-                    %td
-                      %p= item.verified
+        - if @overview.uncategorized_items.any?
+          %p Inspect uncategorized items.
+          - @overview.uncategorized_items.each do |item|
+            .panel.panel-default
+              %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#cat-#{item.id}"}
+                #{item.generated_name}
+              .collapse{id: "cat-#{item.id}"}
+                %table.table.table-bordered.table-striped
+                  %thead
+                    %tr
+                      %th Created By
+                      %th Created At
+                      %th Verified
+                      %th Instances Used
+                      %th Instances
+
+                      %th
+                  %tbody
+                    %tr
+                      %td
+                        = link_to user_path(item.user) do
+                          %p= item.user.name
+                      %td
+                        %p= item.created_at.strftime("%Y-%m-%d")
+                      %td
+                        %p= item.verified.to_s.capitalize
+                      %td
+                        %p= @overview.item_instances(item)
+                      %td
+                        = link_button("Search", item_instances_path(item), "center-block")
+                      %td
+                        = link_button("Categorize", item_path(item), "center-block")
+        - else
+          %p You're all up to date!
+
+    .row
+      .col-xs-12
+        %h3 Flagged Items (#{@overview.uncategorized_items.size})
+    .row
+      .col-xs-12
+        %br
+        - if @overview.flagged_items.any?
+          %p Inspect user-flagged items.
+          - @overview.flagged_items.each do |item|
+            .panel.panel-default
+              %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#flag-#{item.id}"}
+                #{item.generated_name}
+              .collapse{id: "flag-#{item.id}"}
+                %table.table.table-bordered.table-striped
+                  %thead
+                    %tr
+                      %th Created By
+                      %th Created At
+                      %th Verified
+                      %th Instances Used
+                      %th Instances
+
+                      %th
+                  %tbody
+                    %tr
+                      %td
+                        = link_to user_path(item.user) do
+                          %p= item.user.name
+                      %td
+                        %p= item.created_at.strftime("%Y-%m-%d")
+                      %td
+                        %p= item.verified.to_s.capitalize
+                      %td
+                        %p= @overview.item_instances(item)
+                      %td
+                        = link_button("Search", item_instances_path(item), "center-block")
+                      %td
+                        = link_button("Categorize", item_path(item), "center-block")
+        - else
+          %p You're all up to date!

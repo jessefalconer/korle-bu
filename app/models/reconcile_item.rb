@@ -13,6 +13,10 @@ class ReconcileItem
     Item.where(category: nil)
   end
 
+  def flagged_items
+    Item.where(flagged: true)
+  end
+
   def item_instances(item)
     count = 0
     count += ContainerizedItem.where(item_id: item.id).count
@@ -23,7 +27,7 @@ class ReconcileItem
   end
 
   def find_similar_records(item)
-    arr = item.generated_name.gsub(/\s+/m, " ").strip.split(" ")
+    arr = item.generated_name.split(/[\s-]+/)
 
     results = arr.each_with_object({}) do |word, hash|
       hash[word] = Item.search_by_generated_name(word).where.not(id: item.id, verified: false).ids
@@ -43,7 +47,7 @@ class ReconcileItem
   end
 
   def match_percentage(integer, item)
-    size = item.generated_name.gsub(/\s+/m, " ").strip.split(" ").size
+    size = item.generated_name.split(/[\s-]+/).size
     "#{(integer.to_f / size * 100).round(2)}%"
   end
 end

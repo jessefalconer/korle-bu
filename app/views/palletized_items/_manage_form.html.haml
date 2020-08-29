@@ -1,3 +1,5 @@
+- if @pallet.palletized_items.none?
+  %p Use the tabs to search or create a new item.
 - @pallet.palletized_items.each do |item|
   = form_for [@pallet, item], method: :patch do |f|
     .panel.panel-default

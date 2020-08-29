@@ -20,7 +20,7 @@
                   %th Created By
                   %th Created At
                   %th Instances Used
-                  %th Show Instances
+                  %th Instances
               %tbody
                 %tr
                   %td
@@ -34,7 +34,7 @@
                   %td
                     %p= @overview.item_instances(@item)
                   %td
-                    %p Search
+                    = link_button("Search", item_instances_path(item), "center-block")
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#targetitem"}
@@ -47,7 +47,7 @@
                   %th Created By
                   %th Created At
                   %th Instances Used
-                  %th Show Instances
+                  %th Instances
               %tbody
                 %tr
                   %td
@@ -61,7 +61,7 @@
                   %td
                     %p= @overview.item_instances(@target_item)
                   %td
-                    %p Search
+                    = link_button("Search", item_instances_path(item), "center-block")
     .row
       .col-xs-12
         = form_tag(execute_reconcile_path, method: "get") do

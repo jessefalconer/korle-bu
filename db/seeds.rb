@@ -1,12 +1,38 @@
 User.create!(email: "jesse@email.com",
-                  password_digest: BCrypt::Password.create("123456"),
                   first_name: "Jesse",
-                  last_name: "Falconer"
+                  last_name: "Falconer",
+                  role: "Admin",
+                  password_digest: BCrypt::Password.create("123456")
                   )
 User.create!(email: "aaron@email.com",
-                  password_digest: BCrypt::Password.create("123456"),
                   first_name: "Aaron",
-                  last_name: "Fedora"
+                  last_name: "Fedora",
+                  role: "Admin",
+                  password_digest: BCrypt::Password.create("123456")
+                  )
+User.create!(email: "blaise_pascal@email.com",
+                  first_name: "Blaise",
+                  last_name: "Pascal",
+                  role: "Manager",
+                  password_digest: BCrypt::Password.create("123456")
+                  )
+User.create!(email: "leonhard_euler@email.com",
+                  first_name: "Leonhard",
+                  last_name: "Euler",
+                  role: "Manager",
+                  password_digest: BCrypt::Password.create("123456")
+                  )
+User.create!(email: "isaac_newton@email.com",
+                  first_name: "Isaac",
+                  last_name: "Newton",
+                  role: "Volunteer",
+                  password_digest: BCrypt::Password.create("123456")
+                  )
+User.create!(email: "maxwell_planck@email.com",
+                  first_name: "Max",
+                  last_name: "Planck",
+                  role: "Volunteer",
+                  password_digest: BCrypt::Password.create("123456")
                   )
 Warehouse.create(name: "KBNF-HQ",
                 street: Faker::Address.street_address,

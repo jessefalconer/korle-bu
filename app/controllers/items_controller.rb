@@ -50,6 +50,9 @@ class ItemsController < ApplicationController
     else
       redirect_to item_path(@item), flash: { error: "Failed to update item: #{@item.errors.full_messages.to_sentence}" }
     end
+    # @item.photo.attach(params[:photo])
+    # @item.update(item_params)
+    # redirect_to items_path
   end
 
   def destroy
@@ -71,7 +74,7 @@ class ItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description, :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2, :packaged_quantity, :category_id, :notes, :verified)
+    params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description, :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2, :packaged_quantity, :category_id, :notes, :verified, :photo, :flagged)
   end
 
   def set_item

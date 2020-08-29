@@ -15,8 +15,8 @@
           %th Name
           %th Status
           %th Receiver
-          %th Shipper
-          %th Created At
+          %th.hidden-xs Shipper
+          %th.hidden-xs Created At
       %tbody
         - @shipments.each do |shipment|
           %tr
@@ -27,6 +27,6 @@
             %td= shipment.status
             %td= shipment.receiving_warehouse.name
             %td= shipment.shipping_warehouse.name
-            %td= shipment.created_at.strftime("%Y-%m-%d")
+            %td.hidden-xs= shipment.created_at.strftime("%Y-%m-%d")
 
     = paginate @shipments

@@ -20,10 +20,10 @@ class PalletsController < ApplicationController
   end
 
   def index
-    if params[:display]
-      @pallets = Pallet.send(params[:display]).page params[:page]
+    @pallets = if params[:display]
+      Pallet.send(params[:display]).page params[:page]
     else
-      @pallets = Pallet.all.page params[:page]
+      Pallet.all.page params[:page]
     end
   end
 

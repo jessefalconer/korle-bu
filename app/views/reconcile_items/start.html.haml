@@ -20,7 +20,7 @@
                   %th Created By
                   %th Created At
                   %th Instances Used
-                  %th Show Instances
+                  %th Instances
               %tbody
                 %tr
                   %td
@@ -34,9 +34,16 @@
                   %td
                     %p= @overview.item_instances(@item)
                   %td
-                    %p Search
+                    = link_button("Search", item_instances_path(@item), "center-block")
 
-        - if @items.any?
+  - if @overview.item_instances(@item).zero?
+    %p This item is not currently in use. You may wish to delete it.
+    = delete_button(item_path(@item), "Are you sure you want to delete #{@item.generated_name}? This cannot be reversed.")
+
+  - else
+    - if @items.any?
+      .row
+        .col-xs-12
           .panel.panel-default
             %a.panel-heading{data: {toggle: "collapse"}, href: "#items"}
               Compare with #{@items.size} Related Items
@@ -47,12 +54,13 @@
                     %th Item
                     %th Created By
                     %th Created At
+                    %th Word Match
+                    %th Specificity Rank
                     %th Instances Used
-                    %th Show Instances
-                    %th Match
+                    %th Instances
                     %th Select
                 %tbody
-                  - @items.each do |k, v|
+                  - @items.each_with_index do |(k, v), index|
                     - item = Item.find(k)
                     %tr
                       %td
@@ -64,15 +72,18 @@
                       %td
                         %p= item.created_at.strftime("%Y-%m-%d")
                       %td
-                        %p= @overview.item_instances(item)
-                      %td
-                        %p Search
-                      %td
                         %p= @overview.match_percentage(v, item)
                       %td
-                        = link_button("Confirm Merge >>", reconcile_confirm_path(@item, item), "center-block")
-        - else
-          %p No suggestions found. Try searching for an item.
+                        %p= index + 1
+                      %td
+                        %p= @overview.item_instances(item)
+                      %td
+                        = link_button("Search", item_instances_path(item), "center-block")
+                      %td
+                        = link_button("Confirm", reconcile_confirm_path(item, item), "center-block")
+    - else
+      %p No suggestions found. Try searching for an item.
+
     .row
       .col-xs-12.col-md-6.col-lg-4
         = render "search_form"
