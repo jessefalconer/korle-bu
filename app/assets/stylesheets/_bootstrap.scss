@@ -5,12 +5,12 @@
  */
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 @font-face {
-  font-family: 'Glyphicons Halflings';
-  src: url('fonts/glyphicons-halflings-regular.eot');
-  src: url('glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'),
-  url('fonts/glyphicons-halflings-regular.woff') format('woff'),
-  url('fonts/glyphicons-halflings-regular.ttf') format('truetype'),
-  url('fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  font-family: "Glyphicons Halflings";
+  src: font-url("glyphicons-halflings-regular.eot");
+  src: font-url("glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"),
+  font-url("glyphicons-halflings-regular.woff") format("woff"),
+  font-url("glyphicons-halflings-regular.ttf") format("truetype"),
+  font-url("glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg");
 }
 
 @-webkit-keyframes progress-bar-stripes {
@@ -1170,7 +1170,7 @@ blockquote {
     color: #999;
 
     &:before {
-      content: '\2014 \00A0';
+      content: "\2014 \00A0";
     }
   }
 
@@ -1181,7 +1181,7 @@ blockquote {
     color: #999;
 
     &:before {
-      content: '\2014 \00A0';
+      content: "\2014 \00A0";
     }
   }
 
@@ -1192,7 +1192,7 @@ blockquote {
     color: #999;
 
     &:before {
-      content: '\2014 \00A0';
+      content: "\2014 \00A0";
     }
   }
 
@@ -1214,31 +1214,31 @@ blockquote {
 
   footer {
     &:before {
-      content: '';
+      content: "";
     }
 
     &:after {
-      content: '\00A0 \2014';
+      content: "\00A0 \2014";
     }
   }
 
   small {
     &:before {
-      content: '';
+      content: "";
     }
 
     &:after {
-      content: '\00A0 \2014';
+      content: "\00A0 \2014";
     }
   }
 
   .small {
     &:before {
-      content: '';
+      content: "";
     }
 
     &:after {
-      content: '\00A0 \2014';
+      content: "\00A0 \2014";
     }
   }
 }
@@ -1252,31 +1252,31 @@ blockquote.pull-right {
 
   footer {
     &:before {
-      content: '';
+      content: "";
     }
 
     &:after {
-      content: '\00A0 \2014';
+      content: "\00A0 \2014";
     }
   }
 
   small {
     &:before {
-      content: '';
+      content: "";
     }
 
     &:after {
-      content: '\00A0 \2014';
+      content: "\00A0 \2014";
     }
   }
 
   .small {
     &:before {
-      content: '';
+      content: "";
     }
 
     &:after {
-      content: '\00A0 \2014';
+      content: "\00A0 \2014";
     }
   }
 }
@@ -4032,7 +4032,7 @@ input[type="button"].btn-block {
   position: relative;
   top: 1px;
   display: inline-block;
-  font-family: 'Glyphicons Halflings';
+  font-family: "Glyphicons Halflings";
   font-style: normal;
   font-weight: normal;
   line-height: 1;
@@ -9255,7 +9255,7 @@ button.close {
     font-family: serif;
 
     &:before {
-      content: '\2039';
+      content: "\2039";
     }
   }
 
@@ -9272,7 +9272,7 @@ button.close {
     font-family: serif;
 
     &:before {
-      content: '\203a';
+      content: "\203a";
     }
   }
 
@@ -9296,7 +9296,7 @@ button.close {
 .carousel-control.left {
   background-image: -webkit-linear-gradient(left, color-stop(rgba(0, 0, 0, .5) 0%), color-stop(rgba(0, 0, 0, .0001) 100%));
   background-image: linear-gradient(to right, rgba(0, 0, 0, .5) 0%, rgba(0, 0, 0, .0001) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#80000000', endColorstr='#00000000', GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#80000000", endColorstr="#00000000", GradientType=1);
   background-repeat: repeat-x;
 }
 
@@ -9305,7 +9305,7 @@ button.close {
   left: auto;
   background-image: -webkit-linear-gradient(left, color-stop(rgba(0, 0, 0, .0001) 0%), color-stop(rgba(0, 0, 0, .5) 100%));
   background-image: linear-gradient(to right, rgba(0, 0, 0, .0001) 0%, rgba(0, 0, 0, .5) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#80000000', GradientType=1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#00000000", endColorstr="#80000000", GradientType=1);
   background-repeat: repeat-x;
 }
 
