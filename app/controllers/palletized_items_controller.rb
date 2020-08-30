@@ -10,7 +10,7 @@ class PalletizedItemsController < ApplicationController
   end
 
   def update
-    @pallet.update(palletized_item_params)
+    @palletized_item.update(palletized_item_params)
     redirect_to pallet_manage_items_path(@pallet), flash: { success: "Item updated!" }
   end
 

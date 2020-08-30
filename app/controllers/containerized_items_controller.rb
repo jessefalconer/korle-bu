@@ -10,7 +10,7 @@ class ContainerizedItemsController < ApplicationController
   end
 
   def update
-    @container.update(containerized_item_params)
+    @containerized_item.update(containerized_item_params)
     redirect_to container_manage_items_path(@container), flash: { success: "Item updated!" }
   end
 
