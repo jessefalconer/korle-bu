@@ -36,7 +36,7 @@ class ContainerizedItemsController < ApplicationController
   private
 
   def containerized_item_params
-    params.require(:container).permit(:expiry_date, :quantity, :item_id)
+    params.require(:containerized_item).permit(:expiry_date, :quantity, :item_id)
   end
 
   def item_params

@@ -36,7 +36,7 @@ class PalletizedItemsController < ApplicationController
   private
 
   def palletized_item_params
-    params.require(:pallet).permit(:expiry_date, :quantity, :item_id)
+    params.require(:palletized_item).permit(:expiry_date, :quantity, :item_id)
   end
 
   def item_params

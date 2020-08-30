@@ -32,7 +32,7 @@ class Item < ApplicationRecord
 
   after_validation do
     sanitize_whitespace
-    self.generated_name = process_name
+    self.generated_name = process_name.presence || "Unnamed Item"
   end
 
   def process_name

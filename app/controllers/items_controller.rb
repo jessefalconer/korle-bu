@@ -34,10 +34,10 @@ class ItemsController < ApplicationController
     existing_ids = record.items.ids
 
     @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: existing_ids)
-    form_path = generate_form_url(params[:model], record)
+    form_path, model = generate_form_url(params[:model], record)
 
     respond_to do |format|
-      format.js { render partial: "search-results-form", locals: { record: record, form_path: form_path } }
+      format.js { render partial: "search-results-form", locals: { model: model, form_path: form_path } }
     end
   end
 
@@ -65,11 +65,11 @@ class ItemsController < ApplicationController
   def generate_form_url(klass, record)
     case klass
     when "Box"
-      box_boxed_items_path(record.id)
+      [box_boxed_items_path(record.id), :boxed_item]
     when "Pallet"
-      pallet_palletized_items_path(record.id)
+      [pallet_palletized_items_path(record.id), :palletized_item]
     when "Container"
-      container_containerized_items_path(record.id)
+      [container_containerized_items_path(record.id), :containerized_item]
     end
   end
 

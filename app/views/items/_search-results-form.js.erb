@@ -1,4 +1,4 @@
-$("#search-results").html("<%= escape_javascript(render partial: "results-form", locals: {record: record, form_path: form_path}) %>");
+$("#search-results").html("<%= escape_javascript(render partial: "results-form", locals: {model: model, form_path: form_path}) %>");
 $(document).ready(function () {
   $.getScript("https://code.jquery.com/ui/1.12.1/jquery-ui.js", function() {
     $(".datepickers").datepicker({

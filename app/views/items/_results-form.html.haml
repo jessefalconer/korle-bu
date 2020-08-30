@@ -6,7 +6,7 @@
     = link_button("New Item", new_item_path, "pull-right")
 - else
   - @search_results_items.each do |item|
-    = form_for record, url: form_path, method: :post do |f|
+    = form_for model, url: form_path, method: :post do |f|
       .row.padding-top-small
         .col-xs-12
           .form-group
