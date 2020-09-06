@@ -17,5 +17,5 @@ Korle-Bu is a non-profit organization shipping medical supplies and equipment to
 * View http paths by running `rails routes` or visiting http://localhost:3000/rails/info/routes
 * To lint your code and see possible style "offences" or errors, run `rubocop`. To automatically correct them run `rubocop -a`
 
-## ERD as of August 2020
+### ERD as of August 2020
 [erd.pdf](https://github.com/jessefalconer/korle-bu/files/5180316/erd.pdf)
