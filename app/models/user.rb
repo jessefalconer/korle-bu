@@ -2,7 +2,7 @@
 
 class User < ApplicationRecord
   STATUSES = %w[Not\ Activated Active Deactivated].freeze
-  ROLES = %w[Volunteer Manager Admin].freeze
+  ROLES = %w[Volunteer Shipping\ Manager Admin Receiving\ Manager].freeze
 
   has_secure_password
   paginates_per 10
@@ -22,5 +22,21 @@ class User < ApplicationRecord
 
   def name
     first_name + " " + last_name
+  end
+
+  def volunteer?
+    role == "Volunteer"
+  end
+
+  def shipping_manager?
+    role == "Shipping Manager"
+  end
+
+  def admin?
+    role == "Manager"
+  end
+
+  def receiving_manager?
+    role == "Receiving Manager"
   end
 end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ContainersController < ApplicationController
+  load_and_authorize_resource
   before_action :set_container, only: %i[show destroy update]
 
   def new

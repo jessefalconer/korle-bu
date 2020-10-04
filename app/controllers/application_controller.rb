@@ -16,4 +16,8 @@ class ApplicationController < ActionController::Base
   def authorized
     redirect_to :root unless logged_in?
   end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_back fallback_location: :root, flash: { error: "You do not have permission to view this page."}
+  end
 end

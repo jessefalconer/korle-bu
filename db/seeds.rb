@@ -13,13 +13,13 @@ User.create!(email: "aaron@email.com",
 User.create!(email: "blaise_pascal@email.com",
                   first_name: "Blaise",
                   last_name: "Pascal",
-                  role: "Manager",
+                  role: "Shipping Manager",
                   password_digest: BCrypt::Password.create("123456")
                   )
 User.create!(email: "leonhard_euler@email.com",
                   first_name: "Leonhard",
                   last_name: "Euler",
-                  role: "Manager",
+                  role: "Receiving Manager",
                   password_digest: BCrypt::Password.create("123456")
                   )
 User.create!(email: "isaac_newton@email.com",

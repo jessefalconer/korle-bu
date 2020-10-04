@@ -44,6 +44,7 @@
             = link_to logout_path do
               %span.fa.fa-caret-right
               Log Out
+
       %li
         %a.nav-header{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
           %i.fa.fa-fw.fa-tachometer-alt
@@ -55,78 +56,83 @@
             = link_to index_path do
               %span.fa.fa-caret-right
               Home
-          %li
-            = link_to categories_path do
-              %span.fa.fa-caret-right
-              Categories
-          %li
-            = link_to items_path do
-              %span.fa.fa-caret-right
-              Items
-          %li
-            = link_to warehouses_path do
-              %span.fa.fa-caret-right
-              Warehouses
-          %li
-            = link_to users_path do
-              %span.fa.fa-caret-right
-              Users
-          %li
-            = link_to reconcile_overview_path do
-              %span.fa.fa-caret-right
-              Reconciliation
-
-      %li
-        %a.nav-header.collapsed{data: {target: ".shipments-menu", toggle: "collapse"}, href: "#"}
-          %i.fa.fa-fw.fa-ship
-          Shipments
-          %i.fa.fa-collapse
-      %li
-        %ul.shipments-menu.nav.nav-list.collapse
-          %li
-            = link_to shipments_path do
-              %span.fa.fa-caret-right
-              All
-          %li
-            = link_to shipments_path(display: :received) do
-              %span.fa.fa-caret-right
-              Received
-          %li
-            = link_to shipments_path(display: :in_transit) do
-              %span.fa.fa-caret-right
-              In Transit
-          %li
-            = link_to shipments_path(display: :packing) do
-              %span.fa.fa-caret-right
-              Packing
-          %li
-            = link_to new_shipment_path do
-              %span.fa.fa-caret-right
-              New
-
-      %li
-        %a.nav-header.collapsed{data: {target: ".containers-menu", toggle: "collapse"}, href: "#"}
-          %i.fa.fa-fw.fa-truck
-          Containers
-          %i.fa.fa-collapse
-      %li
-        %ul.containers-menu.nav.nav-list.collapse
-          %li
-            = link_to containers_path do
-              %span.fa.fa-caret-right
-              All
-          %li
-            = link_to containers_path(display: :unassigned) do
-              %span.fa.fa-caret-right
-              Unassigned
-          %li
-            = link_to containers_path(display: :recent) do
-              %span.fa.fa-caret-right
-              Recently Created
-          %li
-            = link_to new_container_path do
-              %span.fa.fa-caret-right
-              New
+          - if can? :manage, Category
+            %li
+              = link_to categories_path do
+                %span.fa.fa-caret-right
+                Categories
+          - if can? :manage, Item
+            %li
+              = link_to items_path do
+                %span.fa.fa-caret-right
+                Items
+          - if can? :manage, Warehouse
+            %li
+              = link_to warehouses_path do
+                %span.fa.fa-caret-right
+                Warehouses
+          - if can? :manage, User
+            %li
+              = link_to users_path do
+                %span.fa.fa-caret-right
+                Users
+          - if can? :manage, Item
+            %li
+              = link_to reconcile_overview_path do
+                %span.fa.fa-caret-right
+                Reconciliation
+      - if can? :manage, Shipment
+        %li
+          %a.nav-header.collapsed{data: {target: ".shipments-menu", toggle: "collapse"}, href: "#"}
+            %i.fa.fa-fw.fa-ship
+            Shipments
+            %i.fa.fa-collapse
+        %li
+          %ul.shipments-menu.nav.nav-list.collapse
+            %li
+              = link_to shipments_path do
+                %span.fa.fa-caret-right
+                All
+            %li
+              = link_to shipments_path(display: :received) do
+                %span.fa.fa-caret-right
+                Received
+            %li
+              = link_to shipments_path(display: :in_transit) do
+                %span.fa.fa-caret-right
+                In Transit
+            %li
+              = link_to shipments_path(display: :packing) do
+                %span.fa.fa-caret-right
+                Packing
+            %li
+              = link_to new_shipment_path do
+                %span.fa.fa-caret-right
+                New
+      - if can? :manage, Container
+        %li
+          %a.nav-header.collapsed{data: {target: ".containers-menu", toggle: "collapse"}, href: "#"}
+            %i.fa.fa-fw.fa-truck
+            Containers
+            %i.fa.fa-collapse
+        %li
+          %ul.containers-menu.nav.nav-list.collapse
+            %li
+              = link_to containers_path do
+                %span.fa.fa-caret-right
+                All
+            %li
+              = link_to containers_path(display: :unassigned) do
+                %span.fa.fa-caret-right
+                Unassigned
+            %li
+              = link_to containers_path(display: :recent) do
+                %span.fa.fa-caret-right
+                Recently Created
+            %li
+              = link_to new_container_path do
+                %span.fa.fa-caret-right
+                New
 
       %li
         %a.nav-header.collapsed{data: {target: ".pallets-menu", toggle: "collapse"}, href: "#"}
