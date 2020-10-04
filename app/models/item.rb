@@ -19,7 +19,7 @@ class Item < ApplicationRecord
 
   has_one_attached :photo
 
-  STANDARD_SIZES = %w[XXXS XXS XS S M L XL XL XXL Assorted].freeze
+  STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XL XXL Infant Child Assorted].freeze
   VOLUMES = %w[mL dL L floz cc qt pt gal].freeze
   LENGTHS = %w[nm μm mm cm m km ga in ft].freeze
   MASSES = %w[ng μg mg g kg lb oz mmol mol].freeze

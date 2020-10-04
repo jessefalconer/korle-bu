@@ -48,7 +48,7 @@
           - else
             #containers.collapse.in.panel-body
               %h4 No containers.
-              = link_button("Add a Container", new_container_path(shipment_id: @shipment.id), "pull-left")
+              = link_button("Create a Container", new_container_path(shipment_id: @shipment.id), "pull-left")
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}

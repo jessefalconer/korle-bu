@@ -34,7 +34,7 @@
                   %td
                     %p= @overview.item_instances(@item)
                   %td
-                    = link_button("Search", item_instances_path(item), "center-block")
+                    = link_button("Search", item_instances_path(@item), "center-block")
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#targetitem"}
@@ -52,7 +52,7 @@
                 %tr
                   %td
                     = link_to item_path(@target_item) do
-                      %p= @item.generated_name
+                      %p= @target_item.generated_name
                   %td
                     = link_to user_path(@target_item.user) do
                       %p= @target_item.user.name
@@ -61,7 +61,7 @@
                   %td
                     %p= @overview.item_instances(@target_item)
                   %td
-                    = link_button("Search", item_instances_path(item), "center-block")
+                    = link_button("Search", item_instances_path(@target_item), "center-block")
     .row
       .col-xs-12
         = form_tag(execute_reconcile_path, method: "get") do

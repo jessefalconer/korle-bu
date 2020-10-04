@@ -66,7 +66,7 @@
           - else
             #boxes.collapse.in.panel-body
               %h4 No boxes.
-              = link_button("Add a Box", new_box_path(pallet_id: @pallet.id), "pull-left")
+              = link_button("Create a Box", new_box_path(pallet_id: @pallet.id), "pull-left")
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletizeditems"}

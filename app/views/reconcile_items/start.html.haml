@@ -80,7 +80,7 @@
                       %td
                         = link_button("Search", item_instances_path(item), "center-block")
                       %td
-                        = link_button("Confirm", reconcile_confirm_path(item, item), "center-block")
+                        = link_button("Confirm", reconcile_confirm_path(@item, item), "center-block")
     - else
       %p No suggestions found. Try searching for an item.
 
