@@ -18,7 +18,7 @@
             %tr
               %td
                 .form-group
-                  = f.text_field :expiry_date, value: item.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepicker", id: "palletized-item-#{item.id}"
+                  = f.text_field :expiry_date, value: item.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "palletized-item-#{item.id}"
               %td
                 .form-group
                   = f.number_field :quantity, value: item.quantity, min: 0, class: "form-control"

@@ -9,14 +9,16 @@ require("channels")
 
 import "../packs/errors";
 import "../packs/bootstrap";
+import "../packs/search";
 
 $(function () {
   var uls = $('.sidebar-nav > ul > *').clone();
   uls.addClass('visible-xs');
   $('#main-menu').append(uls.clone());
 });
+
 $(document).ready(function () {
-    $(".datepicker").datepicker({
+    $(".datepickers").datepicker({
       dateFormat: "yy-mm-dd"
     });
 });

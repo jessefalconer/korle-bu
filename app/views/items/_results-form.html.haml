@@ -1,6 +1,6 @@
 - if @search_results_items.none?
   .form-group.padding-top-small
-    No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
+    No results. The item may already be added or try simplifying your search by removing hyphens, avoiding plurals...
   .form-group.padding-top-small
     %span Still unable to find your item?
     = link_button("New Item", new_item_path, "pull-right")
@@ -13,7 +13,7 @@
             %p.margin-bottom-0= item.generated_name
         .form-group
           .col-xs-6
-            = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "item-#{item.id}"
+            = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "item-#{item.id}", placeholder: "Expiry Date"
         .col-xs-3
           .form-group
             = f.number_field :quantity, value: 1, class: "form-control", min: 1
