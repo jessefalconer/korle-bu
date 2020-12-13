@@ -2,97 +2,126 @@
 - user = @item.user&.name || current_user.name
 - time = @item.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
 = form_for @item do |f|
+  .panel.panel-default
+    %a.panel-heading{data: {toggle: "collapse"}, href: "#general"}
+      General
+      %i.fa.fa-edit.pull-right
+    .collapse.in{id: "general"}
+      .row
+        .col-xs-6
+          .form-group
+            = f.label :object, "Item"
+            = f.text_field :object, disabled: no_edit, class: "form-control", placeholder: "eg: syringe, acetaminophen, heart monitor"
+        .col-xs-6
+          .form-group
+            = f.label :packaged_quantity, "Packaged Quantity"
+            = f.number_field :packaged_quantity, min: 1, step: "any", disabled: no_edit, class: "form-control"
+        .col-xs-6
+          .form-group
+            = f.label :brand
+            = f.text_field :brand, disabled: no_edit, class: "form-control"
+        .col-xs-6
+          .form-group
+            = f.label :standardized_size, "Size"
+            = f.select(:standardized_size, options_for_select(Item::STANDARD_SIZES, @item.standardized_size), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
 
-  .col-xs-12
-    .form-group
-      = f.label :object, "Item"
-      = f.text_field :object, disabled: no_edit, class: "form-control", placeholder: "eg: syringe, acetaminophen, heart monitor"
-  .col-xs-6
-    .form-group
-      = f.label :brand
-      = f.text_field :brand, disabled: no_edit, class: "form-control"
+  .panel.panel-default
+    %a.panel-heading{data: {toggle: "collapse"}, href: "#concentration"}
+      Concentration
+      %i.fa.fa-edit.pull-right
+    .collapse{id: "concentration"}
+      .row
+        .col-xs-6
+          .form-group
+            = f.label :concentration, "Value"
+            = f.number_field :concentration, min: 0, step: "any", disabled: no_edit, class: "form-control"
+        .col-xs-6
+          .form-group
+            = f.label :concentration_units, "Units"
+            = f.select(:concentration_units, options_for_select(Item::RATIOS, @item.concentration_units), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+        .col-xs-12
+          .form-group
+            = f.label :concentration_description, "Description"
+            = f.text_field :concentration_description, disabled: no_edit, class: "form-control", placeholder: "eg: liquid, topical, paste"
 
-  .col-xs-6
-    .form-group
-      = f.label :standardized_size, "Size"
-      = f.select(:standardized_size, options_for_select(Item::STANDARD_SIZES, @item.standardized_size), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+  .panel.panel-default
+    %a.panel-heading{data: {toggle: "collapse"}, href: "#measurement1"}
+      Measurement 1
+      %i.fa.fa-edit.pull-right
+    .collapse{id: "measurement1"}
+      .row
+        .col-xs-6
+          .form-group
+            = f.label :numerical_size_1, "Value"
+            = f.number_field :numerical_size_1, min: 0, step: "any", disabled: no_edit, class: "form-control"
+        .col-xs-6
+          .form-group
+            = f.label :numerical_units_1, "Units"
+            = f.select(:numerical_units_1, options_for_select(Item::UNITS, @item.numerical_units_1), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+        .col-xs-12
+          .form-group
+            = f.label :numerical_description_1, "Description"
+            = f.text_field :numerical_description_1, disabled: no_edit, class: "form-control", placeholder: "eg: needle, tube, pill"
 
-  .col-xs-6
-    .form-group
-      = f.label :concentration, "Concentration #"
-      = f.number_field :concentration, min: 0, step: "any", disabled: no_edit, class: "form-control"
-  .col-xs-6
-    .form-group
-      = f.label :concentration_units, "Conc. Units"
-      = f.select(:concentration_units, options_for_select(Item::RATIOS, @item.concentration_units), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
-  .col-xs-12
-    .form-group
-      = f.label :concentration_description, "Conc. Description"
-      = f.text_field :concentration_description, disabled: no_edit, class: "form-control", placeholder: "eg: liquid, topical, paste"
+  .panel.panel-default
+    %a.panel-heading{data: {toggle: "collapse"}, href: "#measurement2"}
+      Measurement 2
+      %i.fa.fa-edit.pull-right
+    .collapse{id: "measurement2"}
+      .row
+        .col-xs-6
+          .form-group
+            = f.label :numerical_size_2, "Value"
+            = f.number_field :numerical_size_2, min: 0, step: "any", disabled: no_edit, class: "form-control"
+        .col-xs-6
+          .form-group
+            = f.label :numerical_units_2, "Units"
+            = f.select(:numerical_units_2, options_for_select(Item::UNITS, @item.numerical_units_2), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+        .col-xs-12
+          .form-group
+            = f.label :numerical_description_2, "Description"
+            = f.text_field :numerical_description_2, disabled: no_edit, class: "form-control", placeholder: "eg: vial, canister, blade"
 
-  .col-xs-6
-    .form-group
-      = f.label :numerical_size_1, "Measurement #1"
-      = f.number_field :numerical_size_1, min: 0, step: "any", disabled: no_edit, class: "form-control"
-  .col-xs-6
-    .form-group
-      = f.label :numerical_units_1, "Units #1"
-      = f.select(:numerical_units_1, options_for_select(Item::UNITS, @item.numerical_units_1), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
-  .col-xs-12
-    .form-group
-      = f.label :numerical_description_1, "Description #1"
-      = f.text_field :numerical_description_1, disabled: no_edit, class: "form-control", placeholder: "eg: needle, tube, pill"
+  .row
+    .col-xs-12
+      .form-group
+        = f.label :category
+        = f.select(:category_id, options_from_collection_for_select(Category.order(:name), :id, :name, @item.category_id), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+    .col-xs-12
+      .form-group
+        = f.label :notes
+        = f.text_field :notes, disabled: no_edit, class: "form-control"
 
-  .col-xs-6
-    .form-group
-      = f.label :numerical_size_2, "Measurement #2"
-      = f.number_field :numerical_size_2, min: 0, step: "any", disabled: no_edit, class: "form-control"
-  .col-xs-6
-    .form-group
-      = f.label :numerical_units_2, "Units #2"
-      = f.select(:numerical_units_2, options_for_select(Item::UNITS, @item.numerical_units_2), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
-  .col-xs-12
-    .form-group
-      = f.label :numerical_description_2, "Description #2"
-      = f.text_field :numerical_description_2, disabled: no_edit, class: "form-control", placeholder: "eg: vial, canister, blade"
-  .col-xs-12
-    .form-group
-      = f.label :packaged_quantity, "Packaged Quantity"
-      = f.number_field :packaged_quantity, min: 1, step: "any", disabled: no_edit, class: "form-control"
-  .col-xs-12
-    .form-group
-      = f.label :category
-      = f.select(:category_id, options_from_collection_for_select(Category.order(:name), :id, :name, @item.category_id), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
-  .col-xs-12
-    .form-group
-      = f.label :notes
-      = f.text_field :notes, disabled: no_edit, class: "form-control"
-  -# .form-group
-  -#   = f.label :photo
-  -#   = f.file_field :photo, disabled: no_edit, class: "form-control"
-  .col-xs-12
-    .form-group
-      = f.label :flagged, "Flag for Review?"
-      = f.select(:flagged, options_for_select([true, false], @item.flagged), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
-  -# .col-xs-12
-  -#   .form-group
-  -#     = f.label :keywords
-  -#     = f.text_field :keywords, disabled: no_edit, class: "form-control", placeholder: "Keywords can help searches or reviews"
-  .col-xs-12
-    .form-group
-      = f.label :verified
-      = f.select(:verified, options_for_select([true, false], @item.verified), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
-  .col-xs-12
-    .form-group
-      %label Created By
-      = f.text_field :user, value: user, disabled: true, class: "form-control"
-  .col-xs-12
-    .form-group
-      %label Created At
-      = f.text_field :created_at, value: time, disabled: true, class: "form-control"
-  .col-xs-12
-    .btn-toolbar.list-toolbar
-      - if delete
-        = delete_button(item_path(@item), "Are you sure you want to delete #{@item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
-      - else
-        = submit_button("Save")
+        -# .form-group
+        -#   = f.label :photo
+        -#   = f.file_field :photo, disabled: no_edit, class: "form-control"
+    -# .col-xs-12
+    -#   .form-group
+    -#     = f.label :keywords
+    -#     = f.text_field :keywords, disabled: no_edit, class: "form-control", placeholder: "Keywords can help searches or reviews"
+  .row
+    .col-xs-6
+      .form-group
+        = f.label :flagged, "Flag for Review?"
+        = f.select(:flagged, options_for_select([true, false], @item.flagged), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+
+    .col-xs-6
+      .form-group
+        = f.label :verified
+        = f.select(:verified, options_for_select([true, false], @item.verified), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+    .col-xs-12
+      .form-group
+        %label Created By
+        = f.text_field :user, value: user, disabled: true, class: "form-control"
+
+  .row
+    .col-xs-12
+      .form-group
+        %label Created At
+        = f.text_field :created_at, value: time, disabled: true, class: "form-control"
+    .col-xs-12
+      .btn-toolbar.list-toolbar
+        - if delete
+          = delete_button(item_path(@item), "Are you sure you want to delete #{@item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
+        - else
+          = submit_button("Save")
