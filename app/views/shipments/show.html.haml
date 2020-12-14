@@ -13,6 +13,9 @@
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
+      %li
+        = link_to shipment_path(format: "csv") do
+          Export CSV
     .row
       .col-md-5
         %br
