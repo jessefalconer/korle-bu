@@ -14,7 +14,10 @@ module ApplicationHelper
   end
 
   def delete_button(path, confirm_text, classes = "")
-    content_tag(:a, "Delete", href: path, class: "btn btn-danger #{classes}", data: { confirm: confirm_text, method: :delete })
+    link_to(path, class: "btn btn-danger responsive-button #{classes}", data: { confirm: confirm_text, method: :delete }) do
+      content_tag(:i, "", class: "fa fa-trash") +
+      content_tag(:span, " Delete")
+    end
   end
 
   def link_button(text, path, side = "", data = {})
@@ -23,10 +26,10 @@ module ApplicationHelper
     end
   end
 
-  def submit_button(text, side = "")
-    button_tag(type: "submit", class: "btn btn-primary #{side}") do
+  def submit_button(text, classes = "")
+    button_tag(type: "submit", class: "btn btn-primary responsive-button #{classes}") do
       content_tag(:i, "", class: "fa fa-save") +
-        content_tag(:span, " " + text)
+        content_tag(:span, " #{text}")
     end
   end
 

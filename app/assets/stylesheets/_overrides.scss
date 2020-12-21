@@ -1,0 +1,52 @@
+#line-chart {
+  height: 300px;
+  width: 800px;
+  margin: 0px auto;
+  margin-top: 1em;
+}
+
+.navbar-default .navbar-brand,
+.navbar-default .navbar-brand:hover {
+  color: #fff;
+}
+
+// Utility
+.margin-bottom-sm {
+  margin-bottom: 10px;
+}
+
+.margin-bottom-md {
+  margin-bottom: 15px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #cccccc;
+  // background-color: #cccccc;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+
+  .flash {
+    padding: 1em 0em 1em 0em;
+    color: white;
+
+    &.error {
+      background-color: #ff4d4d;
+    }
+
+    &.success {
+      background-color: #02a556;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-button {
+    span {
+      display: none;
+    }
+  }
+}
