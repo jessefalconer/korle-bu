@@ -14,8 +14,8 @@
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
       %li
-        = link_to shipment_path(format: "csv") do
-          Export CSV
+        %a{data: {toggle: "tab"}, href: "#export"} Export
+
     .row
       .col-md-5
         %br
@@ -25,6 +25,9 @@
 
           #edit.tab-pane.fade
             = render partial: "form", locals: { no_edit: false, delete: false }
+
+          #export.tab-pane.fade
+            = render partial: "export"
 
       .col-md-7
         %br
