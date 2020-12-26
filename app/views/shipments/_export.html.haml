@@ -1,23 +1,20 @@
-= form_for @shipment do |f|
-  %h3 Columns
-  - Shipment::EXPORT_COLUMNS.each do |col|
-    .form-group
-      = f.label col
-      = f.check_box col, class: "form-control"
-  %h3 Grouping
+= form_for Export.new("Shipment", @shipment.id), url: exports_path do |f|
+  %h4 Select a grouping strategy.
   .form-group
-    %label Group By Item Category
-    = radio_button_tag "Group By", "Category"
+    %label By Item Category
+    = f.radio_button :group_by, "category", checked: true
   .form-group
-    %label Group By Item
-    = radio_button_tag "Group By", "Item"
-  %h3 Sorting
-  .form-group
-    %label Sort By Name A-Z
-    = radio_button_tag "Sort By", "Category"
-  .form-group
-    %label Sort By Name Z-A
-    = radio_button_tag "Sort By", "Item"
+    %label By Item
+    = f.radio_button :group_by, "item"
+  -# %h3 Sorting
+  -# .form-group
+  -#   %label Sort By Name A-Z
+  -#   = f.radio_button :sort_by, "asc"
+  -# .form-group
+  -#   %label Sort By Name Z-A
+  -#   = f.radio_button :sort_by, "desc"
 
-= link_to shipment_path(format: "csv") do
-  Export CSV
+  = f.hidden_field :klass, value: "Shipment"
+  = f.hidden_field :id, value: @shipment.id
+
+  = submit_button("Export", "left")

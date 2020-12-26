@@ -14,6 +14,9 @@
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
       %li
+        = link_to new_container_path(shipment_id: @shipment.id) do
+          New Container
+      %li
         %a{data: {toggle: "tab"}, href: "#export"} Export
 
     .row

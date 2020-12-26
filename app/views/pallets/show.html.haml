@@ -16,6 +16,9 @@
       %li
         = link_to pallet_manage_items_path(@pallet) do
           Add Items
+      %li
+        = link_to new_box_path(pallet_id: @pallet.id) do
+          New Box
     .row
       .col-md-5
         %br
@@ -66,7 +69,6 @@
           - else
             #boxes.collapse.in.panel-body
               %h4 No boxes.
-              = link_button("Create a Box", new_box_path(pallet_id: @pallet.id), "pull-left")
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletizeditems"}

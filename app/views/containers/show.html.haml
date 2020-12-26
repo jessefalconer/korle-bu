@@ -16,6 +16,9 @@
       %li
         = link_to container_manage_items_path(@container) do
           Add Items
+      %li
+        = link_to new_pallet_path(container_id: @container.id) do
+          New Pallet
     .row
       .col-md-5
         %br
