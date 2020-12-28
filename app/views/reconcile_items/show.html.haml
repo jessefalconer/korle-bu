@@ -13,9 +13,11 @@
         %h4 Unverified Items (#{@overview.unverified_items.size})
     .row
       .col-xs-12
-        %br
         - if @overview.unverified_items.any?
-          %p These items are unverified. You can merge them with an existing item, and delete or verify.
+          %p
+            These items are unverified. To begin merging, click |
+            %em Reconcile.
+            Or click on the item's name to begin verifying or deleting.
           %table.table
             %thead
               %tr
@@ -37,16 +39,15 @@
                   %td
                     = link_button("Reconcile", reconcile_start_path(item), "center-block")
         - else
-          %p You're all up to date!
+          %p No items to reconcile.
 
     .row
       .col-xs-12
         %h4 Uncategorized Items (#{@overview.uncategorized_items.size})
     .row
       .col-xs-12
-        %br
         - if @overview.uncategorized_items.any?
-          %p These items are uncategorized. Click on the name to edit the item.
+          %p These items are uncategorized. Click on the item's name to begin categorizing.
           %table.table
             %thead
               %tr
@@ -68,16 +69,15 @@
                     = link_to item_instances_path(item) do
                       %p= Item.item_instances(item)
         - else
-          %p You're all up to date!
+          %p No items to categorize.
 
     .row
       .col-xs-12
         %h4 Flagged Items (#{@overview.flagged_items.size})
     .row
       .col-xs-12
-        %br
         - if @overview.flagged_items.any?
-          %p These items were voluntarily flagged for admin inspection.
+          %p These items were voluntarily flagged for admin inspection. Click on the item's name to begin verifying.
           %table.table
             %thead
               %tr
@@ -102,4 +102,4 @@
                     = link_to item_instances_path(item) do
                       %p= Item.item_instances(item)
         - else
-          %p You're all up to date!
+          %p No items to verify.
