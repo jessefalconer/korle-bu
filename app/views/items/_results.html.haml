@@ -1,34 +1,7 @@
 - if @search_results_items.none?
-  .form-group.padding-top-small
-    No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
+  .row
+    .col-xs-12
+      No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
 - else
-  .panel.panel-default
-    %a.panel-heading{data: {toggle: "collapse"}, href: "#items"}
-      Compare with #{@search_results_items.size} Related Items
-    .collapse.in{id: "items"}
-      %table.table.table-bordered.table-striped
-        %thead
-          %tr
-            %th Item
-            %th Created By
-            %th Created At
-            %th Instances Used
-            %th Show Instances
-            %th Select
-        %tbody
-          - @search_results_items.each do |item|
-            %tr
-              %td
-                = link_to item_path(item) do
-                  %p= item.generated_name
-              %td
-                = link_to user_path(item.user) do
-                  %p= item.user.name
-              %td
-                %p= item.created_at.strftime("%Y-%m-%d")
-              %td
-                %p= ReconcileItem.new(item.user).item_instances(item)
-              %td
-                %p Search
-              %td
-                = link_button("Confirm Merge >>", reconcile_confirm_path(record, item), "center-block")
+  - @search_results_items.each do |item|
+    = render partial: "reconcile_items/item_card", locals: {item: item, id: item.id, match_count: nil, record: record}

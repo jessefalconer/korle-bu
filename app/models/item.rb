@@ -35,6 +35,15 @@ class Item < ApplicationRecord
     self.generated_name = process_name.presence || "Unnamed Item"
   end
 
+  def self.item_instances(item)
+    count = 0
+    count += ContainerizedItem.where(item_id: item.id).count
+    count += PalletizedItem.where(item_id: item.id).count
+    count += BoxedItem.where(item_id: item.id).count
+
+    count
+  end
+
   def process_name
     [brand.to_s.titleize, object.titleize, standardized_size.to_s,
      package.to_s, numerical_1_phrase.to_s, numerical_2_phrase.to_s,

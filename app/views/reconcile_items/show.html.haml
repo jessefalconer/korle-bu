@@ -1,129 +1,105 @@
 .content
   .header
-    %h1.page-title Reconcile Items
+    %h1.page-title Reconcile Overview
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li.active Reconcile Items
+      %li.active Reconcile Overview
   .main-content
     .row
       .col-xs-12
-        %h3 Unverified Items (#{@overview.unverified_items.size})
+        %h3 Select an item to reconcile, categorize or verify.
+      .col-xs-12
+        %h4 Unverified Items (#{@overview.unverified_items.size})
     .row
       .col-xs-12
         %br
         - if @overview.unverified_items.any?
-          %p Select an item to verify OR merge with an existing item.
-          - @overview.unverified_items.each do |item|
-            .panel.panel-default
-              %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#rec-#{item.id}"}
-                #{item.generated_name}
-              .collapse{id: "rec-#{item.id}"}
-                %table.table.table-bordered.table-striped
-                  %thead
-                    %tr
-                      %th Created By
-                      %th Created At
-                      %th Instances Used
-                      %th Instances
-                      %th
-                      %th
-                  %tbody
-                    %tr
-                      %td
-                        = link_to user_path(item.user) do
-                          %p= item.user.name
-                      %td
-                        %p= item.created_at.strftime("%Y-%m-%d")
-                      %td
-                        %p= @overview.item_instances(item)
-                      %td
-                        = link_button("Search", item_instances_path(item), "center-block")
-                      %td
-                        = link_button("Verify", item_path(item), "center-block")
-                      %td
-                        = link_button("Reconcile", reconcile_start_path(item), "center-block")
+          %p These items are unverified. You can merge them with an existing item, and delete or verify.
+          %table.table
+            %thead
+              %tr
+                %th Name
+                %th Created At
+                %th Instances
+                %th
+            %tbody
+              - @overview.unverified_items.each do |item|
+                %tr
+                  %td
+                    = link_to item_path(item) do
+                      %p= item.generated_name
+                  %td
+                    %p= item.created_at.strftime("%Y-%m-%d")
+                  %td
+                    = link_to item_instances_path(item) do
+                      %p= Item.item_instances(item)
+                  %td
+                    = link_button("Reconcile", reconcile_start_path(item), "center-block")
         - else
           %p You're all up to date!
 
     .row
       .col-xs-12
-        %h3 Uncategorized Items (#{@overview.uncategorized_items.size})
+        %h4 Uncategorized Items (#{@overview.uncategorized_items.size})
     .row
       .col-xs-12
         %br
         - if @overview.uncategorized_items.any?
-          %p Inspect uncategorized items.
-          - @overview.uncategorized_items.each do |item|
-            .panel.panel-default
-              %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#cat-#{item.id}"}
-                #{item.generated_name}
-              .collapse{id: "cat-#{item.id}"}
-                %table.table.table-bordered.table-striped
-                  %thead
-                    %tr
-                      %th Created By
-                      %th Created At
-                      %th Verified
-                      %th Instances Used
-                      %th Instances
-
-                      %th
-                  %tbody
-                    %tr
-                      %td
-                        = link_to user_path(item.user) do
-                          %p= item.user.name
-                      %td
-                        %p= item.created_at.strftime("%Y-%m-%d")
-                      %td
-                        %p= item.verified.to_s.capitalize
-                      %td
-                        %p= @overview.item_instances(item)
-                      %td
-                        = link_button("Search", item_instances_path(item), "center-block")
-                      %td
-                        = link_button("Categorize", item_path(item), "center-block")
+          %p These items are uncategorized. Click on the name to edit the item.
+          %table.table
+            %thead
+              %tr
+                %th Name
+                %th Created At
+                %th Verified
+                %th Instances
+            %tbody
+              - @overview.uncategorized_items.each do |item|
+                %tr
+                  %td
+                    = link_to item_path(item) do
+                      %p= item.generated_name
+                  %td
+                    %p= item.created_at.strftime("%Y-%m-%d")
+                  %td
+                    %p= item.verified.to_s.capitalize
+                  %td
+                    = link_to item_instances_path(item) do
+                      %p= Item.item_instances(item)
         - else
           %p You're all up to date!
 
     .row
       .col-xs-12
-        %h3 Flagged Items (#{@overview.flagged_items.size})
+        %h4 Flagged Items (#{@overview.flagged_items.size})
     .row
       .col-xs-12
         %br
         - if @overview.flagged_items.any?
-          %p Inspect user-flagged items.
-          - @overview.flagged_items.each do |item|
-            .panel.panel-default
-              %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#flag-#{item.id}"}
-                #{item.generated_name}
-              .collapse{id: "flag-#{item.id}"}
-                %table.table.table-bordered.table-striped
-                  %thead
-                    %tr
-                      %th Created By
-                      %th Created At
-                      %th Verified
-                      %th Instances Used
-                      %th Instances
-
-                      %th
-                  %tbody
-                    %tr
-                      %td
-                        = link_to user_path(item.user) do
-                          %p= item.user.name
-                      %td
-                        %p= item.created_at.strftime("%Y-%m-%d")
-                      %td
-                        %p= item.verified.to_s.capitalize
-                      %td
-                        %p= @overview.item_instances(item)
-                      %td
-                        = link_button("Search", item_instances_path(item), "center-block")
-                      %td
-                        = link_button("Categorize", item_path(item), "center-block")
+          %p These items were voluntarily flagged for admin inspection.
+          %table.table
+            %thead
+              %tr
+                %th Name
+                %th Created At
+                %th Verified
+                %th Category
+                %th Instances
+            %tbody
+              - @overview.flagged_items.each do |item|
+                %tr
+                  %td
+                    = link_to item_path(item) do
+                      %p= item.generated_name
+                  %td
+                    %p= item.created_at.strftime("%Y-%m-%d")
+                  %td
+                    %p= item.verified.to_s.capitalize
+                  %td
+                    %p= item.category&.name || "N/A"
+                  %td
+                    = link_to item_instances_path(item) do
+                      %p= Item.item_instances(item)
         - else
           %p You're all up to date!

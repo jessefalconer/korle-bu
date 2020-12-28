@@ -50,3 +50,58 @@
     }
   }
 }
+
+.reconcile-button {
+  margin-top: 15px;
+}
+
+.stats-container {
+  margin: 0 0 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.danger-zone {
+  border-radius: 5px 5px 0 0;
+  color: #ff4d4d;
+  border: 2px solid #ff4d4d;
+  padding: 2.5em 1em 1em 1em;
+  position: relative;
+  width: 100%;
+
+  h3.title {
+    color: #fff;
+    background: #ff4d4d;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.25em;
+    margin: 0;
+  }
+
+  .body {
+    margin-top: 15px;
+    color: darken(#ff4d4d, 20%);
+  }
+
+  ul.fa-ul li {
+    &.no-warn {
+      color: black;
+    }
+  }
+
+  .form-group {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 0;
+
+    label {
+      color: darken(#ff4d4d, 20%);
+      font-size: 14px;
+      font-weight: normal;
+    }
+  }
+
+  .button {display: inline-block;}
+}

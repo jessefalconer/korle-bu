@@ -33,6 +33,13 @@ module ApplicationHelper
     end
   end
 
+  def submit_button_warning(text, classes = "")
+    button_tag(type: "submit", class: "btn btn-danger responsive-button #{classes}") do
+      content_tag(:i, "", class: "fa fa-compress-alt") +
+        content_tag(:span, " #{text}")
+    end
+  end
+
   def present(model)
     klass = "#{model.class}Presenter".constantize
     presenter = klass.new(model, self)

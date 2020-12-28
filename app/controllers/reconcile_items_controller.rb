@@ -10,7 +10,7 @@ class ReconcileItemsController < ApplicationController
 
   def start
     @overview = ReconcileItem.new(current_user)
-    @items = @overview.find_similar_records(@item)
+    @similar_items = @overview.find_similar_records(@item)
   end
 
   def confirm

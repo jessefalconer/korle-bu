@@ -5,6 +5,7 @@ class ReconcileItem
     @current_user = current_user
   end
 
+  #TODO: move these to Item#scopes
   def unverified_items
     Item.where(verified: false)
   end
@@ -17,20 +18,11 @@ class ReconcileItem
     Item.where(flagged: true)
   end
 
-  def item_instances(item)
-    count = 0
-    count += ContainerizedItem.where(item_id: item.id).count
-    count += PalletizedItem.where(item_id: item.id).count
-    count += BoxedItem.where(item_id: item.id).count
-
-    count
-  end
-
   def find_similar_records(item)
     arr = item.generated_name.split(/[\s-]+/)
 
     results = arr.each_with_object({}) do |word, hash|
-      hash[word] = Item.search_by_generated_name(word).where.not(id: item.id, verified: false).ids
+      hash[word] = Item.search_by_generated_name(word).where.not(id: item.id).ids
     end
 
     results = results.values.flatten.each_with_object(Hash.new(0)) { |e, h| h[e] += 1; }
@@ -46,6 +38,7 @@ class ReconcileItem
     Item.find(item.id).destroy if delete
   end
 
+  #TODO: Move this to a presenter
   def match_percentage(integer, item)
     size = item.generated_name.split(/[\s-]+/).size
     "#{(integer.to_f / size * 100).round(2)}%"
