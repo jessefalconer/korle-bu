@@ -11,6 +11,8 @@ class Pallet < ApplicationRecord
   has_many :palletized_items, dependent: :destroy
   has_many :items, through: :palletized_items
 
+  has_one :shipment, through: :container
+
   accepts_nested_attributes_for :palletized_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :unassigned, -> { where(container_id: nil) }

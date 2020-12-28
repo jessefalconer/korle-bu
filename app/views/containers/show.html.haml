@@ -1,21 +1,23 @@
 .content
   .header
-    %h1.page-title Containers
+    %h1.page-title= @container.name
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li
-        = link_to "Containers", containers_path
-      %li.active= @container.name
+      = present(@container).breadcrumbs
+
+    = link_to container_manage_items_path(@container) do
+      Manage or add items to this container.
+    %br
+    = link_to new_pallet_path(container_id: @container.id) do
+      Add a pallet to this container.
   .main-content
     %ul.nav.nav-tabs
       %li.active
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
-      %li
-        = link_to container_manage_items_path(@container) do
-          Add Items
+
     .row
       .col-md-5
         %br
@@ -86,4 +88,4 @@
                       %td= ci.quantity
           - else
             #containerizeditems.collapse.in.panel-body
-              %h5 Add loose items to this container from the tab.
+              %h5 Add large items to this container from the tab.

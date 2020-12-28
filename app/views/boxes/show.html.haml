@@ -1,12 +1,14 @@
 .content
   .header
-    %h1.page-title Boxes
+    %h1.page-title= @box.name
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li
-        = link_to "Boxes", boxes_path
-      %li.active= @box.name
+      = present(@box).breadcrumbs
+
+    = link_to pallet_manage_items_path(@pallet) do
+      Manage or add items to this box.
+
   .main-content
     %ul.nav.nav-tabs
       %li.active

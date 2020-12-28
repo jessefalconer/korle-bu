@@ -1,14 +1,10 @@
 .content
   .header
-    %h1.page-title Containerized Items
+    %h1.page-title Container Items
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li
-        = link_to "Boxes", containers_path
-      %li
-        = link_to @container.name, container_path(@container)
-      %li.active Containerized Items
+      = present(@container).breadcrumbs_item
   .main-content
     %ul.nav.nav-tabs
       %li.active

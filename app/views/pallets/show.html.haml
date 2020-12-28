@@ -1,21 +1,22 @@
 .content
   .header
-    %h1.page-title Pallets
+    %h1.page-title= @pallet.name
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li
-        = link_to "Pallets", pallets_path
-      %li.active= @pallet.name
+      = present(@pallet).breadcrumbs
+
+    = link_to pallet_manage_items_path(@pallet) do
+      Manage or add items to this pallet.
+    %br
+    = link_to new_box_path(pallet_id: @pallet.id) do
+      Add a box to this pallet.
   .main-content
     %ul.nav.nav-tabs
       %li.active
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
-      %li
-        = link_to pallet_manage_items_path(@pallet) do
-          Add Items
     .row
       .col-md-5
         %br
