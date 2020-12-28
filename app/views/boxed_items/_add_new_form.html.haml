@@ -9,4 +9,4 @@
         %label Quantity
         = number_field_tag :quantity, 0, { class: "form-control", min: 1}
 
-  = render partial: "items/form", locals: { item: Item.new, no_edit: false, delete: false }
+  = render partial: "items/form", locals: { item: Item.new }

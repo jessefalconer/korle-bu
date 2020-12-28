@@ -105,3 +105,25 @@
 
   .button {display: inline-block;}
 }
+
+.edit_item {
+  padding: 0 15px;
+
+  .collapse .row.form-row {
+    padding: 5px 15px 0 15px;
+  }
+}
+
+.edit_container,
+.edit_pallet,
+.edit_box {
+  .collapse .row.form-row {
+    padding: 5px 15px 0 15px;
+  }
+}
+
+.row.inline-add-item {
+  border: 1px solid #ddd;
+  border-top: none;
+  margin: 0;
+}

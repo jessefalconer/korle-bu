@@ -2,25 +2,18 @@
   %p Use the tabs to search or create a new item.
 - @pallet.palletized_items.each do |item|
   = form_for [@pallet, item], method: :patch do |f|
-    .panel.panel-default
-      %a.panel-heading{data: {toggle: "collapse"}, href: "#item#{item.id}"}
-        #{item.generated_name} (#{item.quantity}) #{item.expiry_date&.strftime("%Y-%m-%d")}
-      .collapse.in{id: "item#{item.id}"}
-        %table.table.list
-          %tbody
-            %tr
-              %th
-                %p Expiry Date
-              %th
-                %p Quantity
-              %th
-                = delete_button(pallet_palletized_item_path(@pallet, item), "Are you sure?", "pull-right")
-            %tr
-              %td
-                .form-group
-                  = f.text_field :expiry_date, value: item.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "palletized-item-#{item.id}"
-              %td
-                .form-group
-                  = f.number_field :quantity, value: item.quantity, min: 0, class: "form-control"
-              %td
-                = submit_button("Save", "pull-right")
+    .row.padding-top-small.inline-add-item
+      .col-xs-9
+        .row
+          .col-xs-12
+            .form-group
+              %p.margin-bottom-0= item.generated_name
+          .col-xs-7
+            .form-group
+              = f.text_field :expiry_date, value: item.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "palletized-item-#{item.id}"
+          .col-xs-5
+            .form-group
+              = f.number_field :quantity, value: item.quantity, min: 0, class: "form-control"
+      .col-xs-3.vertical-buttons
+        = submit_button("Add")
+        = delete_button(pallet_palletized_item_path(@pallet, item), "Are you sure?")

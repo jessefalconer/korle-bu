@@ -20,10 +20,29 @@
         %br
         .tab-content
           #view.tab-pane.active.in
-            = render partial: "form", locals: { no_edit: true, delete: true }
+            .row
+              .col-xs-12
+                %h5.text-muted Name
+                %h4= @box.name
+              - if @box.notes.present?
+                .col-md-12
+                  %h5.text-muted Notes
+                  %h4= @box.notes
+              .col-md-3.col-xs-6
+                %h5.text-muted Custom ID
+                %h4= @box.custom_uid
+              .col-md-3.col-xs-6
+                %h5.text-muted Status
+                %h4= @box.status
+              .col-md-3.col-xs-6
+                %h5.text-muted Created By
+                %h4= @box.user.name
+              .col-md-3.col-xs-6
+                %h5.text-muted Created At
+                %h4= @box.created_at.strftime("%Y-%m-%d")
 
           #edit.tab-pane.fade
-            = render partial: "form", locals: { no_edit: false, delete: false }
+            = render partial: "form"
 
       .col-md-7
         %br
@@ -69,4 +88,4 @@
                       %td= bi.quantity
           - else
             #boxeditems.collapse.in.panel-body
-              %h5 Add items to this box from the tab.
+              %h5 No items in this box.

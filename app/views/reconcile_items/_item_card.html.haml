@@ -5,13 +5,13 @@
     %h5.text-muted Name
     = link_to item_path(item) do
       %h4= item.generated_name
-  .col-md-3.col-sm-6.col-xs-6
+  .col-md-3.col-xs-6
     %h5.text-muted Created By
     %h4= item.user.name
-  .col-md-3.col-sm-6.col-xs-6
+  .col-md-3.col-xs-6
     %h5.text-muted Created At
     %h4= item.created_at.strftime("%Y-%m-%d")
-  .col-md-3.col-sm-6.col-xs-6
+  .col-md-3.col-xs-6
     %h5.text-muted Verified
     %h4{style: "color: #{item.verified ? "#02a556" : "#ff4d4d"}"}= item.verified.to_s.capitalize
   .col-md-3.col-xs-6
