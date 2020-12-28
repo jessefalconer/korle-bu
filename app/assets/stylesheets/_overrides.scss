@@ -10,6 +10,31 @@
   color: #fff;
 }
 
+h1.page {
+  text-align: center;
+  line-height: 1.5em
+}
+
+h2.page {
+  padding-top: 2em;
+  margin-bottom: 1em;
+  line-height: 1.5em
+}
+
+.theme-1.color {
+  background: #4d5b76
+}
+
+.theme-1 .navbar {
+  background: #4d5b76;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4d5b76), color-stop(1, #6f80a1));
+  background: -ms-linear-gradient(bottom, #4d5b76, #6f80a1);
+  background: -moz-linear-gradient(center bottom, #4d5b76 0, #6f80a1 100%);
+  background: -o-linear-gradient(bottom, #4d5b76, #6f80a1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#4d5b76', EndColorStr='#6f80a1');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#6f80a1',EndColorStr='#4d5b76')"
+}
+
 // Utility
 .margin-bottom-sm {
   margin-bottom: 10px;
