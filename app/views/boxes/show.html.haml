@@ -6,7 +6,7 @@
         = link_to "Home", index_path
       = present(@box).breadcrumbs
 
-    = link_to pallet_manage_items_path(@pallet) do
+    = link_to box_manage_items_path(@box) do
       Manage or add items to this box.
 
   .main-content
@@ -15,9 +15,6 @@
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
-      %li
-        = link_to box_manage_items_path(@box) do
-          Add Items
     .row
       .col-md-5
         %br
