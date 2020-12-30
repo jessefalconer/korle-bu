@@ -11,7 +11,12 @@ class SessionsController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user&.authenticate(params[:password])
       session[:user_id] = @user.id
-      redirect_to index_path, flash: { success: "Successfully logged in." }
+      if @user.status == "Not Activated"
+        redirect_to :root, flash: { success: "Your account has been created, however an administrator must approve it. Please check back later." }
+        session.clear
+      else
+        redirect_to index_path, flash: { success: "Successfully logged in." }
+      end
     else
       redirect_to :root, flash: { error: "Email or password incorrect." }
     end
