@@ -19,20 +19,10 @@ class Export
     CSV.generate(headers: true) do |csv|
       if @group_by == "category"
         csv << %w[category item item\ quantity]
-        csv << ["Items in Container"]
-        generate_by_category(@object.containerized_items, csv)
-        csv << ["Items on Pallet"]
-        generate_by_category(@object.palletized_items, csv)
-        csv << ["Items in Boxes"]
-        generate_by_category(@object.boxed_items, csv)
+        generate_by_category(@object.packed_items, csv)
       elsif @group_by == "item"
         csv << %w[item item\ quantity category]
-        csv << ["Items in Container"]
-        generate_by_item(@object.containerized_items, csv)
-        csv << ["Items on Pallet"]
-        generate_by_item(@object.palletized_items, csv)
-        csv << ["Items in Boxes"]
-        generate_by_item(@object.boxed_items, csv)
+        generate_by_item(@object.packed_items, csv)
       else
         csv << ["Error generating CSV"]
       end
