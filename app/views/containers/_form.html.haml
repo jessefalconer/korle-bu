@@ -4,20 +4,20 @@
 = form_for @container do |f|
   .form-group
     = f.label :name
-    = f.text_field :name, disabled: no_edit, class: "form-control"
+    = f.text_field :name, class: "form-control"
   .form-group
     %label Custom ID
-    = f.number_field :custom_uid, min: 0, disabled: no_edit, class: "form-control"
+    = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(Container::STATUSES, @container.status), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
+    = f.select :status, options_for_select(Container::STATUSES, @container.status), { include_blank: "" }, { class: "form-control" }
   .form-group
     = f.label :notes
-    = f.text_field :notes, disabled: no_edit, class: "form-control"
+    = f.text_field :notes, class: "form-control"
   - if can? :reassign, Container
     .form-group
       %label Shipment Assignment
-      = f.select :shipment_id, options_from_collection_for_select(Shipment.all.order(:name), :id, :name, shipment_id), { include_blank: "Unassigned" }, { disabled: no_edit, class: "form-control" }
+      = f.select :shipment_id, options_from_collection_for_select(Shipment.all.order(:name), :id, :name, shipment_id), { include_blank: "Unassigned" }, { class: "form-control" }
   .form-group
     %label Created By
     = f.text_field :user, value: user, disabled: true, class: "form-control"
@@ -26,7 +26,6 @@
     = f.text_field :created_at, value: time, disabled: true, class: "form-control"
 
   .btn-toolbar.list-toolbar
-    - if delete
+    - if @container.persisted?
       = delete_button(container_path(@container), "Are you sure you want to delete #{@container.name}? This cannot be reversed")
-    - else
-      = submit_button("Save")
+    = submit_button("Save")

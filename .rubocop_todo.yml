@@ -42,14 +42,6 @@ Rails/HasManyOrHasOneDependent: { Enabled: false }
 # helpers which currently violate it.
 Rails/HelperInstanceVariable:
   Exclude:
-    - "app/helpers/application_helper.rb"
-    - "app/helpers/email_templates_helper.rb"
-    - "app/helpers/notes_helper.rb"
-    - "app/helpers/previous_change_worker_helper.rb"
-    - "app/helpers/svg_helper.rb"
-    - "app/helpers/terminology_helper.rb"
-    - "app/helpers/currency_helper.rb"
-
 
 ################################################################################
 # "Grandfathered" Exceptions
@@ -66,61 +58,16 @@ Metrics/ClassLength:
   # These "grandfathered" classes can be refactored on a case-by-case basis
   Max: 250
   Exclude:
-    - "app/models/contract.rb"
-    - "app/models/company.rb"
-    - "app/models/contact.rb"
-    - "app/models/inventory.rb"
-    - "app/models/contact_project_membership.rb"
-    - "app/models/docusign_client.rb"
-    - "app/models/project.rb"
-    - "app/models/report.rb"
-    - "app/models/widgets/widget.rb"
-    - "lib/data_populator.rb"
-    - "app/controllers/projects/contracts_controller.rb"
 
 Metrics/CyclomaticComplexity:
     Max: 10
     Exclude:
-    - "app/helpers/**/*"
-    - "app/presenters/**/*"
-    - "lib/data_populator.rb"
 
 Metrics/ModuleLength:
   Exclude:
-    - "app/controllers/authorization.rb"
-    - "app/helpers/application_helper.rb"
-    - "app/models/concerns/demo_data.rb"
 
 Metrics/PerceivedComplexity:
   Exclude:
-    - "app/controllers/api/v1/contacts_controller.rb"
-    - "app/controllers/api/v1/inventories_controller.rb"
-    - "app/controllers/authorization.rb"
-    - "app/controllers/projects/contract_files_controller.rb"
-    - "app/controllers/projects/interactions_controller.rb"
-    - "app/controllers/projects/notes_controller.rb"
-    - "app/controllers/projects_controller.rb"
-    - "app/controllers/signups_controller.rb"
-    - "app/helpers/email_templates_helper.rb"
-    - "app/helpers/notes_helper.rb"
-    - "app/importers/application_importer.rb"
-    - "app/importers/contact_importer.rb"
-    - "app/mailers/contact_mailer.rb"
-    - "app/mailers/email_mailer.rb"
-    - "app/models/contact_project_mass_updater.rb"
-    - "app/models/email.rb"
-    - "app/models/inbound_email.rb"
-    - "app/models/inventory.rb"
-    - "app/models/project.rb"
-    - "app/models/stripe_manager.rb"
-    - "app/presenters/contact_group_presenter.rb"
-    - "lib/data_populator.rb"
 
 Rails/HasAndBelongsToMany:
   Exclude:
-    - "app/models/contract.rb"
-    - "app/models/inventory.rb"
-    - "app/models/inventory_addon.rb"
-    - "app/models/registration_form.rb"
-    - "app/models/user.rb"
-    - "app/models/user_project_membership.rb"

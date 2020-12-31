@@ -10,9 +10,9 @@
     .row
       .col-xs-12
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxed_items"}
-            Boxed Items (#{@boxed_items.size})
-          .collapse{id: "boxed_items"}
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
+            Boxed Items (#{@box_items.size})
+          .collapse{id: "box_items"}
             %table.table.list
               %tbody
                 %thead
@@ -22,7 +22,7 @@
                     %th
                     %th Container
                     %th Date
-                - @boxed_items.each do |item|
+                - @box_items.each do |item|
                   %tr
                     %td
                       %p= item.quantity
@@ -39,9 +39,9 @@
 
       .col-xs-12
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletized_items"}
-            Palletized Items (#{@palletized_items.size})
-          .collapse{id: "palletized_items"}
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
+            Palletized Items (#{@pallet_items.size})
+          .collapse{id: "pallet_items"}
             %table.table.list
               %tbody
                 %thead
@@ -51,7 +51,7 @@
                     %th
                     %th Container
                     %th Date
-                - @palletized_items.each do |item|
+                - @pallet_items.each do |item|
                   %tr
                     %td
                       %p= item.quantity
@@ -68,9 +68,9 @@
 
       .col-xs-12
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containerized_items"}
-            Containerized Items (#{@containerized_items.size})
-          .collapse{id: "containerized_items"}
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+            Containerized Items (#{@container_items.size})
+          .collapse{id: "container_items"}
             %table.table.list
               %tbody
                 %thead
@@ -80,7 +80,7 @@
                     %th
                     %th Container
                     %th Date
-                - @containerized_items.each do |item|
+                - @container_items.each do |item|
                   %tr
                     %td
                       %p= item.quantity

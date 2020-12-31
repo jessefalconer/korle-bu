@@ -1,0 +1,154 @@
+#line-chart {
+  height: 300px;
+  width: 800px;
+  margin: 0px auto;
+  margin-top: 1em;
+}
+
+.navbar-default .navbar-brand,
+.navbar-default .navbar-brand:hover {
+  color: #fff;
+}
+
+h1.page {
+  text-align: center;
+  line-height: 1.5em
+}
+
+h2.page {
+  padding-top: 2em;
+  margin-bottom: 1em;
+  line-height: 1.5em
+}
+
+.theme-1.color {
+  background: #4d5b76
+}
+
+.theme-1 .navbar {
+  background: #4d5b76;
+  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #4d5b76), color-stop(1, #6f80a1));
+  background: -ms-linear-gradient(bottom, #4d5b76, #6f80a1);
+  background: -moz-linear-gradient(center bottom, #4d5b76 0, #6f80a1 100%);
+  background: -o-linear-gradient(bottom, #4d5b76, #6f80a1);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#4d5b76', EndColorStr='#6f80a1');
+  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#6f80a1',EndColorStr='#4d5b76')"
+}
+
+// Utility
+.margin-bottom-sm {
+  margin-bottom: 10px;
+}
+
+.margin-bottom-md {
+  margin-bottom: 15px;
+}
+
+.border-bottom {
+  border-bottom: 1px solid #cccccc;
+  // background-color: #cccccc;
+}
+
+#footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+
+  .flash {
+    padding: 1em 0em 1em 0em;
+    color: white;
+
+    &.error {
+      background-color: #ff4d4d;
+    }
+
+    &.success {
+      background-color: #02a556;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .responsive-button {
+    span {
+      display: none;
+    }
+  }
+}
+
+.reconcile-button {
+  margin-top: 15px;
+}
+
+.stats-container {
+  margin: 0 0 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.danger-zone {
+  border-radius: 5px 5px 0 0;
+  color: #ff4d4d;
+  border: 2px solid #ff4d4d;
+  padding: 2.5em 1em 1em 1em;
+  position: relative;
+  width: 100%;
+
+  h3.title {
+    color: #fff;
+    background: #ff4d4d;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.25em;
+    margin: 0;
+  }
+
+  .body {
+    margin-top: 15px;
+    color: darken(#ff4d4d, 20%);
+  }
+
+  ul.fa-ul li {
+    &.no-warn {
+      color: black;
+    }
+  }
+
+  .form-group {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 0;
+
+    label {
+      color: darken(#ff4d4d, 20%);
+      font-size: 14px;
+      font-weight: normal;
+    }
+  }
+
+  .button {display: inline-block;}
+}
+
+.edit_item {
+  padding: 0 15px;
+
+  .collapse .row.form-row {
+    padding: 5px 15px 0 15px;
+  }
+}
+
+.edit_container,
+.edit_pallet,
+.edit_box {
+  .collapse .row.form-row {
+    padding: 5px 15px 0 15px;
+  }
+}
+
+.row.inline-add-item {
+  border: 1px solid #ddd;
+  border-top: none;
+  margin: 0;
+}

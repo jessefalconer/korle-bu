@@ -4,17 +4,17 @@ class ContainerPresenter < BasePresenter
   def shipment_location
     status = shipment&.status&.presence || "Unassigned"
 
-    content_tag(:td) do
+    tag.td do
       if shipment
         link_to(shipment_path(shipment)) do
-          content_tag(:p, shipment.name)
+          tag.p(shipment.name)
         end
       else
-        content_tag(:p, "")
+        tag.p("")
       end
     end +
-      content_tag(:td) do
-        content_tag(:p, status, class: "pull-right")
+      tag.td do
+        tag.p(status, class: "pull-right")
       end
   end
 end

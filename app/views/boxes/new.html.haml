@@ -4,11 +4,8 @@
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li
-        = link_to "Boxes", boxes_path
-      %li.active New Box
+      = present(@box).breadcrumbs
   .main-content
     .row
       .col-md-4
-        %br
-        = render partial: "form", locals: { no_edit: false, delete: false }
+        = render partial: "form"

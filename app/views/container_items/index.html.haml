@@ -1,14 +1,10 @@
 .content
   .header
-    %h1.page-title Boxed Items
+    %h1.page-title Container Items
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li
-        = link_to "Boxes", boxes_path
-      %li
-        = link_to @box.name, box_path(@box)
-      %li.active Boxed Items
+      = present(@container).breadcrumbs_item
   .main-content
     %ul.nav.nav-tabs
       %li.active
@@ -22,10 +18,10 @@
         %br
         .tab-content
           #manage.tab-pane.active.in
-            = render "boxed_items/manage_form"
+            = render "container_items/manage_form"
 
           #search.tab-pane.fade
-            = render "boxed_items/search_form"
+            = render "container_items/search_form"
 
           #new.tab-pane.fade
-            = render "boxed_items/add_new_form"
+            = render "container_items/add_new_form"

@@ -4,91 +4,54 @@
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li.active Reconcile Items
+      %li
+        = link_to "Reconcile Overview", reconcile_overview_path
+      %li.active Reconciling: #{@item.generated_name}
   .main-content
     .row
       .col-xs-12
-        %br
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#item"}
-            Comparing #{@item.generated_name} (Unverified)
-          .collapse.in{id: "item"}
-            %table.table.table-bordered.table-striped
-              %thead
-                %tr
-                  %th Item
-                  %th Created By
-                  %th Created At
-                  %th Instances Used
-                  %th Instances
-              %tbody
-                %tr
-                  %td
-                    = link_to item_path(@item) do
-                      %p= @item.generated_name
-                  %td
-                    = link_to user_path(@item.user) do
-                      %p= @item.user.name
-                  %td
-                    %p= @item.created_at.strftime("%Y-%m-%d")
-                  %td
-                    %p= @overview.item_instances(@item)
-                  %td
-                    = link_button("Search", item_instances_path(@item), "center-block")
+        %h3 Select a target item to merge the reconcile item into.
+      .col-xs-12
+        %h4 Reconcile Item
+    .row.stats-container
+      .col-xs-12
+        %h5.text-muted Name
+        = link_to item_path(@item) do
+          %h4= @item.generated_name
+      .col-md-3.col-sm-6.col-xs-6
+        %h5.text-muted Created By
+        %h4= @item.user.name
+      .col-md-3.col-sm-6.col-xs-6
+        %h5.text-muted Created At
+        %h4= @item.created_at.strftime("%Y-%m-%d")
+      .col-md-3.col-sm-6.col-xs-6
+        %h5.text-muted Verified
+        %h4{style: "color: #{@item.verified ? "#ff4d4d" : "#02a556"}"}= @item.verified.to_s.capitalize
+      .col-md-3.col-xs-6
+        %h5.text-muted Category
+        %h4{style: "color: #{@item.category.present? ? "#ff4d4d" : "#02a556"}"}= @item.category&.name || "N/A"
 
-  - if @overview.item_instances(@item).zero?
-    %p This item is not currently in use. You may wish to delete it.
-    = delete_button(item_path(@item), "Are you sure you want to delete #{@item.generated_name}? This cannot be reversed.")
-
-  - else
-    - if @items.any?
+    - if Item.item_instances(@item).zero?
       .row
         .col-xs-12
-          .panel.panel-default
-            %a.panel-heading{data: {toggle: "collapse"}, href: "#items"}
-              Compare with #{@items.size} Related Items
-            .collapse.in{id: "items"}
-              %table.table.table-bordered.table-striped
-                %thead
-                  %tr
-                    %th Item
-                    %th Created By
-                    %th Created At
-                    %th Word Match
-                    %th Specificity Rank
-                    %th Instances Used
-                    %th Instances
-                    %th Select
-                %tbody
-                  - @items.each_with_index do |(k, v), index|
-                    - item = Item.find(k)
-                    %tr
-                      %td
-                        = link_to item_path(item) do
-                          %p= item.generated_name
-                      %td
-                        = link_to user_path(item.user) do
-                          %p= item.user.name
-                      %td
-                        %p= item.created_at.strftime("%Y-%m-%d")
-                      %td
-                        %p= @overview.match_percentage(v, item)
-                      %td
-                        %p= index + 1
-                      %td
-                        %p= @overview.item_instances(item)
-                      %td
-                        = link_button("Search", item_instances_path(item), "center-block")
-                      %td
-                        = link_button("Confirm", reconcile_confirm_path(@item, item), "center-block")
-    - else
-      %p No suggestions found. Try searching for an item.
+          %p This item is not currently in use. You may wish to delete it.
+          = delete_button(item_path(@item), "Are you sure you want to delete #{@item.generated_name}? This cannot be reversed.")
 
-    .row
-      .col-xs-12.col-md-6.col-lg-4
-        = render "search_form"
+    - if @similar_items.any?
+      .row
+        .col-xs-12
+          %h4 Target Item Suggestions
+      - @similar_items.each_with_index do |(id, match_count), index|
+        = render partial: "item_card", locals: {id: id, match_count: match_count}
+
+    - else
+      .row
+        .col-xs-12
+          %p No suggestions found. Try searching for an item.
 
     .row
       .col-xs-12
-        %br
-        #search-results
+        = render "search_form"
+
+    %br
+    #search-results

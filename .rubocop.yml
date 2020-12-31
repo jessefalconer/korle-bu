@@ -15,9 +15,25 @@ Layout/DefEndAlignment:
   EnforcedStyleAlignWith: def
   AutoCorrect: true
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+
 Layout/EndAlignment:
   EnforcedStyleAlignWith: variable
   AutoCorrect: true
+
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+
+Lint/RaiseException:
+  Enabled: true
+
+# Warns when you override a default Struct method. Little use.
+Lint/StructNewOverride:
+  Enabled: false
 
 Metrics/ParameterLists:
   Exclude:
@@ -36,6 +52,10 @@ Rails/Output:
   Exclude:
     - "config/deploy.rb"
     - "lib/data_populator.rb"
+
+# We have rake tasks that do not require Rails to be loaded.
+Rails/RakeEnvironment:
+  Enabled: false
 
 Rails/SkipsModelValidations:
   Exclude:
@@ -57,15 +77,35 @@ Style/Documentation: { Enabled: false }
 Style/EmptyMethod:
   EnforcedStyle: expanded
 
+Style/ExponentialNotation:
+  Enabled: true
+
 # Different situations call for different format strings. Requiring
 # the same style in all cases is too restrictive.
 Style/FormatStringToken: { Enabled: false }
 
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
 # With Metrics/LineLength disabled, this rule requires very long lines.
 Style/IfUnlessModifier: { Enabled: false }
 
+# It's convenient to write cents literals (ie: money) as 1234_99
+Style/NumericLiterals:
+  Exclude:
+    - "spec/**/*"
+
 Style/SingleLineMethods:
   AllowIfMethodIsEmpty: false
+
+Style/SlicingWithRange:
+  Enabled: true
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes

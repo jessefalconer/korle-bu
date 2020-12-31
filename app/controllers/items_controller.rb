@@ -36,7 +36,7 @@ class ItemsController < ApplicationController
     @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: existing_ids)
     form_path, model = generate_form_url(params[:model], record)
 
-    render json: render_to_string(partial: "results-form", layout: false, locals: { model: model, form_path: form_path } ).to_json
+    render json: render_to_string(partial: "results-form", layout: false, locals: { model: model, form_path: form_path }).to_json
   end
 
   def show
@@ -63,11 +63,11 @@ class ItemsController < ApplicationController
   def generate_form_url(klass, record)
     case klass
     when "Box"
-      [box_boxed_items_path(record.id), :boxed_item]
+      [box_box_items_path(record.id), :box_item]
     when "Pallet"
-      [pallet_palletized_items_path(record.id), :palletized_item]
+      [pallet_pallet_items_path(record.id), :pallet_item]
     when "Container"
-      [container_containerized_items_path(record.id), :containerized_item]
+      [container_container_items_path(record.id), :container_item]
     end
   end
 

@@ -1,33 +1,51 @@
 .content
   .header
-    %h1.page-title Pallets
+    %h1.page-title= @pallet.name
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li
-        = link_to "Pallets", pallets_path
-      %li.active= @pallet.name
+      = present(@pallet).breadcrumbs
+
+    = link_to pallet_pallet_items_path(@pallet) do
+      Manage or add items to this pallet.
+    %br
+    %br
+    = link_to new_box_path(pallet_id: @pallet.id) do
+      Add a box to this pallet.
   .main-content
     %ul.nav.nav-tabs
       %li.active
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
-      %li
-        = link_to pallet_manage_items_path(@pallet) do
-          Add Items
-      %li
-        = link_to new_box_path(pallet_id: @pallet.id) do
-          New Box
     .row
       .col-md-5
         %br
         #myTabContent.tab-content
           #view.tab-pane.active.in
-            = render partial: "form", locals: { no_edit: true, delete: true }
+            .row
+              .col-xs-12
+                %h5.text-muted Name
+                %h4= @pallet.name
+              - if @pallet.notes.present?
+                .col-md-12
+                  %h5.text-muted Notes
+                  %h4= @pallet.notes
+              .col-xs-6
+                %h5.text-muted Custom ID
+                %h4= @pallet.custom_uid
+              .col-xs-6
+                %h5.text-muted Status
+                %h4= @pallet.status
+              .col-xs-6
+                %h5.text-muted Created By
+                %h4= @pallet.user.name
+              .col-xs-6
+                %h5.text-muted Created At
+                %h4= @pallet.created_at.strftime("%Y-%m-%d")
 
           #edit.tab-pane.fade
-            = render partial: "form", locals: { no_edit: false, delete: false }
+            = render partial: "form"
 
       .col-md-7
         %br
@@ -71,10 +89,10 @@
               %h4 No boxes.
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletizeditems"}
-            Loose Items on this Pallet (#{@pallet.palletized_items.size})
-          - if @pallet.palletized_items.any?
-            #palletizeditems.collapse.in
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletditems"}
+            Loose Items on this Pallet (#{@pallet.pallet_items.size})
+          - if @pallet.pallet_items.any?
+            #palletitems.collapse.in
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -82,7 +100,7 @@
                     %th Expiry Date
                     %th Quantity
                 %tbody
-                  - @pallet.palletized_items.each do |pi|
+                  - @pallet.pallet_items.each do |pi|
                     %tr
                       %td
                         = link_to item_path(pi.item) do
@@ -90,5 +108,5 @@
                       %td= pi.expiry_date&.strftime("%Y-%m-%d")
                       %td= pi.quantity
           - else
-            #palletizeditems.collapse.in.panel-body
-              %h5 Add loose items to this pallet from the tab.
+            #palletitems.collapse.in.panel-body
+              %h5 No loose items on this pallet.

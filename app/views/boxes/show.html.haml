@@ -1,30 +1,48 @@
 .content
   .header
-    %h1.page-title Boxes
+    %h1.page-title= @box.name
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li
-        = link_to "Boxes", boxes_path
-      %li.active= @box.name
+      = present(@box).breadcrumbs
+
+    = link_to box_box_items_path(@box) do
+      Manage or add items to this box.
+
   .main-content
     %ul.nav.nav-tabs
       %li.active
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
-      %li
-        = link_to box_manage_items_path(@box) do
-          Add Items
     .row
       .col-md-5
         %br
         .tab-content
           #view.tab-pane.active.in
-            = render partial: "form", locals: { no_edit: true, delete: true }
+            .row
+              .col-xs-12
+                %h5.text-muted Name
+                %h4= @box.name
+              - if @box.notes.present?
+                .col-md-12
+                  %h5.text-muted Notes
+                  %h4= @box.notes
+              .col-xs-6
+                %h5.text-muted Custom ID
+                %h4= @box.custom_uid
+              .col-xs-6
+                %h5.text-muted Status
+                %h4= @box.status
+              .col-xs-6
+                %h5.text-muted Created By
+                %h4= @box.user.name
+              .col-xs-6
+                %h5.text-muted Created At
+                %h4= @box.created_at.strftime("%Y-%m-%d")
 
           #edit.tab-pane.fade
-            = render partial: "form", locals: { no_edit: false, delete: false }
+            = render partial: "form"
 
       .col-md-7
         %br
@@ -50,10 +68,10 @@
                     = box.shipment_location
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxeditems"}
-            Items in this Box (#{@box.boxed_items.size})
-          - if @box.boxed_items.any?
-            #boxeditems.collapse.in
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxitems"}
+            Items in this Box (#{@box.box_items.size})
+          - if @box.box_items.any?
+            #boxitems.collapse.in
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -61,7 +79,7 @@
                     %th Expiry Date
                     %th Quantity
                 %tbody
-                  - @box.boxed_items.each do |bi|
+                  - @box.box_items.each do |bi|
                     %tr
                       %td
                         = link_to item_path(bi.item) do
@@ -69,5 +87,5 @@
                       %td= bi.expiry_date&.strftime("%Y-%m-%d")
                       %td= bi.quantity
           - else
-            #boxeditems.collapse.in.panel-body
-              %h5 Add items to this box from the tab.
+            #boxitems.collapse.in.panel-body
+              %h5 No items in this box.

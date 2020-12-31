@@ -1,0 +1,19 @@
+- if @pallet.pallet_items.none?
+  %p Use the tabs to search or create a new item.
+- @pallet.pallet_items.each do |item|
+  = form_for item, url: pallet_pallet_item_path(@pallet, item) do |f|
+    .row.padding-top-small.inline-add-item
+      .col-xs-9
+        .row
+          .col-xs-12
+            .form-group
+              %p.margin-bottom-0= item.generated_name
+          .col-xs-7
+            .form-group
+              = f.text_field :expiry_date, value: item.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "pallet-item-#{item.id}"
+          .col-xs-5
+            .form-group
+              = f.number_field :quantity, value: item.quantity, min: 0, class: "form-control"
+      .col-xs-3.vertical-buttons
+        = submit_button("Update")
+        = delete_button(pallet_pallet_item_path(@pallet, item), "Are you sure?")

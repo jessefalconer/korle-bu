@@ -3,22 +3,22 @@
 = form_for @shipment do |f|
   .form-group
     = f.label :name
-    = f.text_field :name, disabled: no_edit, class: "form-control"
+    = f.text_field :name, class: "form-control"
   .form-group
     %label Custom ID
-    = f.number_field :custom_uid, min: 0, disabled: no_edit, class: "form-control"
+    = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
+    = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), { include_blank: "" }, { class: "form-control" }
   .form-group
     = f.label :receiving_warehouse_id
-    = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
+    = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), { include_blank: "" }, { class: "form-control" }
   .form-group
     = f.label :shipping_warehouse_id
-    = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), { include_blank: "" }, { disabled: no_edit, class: "form-control" }
+    = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), { include_blank: "" }, { class: "form-control" }
   .form-group
     = f.label :notes
-    = f.text_field :notes, disabled: no_edit, class: "form-control"
+    = f.text_field :notes, class: "form-control"
   .form-group
     %label Created By
     = f.text_field :user, value: user, disabled: true, class: "form-control"
@@ -27,7 +27,6 @@
     = f.text_field :created_at, value: time, disabled: true, class: "form-control"
 
   .btn-toolbar.list-toolbar
-    - if delete
+    - if @shipment.persisted?
       = delete_button(shipment_path(@shipment), "Are you sure you want to delete #{@shipment.name}? This cannot be reversed")
-    - else
-      = submit_button("Save")
+    = submit_button("Save")

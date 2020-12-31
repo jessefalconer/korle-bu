@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  STATUSES = %w[Not\ Activated Active Deactivated].freeze
+  STATUSES = %w[Active Deactivated].freeze
   ROLES = %w[Volunteer Shipping\ Manager Admin Receiving\ Manager].freeze
 
   has_secure_password
@@ -9,11 +9,11 @@ class User < ApplicationRecord
 
   has_many :shipments
   has_many :containers
-  has_many :containerized_items
+  has_many :container_items
   has_many :pallets
-  has_many :palletized_items
+  has_many :pallet_items
   has_many :boxes
-  has_many :boxed_items
+  has_many :box_items
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
   validates :first_name, :last_name, presence: true
@@ -21,7 +21,7 @@ class User < ApplicationRecord
   validates :role, inclusion: { in: ROLES }
 
   def name
-    first_name + " " + last_name
+    "#{first_name} #{last_name}"
   end
 
   def volunteer?

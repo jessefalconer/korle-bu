@@ -1,14 +1,10 @@
 .content
   .header
-    %h1.page-title Palletized Items
+    %h1.page-title Pallet Items
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li
-        = link_to "Pallets", pallets_path
-      %li
-        = link_to @pallet.name, pallet_path(@pallet)
-      %li.active Palletized Items
+      = present(@pallet).breadcrumbs_item
   .main-content
     %ul.nav.nav-tabs
       %li.active
@@ -22,10 +18,10 @@
         %br
         .tab-content
           #manage.tab-pane.active.in
-            = render "palletized_items/manage_form"
+            = render "pallet_items/manage_form"
 
           #search.tab-pane.fade
-            = render "palletized_items/search_form"
+            = render "pallet_items/search_form"
 
           #new.tab-pane.fade
-            = render "palletized_items/add_new_form"
+            = render "pallet_items/add_new_form"
