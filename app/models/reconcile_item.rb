@@ -31,9 +31,7 @@ class ReconcileItem
   end
 
   def execute_merge(item, target_item, delete: false)
-    BoxedItem.where(item_id: item.id).update_all(item_id: target_item.id) # rubocop:disable Rails/SkipsModelValidations
-    PalletizedItem.where(item_id: item.id).update_all(item_id: target_item.id) # rubocop:disable Rails/SkipsModelValidations
-    ContainerizedItem.where(item_id: item.id).update_all(item_id: target_item.id) # rubocop:disable Rails/SkipsModelValidations
+    PackedItem.where(item_id: item.id).update_all(item_id: target_item.id) # rubocop:disable Rails/SkipsModelValidations# rubocop:disable Rails/SkipsModelValidations
 
     Item.find(item.id).destroy if delete
   end

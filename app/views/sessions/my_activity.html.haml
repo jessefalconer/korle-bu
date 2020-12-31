@@ -35,7 +35,7 @@
                     %td.hidden-xs
                       %p= box.status
                     %td.hidden-xs
-                      %p= box.boxed_items.size
+                      %p= box.box_items.size
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallets"}
@@ -62,7 +62,7 @@
                     %td.hidden-xs
                       %p= pallet.status
                     %td.hidden-xs
-                      %p= pallet.palletized_items.size
+                      %p= pallet.pallet_items.size
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containers"}
@@ -89,12 +89,12 @@
                     %td.hidden-xs
                       %p= container.status
                     %td.hidden-xs
-                      %p= container.containerized_items.size
+                      %p= container.container_items.size
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxed_items"}
-            My Boxed Items (#{@boxed_items.size})
-          .collapse{id: "boxed_items"}
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
+            My Boxed Items (#{@box_items.size})
+          .collapse{id: "box_items"}
             %table.table.list
               %tbody
                 %thead
@@ -104,7 +104,7 @@
                     %th.hidden-xs
                     %th Box
                     %th Date
-                - @boxed_items.each do |item|
+                - @box_items.each do |item|
                   %tr
                     %td.hidden-xs
                       %p= item.quantity
@@ -120,9 +120,9 @@
                       %p= item.created_at.strftime("%Y-%m-%d")
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletized_items"}
-            My Palletized Items (#{@palletized_items.size})
-          .collapse{id: "palletized_items"}
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
+            My Palletized Items (#{@pallet_items.size})
+          .collapse{id: "pallet_items"}
             %table.table.list
               %tbody
                 %thead
@@ -132,7 +132,7 @@
                     %th.hidden-xs
                     %th Pallet
                     %th Date
-                - @palletized_items.each do |item|
+                - @pallet_items.each do |item|
                   %tr
                     %td.hidden-xs
                       %p= item.quantity
@@ -148,9 +148,9 @@
                       %p= item.created_at.strftime("%Y-%m-%d")
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containerized_items"}
-            My Containerized Items (#{@containerized_items.size})
-          .collapse{id: "containerized_items"}
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+            My Containerized Items (#{@container_items.size})
+          .collapse{id: "container_items"}
             %table.table.list
               %tbody
                 %thead
@@ -160,7 +160,7 @@
                     %th.hidden-xs
                     %th Container
                     %th Date
-                - @containerized_items.each do |item|
+                - @container_items.each do |item|
                   %tr
                     %td.hidden-xs
                       %p= item.quantity

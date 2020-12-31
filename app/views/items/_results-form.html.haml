@@ -2,11 +2,13 @@
   .form-group.padding-top-small
     No results. The item may already be added or try simplifying your search by removing hyphens, avoiding plurals...
   .form-group.padding-top-small
-    %span Still unable to find your item?
-    = link_button("New Item", new_item_path, "pull-right")
+    %span
+      Still unable to find your item? Use the
+      %em New
+      tab to create a new one.
 - else
   - @search_results_items.each do |item|
-    = form_for model, url: form_path, method: :post do |f|
+    = form_for :packed_item, url: form_path, method: :post do |f|
       .row.padding-top-small.inline-add-item
         .col-xs-12
           .form-group

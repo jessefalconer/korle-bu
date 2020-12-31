@@ -11,7 +11,7 @@ class SessionsController < ApplicationController
     @user = User.find_by(email: params[:email])
     if @user&.authenticate(params[:password])
       session[:user_id] = @user.id
-      if @user.status == "Not Activated"
+      if @user.status == "Deactivated"
         redirect_to :root, flash: { success: "Your account has been created, however an administrator must approve it. Please check back later." }
         session.clear
       else
@@ -34,12 +34,12 @@ class SessionsController < ApplicationController
   end
 
   def my_activity
-    @boxes = Box.where(user: current_user).order(:created_at).reverse
-    @boxed_items = BoxedItem.where(user: current_user).order(:created_at).reverse
-    @pallets = Pallet.where(user: current_user).order(:created_at).reverse
-    @palletized_items = PalletizedItem.where(user: current_user).order(:created_at).reverse
-    @containers = Container.where(user: current_user).order(:created_at).reverse
-    @containerized_items = ContainerizedItem.where(user: current_user).order(:created_at).reverse
+    @boxes = Box.where(user: current_user).order(:created_at)
+    @box_items = PackedItem.where(user: current_user, box_id: @boxes.ids).order(:created_at)
+    @pallets = Pallet.where(user: current_user).order(:created_at)
+    @pallet_items = PackedItem.where(user: current_user, pallet_id: @pallets.ids).order(:created_at)
+    @containers = Container.where(user: current_user).order(:created_at)
+    @container_items = PackedItem.where(user: current_user, container_id: @containers.ids).order(:created_at)
   end
 
   private

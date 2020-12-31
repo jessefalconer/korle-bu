@@ -36,30 +36,15 @@ ActiveRecord::Schema.define(version: 2020_08_23_211117) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "boxed_items", force: :cascade do |t|
-    t.integer "quantity", default: 0, null: false
-    t.datetime "expiry_date"
-    t.bigint "box_id"
-    t.bigint "item_id"
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["box_id"], name: "index_boxed_items_on_box_id"
-    t.index ["item_id"], name: "index_boxed_items_on_item_id"
-    t.index ["user_id"], name: "index_boxed_items_on_user_id"
-  end
-
   create_table "boxes", force: :cascade do |t|
     t.string "status", limit: 255
     t.string "notes", default: "Not Started", null: false
     t.string "name", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
-    t.bigint "container_id"
     t.bigint "pallet_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["container_id"], name: "index_boxes_on_container_id"
     t.index ["pallet_id"], name: "index_boxes_on_pallet_id"
     t.index ["user_id"], name: "index_boxes_on_user_id"
   end
@@ -71,19 +56,6 @@ ActiveRecord::Schema.define(version: 2020_08_23_211117) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_categories_on_user_id"
-  end
-
-  create_table "containerized_items", force: :cascade do |t|
-    t.integer "quantity", default: 0, null: false
-    t.datetime "expiry_date"
-    t.bigint "container_id"
-    t.bigint "item_id"
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["container_id"], name: "index_containerized_items_on_container_id"
-    t.index ["item_id"], name: "index_containerized_items_on_item_id"
-    t.index ["user_id"], name: "index_containerized_items_on_user_id"
   end
 
   create_table "containers", force: :cascade do |t|
@@ -127,17 +99,25 @@ ActiveRecord::Schema.define(version: 2020_08_23_211117) do
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
-  create_table "palletized_items", force: :cascade do |t|
+  create_table "packed_items", force: :cascade do |t|
     t.integer "quantity", default: 0, null: false
+    t.float "weight"
+    t.string "weight_units"
     t.datetime "expiry_date"
+    t.bigint "box_id"
     t.bigint "pallet_id"
+    t.bigint "container_id"
+    t.bigint "shipment_id"
     t.bigint "item_id"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["item_id"], name: "index_palletized_items_on_item_id"
-    t.index ["pallet_id"], name: "index_palletized_items_on_pallet_id"
-    t.index ["user_id"], name: "index_palletized_items_on_user_id"
+    t.index ["box_id"], name: "index_packed_items_on_box_id"
+    t.index ["container_id"], name: "index_packed_items_on_container_id"
+    t.index ["item_id"], name: "index_packed_items_on_item_id"
+    t.index ["pallet_id"], name: "index_packed_items_on_pallet_id"
+    t.index ["shipment_id"], name: "index_packed_items_on_shipment_id"
+    t.index ["user_id"], name: "index_packed_items_on_user_id"
   end
 
   create_table "pallets", force: :cascade do |t|
@@ -174,7 +154,7 @@ ActiveRecord::Schema.define(version: 2020_08_23_211117) do
     t.string "last_name", limit: 255
     t.string "phone", limit: 255
     t.string "password_digest", limit: 255
-    t.string "status", limit: 255, default: "Not Activated", null: false
+    t.string "status", limit: 255, default: "Deactivated", null: false
     t.text "notes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

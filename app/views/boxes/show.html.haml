@@ -6,7 +6,7 @@
         = link_to "Home", index_path
       = present(@box).breadcrumbs
 
-    = link_to box_manage_items_path(@box) do
+    = link_to box_box_items_path(@box) do
       Manage or add items to this box.
 
   .main-content
@@ -68,10 +68,10 @@
                     = box.shipment_location
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxeditems"}
-            Items in this Box (#{@box.boxed_items.size})
-          - if @box.boxed_items.any?
-            #boxeditems.collapse.in
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxitems"}
+            Items in this Box (#{@box.box_items.size})
+          - if @box.box_items.any?
+            #boxitems.collapse.in
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -79,7 +79,7 @@
                     %th Expiry Date
                     %th Quantity
                 %tbody
-                  - @box.boxed_items.each do |bi|
+                  - @box.box_items.each do |bi|
                     %tr
                       %td
                         = link_to item_path(bi.item) do
@@ -87,5 +87,5 @@
                       %td= bi.expiry_date&.strftime("%Y-%m-%d")
                       %td= bi.quantity
           - else
-            #boxeditems.collapse.in.panel-body
+            #boxitems.collapse.in.panel-body
               %h5 No items in this box.

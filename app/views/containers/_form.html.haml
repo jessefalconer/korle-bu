@@ -26,5 +26,6 @@
     = f.text_field :created_at, value: time, disabled: true, class: "form-control"
 
   .btn-toolbar.list-toolbar
-    = delete_button(container_path(@container), "Are you sure you want to delete #{@container.name}? This cannot be reversed")
+    - if @container.persisted?
+      = delete_button(container_path(@container), "Are you sure you want to delete #{@container.name}? This cannot be reversed")
     = submit_button("Save")

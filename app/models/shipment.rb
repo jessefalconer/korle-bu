@@ -10,6 +10,7 @@ class Shipment < ApplicationRecord
   has_many :containers, dependent: :nullify
   has_many :pallets, through: :containers
   has_many :boxes, through: :pallets
+  has_many :packed_items
 
   validates :name, :custom_uid, :user, presence: true
   validates :custom_uid, :name, uniqueness: true

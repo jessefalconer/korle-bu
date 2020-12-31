@@ -6,7 +6,7 @@
         = link_to "Home", index_path
       = present(@pallet).breadcrumbs
 
-    = link_to pallet_manage_items_path(@pallet) do
+    = link_to pallet_pallet_items_path(@pallet) do
       Manage or add items to this pallet.
     %br
     %br
@@ -90,10 +90,10 @@
               = link_button("Create a Box", new_box_path(pallet_id: @pallet.id), "pull-left")
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletizeditems"}
-            Loose Items on this Pallet (#{@pallet.palletized_items.size})
-          - if @pallet.palletized_items.any?
-            #palletizeditems.collapse.in
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletditems"}
+            Loose Items on this Pallet (#{@pallet.pallet_items.size})
+          - if @pallet.pallet_items.any?
+            #palletitems.collapse.in
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -101,7 +101,7 @@
                     %th Expiry Date
                     %th Quantity
                 %tbody
-                  - @pallet.palletized_items.each do |pi|
+                  - @pallet.pallet_items.each do |pi|
                     %tr
                       %td
                         = link_to item_path(pi.item) do
@@ -109,5 +109,5 @@
                       %td= pi.expiry_date&.strftime("%Y-%m-%d")
                       %td= pi.quantity
           - else
-            #palletizeditems.collapse.in.panel-body
+            #palletitems.collapse.in.panel-body
               %h5 No loose items on this pallet.

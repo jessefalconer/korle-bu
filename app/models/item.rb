@@ -13,9 +13,9 @@ class Item < ApplicationRecord
   belongs_to :user, optional: false
   belongs_to :category, optional: true
 
-  has_many :boxed_items, dependent: :destroy
-  has_many :palletized_items, dependent: :destroy
-  has_many :containerized_items, dependent: :destroy
+  has_many :box_items, dependent: :destroy
+  has_many :pallet_items, dependent: :destroy
+  has_many :container_items, dependent: :destroy
 
   has_one_attached :photo
 
@@ -36,12 +36,7 @@ class Item < ApplicationRecord
   end
 
   def self.item_instances(item)
-    count = 0
-    count += ContainerizedItem.where(item_id: item.id).count
-    count += PalletizedItem.where(item_id: item.id).count
-    count += BoxedItem.where(item_id: item.id).count
-
-    count
+    PackedItem.where(item_id: item.id).count
   end
 
   def process_name

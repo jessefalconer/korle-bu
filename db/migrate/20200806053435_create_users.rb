@@ -6,7 +6,7 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.string :last_name, limit: 255
       t.string :phone, limit: 255
       t.string :password_digest, limit: 255
-      t.string :status, limit: 255, null: false, default: "Not Activated"
+      t.string :status, limit: 255, null: false, default: "Deactivated"
       t.text :notes
 
       t.timestamps

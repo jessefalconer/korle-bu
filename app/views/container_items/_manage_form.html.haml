@@ -1,7 +1,7 @@
-- if @container.containerized_items.none?
+- if @container.container_items.none?
   %p Use the tabs to search or create a new item.
-- @container.containerized_items.each do |item|
-  = form_for [@container, item], method: :patch do |f|
+- @container.container_items.each do |item|
+  = form_for item, url: container_container_item_path(@container, item) do |f|
     .row.padding-top-small.inline-add-item
       .col-xs-9
         .row
@@ -10,10 +10,10 @@
               %p.margin-bottom-0= item.generated_name
           .col-xs-7
             .form-group
-              = f.text_field :expiry_date, value: item.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "containerized-item-#{item.id}"
+              = f.text_field :expiry_date, value: item.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "container-item-#{item.id}"
           .col-xs-5
             .form-group
               = f.number_field :quantity, value: item.quantity, min: 0, class: "form-control"
       .col-xs-3.vertical-buttons
         = submit_button("Add")
-        = delete_button(container_containerized_item_path(@container, item), "Are you sure?")
+        = delete_button(container_container_item_path(@container, item), "Are you sure?")

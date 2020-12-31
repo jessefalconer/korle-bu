@@ -8,12 +8,12 @@ class Pallet < ApplicationRecord
   belongs_to :container, optional: true
 
   has_many :boxes, dependent: :nullify
-  has_many :palletized_items, dependent: :destroy
-  has_many :items, through: :palletized_items
+  has_many :pallet_items, class_name: "PackedItem", foreign_key: :pallet_id, dependent: :destroy
+  has_many :items, through: :pallet_items
 
   has_one :shipment, through: :container
 
-  accepts_nested_attributes_for :palletized_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
+  accepts_nested_attributes_for :pallet_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :unassigned, -> { where(container_id: nil) }
   scope :recent, -> { where("created_at > ?", 30.days.ago) }

@@ -8,13 +8,13 @@ class Box < ApplicationRecord
   belongs_to :container, optional: true
   belongs_to :pallet, optional: true
 
-  has_many :boxed_items, dependent: :destroy
-  has_many :items, through: :boxed_items
+  has_many :box_items, class_name: "PackedItem", foreign_key: :box_id, dependent: :destroy
+  has_many :items, through: :box_items
 
   has_one :container, through: :pallet
   has_one :shipment, through: :container
 
-  accepts_nested_attributes_for :boxed_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
+  accepts_nested_attributes_for :box_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :loose_box, -> { where(pallet_id: nil).where.not(container_id: nil) }
   scope :unassigned, -> { where(pallet_id: nil, container_id: nil) }

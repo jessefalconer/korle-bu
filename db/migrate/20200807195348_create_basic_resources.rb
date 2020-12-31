@@ -9,9 +9,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
         create_boxes
         create_items
         create_categories
-        create_boxed_items
-        create_palletized_items
-        create_containerized_items
+        create_packed_items
       end
 
       dir.down do
@@ -22,9 +20,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
         drop_table :warehouses
         drop_table :categories
         drop_table :items
-        drop_table :boxed_items
-        drop_table :palletized_items
-        drop_table :containerized_items
+        drop_table :packed_items
       end
     end
   end
@@ -98,7 +94,6 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
       t.integer :custom_uid
 
       t.belongs_to :user
-      t.belongs_to :container
       t.belongs_to :pallet
 
       t.timestamps
@@ -152,40 +147,19 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
     end
   end
 
-  def create_boxed_items
-    create_table :boxed_items do |t|
+  def create_packed_items
+    create_table :packed_items do |t|
       t.integer :quantity, null: false, default: 0
+      t.float :weight
+      t.string :weight_units
       t.datetime :expiry_date
 
-      t.belongs_to :box
-      t.belongs_to :item
-      t.belongs_to :user
-
-      t.timestamps
-    end
-  end
-
-  def create_palletized_items
-    create_table :palletized_items do |t|
-      t.integer :quantity, null: false, default: 0
-      t.datetime :expiry_date
-
-      t.belongs_to :pallet
-      t.belongs_to :item
-      t.belongs_to :user
-
-      t.timestamps
-    end
-  end
-
-  def create_containerized_items
-    create_table :containerized_items do |t|
-      t.integer :quantity, null: false, default: 0
-      t.datetime :expiry_date
-
-      t.belongs_to :container
-      t.belongs_to :item
-      t.belongs_to :user
+      t.belongs_to :box, index: true
+      t.belongs_to :pallet, index: true
+      t.belongs_to :container, index: true
+      t.belongs_to :shipment, index: true
+      t.belongs_to :item, index: true
+      t.belongs_to :user, index: true
 
       t.timestamps
     end

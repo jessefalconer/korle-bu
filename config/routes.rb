@@ -27,26 +27,23 @@ Rails.application.routes.draw do
 
   concern :boxable_items do
     resources :boxes do
-      get "manage_items", to: "boxed_items#manage"
-      post "add_with_item", to: "boxed_items#add_with_item"
-      resources :boxed_items
+      post "add_with_item", to: "box_items#add_with_item"
+      resources :box_items, except: %i[show edit]
     end
   end
 
   concern :palletable_items do
     resources :pallets do
-      get "manage_items", to: "palletized_items#manage"
-      post "add_with_item", to: "palletized_items#add_with_item"
-      resources :palletized_items
+      post "add_with_item", to: "pallet_items#add_with_item"
+      resources :pallet_items, except: %i[show edit]
       concerns :boxable_items
     end
   end
 
   concern :containable_items do
     resources :containers do
-      get "manage_items", to: "containerized_items#manage"
-      post "add_with_item", to: "containerized_items#add_with_item"
-      resources :containerized_items
+      post "add_with_item", to: "container_items#add_with_item"
+      resources :container_items, except: %i[show edit]
       concerns :palletable_items
     end
   end
