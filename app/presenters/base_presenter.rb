@@ -26,13 +26,13 @@ class BasePresenter < SimpleDelegator
       end
     end
 
-    b = if (model.class == Box || model.class == Pallet) && container
+    b = if (model.instance_of?(Box) || model.instance_of?(Pallet)) && container
       tag.li do
         link_to container.name, container_path(container)
       end
     end
 
-    c = if model.class == Box && pallet
+    c = if model.instance_of?(Box) && pallet
       tag.li do
         link_to pallet.name, pallet_path(pallet)
       end

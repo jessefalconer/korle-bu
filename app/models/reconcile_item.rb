@@ -5,7 +5,7 @@ class ReconcileItem
     @current_user = current_user
   end
 
-  #TODO: move these to Item#scopes
+  # TODO: move these to Item#scopes
   def unverified_items
     Item.where(verified: false)
   end
@@ -21,8 +21,8 @@ class ReconcileItem
   def find_similar_records(item)
     arr = item.generated_name.split(/[\s-]+/)
 
-    results = arr.each_with_object({}) do |word, hash|
-      hash[word] = Item.search_by_generated_name(word).where.not(id: item.id).ids
+    results = arr.index_with do |word|
+      Item.search_by_generated_name(word).where.not(id: item.id).ids
     end
 
     results = results.values.flatten.each_with_object(Hash.new(0)) { |e, h| h[e] += 1; }
@@ -31,12 +31,12 @@ class ReconcileItem
   end
 
   def execute_merge(item, target_item, delete: false)
-    PackedItem.where(item_id: item.id).update_all(item_id: target_item.id) # rubocop:disable Rails/SkipsModelValidations# rubocop:disable Rails/SkipsModelValidations
+    PackedItem.where(item_id: item.id).update_all(item_id: target_item.id) # rubocop:disable Rails/SkipsModelValidations#
 
     Item.find(item.id).destroy if delete
   end
 
-  #TODO: Move this to a presenter
+  # TODO: Move this to a presenter
   def match_percentage(integer, item)
     size = item.generated_name.split(/[\s-]+/).size
     "#{(integer.to_f / size * 100).round(2)}%"

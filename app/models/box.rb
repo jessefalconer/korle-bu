@@ -8,7 +8,7 @@ class Box < ApplicationRecord
   belongs_to :container, optional: true
   belongs_to :pallet, optional: true
 
-  has_many :box_items, class_name: "PackedItem", foreign_key: :box_id, dependent: :destroy
+  has_many :box_items, class_name: "PackedItem", dependent: :destroy
   has_many :items, through: :box_items
 
   has_one :container, through: :pallet
