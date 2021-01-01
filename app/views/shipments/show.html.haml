@@ -14,6 +14,9 @@
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
+      %li
+        %a{data: {toggle: "tab"}, href: "#export"} Export
+
     .row
       .col-md-5
         %br
@@ -48,6 +51,9 @@
 
           #edit.tab-pane.fade
             = render partial: "form"
+
+          #export.tab-pane.fade
+            = render partial: "export"
 
       .col-md-7
         %br
