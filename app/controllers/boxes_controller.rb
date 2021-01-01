@@ -21,9 +21,9 @@ class BoxesController < ApplicationController
 
   def index
     @boxes = if params[:display]
-      Box.send(params[:display]).page params[:page]
+      Box.send(params[:display]).order(:custom_uid).reverse_order.page params[:page]
     else
-      Box.all.page params[:page]
+      Box.all.order(:custom_uid).reverse_order.page params[:page]
     end
   end
 

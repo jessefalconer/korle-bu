@@ -34,26 +34,6 @@ User.create!(email: "maxwell_planck@email.com",
                   role: "Volunteer",
                   password_digest: BCrypt::Password.create("123456")
                   )
-Warehouse.create(name: "KBNF-HQ",
-                street: Faker::Address.street_address,
-                postal_code: Faker::Address.postcode,
-                city: Faker::Address.city,
-                province: "BC",
-                country: "Canada",
-                user_id: 1,
-                status: "Active",
-                description: Faker::Lorem.sentence
-                )
-Warehouse.create(name: "KBNF-REC",
-                street: Faker::Address.street_address,
-                postal_code: Faker::Address.postcode,
-                city: Faker::Address.city,
-                province: "Montserrado",
-                country: "Liberia",
-                user_id: 1,
-                status: "Active",
-                description: Faker::Lorem.sentence
-                )
 
 Item.create(brand: "Tylenol",
             object: "acetaminophen",
@@ -132,3 +112,7 @@ CATEGORIES = [
 ].each do |cat|
   Category.create(name: cat, user_id: 1, description: Faker::Lorem.sentence)
 end
+
+WAREHOUSES = [
+  "Delta", "Undetermined", "Liberia", "Tappita Hospital", "Sierra Leone", "Ahomka Foundation", "Nigeria"
+].each { |name| Warehouse.create(name: name, user_id: User.first.id) }

@@ -21,9 +21,9 @@ class PalletsController < ApplicationController
 
   def index
     @pallets = if params[:display]
-      Pallet.send(params[:display]).page params[:page]
+      Pallet.send(params[:display]).order(:custom_uid).reverse_order.page params[:page]
     else
-      Pallet.all.page params[:page]
+      Pallet.all.order(:custom_uid).reverse_order.page params[:page]
     end
   end
 

@@ -5,7 +5,7 @@ class User < ApplicationRecord
   ROLES = %w[Volunteer Shipping\ Manager Admin Receiving\ Manager].freeze
 
   has_secure_password
-  paginates_per 10
+  paginates_per 25
 
   has_many :shipments
   has_many :containers
