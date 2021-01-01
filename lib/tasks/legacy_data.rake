@@ -37,7 +37,7 @@ SIZE_MAPPINGS = {
 }.freeze
 
 # Importing legacy data checklist
-# • Legacy SQL dump should alter, not drop tables
+# • Legacy SQL dump should not alter and drop tables, only insert
 # • legacy table and column names are a mix of snake and camel case, fix directly in file
 # • hard reset schema if you get the pg relation error
 
