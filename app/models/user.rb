@@ -9,11 +9,11 @@ class User < ApplicationRecord
 
   has_many :shipments
   has_many :containers
-  has_many :container_items
+  has_many :container_items, through: :containers
   has_many :pallets
-  has_many :pallet_items
+  has_many :pallet_items, through: :pallets
   has_many :boxes
-  has_many :box_items
+  has_many :box_items, through: :boxes
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
   validates :first_name, :last_name, presence: true
