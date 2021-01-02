@@ -11,16 +11,17 @@ class Export
     # TODO, exports should be from any level
     # hence {@object} instead of {@shipment}
     @object = @klass.find(id.to_i)
-    @group_by = options.dig("group_by")
+    @group_by = options["group_by"]
     # @sort_by = options.dig("sort_by")
   end
 
   def to_csv
     CSV.generate(headers: true) do |csv|
-      if @group_by == "category"
+      case @group_by
+      when "category"
         csv << %w[category item item\ quantity]
         generate_by_category(@object.packed_items, csv)
-      elsif @group_by == "item"
+      when "item"
         csv << %w[item item\ quantity category]
         generate_by_item(@object.packed_items, csv)
       else

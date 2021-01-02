@@ -109,8 +109,7 @@ namespace :legacy_data do
         item.update(object: name.gsub(match[0], "").squish.titleize, standardized_size: SIZE_MAPPINGS[match[0].to_sym])
       end
 
-      #check it we can move some quantities out of the base name
-
+      # check it we can move some quantities out of the base name
     end
   end
 

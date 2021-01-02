@@ -24,14 +24,14 @@ class PackedItem < ApplicationRecord
 
   def self.by_item
     all.group_by(&:item).each_with_object({}) do |(item, packed_items), hash|
-      hash[packed_items.first.generated_name] = {category: (item&.category&.name || "N/A"), quantity: packed_items.sum(&:quantity)}
+      hash[packed_items.first.generated_name] = { category: (item&.category&.name || "N/A"), quantity: packed_items.sum(&:quantity) }
     end
   end
 
   def self.by_category
-    all.group_by(&:category).each_with_object({}) do |(item, packed_items), hash|
+    all.group_by(&:category).each_with_object({}) do |(_item, packed_items), hash|
       hash[packed_items.first&.category&.name || "N/A"] =
-        packed_items.group_by(&:item).each_with_object({}) { |(b,i), h| h[b.generated_name] = i.sum(&:quantity)}
+        packed_items.group_by(&:item).each_with_object({}) { |(b, i), h| h[b.generated_name] = i.sum(&:quantity) }
     end
   end
 end

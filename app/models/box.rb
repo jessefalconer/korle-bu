@@ -24,11 +24,11 @@ class Box < ApplicationRecord
   paginates_per 25
 
   before_validation do
-    if will_save_change_to_pallet_id?
-      self.container = nil if pallet
+    if will_save_change_to_pallet_id? && pallet
+      self.container = nil
     end
-    if will_save_change_to_container_id?
-      self.pallet = nil if container
+    if will_save_change_to_container_id? && container
+      self.pallet = nil
     end
   end
 
