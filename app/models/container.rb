@@ -6,6 +6,7 @@ class Container < ApplicationRecord
   belongs_to :user, optional: false
   belongs_to :shipment, optional: true
 
+  has_many :boxes, dependent: :nullify
   has_many :pallets, dependent: :nullify
   has_many :container_items, class_name: "PackedItem", dependent: :destroy
   has_many :items, through: :container_items
@@ -19,5 +20,5 @@ class Container < ApplicationRecord
   validates :custom_uid, :name, uniqueness: true
   validates :status, inclusion: { in: STATUSES }
 
-  paginates_per 10
+  paginates_per 25
 end

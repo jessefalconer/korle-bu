@@ -2,6 +2,6 @@
 
 class Warehouse < ApplicationRecord
   STATUSES = %w[Active Deactivated Other].freeze
-  paginates_per 10
+  paginates_per 25
   belongs_to :user, optional: false
 end

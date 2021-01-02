@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_23_211117) do
+ActiveRecord::Schema.define(version: 2020_12_31_232745) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,15 +36,31 @@ ActiveRecord::Schema.define(version: 2020_08_23_211117) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "boxes", force: :cascade do |t|
-    t.string "status", limit: 255
-    t.string "notes", default: "Not Started", null: false
-    t.string "name", limit: 255
-    t.integer "custom_uid"
-    t.bigint "user_id"
-    t.bigint "pallet_id"
+  create_table "big_items", force: :cascade do |t|
+    t.integer "weight"
+    t.string "description"
+    t.string "destination"
+    t.string "category"
+    t.text "notes"
+    t.bigint "container_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["container_id"], name: "index_big_items_on_container_id"
+  end
+
+  create_table "boxes", force: :cascade do |t|
+    t.string "name", limit: 255
+    t.string "status", limit: 255, default: "Not Started"
+    t.string "notes", limit: 255
+    t.integer "custom_uid"
+    t.integer "weight"
+    t.bigint "user_id"
+    t.bigint "pallet_id"
+    t.bigint "container_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "number"
+    t.index ["container_id"], name: "index_boxes_on_container_id"
     t.index ["pallet_id"], name: "index_boxes_on_pallet_id"
     t.index ["user_id"], name: "index_boxes_on_user_id"
   end
@@ -60,15 +76,28 @@ ActiveRecord::Schema.define(version: 2020_08_23_211117) do
 
   create_table "containers", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "Not Started", null: false
+    t.string "status", limit: 255, default: "Not Started"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
     t.bigint "shipment_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "destination"
     t.index ["shipment_id"], name: "index_containers_on_shipment_id"
     t.index ["user_id"], name: "index_containers_on_user_id"
+  end
+
+  create_table "item_boxes", force: :cascade do |t|
+    t.integer "quantity", default: 0, null: false
+    t.integer "weight"
+    t.datetime "item_expire"
+    t.bigint "box_id"
+    t.bigint "item_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["box_id"], name: "index_item_boxes_on_box_id"
+    t.index ["item_id"], name: "index_item_boxes_on_item_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -95,13 +124,14 @@ ActiveRecord::Schema.define(version: 2020_08_23_211117) do
     t.bigint "category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "category"
     t.index ["category_id"], name: "index_items_on_category_id"
     t.index ["user_id"], name: "index_items_on_user_id"
   end
 
   create_table "packed_items", force: :cascade do |t|
     t.integer "quantity", default: 0, null: false
-    t.float "weight"
+    t.integer "weight"
     t.string "weight_units"
     t.datetime "expiry_date"
     t.bigint "box_id"
@@ -122,13 +152,15 @@ ActiveRecord::Schema.define(version: 2020_08_23_211117) do
 
   create_table "pallets", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "Not Started", null: false
+    t.string "status", limit: 255, default: "Not Started"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
     t.bigint "container_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "location"
+    t.string "description"
     t.index ["container_id"], name: "index_pallets_on_container_id"
     t.index ["user_id"], name: "index_pallets_on_user_id"
   end

@@ -53,10 +53,11 @@
             #location.collapse.in
               %table.table.list
                 %tbody
-                  %tr
-                    %td
-                      %p Pallet
-                    = box.pallet_location
+                  - unless box.container.present? && box.pallet.nil?
+                    %tr
+                      %td
+                        %p Pallet
+                      = box.pallet_location
 
                   %tr
                     %td

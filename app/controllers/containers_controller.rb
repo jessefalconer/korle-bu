@@ -7,7 +7,7 @@ class ContainersController < ApplicationController
   def new
     cid = Container.all.pluck(:custom_uid).max.to_i + 1
     name = "CONTAINER-#{cid}"
-    @container = Container.new(custom_uid: cid, name: name, status: Container::STATUSES[0])
+    @container = Container.new(custom_uid: cid, name: name, shipment_id: params[:shipment_id])
   end
 
   def create

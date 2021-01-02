@@ -24,5 +24,5 @@ class Pallet < ApplicationRecord
   validates :custom_uid, :name, uniqueness: true
   validates :status, inclusion: { in: STATUSES }
 
-  paginates_per 10
+  paginates_per 25
 end

@@ -12,13 +12,16 @@
     %br
     = link_to new_pallet_path(container_id: @container.id) do
       Add a pallet to this container.
+    %br
+    %br
+    = link_to new_box_path(container_id: @container.id) do
+      Add a box to this container.
   .main-content
     %ul.nav.nav-tabs
       %li.active
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
-
     .row
       .col-md-5
         %br
@@ -84,7 +87,29 @@
           - else
             #pallets.collapse.in.panel-body
               %h4 No pallets.
-              = link_button("Create a Pallet", new_pallet_path(container_id: @container.id), "pull-left")
+
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
+            Boxes in this Container (#{@container.boxes.size})
+          - if @container.boxes.any?
+            #boxes.collapse.in
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th Custom ID
+                    %th Name
+                    %th Status
+                %tbody
+                  - @container.boxes.each do |box|
+                    %tr
+                      %td= box.custom_uid
+                      %td
+                        = link_to box_path(box) do
+                          = box.name
+                      %td= box.status
+          - else
+            #boxes.collapse.in.panel-body
+              %h4 No Boxes.
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containeritems"}

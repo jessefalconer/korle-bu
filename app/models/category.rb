@@ -5,5 +5,5 @@ class Category < ApplicationRecord
 
   has_many :items
 
-  paginates_per 10
+  paginates_per 25
 end

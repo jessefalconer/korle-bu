@@ -3,7 +3,7 @@
 class Item < ApplicationRecord
   include PgSearch::Model
 
-  paginates_per 10
+  paginates_per 25
 
   pg_search_scope :search_by_generated_name, against: [:generated_name],
     using: {
@@ -13,13 +13,14 @@ class Item < ApplicationRecord
   belongs_to :user, optional: false
   belongs_to :category, optional: true
 
-  has_many :box_items, dependent: :destroy
-  has_many :pallet_items, dependent: :destroy
-  has_many :container_items, dependent: :destroy
+  has_many :packed_items, dependent: :destroy
+  has_many :item_boxes, dependent: :destroy # Remove this after legacy data
 
   has_one_attached :photo
 
-  STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XL XXL Infant Child Assorted].freeze
+  validates :generated_name, uniqueness: true
+
+  STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XXL XXXL Infant Child Assorted Adult].freeze
   VOLUMES = %w[mL dL L floz cc qt pt gal].freeze
   LENGTHS = %w[nm μm mm cm m km ga in ft].freeze
   MASSES = %w[ng μg mg g kg lb oz mmol mol].freeze
@@ -30,7 +31,7 @@ class Item < ApplicationRecord
 
   MASSES.each { |m| VOLUMES.each { |v| RATIOS << "#{m}/#{v}" } }
 
-  after_validation do
+  before_validation do
     sanitize_whitespace
     self.generated_name = process_name.presence || "Unnamed Item"
   end

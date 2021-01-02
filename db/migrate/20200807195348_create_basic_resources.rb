@@ -61,7 +61,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
   def create_containers
     create_table :containers do |t|
       t.string :name, limit: 255
-      t.string :status, null: false, default: "Not Started"
+      t.string :status, limit: 255, default: "Not Started"
       t.string :notes, limit: 255
       t.integer :custom_uid
 
@@ -75,7 +75,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
   def create_pallets
     create_table :pallets do |t|
       t.string :name, limit: 255
-      t.string :status, null: false, default: "Not Started"
+      t.string :status, limit: 255, default: "Not Started"
       t.string :notes, limit: 255
       t.integer :custom_uid
 
@@ -88,13 +88,15 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
 
   def create_boxes
     create_table :boxes do |t|
-      t.string :status, limit: 255
-      t.string :notes, null: false, default: "Not Started"
       t.string :name, limit: 255
+      t.string :status, limit: 255, default: "Not Started"
+      t.string :notes, limit: 255
       t.integer :custom_uid
+      t.integer :weight
 
       t.belongs_to :user
       t.belongs_to :pallet
+      t.belongs_to :container
 
       t.timestamps
     end
@@ -150,7 +152,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
   def create_packed_items
     create_table :packed_items do |t|
       t.integer :quantity, null: false, default: 0
-      t.float :weight
+      t.integer :weight
       t.string :weight_units
       t.datetime :expiry_date
 

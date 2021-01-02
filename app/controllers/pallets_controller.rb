@@ -6,7 +6,7 @@ class PalletsController < ApplicationController
   def new
     cid = Pallet.all.pluck(:custom_uid).max.to_i + 1
     name = "PALLET-#{cid}"
-    @pallet = Pallet.new(custom_uid: cid, name: name, status: Pallet::STATUSES[0])
+    @pallet = Pallet.new(custom_uid: cid, name: name, container_id: params[:container_id])
   end
 
   def create
@@ -21,9 +21,9 @@ class PalletsController < ApplicationController
 
   def index
     @pallets = if params[:display]
-      Pallet.send(params[:display]).page params[:page]
+      Pallet.send(params[:display]).order(:custom_uid).reverse_order.page params[:page]
     else
-      Pallet.all.page params[:page]
+      Pallet.all.order(:custom_uid).reverse_order.page params[:page]
     end
   end
 
