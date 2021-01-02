@@ -6,7 +6,7 @@ class BoxesController < ApplicationController
   def new
     cid = Box.all.pluck(:custom_uid).max.to_i + 1
     name = "BOX-#{cid}"
-    @box = Box.new(custom_uid: cid, name: name, status: Box::STATUSES[0])
+    @box = Box.new(custom_uid: cid, name: name, container_id: params[:container_id], pallet_id: params[:pallet_id])
   end
 
   def create
@@ -46,7 +46,7 @@ class BoxesController < ApplicationController
   private
 
   def box_params
-    params.require(:box).permit(:name, :status, :notes, :custom_uid, :pallet_id)
+    params.require(:box).permit(:name, :status, :notes, :custom_uid, :pallet_id, :container_id)
   end
 
   def set_box

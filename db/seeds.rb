@@ -2,6 +2,7 @@ User.create!(email: "jesse@email.com",
                   first_name: "Jesse",
                   last_name: "Falconer",
                   role: "Admin",
+                  status: "Active",
                   password_digest: BCrypt::Password.create("123456")
                   )
 User.create!(email: "aaron@email.com",
@@ -34,57 +35,6 @@ User.create!(email: "maxwell_planck@email.com",
                   role: "Volunteer",
                   password_digest: BCrypt::Password.create("123456")
                   )
-
-Item.create(brand: "Tylenol",
-            object: "acetaminophen",
-            concentration: nil,
-            concentration_units: nil,
-            concentration_description: nil,
-            standardized_size: nil,
-            numerical_size_1: 8,
-            numerical_units_1: "mg",
-            numerical_description_1: "pills",
-            numerical_size_2: nil,
-            numerical_units_2: nil,
-            numerical_description_2: nil,
-            packaged_quantity: 60,
-            verified: true,
-            user_id: 1
-            )
-
-Item.create(brand: nil,
-            object: "syringe  ",
-            concentration: nil,
-            concentration_units: nil,
-            concentration_description: nil,
-            standardized_size: nil,
-            numerical_size_1: 20,
-            numerical_units_1: "mL",
-            numerical_description_1: "capacity",
-            numerical_size_2: 0.55,
-            numerical_units_2: "mm",
-            numerical_description_2: "needle ",
-            packaged_quantity: 10,
-            verified: true,
-            user_id: 1
-            )
-
-Item.create(brand: nil,
-            object: "nitrile  gloves",
-            concentration: nil,
-            concentration_units: nil,
-            concentration_description: nil,
-            standardized_size: "XL",
-            numerical_size_1: nil,
-            numerical_units_1: nil,
-            numerical_description_1: nil,
-            numerical_size_2: nil,
-            numerical_units_2: nil,
-            numerical_description_2: nil,
-            packaged_quantity: 50,
-            verified: false,
-            user_id: 1
-            )
 
 CATEGORIES = [
   "Hospital Pieces",

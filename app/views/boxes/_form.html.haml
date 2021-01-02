@@ -1,6 +1,8 @@
 - user = @box.user&.name || current_user.name
 - time = @box.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
 - pallet_id = @box.pallet_id.presence || params[:pallet_id]
+- container_id = @box.container_id.presence || params[:container_id]
+- pallet_collection = @box.container.present? ? @box.container.pallets : Pallet.all
 = form_for @box do |f|
   .form-group
     = f.label :name
@@ -16,7 +18,10 @@
     = f.text_field :notes, class: "form-control"
   .form-group
     %label Pallet Assignment
-    = f.select :pallet_id, options_from_collection_for_select(Pallet.all.order(:name), :id, :name, pallet_id), { include_blank: "Unassigned" }, { class: "form-control" }
+    = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(:name), :id, :name, pallet_id), { include_blank: "Unassigned" }, { class: "form-control" }
+  .form-group
+    %label Container Assignment
+    = f.select :container_id, options_from_collection_for_select(Container.all.order(:name), :id, :name, container_id), { include_blank: "Unassigned" }, { class: "form-control" }
   .form-group
     %label Created By
     = f.text_field :user, value: user, disabled: true, class: "form-control"

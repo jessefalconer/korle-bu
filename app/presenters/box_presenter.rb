@@ -20,11 +20,11 @@ class BoxPresenter < BasePresenter
 
   def container_location
     status = container&.status&.presence || "Unassigned"
-
+    record = container || pallet&.container
     tag.td do
-      if container
-        link_to(container_path(container)) do
-          tag.p(container.name)
+      if record
+        link_to(container_path(record)) do
+          tag.p(record.name)
         end
       else
         tag.p("")
