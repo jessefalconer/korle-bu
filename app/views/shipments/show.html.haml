@@ -6,8 +6,8 @@
         = link_to "Home", index_path
       %li.active= @shipment.name
 
-    = link_to new_container_path(shipment_id: @shipment.id) do
-      Add a container to this shipment.
+    = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
+
   .main-content
     %ul.nav.nav-tabs
       %li.active

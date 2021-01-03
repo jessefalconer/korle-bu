@@ -29,4 +29,4 @@
   .btn-toolbar.list-toolbar
     - if @shipment.persisted?
       = delete_button(shipment_path(@shipment), "Are you sure you want to delete #{@shipment.name}? This cannot be reversed")
-    = submit_button("Save")
+    = submit_button_responsive("Save")

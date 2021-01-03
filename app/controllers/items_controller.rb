@@ -31,9 +31,8 @@ class ItemsController < ApplicationController
   def search_form
     klass = params[:model].constantize
     record = klass.find(params[:id])
-    existing_ids = record.items.ids
 
-    @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: existing_ids)
+    @search_results_items = Item.search_by_generated_name(params[:search])
     form_path, model = generate_form_url(params[:model], record)
 
     render json: render_to_string(partial: "results-form", layout: false, locals: { model: model, form_path: form_path }).to_json

@@ -123,4 +123,4 @@
       .btn-toolbar.list-toolbar
         - if @item.persisted?
           = delete_button(item_path(@item), "Are you sure you want to delete #{@item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
-        = submit_button("Save")
+        = submit_button_responsive("Save")

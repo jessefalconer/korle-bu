@@ -27,4 +27,4 @@
   .btn-toolbar.list-toolbar
     - if @pallet.persisted?
       = delete_button(pallet_path(@pallet), "Are you sure you want to delete #{@pallet.name}? This cannot be reversed")
-    = submit_button("Save")
+    = submit_button_responsive("Save")

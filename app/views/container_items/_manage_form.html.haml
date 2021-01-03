@@ -1,19 +1,20 @@
 - if @container.container_items.none?
   %p Use the tabs to search or create a new item.
-- @container.container_items.each do |item|
-  = form_for item, url: container_container_item_path(@container, item) do |f|
-    .row.padding-top-small.inline-add-item
-      .col-xs-9
-        .row
-          .col-xs-12
-            .form-group
-              %p.margin-bottom-0= item.generated_name
-          .col-xs-7
-            .form-group
-              = f.text_field :expiry_date, value: item.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "container-item-#{item.id}"
-          .col-xs-5
-            .form-group
-              = f.number_field :quantity, value: item.quantity, min: 0, class: "form-control"
-      .col-xs-3.vertical-buttons
-        = submit_button("Add")
-        = delete_button(container_container_item_path(@container, item), "Are you sure?")
+- @container.container_items.each do |ci|
+  = form_for ci, url: container_container_item_path(@container, ci) do |f|
+    .row.inline-add-item
+      .col-xs-12.results-item-name{data: {unit_weight: ci.item.unit_weight, item_id: ci.item.id}}
+        %p= ci.generated_name
+        %i.fa.fa-ellipsis-v
+      .col-xs-12.results-item-form.hidden
+        .form-group
+          = f.label :expires
+          = f.text_field :expiry_date, value: ci.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{ci.id}", placeholder: "yyyy-mm-dd"
+          = f.label :quantity
+          = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{ci.id}"
+
+          = f.label "Weight (g)"
+          = f.number_field :weight, class: "form-control", id: "weight-#{ci.id}", placeholder: "grams"
+        .btn-toolbar.list-toolbar
+          = delete_button(container_container_item_path(@container, ci), "Are you sure you want to delete #{ci.generated_name}?")
+          = submit_button("Update", "pull-right")

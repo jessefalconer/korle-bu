@@ -1,25 +1,29 @@
 - if @search_results_items.none?
   .form-group.padding-top-small
-    No results. The item may already be added or try simplifying your search by removing hyphens, avoiding plurals...
+    No results. The item may already be added or try simplifying your search term or removing hyphens, parentheses, periods and plurals.
   .form-group.padding-top-small
     %span
       Still unable to find your item? Use the
       %em New
-      tab to create a new one.
+      tab to create one.
 - else
   - @search_results_items.each do |item|
     = form_for :packed_item, url: form_path, method: :post do |f|
-      .row.padding-top-small.inline-add-item
-        .col-xs-12
+      .row.inline-add-item
+        .col-xs-12.results-item-name{data: {unit_weight: item.unit_weight, item_id: item.id}}
+          %p= item.generated_name
+          %i.fa.fa-ellipsis-v
+        .col-xs-12.results-item-form.hidden
           .form-group
-            %p.margin-bottom-0= item.generated_name
-        .form-group
-          .col-xs-6
-            = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "item-#{item.id}", placeholder: "Expiry Date"
-        .col-xs-4
-          .form-group
-            = f.number_field :quantity, value: 1, class: "form-control", min: 1
-            = f.hidden_field :item_id, value: item.id
-        .col-xs-2
+            = f.label :expires
+            = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "expiry-#{item.id}", placeholder: "yyyy-mm-dd"
+            = f.label :quantity
+            = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{item.id}"
+            = f.hidden_field :item_id, value: item.id, id: "item-#{item.id}"
+            = f.label "Weight (g)"
+            = f.number_field :weight, class: "form-control", id: "weight-#{item.id}", placeholder: "grams"
           .btn-toolbar.list-toolbar
-            = submit_button(" Add", "pull-right")
+            %a{id: "estimate-item-#{item.id}"}
+              .btn.btn-primary.pull-left
+                %span Estimate Quantity
+            = submit_button("Add", "pull-right")

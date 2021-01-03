@@ -32,4 +32,4 @@
   .btn-toolbar.list-toolbar
     - if @box.persisted?
       = delete_button(box_path(@box), "Are you sure you want to delete #{@box.name}? This cannot be reversed")
-    = submit_button("Save")
+    = submit_button_responsive("Save")

@@ -76,6 +76,14 @@ h2.page {
   }
 }
 
+@media (max-width: 768px) {
+  .responsive-button.add {
+    span {
+      display: none;
+    }
+  }
+}
+
 .reconcile-button {
   margin-top: 15px;
 }
@@ -151,4 +159,22 @@ h2.page {
   border: 1px solid #ddd;
   border-top: none;
   margin: 0;
+
+  .results-item-name {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+
+    &.open {
+      background-color: lighten(#ddd, 10%);
+    }
+    p {
+      margin: 0;
+    }
+    i {
+      margin-left: 10px;
+    }
+  }
 }

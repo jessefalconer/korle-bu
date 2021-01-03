@@ -37,4 +37,4 @@
       - if delete && current_user != @user
         = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed")
       - elsif !delete
-        = submit_button("Save")
+        = submit_button_responsive("Save")
