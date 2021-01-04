@@ -4,10 +4,9 @@
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li.active #{params[:display]&.titleize} Shipments
+      %li.active Shipments
+    = add_button(new_shipment_path, "Shipment", "fa-ship")
   .main-content
-    .btn-toolbar.list-toolbar
-      = link_button("New Shipment", new_shipment_path, "pull-left")
     %table.table
       %thead
         %tr

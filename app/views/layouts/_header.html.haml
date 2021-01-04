@@ -94,18 +94,6 @@
                 %span.fa.fa-caret-right
                 All
             %li
-              = link_to shipments_path(display: :received) do
-                %span.fa.fa-caret-right
-                Received
-            %li
-              = link_to shipments_path(display: :in_transit) do
-                %span.fa.fa-caret-right
-                In Transit
-            %li
-              = link_to shipments_path(display: :packing) do
-                %span.fa.fa-caret-right
-                Packing
-            %li
               = link_to new_shipment_path do
                 %span.fa.fa-caret-right
                 New
@@ -125,10 +113,6 @@
               = link_to containers_path(display: :unassigned) do
                 %span.fa.fa-caret-right
                 Unassigned
-            %li
-              = link_to containers_path(display: :recent) do
-                %span.fa.fa-caret-right
-                Recently Created
             %li
               = link_to new_container_path do
                 %span.fa.fa-caret-right
@@ -150,10 +134,6 @@
               %span.fa.fa-caret-right
               Unassigned
           %li
-            = link_to pallets_path(display: :recent) do
-              %span.fa.fa-caret-right
-              Recently Created
-          %li
             = link_to new_pallet_path do
               %span.fa.fa-caret-right
               New
@@ -173,10 +153,6 @@
             = link_to boxes_path(display: :unassigned) do
               %span.fa.fa-caret-right
               Unassigned
-          %li
-            = link_to boxes_path(display: :recent) do
-              %span.fa.fa-caret-right
-              Recently Created
           %li
             = link_to new_box_path do
               %span.fa.fa-caret-right

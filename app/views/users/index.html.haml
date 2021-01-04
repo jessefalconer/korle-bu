@@ -5,9 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active Users
+    = add_button(new_user_path, "User", "fa-user")
   .main-content
-    .btn-toolbar.list-toolbar
-      = link_button("New User", new_user_path, "pull-left")
     %table.table
       %thead
         %tr

@@ -5,9 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active Items
+    = add_button(new_item_path, "Item", "fa-stethoscope")
   .main-content
-    .btn-toolbar.list-toolbar
-      = link_button("New Item", new_item_path, "pull-left")
     %table.table
       %thead
         %tr

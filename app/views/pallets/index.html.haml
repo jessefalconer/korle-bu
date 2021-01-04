@@ -5,9 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active #{params[:display]&.titleize} Pallets
+    = add_button(new_pallet_path, "Unassigned Pallet", "fa-pallet")
   .main-content
-    .btn-toolbar.list-toolbar
-      = link_button("New Pallet", new_pallet_path, "pull-left")
     %table.table
       %thead
         %tr

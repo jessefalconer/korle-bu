@@ -10,6 +10,7 @@ require("channels")
 import "../packs/errors";
 import "../packs/bootstrap";
 import "../packs/search";
+import "../packs/quick_filter";
 
 $(function () {
   var uls = $('.sidebar-nav > ul > *').clone();

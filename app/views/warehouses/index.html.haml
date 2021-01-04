@@ -5,9 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active Warehouses
+    = add_button(new_warehouse_path, "Warehouse", "fa-warehouse")
   .main-content
-    .btn-toolbar.list-toolbar
-      = link_button("New Warehouse", new_warehouse_path, "pull-left")
     %table.table
       %thead
         %tr

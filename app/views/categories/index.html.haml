@@ -5,9 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active Categories
+    = add_button(new_category_path, "Category", "fa-file-medical")
   .main-content
-    .btn-toolbar.list-toolbar
-      = link_button("New Category", new_category_path, "pull-left")
     %table.table
       %thead
         %tr

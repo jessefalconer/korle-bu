@@ -5,9 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active #{params[:display]&.titleize} Containers
+    = add_button(new_container_path, "Unassigned Container", "fa-truck")
   .main-content
-    .btn-toolbar.list-toolbar
-      = link_button("New Container", new_container_path, "pull-left")
     %table.table
       %thead
         %tr

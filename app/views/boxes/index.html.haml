@@ -5,9 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active #{params[:display]&.titleize} Boxes
+    = add_button(new_box_path, "Unassigned Box", "fa-box-open")
   .main-content
-    .btn-toolbar.list-toolbar
-      = link_button("New Box", new_box_path, "pull-left")
     %table.table
       %thead
         %tr

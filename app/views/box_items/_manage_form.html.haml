@@ -1,20 +1,28 @@
 - if @box.box_items.none?
   %p Use the tabs to search or create a new item.
-- @box.box_items.each do |bi|
-  = form_for bi, url: box_box_item_path(@box, bi) do |f|
-    .row.inline-add-item
-      .col-xs-12.results-item-name{data: {unit_weight: bi.item.unit_weight, item_id: bi.item.id}}
-        %p= bi.generated_name
-        %i.fa.fa-ellipsis-v
-      .col-xs-12.results-item-form.hidden
-        .form-group
-          = f.label :expires
-          = f.text_field :expiry_date, value: bi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{bi.id}", placeholder: "yyyy-mm-dd"
-          = f.label :quantity
-          = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{bi.id}"
+- else
+  .input-group.search.span12
+    .input-group
+      = text_field_tag :search, params[:search], placeholder: "Quick filter an item by name...", class: "form-control", id: "quick-filter"
+      %span.input-group-btn.span12#search-submit
+        %a{id: "quick-filter-submit"}
+          .btn.btn-primary.pull-left
+            %span Quick Filter
+  - @box.box_items.each do |bi|
+    = form_for bi, url: box_box_item_path(@box, bi) do |f|
+      .row.inline-add-item
+        .col-xs-12.results-item-name{data: {unit_weight: bi.item.unit_weight, item_id: bi.item.id}}
+          %p= bi.generated_name
+          %i.fa.fa-ellipsis-v
+        .col-xs-12.results-item-form.hidden
+          .form-group
+            = f.label :expires
+            = f.text_field :expiry_date, value: bi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{bi.id}", placeholder: "yyyy-mm-dd"
+            = f.label :quantity
+            = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{bi.id}"
 
-          = f.label "Weight (g)"
-          = f.number_field :weight, class: "form-control", id: "weight-#{bi.id}", placeholder: "grams"
-        .btn-toolbar.list-toolbar
-          = delete_button(box_box_item_path(@box, bi), "Are you sure you want to delete #{bi.generated_name}?")
+            = f.label "Weight (g)"
+            = f.number_field :weight, class: "form-control", id: "weight-#{bi.id}", placeholder: "grams"
+          .btn-toolbar.list-toolbar
+            = delete_button(box_box_item_path(@box, bi), "Are you sure you want to delete #{bi.generated_name}?")
           = submit_button("Update", "pull-right")
