@@ -65,7 +65,7 @@
             %span.label{class: @container.pallets.any? ? "label-success" : "label-warning"}= @container.pallets.size
           - if @container.pallets.any?
             #pallets.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
@@ -81,7 +81,7 @@
                       %td= pallet.status
           - else
             #pallets.collapse.panel-body
-              %h4 No pallets.
+              %p No pallets.
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
@@ -89,7 +89,7 @@
             %span.label{class: @container.boxes.any? ? "label-success" : "label-warning"}= @container.boxes.size
           - if @container.boxes.any?
             #boxes.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
@@ -105,7 +105,7 @@
                       %td= box.status
           - else
             #boxes.collapse.panel-body
-              %h4 No boxes.
+              %p No boxes.
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
@@ -113,7 +113,7 @@
             %span.label{class: @container.container_items.any? ? "label-success" : "label-warning"}= @container.container_items.size
           - if @container.container_items.any?
             #container_items.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Name
@@ -129,4 +129,4 @@
                       %td= ci.quantity
           - else
             #container_items.collapse.panel-body
-              %h5 No packed items.
+              %p No packed items.

@@ -68,7 +68,7 @@
             %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.boxes.size
           - if @pallet.boxes.any?
             #boxes.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
@@ -84,7 +84,7 @@
                       %td= box.status
           - else
             #boxes.collapse.panel-body
-              %h4 No boxes.
+              %p No boxes.
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
@@ -92,7 +92,7 @@
             %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
           - if @pallet.pallet_items.any?
             #pallet_items.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Name
@@ -108,4 +108,4 @@
                       %td= pi.quantity
           - else
             #pallet_items.collapse.panel-body
-              %h5 No packed items.
+              %p No packed items.

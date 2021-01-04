@@ -36,18 +36,6 @@ h2.page {
 }
 
 // Utility
-.margin-bottom-sm {
-  margin-bottom: 10px;
-}
-
-.margin-bottom-md {
-  margin-bottom: 15px;
-}
-
-.border-bottom {
-  border-bottom: 1px solid #cccccc;
-  // background-color: #cccccc;
-}
 
 #footer {
   position: fixed;
@@ -172,3 +160,8 @@ h2.page {
   }
 }
 table tbody tr td p {margin-bottom: 0;}
+
+nav.pagination {
+  margin: 20px 0;
+  text-align: center;
+}

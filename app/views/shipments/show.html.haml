@@ -63,7 +63,7 @@
             %span.label{class: @shipment.containers.any? ? "label-success" : "label-warning"}= @shipment.containers.size
           - if @shipment.containers.any?
             #containers.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
@@ -79,7 +79,7 @@
                       %td= container.status
           - else
             #containers.collapse.panel-body
-              %h4 No containers.
+              %p No containers.
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
@@ -87,7 +87,7 @@
             %span.label{class: @shipment.pallets.any? ? "label-success" : "label-warning"}= @shipment.pallets.size
           - if @shipment.pallets.any?
             #pallets.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
@@ -103,7 +103,7 @@
                       %td= pallet.status
           - else
             #pallets.collapse.panel-body
-              %h4 No pallets.
+              %p No pallets.
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallet_boxes"}
@@ -111,7 +111,7 @@
             %span.label{class: @shipment.pallet_boxes.any? ? "label-success" : "label-warning"}= @shipment.pallet_boxes.size
           - if @shipment.pallet_boxes.any?
             #pallet_boxes.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
@@ -127,7 +127,7 @@
                       %td= box.status
           - else
             #pallet_boxes.collapse.panel-body
-              %h4 No boxes on pallets.
+              %p No boxes on pallets.
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#container_boxes"}
@@ -135,7 +135,7 @@
             %span.label{class: @shipment.container_boxes.any? ? "label-success" : "label-warning"}= @shipment.container_boxes.size
           - if @shipment.container_boxes.any?
             #container_boxes.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
@@ -151,4 +151,4 @@
                       %td= box.status
           - else
             #container_boxes.collapse.panel-body
-              %h4 No boxes directly in containers.
+              %p No boxes directly in containers.

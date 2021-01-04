@@ -26,4 +26,4 @@
             %td.hidden-xs= item.created_at.strftime("%Y-%m-%d")
             %td= item.verified.to_s.capitalize
 
-    = paginate @items
+    = paginate @items, window: 2

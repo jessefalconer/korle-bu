@@ -18,7 +18,7 @@ class ItemsController < ApplicationController
   end
 
   def index
-    @items = Item.all.page params[:page]
+    @items = Item.all.order(:created_at).reverse_order.page params[:page]
   end
 
   def search

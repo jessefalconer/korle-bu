@@ -32,7 +32,7 @@
       %li.hidden-sm.hidden-md.hidden-lg
         %a.nav-header.collapsed{data: {target: ".user-menu", toggle: "collapse"}, href: "#"}
           %i.fa.fa-fw.fa-user
-          User
+          =current_user.first_name
           %i.fa.fa-collapse
       %li.hidden-sm.hidden-md.hidden-lg
         %ul.user-menu.nav.nav-list.collapse
@@ -46,12 +46,12 @@
               Log Out
 
       %li
-        %a.nav-header{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
+        %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
           %i.fa.fa-fw.fa-tachometer-alt
-          Dashboard
+          Admin
           %i.fa.fa-collapse
       %li
-        %ul.dashboard-menu.nav.nav-list.collapse.in
+        %ul.dashboard-menu.nav.nav-list.collapse
           %li
             = link_to index_path do
               %span.fa.fa-caret-right
@@ -162,4 +162,3 @@
         = link_to my_activity_path, class: "nav-header" do
           %i.fa.fa-fw.fa-history
           My Activity
-          %i.fa.fa-caret-right.pull-right

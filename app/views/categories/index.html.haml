@@ -24,4 +24,4 @@
             %td= category.user.name
             %td= category.created_at.strftime("%Y-%m-%d")
 
-    = paginate @categories
+    = paginate @categories, window: 2

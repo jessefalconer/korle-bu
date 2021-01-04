@@ -7,7 +7,7 @@
       %li.active #{params[:display]&.titleize} Containers
     = add_button(new_container_path, "Unassigned Container", "fa-truck")
   .main-content
-    %table.table
+    %table.table.table-striped
       %thead
         %tr
           %th Custom ID
@@ -28,4 +28,4 @@
             %td.hidden-xs= container.shipment&.shipping_warehouse&.name
             %td.hidden-xs= container.created_at.strftime("%Y-%m-%d")
 
-    = paginate @containers
+    = paginate @containers, window: 2

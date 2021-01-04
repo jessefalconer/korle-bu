@@ -73,7 +73,7 @@
             %span.label{class: @box.box_items.any? ? "label-success" : "label-warning"}= @box.box_items.size
           - if @box.box_items.any?
             #box_items.collapse
-              %table.table.table-bordered.table-striped
+              %table.table.table-striped
                 %thead
                   %tr
                     %th Name
@@ -89,4 +89,4 @@
                       %td= bi.quantity
           - else
             #box_items.collapse.panel-body
-              %h5 No items in this box.
+              %p No packed items.
