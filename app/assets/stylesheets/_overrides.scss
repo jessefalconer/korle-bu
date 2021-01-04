@@ -140,6 +140,7 @@ h2.page {
   border-top: none;
   margin: 0;
 
+  .manage-item-name,
   .results-item-name {
     padding: 5px 10px;
     display: flex;
@@ -164,4 +165,18 @@ table tbody tr td p {margin-bottom: 0;}
 nav.pagination {
   margin: 20px 0;
   text-align: center;
+}
+
+input.table-quick-filter {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+}
+.table-filter-button {
+  border-radius: 0;
+  @media (max-width: 768px) {
+      span {
+        display: none;
+      }
+  }
 }

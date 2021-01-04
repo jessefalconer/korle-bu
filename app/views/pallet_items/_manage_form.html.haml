@@ -11,10 +11,10 @@
   - @pallet.pallet_items.each do |pi|
     = form_for pi, url: pallet_pallet_item_path(@pallet, pi) do |f|
       .row.inline-add-item
-        .col-xs-12.results-item-name{data: {unit_weight: pi.item.unit_weight, item_id: pi.item.id}}
+        .col-xs-12.manage-item-name{data: {unit_weight: pi.item.unit_weight, item_id: pi.item.id}}
           %p= pi.generated_name
           %i.fa.fa-ellipsis-v
-        .col-xs-12.results-item-form.hidden
+        .col-xs-12.manage-item-form.hidden
           .form-group
             = f.label :expires
             = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "yyyy-mm-dd"

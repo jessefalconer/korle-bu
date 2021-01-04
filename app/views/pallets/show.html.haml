@@ -68,15 +68,17 @@
             %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.boxes.size
           - if @pallet.boxes.any?
             #boxes.collapse
+              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a box by ID...", assoc: "boxes"}
+
               %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
                     %th Name
                     %th Status
-                %tbody
+                %tbody#filter-boxes-table
                   - @pallet.boxes.order(:custom_uid).reverse_order.each do |box|
-                    %tr
+                    %tr.filter-row
                       %td= box.custom_uid
                       %td
                         = link_to box_path(box) do
@@ -92,15 +94,17 @@
             %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
           - if @pallet.pallet_items.any?
             #pallet_items.collapse
+              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter an item by name...", assoc: "pallet-items"}
+
               %table.table.table-striped
                 %thead
                   %tr
                     %th Name
                     %th Expires
                     %th Quantity
-                %tbody
+                %tbody#filter-pallet-items-table
                   - @pallet.pallet_items.order(:updated_at).reverse_order.each do |pi|
-                    %tr
+                    %tr.filter-row
                       %td
                         = link_to item_path(pi.item) do
                           = pi.generated_name

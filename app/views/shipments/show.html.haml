@@ -87,15 +87,17 @@
             %span.label{class: @shipment.pallets.any? ? "label-success" : "label-warning"}= @shipment.pallets.size
           - if @shipment.pallets.any?
             #pallets.collapse
+              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a pallet by ID...", assoc: "pallets"}
+
               %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
                     %th Name
                     %th Status
-                %tbody
+                %tbody#filter-pallets-table
                   - @shipment.pallets.order(:custom_uid).reverse_order.each do |pallet|
-                    %tr
+                    %tr.filter-row
                       %td= pallet.custom_uid
                       %td
                         = link_to pallet_path(pallet) do
@@ -111,15 +113,17 @@
             %span.label{class: @shipment.pallet_boxes.any? ? "label-success" : "label-warning"}= @shipment.pallet_boxes.size
           - if @shipment.pallet_boxes.any?
             #pallet_boxes.collapse
+              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a box by ID...", assoc: "pallet-boxes"}
+
               %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
                     %th Name
                     %th Status
-                %tbody
+                %tbody#filter-pallet-boxes-table
                   - @shipment.pallet_boxes.order(:custom_uid).reverse_order.each do |box|
-                    %tr
+                    %tr.filter-row
                       %td= box.custom_uid
                       %td
                         = link_to box_path(box) do
@@ -135,15 +139,17 @@
             %span.label{class: @shipment.container_boxes.any? ? "label-success" : "label-warning"}= @shipment.container_boxes.size
           - if @shipment.container_boxes.any?
             #container_boxes.collapse
+              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a box by ID...", assoc: "container-boxes"}
+
               %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
                     %th Name
                     %th Status
-                %tbody
+                %tbody#filter-container-boxes-table
                   - @shipment.container_boxes.order(:custom_uid).reverse_order.each do |box|
-                    %tr
+                    %tr.filter-row
                       %td= box.custom_uid
                       %td
                         = link_to box_path(box) do

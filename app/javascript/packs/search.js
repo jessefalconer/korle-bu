@@ -13,7 +13,7 @@ function search(params) {
             $(".datepickers").datepicker({
               dateFormat: "yy-mm-dd"
             });
-            initDrawerListeners();
+            initResultsDrawerListeners();
         },
         error: function () { alert("Search could not be completed."); }
     });
@@ -44,7 +44,7 @@ function initEstimateButton(el) {
   })
 }
 
-function initDrawerListeners() {
+function initResultsDrawerListeners() {
   $(".results-item-name").on("click", e => {
     const icon = $(e.currentTarget).find("i");
     const sibling = $(e.currentTarget).next();
@@ -67,6 +67,27 @@ function initDrawerListeners() {
   })
 }
 
+function initManageDrawerListeners() {
+  $(".manage-item-name").on("click", e => {
+    const icon = $(e.currentTarget).find("i");
+    const sibling = $(e.currentTarget).next();
+
+    if (sibling.hasClass("hidden")) {
+      sibling.removeClass("hidden").hide().slideDown("fast");
+      icon.removeClass("fa-ellipsis-v");
+      icon.addClass("fa-times");
+      $(e.currentTarget).addClass("open");
+    } else {
+      sibling.slideUp("fast", function() {
+        sibling.addClass("hidden").slideDown("fast");
+        icon.removeClass("fa-times");
+        icon.addClass("fa-ellipsis-v");
+        $(e.currentTarget).removeClass("open");
+      });
+    }
+  })
+}
+
 function initListeners() {
     if (document.querySelector("#search-submit") === null) { return; }
 
@@ -84,9 +105,9 @@ function initListeners() {
         }
     });
 
-    if (document.querySelector(".results-item-name") === null) { return; }
+    if (document.querySelector(".manage-item-name") === null) { return; }
 
-    initDrawerListeners();
+    initManageDrawerListeners();
 }
 
 $(() => {

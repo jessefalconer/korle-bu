@@ -65,15 +65,17 @@
             %span.label{class: @container.pallets.any? ? "label-success" : "label-warning"}= @container.pallets.size
           - if @container.pallets.any?
             #pallets.collapse
+              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a pallet by ID...", assoc: "pallets"}
+
               %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
                     %th Name
                     %th Status
-                %tbody
+                %tbody#filter-pallets-table
                   - @container.pallets.order(:custom_uid).reverse_order.each do |pallet|
-                    %tr
+                    %tr.filter-row
                       %td= pallet.custom_uid
                       %td
                         = link_to pallet_path(pallet) do
@@ -89,15 +91,17 @@
             %span.label{class: @container.boxes.any? ? "label-success" : "label-warning"}= @container.boxes.size
           - if @container.boxes.any?
             #boxes.collapse
+              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a box by ID...", assoc: "boxes"}
+
               %table.table.table-striped
                 %thead
                   %tr
                     %th Custom ID
                     %th Name
                     %th Status
-                %tbody
+                %tbody#filter-boxes-table
                   - @container.boxes.order(:custom_uid).reverse_order.each do |box|
-                    %tr
+                    %tr.filter-row
                       %td= box.custom_uid
                       %td
                         = link_to box_path(box) do
@@ -113,15 +117,17 @@
             %span.label{class: @container.container_items.any? ? "label-success" : "label-warning"}= @container.container_items.size
           - if @container.container_items.any?
             #container_items.collapse
+              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter an item by name...", assoc: "container-items"}
+
               %table.table.table-striped
                 %thead
                   %tr
                     %th Name
                     %th Expires
                     %th Quantity
-                %tbody
+                %tbody#filter-container-items-table
                   - @container.container_items.order(:updated_at).reverse_order.each do |ci|
-                    %tr
+                    %tr.filter-row
                       %td
                         = link_to item_path(ci.item) do
                           = ci.generated_name
