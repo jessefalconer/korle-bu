@@ -18,7 +18,7 @@
             These items are unverified. To begin merging, click |
             %em Reconcile.
             Or click on the item's name to begin verifying or deleting.
-          %table.table
+          %table.table.table-striped
             %thead
               %tr
                 %th Name
@@ -48,7 +48,7 @@
       .col-xs-12
         - if @overview.uncategorized_items.any?
           %p These items are uncategorized. Click on the item's name to begin categorizing.
-          %table.table
+          %table.table.table-striped
             %thead
               %tr
                 %th Name
@@ -78,7 +78,7 @@
       .col-xs-12
         - if @overview.flagged_items.any?
           %p These items were voluntarily flagged for admin inspection. Click on the item's name to begin verifying.
-          %table.table
+          %table.table.table-striped
             %thead
               %tr
                 %th Name

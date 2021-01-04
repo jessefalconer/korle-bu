@@ -7,6 +7,7 @@
       %li
         = link_to "Items", items_path
       %li.active= @item.generated_name
+    = link_button("Start Reconcile", reconcile_start_path(@item))
   .main-content
     %ul.nav.nav-tabs
       %li.active
