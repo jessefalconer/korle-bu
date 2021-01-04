@@ -13,7 +13,8 @@ class Shipment < ApplicationRecord
   has_many :pallets, through: :containers
   has_many :pallet_items, through: :pallets
   has_many :pallet_boxes, through: :pallets, source: :boxes
-  has_many :box_items, through: :boxes
+  has_many :pallet_box_items, through: :pallet_boxes, source: :box_items
+  has_many :container_box_items, through: :container_boxes, source: :box_items
   has_many :packed_items
 
   validates :name, :custom_uid, :user, presence: true

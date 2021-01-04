@@ -109,7 +109,16 @@ namespace :legacy_data do
         item.update(object: name.gsub(match[0], "").squish.titleize, standardized_size: SIZE_MAPPINGS[match[0].to_sym])
       end
 
-      # check it we can move some quantities out of the base name
+      # TODO: check if we can move some quantities out of the base name
+    end
+  end
+
+  task link_packed_items: :environment do
+    PackedItem.find_each do |item|
+      shipment = item.box&.container&.shipment || item.pallet&.container&.shipment || item.box&.container&.shipment || item.container&.shipment
+      next if shipment.nil?
+
+      item.update(shipment_id: shipment.id)
     end
   end
 
