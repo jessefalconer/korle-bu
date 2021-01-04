@@ -81,6 +81,8 @@
                         = link_to pallet_path(pallet) do
                           = pallet.name
                       %td= pallet.status
+              .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
+                %span Close
           - else
             #pallets.collapse.panel-body
               %p No pallets.
@@ -107,6 +109,8 @@
                         = link_to box_path(box) do
                           = box.name
                       %td= box.status
+              .close-collapse{data: {toggle: "collapse"}, href: "#boxes"}
+                %span Close
           - else
             #boxes.collapse.panel-body
               %p No boxes.
@@ -133,6 +137,8 @@
                           = ci.generated_name
                       %td= ci.expiry_date&.strftime("%Y-%m-%d")
                       %td= ci.quantity
+              .close-collapse{data: {toggle: "collapse"}, href: "#container_items"}
+                %span Close
           - else
             #container_items.collapse.panel-body
               %p No packed items.

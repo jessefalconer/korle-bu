@@ -77,6 +77,8 @@
                         = link_to container_path(container) do
                           = container.name
                       %td= container.status
+              .close-collapse{data: {toggle: "collapse"}, href: "#containers"}
+                %span Close
           - else
             #containers.collapse.panel-body
               %p No containers.
@@ -103,6 +105,8 @@
                         = link_to pallet_path(pallet) do
                           = pallet.name
                       %td= pallet.status
+              .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
+                %span Close
           - else
             #pallets.collapse.panel-body
               %p No pallets.
@@ -129,6 +133,8 @@
                         = link_to box_path(box) do
                           = box.name
                       %td= box.status
+              .close-collapse{data: {toggle: "collapse"}, href: "#pallet_boxes"}
+                %span Close
           - else
             #pallet_boxes.collapse.panel-body
               %p No boxes on pallets.
@@ -155,6 +161,8 @@
                         = link_to box_path(box) do
                           = box.name
                       %td= box.status
+              .close-collapse{data: {toggle: "collapse"}, href: "#container_boxes"}
+                %span Close
           - else
             #container_boxes.collapse.panel-body
               %p No boxes directly in containers.

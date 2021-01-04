@@ -84,6 +84,8 @@
                         = link_to box_path(box) do
                           = box.name
                       %td= box.status
+              .close-collapse{data: {toggle: "collapse"}, href: "#boxes"}
+                %span Close
           - else
             #boxes.collapse.panel-body
               %p No boxes.
@@ -110,6 +112,8 @@
                           = pi.generated_name
                       %td= pi.expiry_date&.strftime("%Y-%m-%d")
                       %td= pi.quantity
+              .close-collapse{data: {toggle: "collapse"}, href: "#pallet_items"}
+                %span Close
           - else
             #pallet_items.collapse.panel-body
               %p No packed items.

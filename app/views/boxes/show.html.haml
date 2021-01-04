@@ -89,6 +89,8 @@
                           = bi.generated_name
                       %td= bi.expiry_date&.strftime("%Y-%m-%d")
                       %td= bi.quantity
+              .close-collapse{data: {toggle: "collapse"}, href: "#box_items"}
+                %span Close
           - else
             #box_items.collapse.panel-body
               %p No packed items.
