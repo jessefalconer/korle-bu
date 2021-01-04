@@ -59,9 +59,10 @@
         %br
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#containers"}
-            Containers in this Shipment (#{@shipment.containers.size})
+            Containers in this Shipment
+            %span.label{class: @shipment.containers.any? ? "label-success" : "label-warning"}= @shipment.containers.size
           - if @shipment.containers.any?
-            #containers.collapse.in
+            #containers.collapse
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -69,7 +70,7 @@
                     %th Name
                     %th Status
                 %tbody
-                  - @shipment.containers.each do |container|
+                  - @shipment.containers.order(:custom_uid).reverse_order.each do |container|
                     %tr
                       %td= container.custom_uid
                       %td
@@ -77,15 +78,15 @@
                           = container.name
                       %td= container.status
           - else
-            #containers.collapse.in.panel-body
+            #containers.collapse.panel-body
               %h4 No containers.
-              = link_button("Create a Container", new_container_path(shipment_id: @shipment.id), "pull-left")
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
-            Pallets in all Containers (#{@shipment.pallets.size})
+            Pallets in Containers
+            %span.label{class: @shipment.pallets.any? ? "label-success" : "label-warning"}= @shipment.pallets.size
           - if @shipment.pallets.any?
-            #pallets.collapse.in
+            #pallets.collapse
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -93,7 +94,7 @@
                     %th Name
                     %th Status
                 %tbody
-                  - @shipment.pallets.each do |pallet|
+                  - @shipment.pallets.order(:custom_uid).reverse_order.each do |pallet|
                     %tr
                       %td= pallet.custom_uid
                       %td
@@ -101,14 +102,15 @@
                           = pallet.name
                       %td= pallet.status
           - else
-            #pallets.collapse.in.panel-body
+            #pallets.collapse.panel-body
               %h4 No pallets.
 
         .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
-            Boxes on all Pallets (#{@shipment.boxes.size})
-          - if @shipment.boxes.any?
-            #boxes.collapse.in
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#pallet_boxes"}
+            Boxes Assigned to Pallets
+            %span.label{class: @shipment.pallet_boxes.any? ? "label-success" : "label-warning"}= @shipment.pallet_boxes.size
+          - if @shipment.pallet_boxes.any?
+            #pallet_boxes.collapse
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -116,7 +118,7 @@
                     %th Name
                     %th Status
                 %tbody
-                  - @shipment.boxes.each do |box|
+                  - @shipment.pallet_boxes.order(:custom_uid).reverse_order.each do |box|
                     %tr
                       %td= box.custom_uid
                       %td
@@ -124,5 +126,29 @@
                           = box.name
                       %td= box.status
           - else
-            #boxes.collapse.in.panel-body
-              %h4 No boxes.
+            #pallet_boxes.collapse.panel-body
+              %h4 No boxes on pallets.
+
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#container_boxes"}
+            Boxes Directly in Containers
+            %span.label{class: @shipment.container_boxes.any? ? "label-success" : "label-warning"}= @shipment.container_boxes.size
+          - if @shipment.container_boxes.any?
+            #container_boxes.collapse
+              %table.table.table-bordered.table-striped
+                %thead
+                  %tr
+                    %th Custom ID
+                    %th Name
+                    %th Status
+                %tbody
+                  - @shipment.container_boxes.order(:custom_uid).reverse_order.each do |box|
+                    %tr
+                      %td= box.custom_uid
+                      %td
+                        = link_to box_path(box) do
+                          = box.name
+                      %td= box.status
+          - else
+            #container_boxes.collapse.panel-body
+              %h4 No boxes directly in containers.

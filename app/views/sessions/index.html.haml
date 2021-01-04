@@ -38,13 +38,13 @@
           %table.table.table-bordered.table-striped
             %thead
               %tr
-                %th Name
+                %th.hidden-xs Name
                 %th Email
                 %th Role
             %tbody
               - User.order(:created_at).reverse.first(5).each do |user|
                 %tr
-                  %td= user.name
+                  %td.hidden-xs= user.name
                   %td
                     = link_to user_path(user) do
                       = user.email
@@ -65,9 +65,6 @@
       .col-sm-12
         .panel.panel-default
           .panel-heading.no-collapse
-            %span.panel-icon.pull-right
-              %a.demo-cancel-click{:href => "#", :rel => "tooltip", :title => "Click to refresh"}
-                %i.fa.fa-refresh
             Recently Added Items
           %table.table.list
             %tbody
@@ -76,9 +73,9 @@
                   %td
                     = link_to item_path(item) do
                       %p.title= item.generated_name
-                    %p.info= item&.category&.name
+                    %p.info= item.category&.name
                   %td
-                    %p= item.created_at&.strftime("%Y-%m-%d")
+                    %p= item.created_at.strftime("%Y-%m-%d")
                     = link_to user_path(item.user) do
                       = item.user.name
                   %td

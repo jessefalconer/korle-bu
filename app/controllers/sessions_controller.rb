@@ -34,12 +34,12 @@ class SessionsController < ApplicationController
   end
 
   def my_activity
-    @boxes = current_user.boxes.order(:created_at)
-    @box_items = PackedItem.where(user: current_user, box_id: @boxes.ids).order(:created_at)
-    @pallets = current_user.pallets.order(:created_at)
-    @pallet_items = PackedItem.where(user: current_user, pallet_id: @pallets.ids).order(:created_at)
-    @containers = current_user.containers.order(:created_at)
-    @container_items = PackedItem.where(user: current_user, container_id: @containers.ids).order(:created_at)
+    @boxes = current_user.boxes.order(:created_at).limit(25)
+    @box_items = PackedItem.where(user: current_user).where.not(box_id: nil).order(:created_at).limit(25)
+    @pallets = current_user.pallets.order(:created_at).limit(25)
+    @pallet_items = PackedItem.where(user: current_user).where.not(pallet_id: nil).order(:created_at).limit(25)
+    @containers = current_user.containers.order(:created_at).limit(25)
+    @container_items = PackedItem.where(user: current_user).where.not(container_id: nil).order(:created_at).limit(25)
   end
 
   private

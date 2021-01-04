@@ -60,7 +60,7 @@ function initDrawerListeners() {
         icon.removeClass("fa-times");
         icon.addClass("fa-ellipsis-v");
         $(e.currentTarget).removeClass("open");
-      })
+      });
     }
 
     initEstimateButton(e.currentTarget);

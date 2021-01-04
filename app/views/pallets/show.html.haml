@@ -64,9 +64,10 @@
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
-            Boxes on this Pallet (#{@pallet.boxes.size})
+            Boxes on this Pallet
+            %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.boxes.size
           - if @pallet.boxes.any?
-            #boxes.collapse.in
+            #boxes.collapse
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -74,7 +75,7 @@
                     %th Name
                     %th Status
                 %tbody
-                  - @pallet.boxes.each do |box|
+                  - @pallet.boxes.order(:custom_uid).reverse_order.each do |box|
                     %tr
                       %td= box.custom_uid
                       %td
@@ -82,22 +83,23 @@
                           = box.name
                       %td= box.status
           - else
-            #boxes.collapse.in.panel-body
+            #boxes.collapse.panel-body
               %h4 No boxes.
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#palletditems"}
-            Loose Items on this Pallet (#{@pallet.pallet_items.size})
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
+            Packed Items on this Pallet
+            %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
           - if @pallet.pallet_items.any?
-            #palletitems.collapse.in
+            #pallet_items.collapse
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
                     %th Name
-                    %th Expiry Date
+                    %th Expires
                     %th Quantity
                 %tbody
-                  - @pallet.pallet_items.each do |pi|
+                  - @pallet.pallet_items.order(:updated_at).reverse_order.each do |pi|
                     %tr
                       %td
                         = link_to item_path(pi.item) do
@@ -105,5 +107,5 @@
                       %td= pi.expiry_date&.strftime("%Y-%m-%d")
                       %td= pi.quantity
           - else
-            #palletitems.collapse.in.panel-body
-              %h5 No loose items on this pallet.
+            #pallet_items.collapse.panel-body
+              %h5 No packed items.

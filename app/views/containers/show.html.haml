@@ -61,9 +61,10 @@
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
-            Pallets in this Container (#{@container.pallets.size})
+            Pallets in this Container
+            %span.label{class: @container.pallets.any? ? "label-success" : "label-warning"}= @container.pallets.size
           - if @container.pallets.any?
-            #pallets.collapse.in
+            #pallets.collapse
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -71,7 +72,7 @@
                     %th Name
                     %th Status
                 %tbody
-                  - @container.pallets.each do |pallet|
+                  - @container.pallets.order(:custom_uid).reverse_order.each do |pallet|
                     %tr
                       %td= pallet.custom_uid
                       %td
@@ -79,14 +80,15 @@
                           = pallet.name
                       %td= pallet.status
           - else
-            #pallets.collapse.in.panel-body
+            #pallets.collapse.panel-body
               %h4 No pallets.
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
-            Boxes in this Container (#{@container.boxes.size})
+            Boxes in this Container
+            %span.label{class: @container.boxes.any? ? "label-success" : "label-warning"}= @container.boxes.size
           - if @container.boxes.any?
-            #boxes.collapse.in
+            #boxes.collapse
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
@@ -94,7 +96,7 @@
                     %th Name
                     %th Status
                 %tbody
-                  - @container.boxes.each do |box|
+                  - @container.boxes.order(:custom_uid).reverse_order.each do |box|
                     %tr
                       %td= box.custom_uid
                       %td
@@ -102,22 +104,23 @@
                           = box.name
                       %td= box.status
           - else
-            #boxes.collapse.in.panel-body
-              %h4 No Boxes.
+            #boxes.collapse.panel-body
+              %h4 No boxes.
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containeritems"}
-            Loose Items on this Container (#{@container.container_items.size})
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+            Packed Items in this Container
+            %span.label{class: @container.container_items.any? ? "label-success" : "label-warning"}= @container.container_items.size
           - if @container.container_items.any?
-            #containeritems.collapse.in
+            #container_items.collapse
               %table.table.table-bordered.table-striped
                 %thead
                   %tr
                     %th Name
-                    %th Expiry Date
+                    %th Expires
                     %th Quantity
                 %tbody
-                  - @container.container_items.each do |ci|
+                  - @container.container_items.order(:updated_at).reverse_order.each do |ci|
                     %tr
                       %td
                         = link_to item_path(ci.item) do
@@ -125,5 +128,5 @@
                       %td= ci.expiry_date&.strftime("%Y-%m-%d")
                       %td= ci.quantity
           - else
-            #containeritems.collapse.in.panel-body
-              %h5 No large items in this container.
+            #container_items.collapse.panel-body
+              %h5 No packed items.

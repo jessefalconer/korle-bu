@@ -9,168 +9,180 @@
   .main-content
     .row
       .col-xs-12
-        %br
-        .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxes"}
-            My Boxes (#{@boxes.size})
-          .collapse{id: "boxes"}
-            %table.table.table-bordered.table-striped
-              %thead
-                %tr
-                  %th Custom ID
-                  %th Name
-                  %th Created At
-                  %th.hidden-xs Status
-                  %th.hidden-xs Boxed Items
-              %tbody
-                - @boxes.each do |box|
-                  %tr
-                    %td
-                      %p= box.custom_uid
-                    %td
-                      = link_to box_path(box) do
-                        %p= box.name
-                    %td
-                      %p= box.created_at.strftime("%Y-%m-%d")
-                    %td.hidden-xs
-                      %p= box.status
-                    %td.hidden-xs
-                      %p= box.box_items.size
 
-        .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallets"}
-            My Pallets (#{@pallets.size})
-          .collapse{id: "pallets"}
-            %table.table.table-bordered.table-striped
-              %thead
-                %tr
-                  %th Custom ID
-                  %th Name
-                  %th Created At
-                  %th.hidden-xs Status
-                  %th.hidden-xs Palletized Items
-              %tbody
-                - @pallets.each do |pallet|
-                  %tr
-                    %td
-                      %p= pallet.custom_uid
-                    %td
-                      = link_to pallet_path(pallet) do
-                        %p= pallet.name
-                    %td
-                      %p= pallet.created_at.strftime("%Y-%m-%d")
-                    %td.hidden-xs
-                      %p= pallet.status
-                    %td.hidden-xs
-                      %p= pallet.pallet_items.size
-
-        .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containers"}
-            My Containers (#{@containers.size})
-          .collapse{id: "containers"}
-            %table.table.table-bordered.table-striped
-              %thead
-                %tr
-                  %th Custom ID
-                  %th Name
-                  %th Created At
-                  %th.hidden-xs Status
-                  %th.hidden-xs Containerized Items
-              %tbody
-                - @containers.each do |container|
-                  %tr
-                    %td
-                      %p= container.custom_uid
-                    %td
-                      = link_to container_path(container) do
-                        %p= container.name
-                    %td
-                      %p= container.created_at.strftime("%Y-%m-%d")
-                    %td.hidden-xs
-                      %p= container.status
-                    %td.hidden-xs
-                      %p= container.container_items.size
-
-        .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
-            My Boxed Items (#{@box_items.size})
-          .collapse{id: "box_items"}
-            %table.table.list
-              %tbody
+        - if @boxes.any?
+          .panel.panel-default
+            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxes"}
+              Boxes
+              %span.label.label-info= @boxes.size
+            .collapse{id: "boxes"}
+              %table.table.table-bordered.table-striped
                 %thead
                   %tr
-                    %th.hidden-xs Quantity
+                    %th Custom ID
                     %th Name
-                    %th.hidden-xs
-                    %th Box
-                    %th Date
-                - @box_items.each do |item|
-                  %tr
-                    %td.hidden-xs
-                      %p= item.quantity
-                    %td
-                      = link_to item_path(item.item_id) do
-                        = item.generated_name
-                    %td.hidden-xs
-                      %i.fa.fa-arrow-right
-                    %td
-                      = link_to box_path(item.box) do
-                        = item.box.name
-                    %td
-                      %p= item.created_at.strftime("%Y-%m-%d")
+                    %th Created At
+                    %th.hidden-xs Status
+                    %th.hidden-xs Boxed Items
+                %tbody
+                  - @boxes.each do |box|
+                    %tr
+                      %td
+                        %p= box.custom_uid
+                      %td
+                        = link_to box_path(box) do
+                          %p= box.name
+                      %td
+                        %p= box.created_at.strftime("%Y-%m-%d")
+                      %td.hidden-xs
+                        %p= box.status
+                      %td.hidden-xs
+                        %p= box.box_items.size
 
-        .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
-            My Palletized Items (#{@pallet_items.size})
-          .collapse{id: "pallet_items"}
-            %table.table.list
-              %tbody
+        - if @pallets.any?
+          .panel.panel-default
+            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallets"}
+              Pallets
+              %span.label.label-info= @pallets.size
+            .collapse{id: "pallets"}
+              %table.table.table-bordered.table-striped
                 %thead
                   %tr
-                    %th.hidden-xs Quantity
+                    %th Custom ID
                     %th Name
-                    %th.hidden-xs
-                    %th Pallet
-                    %th Date
-                - @pallet_items.each do |item|
-                  %tr
-                    %td.hidden-xs
-                      %p= item.quantity
-                    %td
-                      = link_to item_path(item.item_id) do
-                        = item.generated_name
-                    %td.hidden-xs
-                      %i.fa.fa-arrow-right
-                    %td
-                      = link_to pallet_path(item.pallet) do
-                        = item.pallet.name
-                    %td
-                      %p= item.created_at.strftime("%Y-%m-%d")
+                    %th Created At
+                    %th.hidden-xs Status
+                    %th.hidden-xs Palletized Items
+                %tbody
+                  - @pallets.each do |pallet|
+                    %tr
+                      %td
+                        %p= pallet.custom_uid
+                      %td
+                        = link_to pallet_path(pallet) do
+                          %p= pallet.name
+                      %td
+                        %p= pallet.created_at.strftime("%Y-%m-%d")
+                      %td.hidden-xs
+                        %p= pallet.status
+                      %td.hidden-xs
+                        %p= pallet.pallet_items.size
 
-        .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
-            My Containerized Items (#{@container_items.size})
-          .collapse{id: "container_items"}
-            %table.table.list
-              %tbody
+        - if @containers.any?
+          .panel.panel-default
+            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containers"}
+              Containers
+              %span.label.label-info= @containers.size
+            .collapse{id: "containers"}
+              %table.table.table-bordered.table-striped
                 %thead
                   %tr
-                    %th.hidden-xs Quantity
+                    %th Custom ID
                     %th Name
-                    %th.hidden-xs
-                    %th Container
-                    %th Date
-                - @container_items.each do |item|
-                  %tr
-                    %td.hidden-xs
-                      %p= item.quantity
-                    %td
-                      = link_to item_path(item.item_id) do
-                        = item.generated_name
-                    %td.hidden-xs
-                      %i.fa.fa-arrow-right
-                    %td
-                      = link_to container_path(item.container) do
-                        = item.container.name
-                    %td
-                      %p= item.created_at.strftime("%Y-%m-%d")
+                    %th Created At
+                    %th.hidden-xs Status
+                    %th.hidden-xs Containerized Items
+                %tbody
+                  - @containers.each do |container|
+                    %tr
+                      %td
+                        %p= container.custom_uid
+                      %td
+                        = link_to container_path(container) do
+                          %p= container.name
+                      %td
+                        %p= container.created_at.strftime("%Y-%m-%d")
+                      %td.hidden-xs
+                        %p= container.status
+                      %td.hidden-xs
+                        %p= container.container_items.size
+
+        - if @box_items.any?
+          .panel.panel-default
+            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
+              Boxed Items
+              %span.label.label-info= @box_items.size
+            .collapse{id: "box_items"}
+              %table.table.table-bordered.table-striped
+                %tbody
+                  %thead
+                    %tr
+                      %th.hidden-xs Quantity
+                      %th Name
+                      %th.hidden-xs
+                      %th Box
+                      %th Date
+                  - @box_items.each do |item|
+                    %tr
+                      %td.hidden-xs
+                        %p= item.quantity
+                      %td
+                        = link_to item_path(item.item_id) do
+                          = item.generated_name
+                      %td.hidden-xs.text-center
+                        %i.fa.fa-arrow-right
+                      %td
+                        = link_to box_path(item.box) do
+                          = item.box.name
+                      %td
+                        %p= item.created_at.strftime("%Y-%m-%d")
+
+        - if @pallet_items.any?
+          .panel.panel-default
+            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
+              Palletized Items
+              %span.label.label-info= @pallet_items.size
+            .collapse{id: "pallet_items"}
+              %table.table.table-bordered.table-striped
+                %tbody
+                  %thead
+                    %tr
+                      %th.hidden-xs Quantity
+                      %th Name
+                      %th.hidden-xs
+                      %th Pallet
+                      %th Date
+                  - @pallet_items.each do |item|
+                    %tr
+                      %td.hidden-xs
+                        %p= item.quantity
+                      %td
+                        = link_to item_path(item.item_id) do
+                          = item.generated_name
+                      %td.hidden-xs.text-center
+                        %i.fa.fa-arrow-right
+                      %td
+                        = link_to pallet_path(item.pallet) do
+                          = item.pallet.name
+                      %td
+                        %p= item.created_at.strftime("%Y-%m-%d")
+
+        - if @container_items.any?
+          .panel.panel-default
+            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+              Containerized Items
+              %span.label.label-info= @container_items.size
+            .collapse{id: "container_items"}
+              %table.table.table-bordered.table-striped
+                %tbody
+                  %thead
+                    %tr
+                      %th.hidden-xs Quantity
+                      %th Name
+                      %th.hidden-xs
+                      %th Container
+                      %th Date
+                  - @container_items.each do |item|
+                    %tr
+                      %td.hidden-xs
+                        %p= item.quantity
+                      %td
+                        = link_to item_path(item.item_id) do
+                          = item.generated_name
+                      %td.hidden-xs.text-center
+                        %i.fa.fa-arrow-right
+                      %td
+                        = link_to container_path(item.container) do
+                          = item.container.name
+                      %td
+                        %p= item.created_at.strftime("%Y-%m-%d")

@@ -517,6 +517,18 @@ readers do not read off random characters that represent icons */
   }
 }
 
+.fa-save {
+  &:before {
+    content: "\f0c7";
+  }
+}
+
+.fa-trash {
+  &:before {
+    content: "\f1f8";
+  }
+}
+
 .sr-only {
   border: 0;
   clip: rect(0, 0, 0, 0);

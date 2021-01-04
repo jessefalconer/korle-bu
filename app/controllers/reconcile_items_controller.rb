@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ReconcileItemsController < ApplicationController
-  before_action :set_item, only: %i[start confirm execute]
+  before_action :set_item, only: %i[start confirm execute item_instances]
   before_action :set_target_item, only: %i[confirm execute]
 
   def show
@@ -22,6 +22,13 @@ class ReconcileItemsController < ApplicationController
     @overview.execute_merge(@item, @target_item, delete: params[:delete_item])
 
     redirect_to reconcile_overview_path
+  end
+
+  def item_instances
+    items = PackedItem.where(item: @item)
+    @box_items = items.where.not(box_id: nil).order(:created_at).reverse_order
+    @pallet_items = items.where.not(pallet_id: nil).order(:created_at).reverse_order
+    @container_items = items.where.not(container_id: nil).order(:created_at).reverse_order
   end
 
   private
