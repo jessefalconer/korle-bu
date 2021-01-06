@@ -92,13 +92,16 @@
         = f.label :notes
         = f.text_field :notes, class: "form-control"
 
-        -# .form-group
-        -#   = f.label :photo
-        -#   = f.file_field :photo, class: "form-control"
-    -# .col-xs-12
-    -#   .form-group
-    -#     = f.label :keywords
-    -#     = f.text_field :keywords, class: "form-control", placeholder: "Keywords can help searches or reviews"
+  .row
+    .col-xs-8
+      .form-group
+        = f.label :photo
+        = f.file_field :photo, class: "form-control", accept: "image/png, image/gif, image/jpeg"
+    .col-xs-4
+      .form-group.inline-image-checkbox
+        = check_box_tag :destroy_photo, disabled: "disabled", class: "form-control"
+        %label Delete Photo
+
   .row
     .col-xs-6
       .form-group

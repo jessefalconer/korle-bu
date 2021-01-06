@@ -40,7 +40,6 @@
           .col-md-3.col-sm-6.col-xs-12
             %h5.text-muted Created At
             %h4= @item.created_at.strftime("%Y-%m-%d")
-
           .col-md-3.col-sm-6.col-xs-12
             %h5.text-muted Instances
             - item_instances = Item.item_instances(@item)
@@ -49,20 +48,11 @@
                 %h4= item_instances
             - else
               %h4 0
+          - if @item.photo.attached?
+            .col-xs-12
+              %h5.text-muted Attached Photo
+              %img{src: url_for(@item.photo), style: "width: 100%;"}
 
         #edit.tab-pane.fade
           %br
           = render partial: "form"
-
-      -# .col-md-8
-      -#   %br
-      -#   .form-group
-      -#     %label Attached Photos
-      -#     - if @item.photo.attached?
-      -#       %img{src: url_for(@item.photo), style: "width: 100%;"}
-      -#       = form_for @item do
-      -#         .form-group
-      -#           = check_box_tag :delete_photo, class: "form-control"
-      -#           %label Delete Photo
-
-      -#         = submit_button("Confirm", "pull-left")

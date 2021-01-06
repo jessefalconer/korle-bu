@@ -2,6 +2,7 @@
 
 class ItemsController < ApplicationController
   before_action :set_item, only: %i[show destroy update]
+  after_action :destroy_photo, only: :update
 
   def new
     @item = Item.new
@@ -47,9 +48,7 @@ class ItemsController < ApplicationController
     else
       redirect_to item_path(@item), flash: { error: "Failed to update item: #{@item.errors.full_messages.to_sentence}" }
     end
-    # @item.photo.attach(params[:photo])
-    # @item.update(item_params)
-    # redirect_to items_path
+
   end
 
   def destroy
@@ -58,6 +57,10 @@ class ItemsController < ApplicationController
   end
 
   private
+
+  def destroy_photo
+    @item.photo.destroy if params[:destroy_photo] && @item.photo.present?
+  end
 
   def generate_form_url(klass, record)
     case klass
