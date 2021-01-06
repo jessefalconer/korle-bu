@@ -21,9 +21,9 @@ module ApplicationHelper
     end
   end
 
-  def submit_button(text, classes = "")
+  def submit_button(text, classes = "", icon = "fa-save")
     button_tag(type: "submit", class: "btn btn-primary #{classes}") do
-      tag.i("", class: "fa fa-save") +
+      tag.i("", class: "fa #{icon}") +
         tag.span(" #{text}")
     end
   end

@@ -1,15 +1,15 @@
 .content
   .header
-    %h1.page-title My Activity
+    %h1.page-title My Activity (30 Days)
     %ul.breadcrumb
       %li
         = link_to index_path do
           Home
       %li.active My Activity
+
   .main-content
     .row
       .col-xs-12
-
         - if @boxes.any?
           .panel.panel-default
             %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxes"}

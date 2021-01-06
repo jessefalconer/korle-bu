@@ -46,27 +46,19 @@ h2.page {
     padding: 1em 0em 1em 0em;
     color: white;
 
-    &.error {
-      background-color: #ff4d4d;
-    }
+    &.error { background-color: #ff4d4d; }
 
-    &.success {
-      background-color: #02a556;
-    }
+    &.success { background-color: #02a556; }
   }
 }
 
 @media (max-width: 768px) {
   .responsive-button {
-    span {
-      display: none;
-    }
+    span { display: none; }
   }
 }
 
-.reconcile-button {
-  margin-top: 15px;
-}
+.reconcile-button { margin-top: 15px; }
 
 .stats-container {
   margin: 0 0 15px 0;
@@ -99,9 +91,7 @@ h2.page {
   }
 
   ul.fa-ul li {
-    &.no-warn {
-      color: black;
-    }
+    &.no-warn { color: black; }
   }
 
   .form-group {
@@ -116,29 +106,26 @@ h2.page {
     }
   }
 
-  .button {display: inline-block;}
+  .button { display: inline-block; }
 }
 
 .edit_item {
   padding: 0 15px;
 
-  .collapse .row.form-row {
-    padding: 5px 15px 0 15px;
-  }
+  .collapse .row.form-row { padding: 5px 15px 0 15px; }
 }
 
 .edit_container,
 .edit_pallet,
 .edit_box {
-  .collapse .row.form-row {
-    padding: 5px 15px 0 15px;
-  }
+  .collapse .row.form-row { padding: 5px 15px 0 15px; }
 }
 
 .row.inline-add-item {
   border: 1px solid #ddd;
   border-top: none;
   margin: 0;
+  padding: 3px 0;
 
   .manage-item-name,
   .results-item-name {
@@ -148,12 +135,10 @@ h2.page {
     justify-content: space-between;
     cursor: pointer;
 
-    &.open {
-      background-color: lighten(#ddd, 10%);
-    }
-    p {
-      margin: 0;
-    }
+    &.open { background-color: lighten(#ddd, 10%); }
+
+    p { margin: 0; }
+
     i {
       color: rgb(126, 123, 123);
       margin-left: 10px;
@@ -161,7 +146,7 @@ h2.page {
   }
 }
 
-table tbody tr td p {margin-bottom: 0;}
+table tbody tr td p { margin-bottom: 0; }
 
 nav.pagination {
   margin: 20px 0;
@@ -176,10 +161,9 @@ input.table-quick-filter {
 
 .table-filter-button {
   border-radius: 0;
+
   @media (max-width: 768px) {
-      span {
-        display: none;
-      }
+    span { display: none; }
   }
 }
 
@@ -201,7 +185,7 @@ input.table-quick-filter {
 .inline-image-checkbox {
   height: 58px;
   padding-top: 30px;
-  label {  vertical-align: middle; }
+  label { vertical-align: middle; }
 }
 
 .main-content { margin-bottom: 50px; }

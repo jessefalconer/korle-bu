@@ -34,12 +34,12 @@ class SessionsController < ApplicationController
   end
 
   def my_activity
-    @boxes = current_user.boxes.order(:created_at).limit(25)
-    @box_items = PackedItem.where(user: current_user).where.not(box_id: nil).order(:created_at).limit(25)
-    @pallets = current_user.pallets.order(:created_at).limit(25)
-    @pallet_items = PackedItem.where(user: current_user).where.not(pallet_id: nil).order(:created_at).limit(25)
-    @containers = current_user.containers.order(:created_at).limit(25)
-    @container_items = PackedItem.where(user: current_user).where.not(container_id: nil).order(:created_at).limit(25)
+    @boxes = current_user.boxes.where("boxes.created_at > ?", 30.days.ago).order(:updated_at).reverse_order
+    @box_items = current_user.box_items.where("packed_items.created_at > ?", 30.days.ago).order(:updated_at).reverse_order
+    @pallets = current_user.pallets.where("pallets.created_at > ?", 30.days.ago).order(:updated_at).reverse_order
+    @pallet_items = current_user.pallet_items.where("packed_items.created_at > ?", 30.days.ago).order(:updated_at).reverse_order
+    @containers = current_user.containers.where("containers.created_at > ?", 30.days.ago).order(:updated_at).reverse_order
+    @container_items = current_user.container_items.where("packed_items.created_at > ?", 30.days.ago).order(:updated_at).reverse_order
   end
 
   private

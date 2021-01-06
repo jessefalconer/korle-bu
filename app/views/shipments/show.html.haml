@@ -30,22 +30,22 @@
                 .col-xs-12
                   %h5.text-muted Notes
                   %h4= @shipment.notes
-              .col-md-3.col-sm-4.col-xs-6
+              .col-lg-3.col-sm-4.col-xs-6
                 %h5.text-muted Receiving Warehouse
                 %h4= @shipment.receiving_warehouse&.name || "N/A"
-              .col-md-3.col-sm-4.col-xs-6
+              .col-lg-3.col-sm-4.col-xs-6
                 %h5.text-muted Shipping Warehouse
                 %h4= @shipment.shipping_warehouse&.name || "N/A"
-              .col-md-3.col-sm-4.col-xs-6
+              .col-lg-3.col-sm-4.col-xs-6
                 %h5.text-muted Custom ID
                 %h4= @shipment.custom_uid
-              .col-md-3.col-sm-4.col-xs-6
+              .col-lg-3.col-sm-4.col-xs-6
                 %h5.text-muted Status
                 %h4= @shipment.status
-              .col-md-3.col-sm-4.col-xs-6
+              .col-lg-3.col-sm-4.col-xs-6
                 %h5.text-muted Created By
                 %h4= @shipment.user.name
-              .col-md-3.col-sm-4.col-xs-6
+              .col-lg-3.col-sm-4.col-xs-6
                 %h5.text-muted Created At
                 %h4= @shipment.created_at.strftime("%Y-%m-%d")
 

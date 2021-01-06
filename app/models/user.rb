@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :pallet_items, through: :pallets
   has_many :boxes
   has_many :box_items, through: :boxes
+  has_many :packed_items
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
   validates :first_name, :last_name, presence: true
