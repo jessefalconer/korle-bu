@@ -22,25 +22,25 @@
             %h5.text-muted Name
             %h4= @item.generated_name
           - if @item.notes.present?
-            .col-md-12
+            .col-xs-12
               %h5.text-muted Notes
               %h4= @item.notes
-          .col-md-3.col-sm-6.col-xs-12
+          .col-md-3.col-sm-4.col-xs-6
             %h5.text-muted Category
             %h4{style: "color: #{@item.category.present? ? "#02a556" : "#ff4d4d"}"}= @item.category&.name || "N/A"
-          .col-md-3.col-sm-6.col-xs-12
+          .col-md-3.col-sm-4.col-xs-6
             %h5.text-muted Verified
             %h4{style: "color: #{@item.verified ? "#02a556" : "#ff4d4d"}"}= @item.verified.to_s.capitalize
-          .col-md-3.col-sm-6.col-xs-12
+          .col-md-3.col-sm-4.col-xs-6
             %h5.text-muted Flagged
             %h4{style: "color: #{@item.flagged ? "#ff4d4d" : "#02a556"}"}= @item.flagged.to_s.capitalize
-          .col-md-3.col-sm-6.col-xs-12
+          .col-md-3.col-sm-4.col-xs-6
             %h5.text-muted Created By
             %h4= @item.user.name
-          .col-md-3.col-sm-6.col-xs-12
+          .col-md-3.col-sm-4.col-xs-6
             %h5.text-muted Created At
             %h4= @item.created_at.strftime("%Y-%m-%d")
-          .col-md-3.col-sm-6.col-xs-12
+          .col-md-3.col-sm-4.col-xs-6
             %h5.text-muted Instances
             - item_instances = Item.item_instances(@item)
             - if item_instances.positive?

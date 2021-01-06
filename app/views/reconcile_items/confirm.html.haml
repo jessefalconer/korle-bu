@@ -18,16 +18,16 @@
         %h5.text-muted Name
         = link_to item_path(@item) do
           %h4= @item.generated_name
-      .col-md-3.col-sm-6.col-xs-6
+      .col-md-3.col-sm-4.col-xs-6
         %h5.text-muted Created By
         %h4= @item.user.name
-      .col-md-3.col-sm-6.col-xs-6
+      .col-md-3.col-sm-4.col-xs-6
         %h5.text-muted Created At
         %h4= @item.created_at.strftime("%Y-%m-%d")
-      .col-md-3.col-sm-6.col-xs-6
+      .col-md-3.col-sm-4.col-xs-6
         %h5.text-muted Verified
         %h4{style: "color: #{@item.verified ? "#ff4d4d" : "#02a556"}"}= @item.verified.to_s.capitalize
-      .col-md-3.col-xs-6
+      .col-md-3.col-sm-4.col-xs-6
         %h5.text-muted Category
         %h4{style: "color: #{@item.category.present? ? "#ff4d4d" : "#02a556"}"}= @item.category&.name || "N/A"
 
@@ -39,16 +39,16 @@
         %h5.text-muted Name
         = link_to item_path(@target_item) do
           %h4= @target_item.generated_name
-      .col-md-3.col-sm-6.col-xs-6
+      .col-md-3.col-sm-4.col-xs-6
         %h5.text-muted Created By
         %h4= @target_item.user.name
-      .col-md-3.col-sm-6.col-xs-6
+      .col-md-3.col-sm-4.col-xs-6
         %h5.text-muted Created At
         %h4= @target_item.created_at.strftime("%Y-%m-%d")
-      .col-md-3.col-sm-6.col-xs-6
+      .col-md-3.col-sm-4.col-xs-6
         %h5.text-muted Verified
         %h4{style: "color: #{@target_item.verified ? "#02a556" : "#ff4d4d"}"}= @target_item.verified.to_s.capitalize
-      .col-md-3.col-xs-6
+      .col-md-3.col-sm-4.col-xs-6
         %h5.text-muted Category
         %h4{style: "color: #{@target_item.category.present? ? "#02a556" : "#ff4d4d"}"}= @target_item.category&.name  || "N/A"
 

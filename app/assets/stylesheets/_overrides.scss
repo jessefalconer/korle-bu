@@ -160,6 +160,7 @@ h2.page {
     }
   }
 }
+
 table tbody tr td p {margin-bottom: 0;}
 
 nav.pagination {
@@ -172,6 +173,7 @@ input.table-quick-filter {
   border-bottom: 1px solid #ccc;
   border-radius: 0;
 }
+
 .table-filter-button {
   border-radius: 0;
   @media (max-width: 768px) {
@@ -180,6 +182,7 @@ input.table-quick-filter {
       }
   }
 }
+
 .close-collapse {
   border-top: 1px solid #ccc;
   text-align: center;
@@ -200,3 +203,5 @@ input.table-quick-filter {
   padding-top: 30px;
   label {  vertical-align: middle; }
 }
+
+.main-content { margin-bottom: 50px; }
