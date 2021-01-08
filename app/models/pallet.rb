@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class Pallet < ApplicationRecord
-  STATUSES = %w[Not\ Started Packing Completed].freeze
+  STATUSES = ["In Progress", "Complete", "Received"].freeze
 
   belongs_to :user, optional: false
-  # TODO: this optional true is status=unassigned
   belongs_to :container, optional: true
 
   has_many :boxes, dependent: :nullify

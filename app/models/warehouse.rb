@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class Warehouse < ApplicationRecord
-  STATUSES = %w[Active Deactivated Other].freeze
+  STATUSES = %w[Active Deactivated].freeze
+  belongs_to :user
+
+  has_many :users
+
   paginates_per 25
-  belongs_to :user, optional: false
 end

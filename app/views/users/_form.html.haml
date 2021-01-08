@@ -14,12 +14,16 @@
     .form-group
       %label Phone Number
       = f.text_field :phone, disabled: no_edit, class: "form-control"
-    .form-group
-      %label Role
-      = f.select(:role, options_for_select(User::ROLES, @user.role), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
-    .form-group
-      %label Status
-      = f.select(:status, options_for_select(User::STATUSES, @user.status), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
+    - unless cannot? :alter_roles, User
+      .form-group
+        %label Role
+        = f.select(:role, options_for_select(User::ROLES, @user.role), {}, { disabled: no_edit, class: "form-control" })
+      .form-group
+        %label Status
+        = f.select(:status, options_for_select(User::STATUSES, @user.status), {}, { disabled: no_edit, class: "form-control" })
+      .form-group
+        %label Warehouse
+        = f.select(:warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @user.warehouse_id), { include_blank: "Unassigned" }, { disabled: no_edit, class: "form-control" })
     -if create_password
       .form-group
         %label Password
@@ -35,6 +39,6 @@
   .col-xs-12
     .btn-toolbar.list-toolbar
       - if delete && current_user != @user
-        = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed")
+        = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed.")
       - elsif !delete
         = submit_button_responsive("Save")

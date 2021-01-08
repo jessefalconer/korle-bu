@@ -46,7 +46,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
   def create_shipments
     create_table :shipments do |t|
       t.string :name, limit: 255
-      t.string :status, null: false, default: "Not Started"
+      t.string :status, default: "In Progress", null: false
       t.text :notes
       t.integer :custom_uid
 
@@ -61,7 +61,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
   def create_containers
     create_table :containers do |t|
       t.string :name, limit: 255
-      t.string :status, limit: 255, default: "Not Started"
+      t.string :status, default: "In Progress", null: false
       t.string :notes, limit: 255
       t.integer :custom_uid
 
@@ -75,7 +75,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
   def create_pallets
     create_table :pallets do |t|
       t.string :name, limit: 255
-      t.string :status, limit: 255, default: "Not Started"
+      t.string :status, default: "In Progress", null: false
       t.string :notes, limit: 255
       t.integer :custom_uid
 
@@ -89,7 +89,7 @@ class CreateBasicResources < ActiveRecord::Migration[6.0]
   def create_boxes
     create_table :boxes do |t|
       t.string :name, limit: 255
-      t.string :status, limit: 255, default: "Not Started"
+      t.string :status, default: "In Progress", null: false
       t.string :notes, limit: 255
       t.integer :custom_uid
       t.integer :weight

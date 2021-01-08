@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  load_and_authorize_resource
   skip_before_action :authorized, only: %i[new signup create_public_user]
   before_action :set_user, only: %i[show destroy update]
   before_action :existing_session, only: %i[signup create_public_user]
@@ -34,8 +35,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
-    redirect_to users_path, flash: { success: "User deletion successful." }
+    redirect_to user_path(@user), flash: { error: "#{@user.name} cannot be deleted. Instead, switch their status to Deactivated." }
   end
 
   def signup
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :last_name, :first_name, :phone, :role, :status, :notes)
+    params.require(:user).permit(:email, :password, :last_name, :first_name, :phone, :role, :status, :notes, :warehouse_id)
   end
 
   def existing_session

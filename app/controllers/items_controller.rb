@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ItemsController < ApplicationController
+  load_and_authorize_resource only: %i[create update destroy]
   before_action :set_item, only: %i[show destroy update]
   after_action :destroy_photo, only: :update
 

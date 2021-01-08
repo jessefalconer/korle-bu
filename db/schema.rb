@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_03_215434) do
+ActiveRecord::Schema.define(version: 2021_01_08_173721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2021_01_03_215434) do
 
   create_table "boxes", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", limit: 255, default: "Not Started"
+    t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.integer "weight"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2021_01_03_215434) do
 
   create_table "containers", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", limit: 255, default: "Not Started"
+    t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -153,7 +153,7 @@ ActiveRecord::Schema.define(version: 2021_01_03_215434) do
 
   create_table "pallets", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", limit: 255, default: "Not Started"
+    t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -168,7 +168,7 @@ ActiveRecord::Schema.define(version: 2021_01_03_215434) do
 
   create_table "shipments", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "Not Started", null: false
+    t.string "status", default: "In Progress", null: false
     t.text "notes"
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -192,6 +192,8 @@ ActiveRecord::Schema.define(version: 2021_01_03_215434) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "role", default: "Volunteer", null: false
+    t.bigint "warehouse_id"
+    t.index ["warehouse_id"], name: "index_users_on_warehouse_id"
   end
 
   create_table "warehouses", force: :cascade do |t|

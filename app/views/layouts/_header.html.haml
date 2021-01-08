@@ -48,7 +48,7 @@
       %li
         %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
           %i.fa.fa-fw.fa-tachometer-alt
-          Admin
+          Dashboard
           %i.fa.fa-collapse
       %li
         %ul.dashboard-menu.nav.nav-list.collapse
@@ -81,7 +81,7 @@
               = link_to reconcile_overview_path do
                 %span.fa.fa-caret-right
                 Reconciliation
-      - if can? :manage, Shipment
+      - if can? :read, Shipment
         %li
           %a.nav-header.collapsed{data: {target: ".shipments-menu", toggle: "collapse"}, href: "#"}
             %i.fa.fa-fw.fa-ship
@@ -97,7 +97,7 @@
               = link_to new_shipment_path do
                 %span.fa.fa-caret-right
                 New
-      - if can? :manage, Container
+      - if can? :read, Container
         %li
           %a.nav-header.collapsed{data: {target: ".containers-menu", toggle: "collapse"}, href: "#"}
             %i.fa.fa-fw.fa-truck

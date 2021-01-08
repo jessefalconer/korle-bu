@@ -18,6 +18,6 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from CanCan::AccessDenied do |_exception|
-    redirect_back fallback_location: :root, flash: { error: "You do not have permission to view this page." }
+    redirect_back fallback_location: :root, flash: { error: "This action is not permitted with your user role." }
   end
 end

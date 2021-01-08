@@ -9,6 +9,5 @@
       %li.active New User
   .main-content
     .row
-      .col-md-4
-        %br
+      .col-md-12
         = render partial: "form", locals: { no_edit: false, delete: false, create_password: true }
