@@ -7,7 +7,7 @@
       = present(@pallet).breadcrumbs
 
     = add_button(new_box_path(pallet_id: @pallet.id), "Box", "fa-box-open")
-    = add_button(pallet_pallet_items_path(@pallet), "Item", "fa-stethoscope")
+    = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
 
   .main-content
     %ul.nav.nav-tabs
@@ -72,7 +72,7 @@
             %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.boxes.size
           - if @pallet.boxes.any?
             #boxes.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a box by ID...", assoc: "boxes"}
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "boxes"}
 
               %table.table.table-striped
                 %thead
@@ -100,7 +100,7 @@
             %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
           - if @pallet.pallet_items.any?
             #pallet_items.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter an item by name...", assoc: "pallet-items"}
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "pallet-items"}
 
               %table.table.table-striped
                 %thead

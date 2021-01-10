@@ -6,7 +6,7 @@
         = link_to "Home", index_path
       = present(@box).breadcrumbs
 
-    = add_button(box_box_items_path(@box), "Item", "fa-stethoscope")
+    = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
 
   .main-content
     %ul.nav.nav-tabs
@@ -77,7 +77,7 @@
             %span.label{class: @box.box_items.any? ? "label-success" : "label-warning"}= @box.box_items.size
           - if @box.box_items.any?
             #box_items.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter an item by name...", assoc: "box-items"}
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "box-items"}
 
               %table.table.table-striped
                 %thead

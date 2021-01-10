@@ -1,0 +1,29 @@
+- if @box.box_items.with_events.none?
+  %p No history.
+- else
+  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "history-items"}
+  - @box.box_items.with_events.each do |bi|
+    .row.inline-add-item
+      .col-xs-12.manage-item-name
+        %p #{bi.generated_name}
+        .drawer-info
+          %span.label.label-warning= bi.quantity - bi.remaining_quantity
+          %i.fa.fa-ellipsis-v
+      .col-xs-12.manage-item-form.hidden
+        - bi.unpacking_events.order(:created_at).reverse_order.each do |event|
+          .unpacking-entry
+            .entry-info
+              %p
+                • #{event.created_at.strftime("%Y-%m-%d")}:
+                = link_to user_path(event.user) do
+                  = event.user.name
+                removed #{event.quantity} #{event.quantity > 1 ? "items" : "item"}.
+              - unless event.notes.blank?
+                %p
+                  Notes:
+                  %em= event.notes
+            = delete_button(box_box_item_box_unpacking_event_path(@box, bi, event), "Are you sure you want to delete this unpacking entry?", "pull-right")
+        .unpacking-entry
+          .entry-info
+            %p Current inventory remaining:
+          %h4.text-center= bi.remaining_quantity

@@ -10,13 +10,21 @@ class PackedItem < ApplicationRecord
 
   has_one :category, through: :item
 
+  has_many :unpacking_events, dependent: :destroy
+
+  scope :with_inventory, -> { left_joins(:unpacking_events).where("remaining_quantity > ?", 0).uniq }
+  scope :with_events, -> { joins(:unpacking_events).uniq }
+
+  accepts_nested_attributes_for :unpacking_events, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
+
   with_options presence: true do
     validates :box, if: ->(packed_item) { packed_item.container.blank? && packed_item.pallet.blank? }
     validates :container, if: ->(packed_item) { packed_item.box.blank? && packed_item.pallet.blank? }
     validates :pallet, if: ->(packed_item) { packed_item.box.blank? && packed_item.container.blank? }
   end
 
-  after_save do
+  before_save do
+    recalculate_remaining_items
     self.shipment = box&.shipment || pallet&.shipment || container&.shipment
   end
 
@@ -33,5 +41,10 @@ class PackedItem < ApplicationRecord
       hash[packed_items.first&.category&.name || "N/A"] =
         packed_items.group_by(&:item).each_with_object({}) { |(b, i), h| h[b.generated_name] = i.sum(&:quantity) }
     end
+  end
+
+  def recalculate_remaining_items
+    self.remaining_quantity = quantity.to_i - unpacking_events.sum(:quantity)
+    self.remaining_weight = weight.to_i - unpacking_events.sum(:weight)
   end
 end

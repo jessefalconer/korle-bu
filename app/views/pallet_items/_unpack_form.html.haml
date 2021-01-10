@@ -1,0 +1,31 @@
+- if @pallet.pallet_items.with_inventory.none?
+  %p No items to unpack.
+- else
+  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "unpack-items"}
+  - @pallet.pallet_items.with_inventory.each do |pi|
+    = form_for :unpacking_event, url: pallet_pallet_item_pallet_unpacking_events_path(@pallet, pi) do |f|
+      .row.inline-add-item
+        .col-xs-12.manage-item-name
+          %p #{pi.generated_name}
+          .drawer-info
+            %span.label.label-info= pi.remaining_quantity
+            %i.fa.fa-ellipsis-v
+        .col-xs-12.manage-item-form.hidden
+          .row
+            .col-xs-6.col-lg-3
+              .form-group
+                = f.label :quantity
+                = f.number_field :quantity, value: pi.remaining_quantity, class: "form-control", min: 1, max: pi.remaining_quantity
+            .col-xs-6.col-lg-3
+              .form-group
+                = f.label "Weight (g)"
+                = f.number_field :weight, value: pi.remaining_weight, class: "form-control", placeholder: "grams"
+            .col-xs-10.col-sm-8.col-lg-4
+              .form-group
+                = f.label "Notes"
+                = f.text_field :notes, class: "form-control", placeholder: "Explanation"
+            .col-xs-2.col-sm-4.col-lg-2
+              .form-group
+                %label &nbsp;
+                .btn-toolbar.list-toolbar
+                  = submit_button_responsive("Unpack", "pull-right")

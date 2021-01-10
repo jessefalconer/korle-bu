@@ -8,16 +8,20 @@
   .main-content
     %ul.nav.nav-tabs
       %li.active
-        %a{data: {toggle: "tab"}, href: "#manage"} Manage
+        %a{data: {toggle: "tab"}, href: "#manage-items"} Manage
       %li
         %a{data: {toggle: "tab"}, href: "#search"} Search
       %li
         %a{data: {toggle: "tab"}, href: "#new"} New
+      %li
+        %a{data: {toggle: "tab"}, href: "#unpack-items"} Unpack
+      %li
+        %a{data: {toggle: "tab"}, href: "#history-items"} History
     .row
       .col-xs-12
         %br
         .tab-content
-          #manage.tab-pane.active.in
+          #manage-items.tab-pane.active.in
             = render "pallet_items/manage_form"
 
           #search.tab-pane.fade
@@ -25,3 +29,9 @@
 
           #new.tab-pane.fade
             = render "pallet_items/add_new_form"
+
+          #unpack-items.tab-pane.fade
+            = render "pallet_items/unpack_form"
+
+          #history-items.tab-pane.fade
+            = render "pallet_items/history"

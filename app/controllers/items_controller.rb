@@ -49,7 +49,6 @@ class ItemsController < ApplicationController
     else
       redirect_to item_path(@item), flash: { error: "Failed to update item: #{@item.errors.full_messages.to_sentence}" }
     end
-
   end
 
   def destroy

@@ -8,7 +8,7 @@
 
     = add_button(new_box_path(container_id: @container.id), "Box", "fa-box-open")
     = add_button(new_pallet_path(container_id: @container.id), "Pallet", "fa-pallet")
-    = add_button(container_container_items_path(@container), "Item", "fa-stethoscope")
+    = manage_button(container_container_items_path(@container), "Items", "fa-stethoscope")
 
   .main-content
     %ul.nav.nav-tabs
@@ -69,7 +69,7 @@
             %span.label{class: @container.pallets.any? ? "label-success" : "label-warning"}= @container.pallets.size
           - if @container.pallets.any?
             #pallets.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a pallet by ID...", assoc: "pallets"}
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallets"}
 
               %table.table.table-striped
                 %thead
@@ -97,7 +97,7 @@
             %span.label{class: @container.boxes.any? ? "label-success" : "label-warning"}= @container.boxes.size
           - if @container.boxes.any?
             #boxes.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a box by ID...", assoc: "boxes"}
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "boxes"}
 
               %table.table.table-striped
                 %thead
@@ -125,7 +125,7 @@
             %span.label{class: @container.container_items.any? ? "label-success" : "label-warning"}= @container.container_items.size
           - if @container.container_items.any?
             #container_items.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter an item by name...", assoc: "container-items"}
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "container-items"}
 
               %table.table.table-striped
                 %thead
