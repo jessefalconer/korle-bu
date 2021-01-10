@@ -73,7 +73,7 @@
             %span.label{class: @box.box_items.any? ? "label-success" : "label-warning"}= @box.box_items.size
           - if @box.box_items.any?
             #box_items.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter by name...", assoc: "box-items"}
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "box-items"}
 
               %table.table.table-striped
                 %thead

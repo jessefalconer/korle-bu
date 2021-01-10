@@ -89,8 +89,7 @@
             %span.label{class: @shipment.pallets.any? ? "label-success" : "label-warning"}= @shipment.pallets.size
           - if @shipment.pallets.any?
             #pallets.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a pallet by ID...", assoc: "pallets"}
-
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallets"}
               %table.table.table-striped
                 %thead
                   %tr
@@ -117,8 +116,7 @@
             %span.label{class: @shipment.pallet_boxes.any? ? "label-success" : "label-warning"}= @shipment.pallet_boxes.size
           - if @shipment.pallet_boxes.any?
             #pallet_boxes.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a box by ID...", assoc: "pallet-boxes"}
-
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallet-boxes"}
               %table.table.table-striped
                 %thead
                   %tr
@@ -145,8 +143,7 @@
             %span.label{class: @shipment.container_boxes.any? ? "label-success" : "label-warning"}= @shipment.container_boxes.size
           - if @shipment.container_boxes.any?
             #container_boxes.collapse
-              = render partial: "layouts/quick_filter", locals: {placeholder: "Quick filter a box by ID...", assoc: "container-boxes"}
-
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "container-boxes"}
               %table.table.table-striped
                 %thead
                   %tr

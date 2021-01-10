@@ -1,9 +1,8 @@
-function filterList() {
-  var input, filter, manageTab, nameRow, p, i, txtValue;
-  input = document.getElementById("quick-filter");
+function filterList(tabList, assoc) {
+  var input, filter, nameRow, p, i, txtValue;
+  input = document.getElementById(`${assoc}-quick-filter`);
   filter = input.value.toUpperCase();
-  manageTab = document.getElementById("manage");
-  nameRow = manageTab.getElementsByClassName("inline-add-item");
+  nameRow = tabList.getElementsByClassName("inline-add-item");
 
   for (i = 0; i < nameRow.length; i++) {
     p = nameRow[i].getElementsByTagName("p")[0];
@@ -17,7 +16,7 @@ function filterList() {
 }
 
 function filterTable(table, assoc) {
-  var input, filter, table, nameRow, td, i, txtValue;
+  var input, filter, nameRow, td, i, txtValue;
   input = document.getElementById(`${assoc}-quick-filter`);
   filter = input.value.toUpperCase();
   nameRow = table.getElementsByClassName("filter-row");
@@ -34,22 +33,20 @@ function filterTable(table, assoc) {
 }
 
 $(() => {
-  if (document.querySelector(".edit_packed_item") != null) {
-    if (document.querySelector("#quick-filter") === null) return;
+  const types = ["pallets", "boxes", "container-items", "pallet-boxes", "container-boxes", "pallet-items", "box-items", "manage-items", "unpack-items", "history-items"]
 
-    $(document).on("click input", "#quick-filter", () => {
-      filterList();
-    });
-  } else {
-    const tables = ["pallets", "boxes", "container-items", "pallet-boxes", "container-boxes", "pallet-items", "box-items"]
-    Reflect.apply(Array, undefined, tables).forEach(assoc => {
-      const table  = document.getElementById(`filter-${assoc}-table`);
+  Reflect.apply(Array, undefined, types).forEach(assoc => {
+    var table  = document.getElementById(`filter-${assoc}-table`);
+    var tabList = document.getElementById(assoc);
 
-      if (table === null) return;
-
+    if (table !== null) {
       $(document).on("click input", `#${assoc}-quick-filter`, () => {
         filterTable(table, assoc);
       });
-    });
-  }
+    } else if (tabList !== null ){
+      $(document).on("click input", `#${assoc}-quick-filter`, () => {
+        filterList(tabList, assoc);
+      });
+    }
+  });
 });

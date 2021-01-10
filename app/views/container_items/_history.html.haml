@@ -1,13 +1,7 @@
 - if @container.container_items.with_events.none?
   %p No history.
 - else
-  .input-group.search.span12
-    .input-group
-      = text_field_tag :search, params[:search], placeholder: "Quick filter an item by name...", class: "form-control", id: "quick-filter"
-      %span.input-group-btn.span12
-        %a{id: "quick-filter-submit"}
-          .btn.btn-primary.pull-left
-            %span Quick Filter
+  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "history-items"}
   - @container.container_items.with_events.each do |ci|
     .row.inline-add-item
       .col-xs-12.manage-item-name
@@ -22,4 +16,4 @@
             removed #{event.quantity} #{event.quantity > 1 ? "items" : "item"}.
           - if event.notes
             %p= event.notes
-          = delete_button(container_container_item_container_unpacking_event_path(@container, ci, event), "Are you sure?")
+          = delete_button(container_container_item_container_unpacking_event_path(@container, ci, event), "Are you sure?", "pull-right")

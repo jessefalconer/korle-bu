@@ -125,17 +125,17 @@ h2.page {
   border: 1px solid #ddd;
   border-top: none;
   margin: 0;
-  padding: 3px 0;
 
   .manage-item-name,
   .results-item-name {
-    padding: 5px 10px;
+    padding: 8px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     cursor: pointer;
 
-    &.open { background-color: lighten(#ddd, 10%); }
+    &.open,
+    &:hover { background-color: #eee; }
 
     p { margin: 0; }
 
@@ -143,6 +143,11 @@ h2.page {
       color: rgb(126, 123, 123);
       margin-left: 10px;
     }
+  }
+
+  .results-item-form,
+  .manage-item-form {
+    margin-top: 5px;
   }
 }
 
@@ -161,6 +166,18 @@ input.table-quick-filter {
 
 .table-filter-button {
   border-radius: 0;
+
+  @media (max-width: 768px) {
+    span { display: none; }
+  }
+}
+
+input.list-quick-filter {
+  border-radius: 4px 0 0 0;
+}
+
+.list-filter-button {
+  border-radius: 0 4px 0 0;
 
   @media (max-width: 768px) {
     span { display: none; }
