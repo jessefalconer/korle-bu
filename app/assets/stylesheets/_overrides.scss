@@ -47,15 +47,12 @@ h2.page {
     color: white;
 
     &.error { background-color: #ff4d4d; }
-
     &.success { background-color: #02a556; }
   }
 }
 
 @media (max-width: 768px) {
-  .responsive-button {
-    span { display: none; }
-  }
+  .responsive-button span { display: none; }
 }
 
 .reconcile-button { margin-top: 15px; }
@@ -141,21 +138,19 @@ h2.page {
 
     .drawer-info {
       margin-left: 10px;
+      min-width: 35px;
+
       i {
         color: rgb(126, 123, 123);
         vertical-align: middle;
 
-        &.fa-ellipsis-v {
-          margin-left: 4.38px;
-        }
+        &.fa-ellipsis-v { margin-left: 4.38px; }
       }
     }
   }
 
   .results-item-form,
-  .manage-item-form {
-    margin-top: 5px;
-  }
+  .manage-item-form { margin-top: 5px; }
 }
 
 table tbody tr td p { margin-bottom: 0; }
@@ -179,9 +174,7 @@ input.table-quick-filter {
   }
 }
 
-input.list-quick-filter {
-  border-radius: 4px 0 0 0;
-}
+input.list-quick-filter { border-radius: 4px 0 0 0; }
 
 .list-filter-button {
   border-radius: 0 4px 0 0;
