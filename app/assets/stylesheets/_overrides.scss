@@ -139,9 +139,16 @@ h2.page {
 
     p { margin: 0; }
 
-    i {
-      color: rgb(126, 123, 123);
+    .drawer-info {
       margin-left: 10px;
+      i {
+        color: rgb(126, 123, 123);
+        vertical-align: middle;
+
+        &.fa-ellipsis-v {
+          margin-left: 4.38px;
+        }
+      }
     }
   }
 
@@ -206,3 +213,14 @@ input.list-quick-filter {
 }
 
 .main-content { margin-bottom: 50px; }
+
+.unpacking-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+
+  .entry-info { margin-right: 15px; }
+
+  h4 { margin: 0 15px 10px 0;}
+}

@@ -7,7 +7,9 @@
       .row.inline-add-item
         .col-xs-12.manage-item-name{data: {unit_weight: bi.item.unit_weight, item_id: bi.item.id}}
           %p= bi.generated_name
-          %i.fa.fa-ellipsis-v
+          .drawer-info
+            %span.label.label-success= bi.quantity
+            %i.fa.fa-ellipsis-v
         .col-xs-12.manage-item-form.hidden
           .row
             .col-xs-6.col-sm-4.col-lg-3

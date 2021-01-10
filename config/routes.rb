@@ -29,8 +29,8 @@ Rails.application.routes.draw do
   concern :boxable_items do
     resources :boxes do
       post "add_with_item", to: "box_items#add_with_item"
-      resources :box_items, except: %i[show edit] do
-        resources :box_unpacking_events, except: %i[new show edit index]
+      resources :box_items, except: %i[show edit new] do
+        resources :box_unpacking_events, only: %i[create destroy]
       end
     end
   end
@@ -38,8 +38,8 @@ Rails.application.routes.draw do
   concern :palletable_items do
     resources :pallets do
       post "add_with_item", to: "pallet_items#add_with_item"
-      resources :pallet_items, except: %i[show edit] do
-        resources :pallet_unpacking_events, except: %i[new show edit index]
+      resources :pallet_items, except: %i[show edit new] do
+        resources :pallet_unpacking_events, only: %i[create destroy]
       end
       concerns :boxable_items
     end
@@ -48,8 +48,8 @@ Rails.application.routes.draw do
   concern :containable_items do
     resources :containers do
       post "add_with_item", to: "container_items#add_with_item"
-      resources :container_items, except: %i[show edit] do
-        resources :container_unpacking_events, except: %i[new show edit index]
+      resources :container_items, except: %i[show edit new] do
+        resources :container_unpacking_events, only: %i[create destroy]
       end
       concerns :palletable_items
     end

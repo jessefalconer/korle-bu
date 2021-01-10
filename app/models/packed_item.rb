@@ -12,7 +12,7 @@ class PackedItem < ApplicationRecord
 
   has_many :unpacking_events, dependent: :destroy
 
-  scope :with_inventory, -> { left_joins(:unpacking_events).where("remaining_quantity > ?", 0) }
+  scope :with_inventory, -> { left_joins(:unpacking_events).where("remaining_quantity > ?", 0).uniq }
   scope :with_events, -> { joins(:unpacking_events).uniq }
 
   accepts_nested_attributes_for :unpacking_events, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }

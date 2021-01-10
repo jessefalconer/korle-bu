@@ -7,13 +7,15 @@
       .row.inline-add-item
         .col-xs-12.manage-item-name
           %p #{bi.generated_name}
-          %i.fa.fa-ellipsis-v
+          .drawer-info
+            %span.label.label-info= bi.remaining_quantity
+            %i.fa.fa-ellipsis-v
         .col-xs-12.manage-item-form.hidden
           .row
             .col-xs-6.col-lg-3
               .form-group
                 = f.label :quantity
-                = f.number_field :quantity, value: bi.remaining_quantity, class: "form-control", min: 1
+                = f.number_field :quantity, value: bi.remaining_quantity, class: "form-control", min: 1, max: bi.remaining_quantity
             .col-xs-6.col-lg-3
               .form-group
                 = f.label "Weight (g)"

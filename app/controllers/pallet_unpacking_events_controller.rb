@@ -6,12 +6,7 @@ class PalletUnpackingEventsController < ApplicationController
 
   def create
     @packed_item.unpacking_events.create(unpacking_event_params.merge(user: current_user))
-    redirect_to pallet_pallet_items_path(@packed_item.pallet), flash: { success: "Item unpacked!" }
-  end
-
-  def update
-    @unpacking_event.update(unpacking_event_params)
-    redirect_to pallet_pallet_items_path(@pallet), flash: { success: "Item updated!" }
+    redirect_to pallet_pallet_items_path(@packed_item.pallet), flash: { success: "Unpacking logged!" }
   end
 
   def destroy
@@ -22,7 +17,7 @@ class PalletUnpackingEventsController < ApplicationController
   private
 
   def unpacking_event_params
-    params.require(:unpacking_event).permit(:quantity, :pallet_item_id, :user)
+    params.require(:unpacking_event).permit(:quantity, :weight, :notes, :pallet_item_id, :user)
   end
 
   def set_unpacking_event
