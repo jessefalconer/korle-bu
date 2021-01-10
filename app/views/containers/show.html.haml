@@ -8,7 +8,7 @@
 
     = add_button(new_box_path(container_id: @container.id), "Box", "fa-box-open")
     = add_button(new_pallet_path(container_id: @container.id), "Pallet", "fa-pallet")
-    = add_button(container_container_items_path(@container), "Item", "fa-stethoscope")
+    = manage_button(container_container_items_path(@container), "Item", "fa-stethoscope")
 
   .main-content
     %ul.nav.nav-tabs

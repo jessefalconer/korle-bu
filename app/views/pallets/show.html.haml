@@ -7,7 +7,7 @@
       = present(@pallet).breadcrumbs
 
     = add_button(new_box_path(pallet_id: @pallet.id), "Box", "fa-box-open")
-    = add_button(pallet_pallet_items_path(@pallet), "Item", "fa-stethoscope")
+    = manage_button(pallet_pallet_items_path(@pallet), "Item", "fa-stethoscope")
 
   .main-content
     %ul.nav.nav-tabs

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_03_215434) do
+ActiveRecord::Schema.define(version: 2021_01_08_210118) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,6 +143,8 @@ ActiveRecord::Schema.define(version: 2021_01_03_215434) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "remaining_quantity", default: 0, null: false
+    t.integer "remaining_weight", default: 0, null: false
     t.index ["box_id"], name: "index_packed_items_on_box_id"
     t.index ["container_id"], name: "index_packed_items_on_container_id"
     t.index ["item_id"], name: "index_packed_items_on_item_id"
@@ -181,6 +183,19 @@ ActiveRecord::Schema.define(version: 2021_01_03_215434) do
     t.index ["user_id"], name: "index_shipments_on_user_id"
   end
 
+  create_table "unpacking_events", force: :cascade do |t|
+    t.integer "quantity", default: 0, null: false
+    t.integer "weight"
+    t.string "weight_units"
+    t.string "notes", limit: 255
+    t.bigint "packed_item_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["packed_item_id"], name: "index_unpacking_events_on_packed_item_id"
+    t.index ["user_id"], name: "index_unpacking_events_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", limit: 255
     t.string "first_name", limit: 255
@@ -192,6 +207,8 @@ ActiveRecord::Schema.define(version: 2021_01_03_215434) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "role", default: "Volunteer", null: false
+    t.bigint "warehouse_id"
+    t.index ["warehouse_id"], name: "index_users_on_warehouse_id"
   end
 
   create_table "warehouses", force: :cascade do |t|

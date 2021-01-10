@@ -15,14 +15,22 @@
           %p= pi.generated_name
           %i.fa.fa-ellipsis-v
         .col-xs-12.manage-item-form.hidden
-          .form-group
-            = f.label :expires
-            = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "yyyy-mm-dd"
-            = f.label :quantity
-            = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{pi.id}"
-
-            = f.label "Weight (g)"
-            = f.number_field :weight, class: "form-control", id: "weight-#{pi.id}", placeholder: "grams"
-          .btn-toolbar.list-toolbar
-            = delete_button(pallet_pallet_item_path(@pallet, pi), "Are you sure you want to delete #{pi.generated_name}?")
-            = submit_button("Update", "pull-right")
+          .row
+            .col-xs-6.col-sm-4.col-lg-3
+              .form-group
+                = f.label :quantity
+                = f.number_field :quantity, value: pi.quantity, class: "form-control", min: 1, id: "quantity-#{pi.id}"
+            .col-xs-6.col-sm-4.col-lg-3
+              .form-group
+                = f.label "Weight (g)"
+                = f.number_field :weight, class: "form-control", id: "weight-#{pi.id}", placeholder: "grams"
+            .col-xs-6.col-sm-4.col-lg-3
+              .form-group
+                = f.label :expires
+                = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "yyyy-mm-dd"
+            .col-xs-6.col-sm-12.col-lg-3
+              .form-group
+                %label &nbsp;
+                .btn-toolbar.list-toolbar
+                  = submit_button_responsive("Update", "pull-right")
+                  = delete_button(pallet_pallet_item_path(@pallet, pi), "Are you sure you want to delete #{pi.generated_name}?", "pull-right")

@@ -3,7 +3,7 @@
 - else
   .input-group.search.span12
     .input-group
-      = text_field_tag :search, params[:search], placeholder: "Quick filter an item by name...", class: "form-control", id: "quick-filter"
+      = text_field_tag :search, "", placeholder: "Filter name...", class: "form-control", id: "quick-filter"
       %span.input-group-btn.span12
         %a{id: "quick-filter-submit"}
           .btn.btn-primary.pull-left
@@ -15,14 +15,22 @@
           %p= ci.generated_name
           %i.fa.fa-ellipsis-v
         .col-xs-12.manage-item-form.hidden
-          .form-group
-            = f.label :expires
-            = f.text_field :expiry_date, value: ci.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{ci.id}", placeholder: "yyyy-mm-dd"
-            = f.label :quantity
-            = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{ci.id}"
-
-            = f.label "Weight (g)"
-            = f.number_field :weight, class: "form-control", id: "weight-#{ci.id}", placeholder: "grams"
-          .btn-toolbar.list-toolbar
-            = delete_button(container_container_item_path(@container, ci), "Are you sure you want to delete #{ci.generated_name}?")
-            = submit_button("Update", "pull-right")
+          .row
+            .col-xs-6.col-sm-4.col-lg-3
+              .form-group
+                = f.label :quantity
+                = f.number_field :quantity, value: ci.quantity, class: "form-control", min: 1, id: "quantity-#{ci.id}"
+            .col-xs-6.col-sm-4.col-lg-3
+              .form-group
+                = f.label "Weight (g)"
+                = f.number_field :weight, class: "form-control", id: "weight-#{ci.id}", placeholder: "grams"
+            .col-xs-6.col-sm-4.col-lg-3
+              .form-group
+                = f.label :expires
+                = f.text_field :expiry_date, value: ci.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{ci.id}", placeholder: "yyyy-mm-dd"
+            .col-xs-6.col-sm-12.col-lg-3
+              .form-group
+                %label &nbsp;
+                .btn-toolbar.list-toolbar
+                  = submit_button_responsive("Update", "pull-right")
+                  = delete_button(container_container_item_path(@container, ci), "Are you sure you want to delete #{ci.generated_name}?", "pull-right")

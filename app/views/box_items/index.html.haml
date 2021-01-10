@@ -14,6 +14,10 @@
         %a{data: {toggle: "tab"}, href: "#search"} Search
       %li
         %a{data: {toggle: "tab"}, href: "#new"} New
+      %li
+        %a{data: {toggle: "tab"}, href: "#unpack"} Unpack
+      %li
+        %a{data: {toggle: "tab"}, href: "#history"} History
     .row
       .col-xs-12
         %br
@@ -26,3 +30,9 @@
 
           #new.tab-pane.fade
             = render "box_items/add_new_form"
+
+          #unpack.tab-pane.fade
+            = render "box_items/unpack_form"
+
+          #history.tab-pane.fade
+            = render "box_items/history"
