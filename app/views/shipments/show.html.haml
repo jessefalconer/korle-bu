@@ -6,14 +6,16 @@
         = link_to "Home", index_path
       %li.active= @shipment.name
 
-    = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
+    - if can? :create, Container
+      = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
 
   .main-content
     %ul.nav.nav-tabs
       %li.active
         %a{data: {toggle: "tab"}, href: "#view"} View
-      %li
-        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+      - if can? :manage, Shipment
+        %li
+          %a{data: {toggle: "tab"}, href: "#edit"} Edit
       %li
         %a{data: {toggle: "tab"}, href: "#export"} Export
 
@@ -49,8 +51,9 @@
                 %h5.text-muted Created At
                 %h4= @shipment.created_at.strftime("%Y-%m-%d")
 
-          #edit.tab-pane.fade
-            = render partial: "form"
+          - if can? :manage, Shipment
+            #edit.tab-pane.fade
+              = render partial: "form"
 
           #export.tab-pane.fade
             = render partial: "export"

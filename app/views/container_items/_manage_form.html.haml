@@ -1,5 +1,5 @@
 - if @container.container_items.none?
-  %p Use the tabs to search or create a new item.
+  %p.text-center Use the tabs to search or create a new item.
 - else
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
   - @container.container_items.each do |ci|

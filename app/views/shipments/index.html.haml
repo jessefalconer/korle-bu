@@ -5,7 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active Shipments
-    = add_button(new_shipment_path, "Shipment", "fa-ship")
+    - if can? :manage, Shipment
+      = add_button(new_shipment_path, "Shipment", "fa-ship")
   .main-content
     %table.table.table-striped
       %thead

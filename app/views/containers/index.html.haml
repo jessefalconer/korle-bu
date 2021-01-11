@@ -5,7 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active #{params[:display]&.titleize} Containers
-    = add_button(new_container_path, "Unassigned Container", "fa-truck")
+    - if can? :manage, Container
+      = add_button(new_container_path, "Unassigned Container", "fa-truck")
   .main-content
     %table.table.table-striped
       %thead

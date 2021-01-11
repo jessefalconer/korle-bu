@@ -104,12 +104,11 @@ function initListeners() {
           search(params);
         }
     });
-
-    if (document.querySelector(".manage-item-name") === null) { return; }
-
-    initManageDrawerListeners();
 }
 
 $(() => {
   initListeners();
+  if (document.querySelector(".manage-item-name") === null) { return; }
+
+  initManageDrawerListeners();
 });

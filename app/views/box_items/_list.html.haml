@@ -1,0 +1,29 @@
+- if @box.box_items.none?
+  %p.text-center This box has no items and may have been an error.
+- else
+  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
+  - @box.box_items.each do |bi|
+    .row.inline-add-item
+      .col-xs-12.manage-item-name{data: {unit_weight: bi.item.unit_weight, item_id: bi.item.id}}
+        %p= bi.generated_name
+        .drawer-info
+          %span.label.label-success= bi.quantity
+          %i.fa.fa-ellipsis-v
+      .col-xs-12.manage-item-form.hidden
+        .row
+          .col-xs-6.col-sm-4.col-lg-3
+            %h5.text-muted Received Quantity
+            %h4= bi.quantity
+          .col-xs-6.col-sm-4.col-lg-3
+            %h5.text-muted Remaining Quantity
+            %h4= bi.remaining_quantity
+          .col-xs-6.col-sm-4.col-lg-3
+            %h5.text-muted Received Weight
+            %h4= bi.weight || "N/A"
+          .col-xs-6.col-sm-4.col-lg-3
+            %h5.text-muted Remaining Weight
+            %h4= bi.remaining_weight
+          - if bi.expiry_date
+            .col-xs-6.col-sm-4.col-lg-3
+              %h5.text-muted Expiry Date
+              %h4= bi.expiry_date.strftime("%Y-%m-%d")

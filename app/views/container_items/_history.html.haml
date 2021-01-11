@@ -1,5 +1,5 @@
 - if @container.container_items.with_events.none?
-  %p No history.
+  %p.text-center No history to display.
 - else
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "history-items"}
   - @container.container_items.with_events.each do |ci|
@@ -22,7 +22,8 @@
                 %p
                   Notes:
                   %em= event.notes
-            = delete_button(container_container_item_container_unpacking_event_path(@container, ci, event), "Are you sure you want to delete this unpacking entry?", "pull-right")
+            - if current_user.admin?
+              = delete_button(container_container_item_container_unpacking_event_path(@container, ci, event), "Are you sure you want to delete this unpacking entry?", "pull-right")
         .unpacking-entry
           .entry-info
             %p Current inventory remaining:
