@@ -7,7 +7,7 @@ class ShipmentsController < ApplicationController
   def new
     cid = Shipment.all.pluck(:custom_uid).max.to_i + 1
     name = "SHIPMENT-#{cid}"
-    @shipment = Shipment.new(custom_uid: cid, name: name, status: Shipment::STATUSES[0])
+    @shipment = Shipment.new(custom_uid: cid, name: name)
   end
 
   def create

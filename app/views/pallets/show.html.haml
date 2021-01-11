@@ -6,15 +6,17 @@
         = link_to "Home", index_path
       = present(@pallet).breadcrumbs
 
-    = add_button(new_box_path(pallet_id: @pallet.id), "Box", "fa-box-open")
+    - if can? :create, Box
+      = add_button(new_box_path(pallet_id: @pallet.id), "Box", "fa-box-open")
     = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
 
   .main-content
     %ul.nav.nav-tabs
       %li.active
         %a{data: {toggle: "tab"}, href: "#view"} View
-      %li
-        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+      - if can? :manage, Pallet
+        %li
+          %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
       .col-md-5
         %br
@@ -41,8 +43,9 @@
                 %h5.text-muted Created At
                 %h4= @pallet.created_at.strftime("%Y-%m-%d")
 
-          #edit.tab-pane.fade
-            = render partial: "form"
+          - if can? :manage, Pallet
+            #edit.tab-pane.fade
+              = render partial: "form"
 
       .col-md-7
         %br
@@ -61,6 +64,10 @@
                     %td
                       %p Shipment
                     = pallet.shipment_location
+                  %tr
+                    %td
+                      %p Warehouse
+                    = pallet.warehouse_location
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}

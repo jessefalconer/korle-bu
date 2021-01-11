@@ -5,7 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active #{params[:display]&.titleize} Boxes
-    = add_button(new_box_path, "Unassigned Box", "fa-box-open")
+    - if can? :create, Box
+      = add_button(new_box_path, "Unassigned Box", "fa-box-open")
   .main-content
     %table.table.table-striped
       %thead

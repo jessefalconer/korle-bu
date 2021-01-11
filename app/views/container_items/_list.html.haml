@@ -1,0 +1,29 @@
+- if @container.container_items.none?
+  %p.text-center This container has no items and may have been an error.
+- else
+  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
+  - @container.container_items.each do |ci|
+    .row.inline-add-item
+      .col-xs-12.manage-item-name{data: {unit_weight: ci.item.unit_weight, item_id: ci.item.id}}
+        %p= ci.generated_name
+        .drawer-info
+          %span.label.label-success= ci.quantity
+          %i.fa.fa-ellipsis-v
+      .col-xs-12.manage-item-form.hidden
+        .row
+          .col-xs-6.col-sm-4.col-lg-3
+            %h5.text-muted Received Quantity
+            %h4= ci.quantity
+          .col-xs-6.col-sm-4.col-lg-3
+            %h5.text-muted Remaining Quantity
+            %h4= ci.remaining_quantity
+          .col-xs-6.col-sm-4.col-lg-3
+            %h5.text-muted Received Weight
+            %h4= ci.weight || "N/A"
+          .col-xs-6.col-sm-4.col-lg-3
+            %h5.text-muted Remaining Weight
+            %h4= ci.remaining_weight
+          - if ci.expiry_date
+            .col-xs-6.col-sm-4.col-lg-3
+              %h5.text-muted Expiry Date
+              %h4= ci.expiry_date.strftime("%Y-%m-%d")

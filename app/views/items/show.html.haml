@@ -7,13 +7,15 @@
       %li
         = link_to "Items", items_path
       %li.active= @item.generated_name
-    = link_button("Start Reconcile", reconcile_start_path(@item))
+    - if can? :reconcile, ReconcileItem
+      = link_button("Start Reconcile", reconcile_start_path(@item))
   .main-content
     %ul.nav.nav-tabs
       %li.active
         %a{data: {toggle: "tab"}, href: "#view"} View
-      %li
-        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+      - if can? :manage, Item
+        %li
+          %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
       #myTabContent.tab-content
         #view.tab-pane.active.in
@@ -53,6 +55,7 @@
               %h5.text-muted Attached Photo
               %img{src: url_for(@item.photo), style: "width: 100%;"}
 
-        #edit.tab-pane.fade
-          %br
-          = render partial: "form"
+        - if can? :manage, Item
+          #edit.tab-pane.fade
+            %br
+            = render partial: "form"

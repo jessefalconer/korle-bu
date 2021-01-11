@@ -5,7 +5,8 @@
       %li
         = link_to "Home", index_path
       %li.active #{params[:display]&.titleize} Pallets
-    = add_button(new_pallet_path, "Unassigned Pallet", "fa-pallet")
+    - if can? :create, Pallet
+      = add_button(new_pallet_path, "Unassigned Pallet", "fa-pallet")
   .main-content
     %table.table.table-striped
       %thead

@@ -9,7 +9,7 @@
     = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), { include_blank: "" }, { class: "form-control" }
+    = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), {}, { class: "form-control" }
   .form-group
     = f.label :receiving_warehouse_id
     = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), { include_blank: "" }, { class: "form-control" }

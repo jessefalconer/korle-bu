@@ -48,7 +48,7 @@
       %li
         %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
           %i.fa.fa-fw.fa-tachometer-alt
-          Admin
+          Dashboard
           %i.fa.fa-collapse
       %li
         %ul.dashboard-menu.nav.nav-list.collapse
@@ -81,7 +81,7 @@
               = link_to reconcile_overview_path do
                 %span.fa.fa-caret-right
                 Reconciliation
-      - if can? :manage, Shipment
+      - if can? :read, Shipment
         %li
           %a.nav-header.collapsed{data: {target: ".shipments-menu", toggle: "collapse"}, href: "#"}
             %i.fa.fa-fw.fa-ship
@@ -93,11 +93,12 @@
               = link_to shipments_path do
                 %span.fa.fa-caret-right
                 All
-            %li
-              = link_to new_shipment_path do
-                %span.fa.fa-caret-right
-                New
-      - if can? :manage, Container
+            - if can? :create, Shipment
+              %li
+                = link_to new_shipment_path do
+                  %span.fa.fa-caret-right
+                  New
+      - if can? :read, Container
         %li
           %a.nav-header.collapsed{data: {target: ".containers-menu", toggle: "collapse"}, href: "#"}
             %i.fa.fa-fw.fa-truck
@@ -109,14 +110,16 @@
               = link_to containers_path do
                 %span.fa.fa-caret-right
                 All
-            %li
-              = link_to containers_path(display: :unassigned) do
-                %span.fa.fa-caret-right
-                Unassigned
-            %li
-              = link_to new_container_path do
-                %span.fa.fa-caret-right
-                New
+            - unless current_user.receiving_manager?
+              %li
+                = link_to containers_path(display: :unassigned) do
+                  %span.fa.fa-caret-right
+                  Unassigned
+            - if can? :create, Container
+              %li
+                = link_to new_container_path do
+                  %span.fa.fa-caret-right
+                  New
 
       %li
         %a.nav-header.collapsed{data: {target: ".pallets-menu", toggle: "collapse"}, href: "#"}
@@ -129,14 +132,16 @@
             = link_to pallets_path do
               %span.fa.fa-caret-right
               All
-          %li
-            = link_to pallets_path(display: :unassigned) do
-              %span.fa.fa-caret-right
-              Unassigned
-          %li
-            = link_to new_pallet_path do
-              %span.fa.fa-caret-right
-              New
+          - unless current_user.receiving_manager?
+            %li
+              = link_to pallets_path(display: :unassigned) do
+                %span.fa.fa-caret-right
+                Unassigned
+          - if can? :create, Pallet
+            %li
+              = link_to new_pallet_path do
+                %span.fa.fa-caret-right
+                New
 
       %li
         %a.nav-header.collapsed{data: {target: ".box-menu", toggle: "collapse"}, href: "#"}
@@ -149,14 +154,16 @@
             = link_to boxes_path do
               %span.fa.fa-caret-right
               All
-          %li
-            = link_to boxes_path(display: :unassigned) do
-              %span.fa.fa-caret-right
-              Unassigned
-          %li
-            = link_to new_box_path do
-              %span.fa.fa-caret-right
-              New
+          - unless current_user.receiving_manager?
+            %li
+              = link_to boxes_path(display: :unassigned) do
+                %span.fa.fa-caret-right
+                Unassigned
+          - if can? :create, Box
+            %li
+              = link_to new_box_path do
+                %span.fa.fa-caret-right
+                New
 
       %li
         = link_to my_activity_path, class: "nav-header" do

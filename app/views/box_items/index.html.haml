@@ -8,31 +8,44 @@
 
   .main-content
     %ul.nav.nav-tabs
-      %li.active
-        %a{data: {toggle: "tab"}, href: "#manage-items"} Manage
-      %li
-        %a{data: {toggle: "tab"}, href: "#search"} Search
-      %li
-        %a{data: {toggle: "tab"}, href: "#new"} New
-      %li
-        %a{data: {toggle: "tab"}, href: "#unpack-items"} Unpack
-      %li
-        %a{data: {toggle: "tab"}, href: "#history-items"} History
+      - if can? :manage, PackedItem
+        %li.active
+          %a{data: {toggle: "tab"}, href: "#manage-items"} Manage
+        %li
+          %a{data: {toggle: "tab"}, href: "#search"} Search
+        %li
+          %a{data: {toggle: "tab"}, href: "#new"} New
+      - elsif cannot? :manage, PackedItem
+        %li.active
+          %a{data: {toggle: "tab"}, href: "#manage-items"} Inventory
+
+      - if can? :manage, UnpackingEvent
+        %li
+          %a{data: {toggle: "tab"}, href: "#unpack-items"} Unpack
+        %li
+          %a{data: {toggle: "tab"}, href: "#history-items"} History
+
     .row
       .col-xs-12
         %br
         .tab-content
-          #manage-items.tab-pane.active.in
-            = render "box_items/manage_form"
+          - if can? :manage, PackedItem
+            #manage-items.tab-pane.active.in
+              = render "box_items/manage_form"
 
-          #search.tab-pane.fade
-            = render "box_items/search_form"
+            #search.tab-pane.fade
+              = render "box_items/search_form"
 
-          #new.tab-pane.fade
-            = render "box_items/add_new_form"
+            #new.tab-pane.fade
+              = render "box_items/add_new_form"
 
-          #unpack-items.tab-pane.fade
-            = render "box_items/unpack_form"
+          - elsif cannot? :manage, PackedItem
+            #manage-items.tab-pane.active.in
+              = render "box_items/list"
 
-          #history-items.tab-pane.fade
-            = render "box_items/history"
+          - if can? :manage, UnpackingEvent
+            #unpack-items.tab-pane.fade
+              = render "box_items/unpack_form"
+
+            #history-items.tab-pane.fade
+              = render "box_items/history"

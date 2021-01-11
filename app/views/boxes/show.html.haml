@@ -12,8 +12,10 @@
     %ul.nav.nav-tabs
       %li.active
         %a{data: {toggle: "tab"}, href: "#view"} View
-      %li
-        %a{data: {toggle: "tab"}, href: "#edit"} Edit
+
+      - if can? :manage, Box
+        %li
+          %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
       .col-md-5
         %br
@@ -40,8 +42,9 @@
                 %h5.text-muted Created At
                 %h4= @box.created_at.strftime("%Y-%m-%d")
 
-          #edit.tab-pane.fade
-            = render partial: "form"
+          - if can? :manage, Box
+            #edit.tab-pane.fade
+              = render partial: "form"
 
       .col-md-7
         %br
@@ -66,6 +69,10 @@
                     %td
                       %p Shipment
                     = box.shipment_location
+                  %tr
+                    %td
+                      %p Warehouse
+                    = box.warehouse_location
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}

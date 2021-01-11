@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class BoxesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_box, only: %i[show destroy update]
 
   def new
@@ -21,9 +22,9 @@ class BoxesController < ApplicationController
 
   def index
     @boxes = if params[:display]
-      Box.send(params[:display]).order(:custom_uid).reverse_order.page params[:page]
+      Box.accessible_by(current_ability).send(params[:display]).order(:custom_uid).reverse_order.page params[:page]
     else
-      Box.all.order(:custom_uid).reverse_order.page params[:page]
+      Box.accessible_by(current_ability).order(:custom_uid).reverse_order.page params[:page]
     end
   end
 

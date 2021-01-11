@@ -22,9 +22,9 @@ class ContainersController < ApplicationController
 
   def index
     @containers = if params[:display]
-      Container.send(params[:display]).order(:custom_uid).reverse_order.page params[:page]
+      Container.accessible_by(current_ability).send(params[:display]).order(:custom_uid).reverse_order.page params[:page]
     else
-      Container.all.order(:custom_uid).reverse_order.page params[:page]
+      Container.accessible_by(current_ability).order(:custom_uid).reverse_order.page params[:page]
     end
   end
 

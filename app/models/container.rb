@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Container < ApplicationRecord
-  STATUSES = %w[Not\ Started Packing Completed].freeze
+  STATUSES = ["In Progress", "Complete", "Received"].freeze
 
   belongs_to :user, optional: false
   belongs_to :shipment, optional: true

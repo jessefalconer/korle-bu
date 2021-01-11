@@ -2,7 +2,7 @@
 - time = @box.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
 - pallet_id = @box.pallet_id.presence || params[:pallet_id]
 - container_id = @box.container_id.presence || params[:container_id]
-- pallet_collection = @box.container.present? ? @box.container.pallets : Pallet.all
+- pallet_collection = @box.container.present? ? @box.container.pallets.accessible_by(current_ability) : Pallet.accessible_by(current_ability)
 = form_for @box do |f|
   .form-group
     = f.label :name
@@ -12,7 +12,7 @@
     = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(Box::STATUSES, @box.status), { include_blank: "" }, { class: "form-control" }
+    = f.select :status, options_for_select(Box::STATUSES, @box.status), {}, { class: "form-control" }
   .form-group
     = f.label :notes
     = f.text_field :notes, class: "form-control"
@@ -21,7 +21,7 @@
     = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(:name), :id, :name, pallet_id), { include_blank: "Unassigned" }, { class: "form-control" }
   .form-group
     %label Container Assignment
-    = f.select :container_id, options_from_collection_for_select(Container.all.order(:name), :id, :name, container_id), { include_blank: "Unassigned" }, { class: "form-control" }
+    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(:name), :id, :name, container_id), { include_blank: "Unassigned" }, { class: "form-control" }
   .form-group
     %label Created By
     = f.text_field :user, value: user, disabled: true, class: "form-control"

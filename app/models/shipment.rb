@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Shipment < ApplicationRecord
-  STATUSES = ["Not Started", "In Progress", "Ready to Ship", "In Transit", "Received"].freeze
+  STATUSES = ["In Progress", "Complete", "Received"].freeze
 
   belongs_to :user, optional: false
   belongs_to :receiving_warehouse, class_name: "Warehouse", optional: false
@@ -22,4 +22,17 @@ class Shipment < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
 
   paginates_per 25
+
+  def current_location
+    case status
+    when "In Progress"
+      shipping_warehouse.name
+    when "Complete"
+     "In Transit to #{receiving_warehouse.name}"
+    when "Received"
+      receiving_warehouse.name
+    else
+      "No Warehouses Assigned"
+    end
+  end
 end

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  has_secure_password
+
   STATUSES = %w[Active Deactivated].freeze
   ROLES = %w[Volunteer Shipping\ Manager Admin Receiving\ Manager].freeze
 
-  has_secure_password
-  paginates_per 25
+  belongs_to :warehouse, optional: true
 
   has_many :shipments
   has_many :containers
@@ -21,6 +22,8 @@ class User < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
   validates :role, inclusion: { in: ROLES }
 
+  paginates_per 25
+
   def name
     "#{first_name} #{last_name}"
   end
@@ -34,7 +37,7 @@ class User < ApplicationRecord
   end
 
   def admin?
-    role == "Manager"
+    role == "Admin"
   end
 
   def receiving_manager?

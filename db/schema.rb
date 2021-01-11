@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 2021_01_08_210118) do
 
   create_table "boxes", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", limit: 255, default: "Not Started"
+    t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.integer "weight"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2021_01_08_210118) do
 
   create_table "containers", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", limit: 255, default: "Not Started"
+    t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -155,7 +155,7 @@ ActiveRecord::Schema.define(version: 2021_01_08_210118) do
 
   create_table "pallets", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", limit: 255, default: "Not Started"
+    t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -170,7 +170,7 @@ ActiveRecord::Schema.define(version: 2021_01_08_210118) do
 
   create_table "shipments", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "Not Started", null: false
+    t.string "status", default: "In Progress", null: false
     t.text "notes"
     t.integer "custom_uid"
     t.bigint "user_id"

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PalletsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_pallet, only: %i[show destroy update]
 
   def new
@@ -21,9 +22,9 @@ class PalletsController < ApplicationController
 
   def index
     @pallets = if params[:display]
-      Pallet.send(params[:display]).order(:custom_uid).reverse_order.page params[:page]
+      Pallet.accessible_by(current_ability).send(params[:display]).order(:custom_uid).reverse_order.page params[:page]
     else
-      Pallet.all.order(:custom_uid).reverse_order.page params[:page]
+      Pallet.accessible_by(current_ability).order(:custom_uid).reverse_order.page params[:page]
     end
   end
 

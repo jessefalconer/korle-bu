@@ -7,50 +7,75 @@
           Home
       %li.active Dashboard
   .main-content
+    - unless current_user.volunteer?
+      .panel.panel-default
+        %a.panel-heading{data: {toggle: "collapse"}, href: "#page-stats"} Global Stats (30 Days)
+        #page-stats.panel-collapse.panel-body.collapse.in
+          .row
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= Item.where(verified: false).count
+              %h5.text-muted.text-center Unverified Items
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= Item.where(category: nil).count
+              %h5.text-muted.text-center Uncategorized Items
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= PackedItem.where("created_at > ?", 30.days.ago).count
+              %h5.text-muted.text-center Packed Items
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= Item.where("created_at > ?", 30.days.ago).count
+              %h5.text-muted.text-center New Items
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= Box.where("created_at > ?", 30.days.ago).count
+              %h5.text-muted.text-center New Boxes
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= Pallet.where("created_at > ?", 30.days.ago).count
+              %h5.text-muted.text-center New Pallets
+
     .panel.panel-default
-      %a.panel-heading{data: {toggle: "collapse"}, href: "#page-stats"} Latest Stats (30 Days)
+      %a.panel-heading{data: {toggle: "collapse"}, href: "#page-stats"} My Stats (All-time)
       #page-stats.panel-collapse.panel-body.collapse.in
         .row
           .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= Item.where(verified: false).count
-            %h5.text-muted.text-center Unverified Items
+            %h3.text-center= current_user.containers.count
+            %h5.text-muted.text-center Containers Created
           .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= Item.where(category: nil).count
-            %h5.text-muted.text-center Uncategorized Items
+            %h3.text-center= current_user.container_items.count
+            %h5.text-muted.text-center Containerized Items
           .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= PackedItem.where("created_at > ?", 30.days.ago).count
-            %h5.text-muted.text-center Packed Items
+            %h3.text-center= current_user.pallets.count
+            %h5.text-muted.text-center Pallets Created
           .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= Item.where("created_at > ?", 30.days.ago).count
-            %h5.text-muted.text-center New Items
+            %h3.text-center= current_user.pallet_items.count
+            %h5.text-muted.text-center Palletized Items
           .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= Box.where("created_at > ?", 30.days.ago).count
-            %h5.text-muted.text-center New Boxes
+            %h3.text-center= current_user.boxes.count
+            %h5.text-muted.text-center Boxes Created
           .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= Pallet.where("created_at > ?", 30.days.ago).count
-            %h5.text-muted.text-center New Pallets
+            %h3.text-center= current_user.box_items.count
+            %h5.text-muted.text-center Boxed Items
     .row
-      .col-sm-6.col-md-6
-        .panel.panel-default
-          .panel-heading.no-collapse
-            Recently Added Users
-            %span.label.label-info= User.count
-          %table.table.table-striped
-            %thead
-              %tr
-                %th.hidden-xs Name
-                %th Email
-                %th Role
-            %tbody
-              - User.order(:created_at).reverse.first(5).each do |user|
+      - if current_user.admin?
+        .col-xs-12.col-sm-6
+          .panel.panel-default
+            .panel-heading.no-collapse
+              Recently Added Users
+              %span.label.label-info= User.count
+            %table.table.table-striped
+              %thead
                 %tr
-                  %td.hidden-xs= user.name
-                  %td
-                    = link_to user_path(user) do
-                      = user.email
-                  %td= user.role
+                  %th.hidden-xs Name
+                  %th Email
+                  %th Role
+              %tbody
+                - User.order(:created_at).reverse.first(5).each do |user|
+                  %tr
+                    %td.hidden-xs= user.name
+                    %td
+                      = link_to user_path(user) do
+                        = user.email
+                    %td= user.role
 
-      .col-sm-6.col-md-6
+      .col-xs-12{class: (current_user.admin? && "col-sm-6")}
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#notes"} Personal Notes
           #notes.panel-body.collapse.in
@@ -61,23 +86,25 @@
                   user profile.
             - else
               %p= simple_format(current_user.notes)
-    .row
-      .col-sm-12
-        .panel.panel-default
-          .panel-heading.no-collapse
-            Recently Added Items
-          %table.table.list
-            %tbody
-              - Item.order(:created_at).reverse.first(10).each do |item|
-                %tr
-                  %td
-                    = link_to item_path(item) do
-                      %p.title= item.generated_name
-                    %p.info= item.category&.name
-                  %td
-                    %p= item.created_at.strftime("%Y-%m-%d")
-                    = link_to user_path(item.user) do
-                      = item.user.name
-                  %td
-                    %p Usage Count:
-                    %p= PackedItem.where(item_id: item.id).count
+
+    - if current_user.admin?
+      .row
+        .col-sm-12
+          .panel.panel-default
+            .panel-heading.no-collapse
+              Recently Added Items
+            %table.table.list
+              %tbody
+                - Item.order(:created_at).reverse.first(10).each do |item|
+                  %tr
+                    %td
+                      = link_to item_path(item) do
+                        %p.title= item.generated_name
+                      %p.info= item.category&.name
+                    %td
+                      %p= item.created_at.strftime("%Y-%m-%d")
+                      = link_to user_path(item.user) do
+                        = item.user.name
+                    %td
+                      %p Usage Count:
+                      %p= PackedItem.where(item_id: item.id).count
