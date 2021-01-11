@@ -2,7 +2,7 @@
 
 require "rake"
 STATUS_TRANSLATIONS = {
-  "packed": "Received",
+  "packed": "Complete",
   "packing": "In Progress"
 }.freeze
 # hp and ms-or are rewritten, check with Sean to the extent
@@ -42,10 +42,14 @@ SIZE_MAPPINGS = {
 # • hard reset schema if you get the pg relation error
 
 namespace :legacy_data do
-  task migrate: :environment do
+  task prep_items: :environment do
     user_id = User.first.id
     # Legacy items are inserted to the new table without validation
-    Item.all.update_all(user_id: user_id)
+    Item.find_each {|item| item.update(user_id: user_id, legacy_name: item.object) }
+  end
+
+  task migrate: :environment do
+    user_id = User.first.id
 
     # Boxes and Pallets receive a logical order of naming, custom IDs and standardized statuses
     Box.all.order(:created_at).each_with_index do |box, index|
@@ -97,7 +101,7 @@ namespace :legacy_data do
   task reshape_data: :environment do
     Item.all.find_each do |item|
       # check if we can move some sizes out of the base name
-      name = item.object.squish.upcase
+      name = item.legacy_name.squish.upcase
       Item::STANDARD_SIZES.each do |size|
         if name.include? size.upcase
           item.update(object: name.gsub(size.upcase, "").squish.titleize, standardized_size: size)

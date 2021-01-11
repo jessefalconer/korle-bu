@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_11_053742) do
+ActiveRecord::Schema.define(version: 2021_01_11_063210) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_053742) do
 
   create_table "containers", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress", null: false
+    t.string "status", default: "In Progress"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -164,7 +164,7 @@ ActiveRecord::Schema.define(version: 2021_01_11_053742) do
 
   create_table "pallets", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress", null: false
+    t.string "status", default: "In Progress"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
