@@ -43,31 +43,47 @@ class Item < ApplicationRecord
   def process_name
     [brand.to_s.titleize, object.titleize, standardized_size.to_s,
      package.to_s, numerical_1_phrase.to_s, numerical_2_phrase.to_s,
-     concentration_phrase.to_s].reject(&:empty?).join(" ").squish
+     concentration_phrase.to_s, area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
   end
 
   def numerical_1_phrase
     return if numerical_size_1.blank?
 
-    numerical_size_1.to_s + numerical_units_1.to_s + " #{numerical_description_1.to_s.titleize}"
+    strip_trailing_zero(numerical_size_1) + numerical_units_1.to_s + " #{numerical_description_1.to_s.titleize}"
   end
 
   def numerical_2_phrase
     return if numerical_size_2.blank?
 
-    numerical_size_2.to_s + numerical_units_2.to_s + " #{numerical_description_2.to_s.titleize}"
+    strip_trailing_zero(numerical_size_2) + numerical_units_2.to_s + " #{numerical_description_2.to_s.titleize}"
   end
 
   def concentration_phrase
     return if concentration.blank?
 
-    concentration.to_s + concentration_units.to_s + " #{concentration_description.to_s.titleize}"
+    strip_trailing_zero(concentration) + concentration_units.to_s + " #{concentration_description.to_s.titleize}"
+  end
+
+  def area_phrase
+    return if area_1.blank? || area_2.blank?
+
+    strip_trailing_zero(area_1) + "x" + strip_trailing_zero(area_2) + area_units.to_s + " #{area_description.to_s.titleize}"
+  end
+
+  def range_phrase
+    return if range_1.blank? || range_2.blank?
+
+    strip_trailing_zero(range_1) + "-" + strip_trailing_zero(range_2) + range_units.to_s + " #{range_description.to_s.titleize}"
   end
 
   def package
     return if packaged_quantity.blank?
 
     "#{packaged_quantity}-Pack"
+  end
+
+  def strip_trailing_zero(n)
+    n.to_s.sub(/\.?0+$/, "")
   end
 
   private
