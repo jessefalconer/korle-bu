@@ -2,7 +2,7 @@
 
 class ContainerPresenter < BasePresenter
   def shipment_location
-    status = shipment&.status&.presence || "Unassigned"
+    status = shipment&.status || "Unassigned"
 
     tag.td do
       if shipment

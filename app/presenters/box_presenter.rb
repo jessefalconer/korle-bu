@@ -2,7 +2,7 @@
 
 class BoxPresenter < BasePresenter
   def pallet_location
-    status = pallet&.status&.presence || "Unassigned"
+    status = pallet&.status || "Unassigned"
 
     tag.td do
       if pallet
@@ -19,8 +19,9 @@ class BoxPresenter < BasePresenter
   end
 
   def container_location
-    status = container&.status&.presence || "Unassigned"
     record = container || pallet&.container
+    status = record&.status || "Unassigned"
+
     tag.td do
       if record
         link_to(container_path(record)) do
@@ -36,7 +37,7 @@ class BoxPresenter < BasePresenter
   end
 
   def shipment_location
-    status = shipment&.status&.presence || "Unassigned"
+    status = shipment&.status || "Unassigned"
 
     tag.td do
       if shipment
