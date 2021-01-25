@@ -8,7 +8,7 @@ local:
 
 digitalocean:
   service: S3
-  endpoint: "https://kbnf.sfo2.digitaloceanspaces.com"
+  endpoint: "https://sfo2.digitaloceanspaces.com"
   access_key_id: <%= ENV["SPACES_KEY"] %>
   secret_access_key: <%= ENV["SPACES_SECRET_KEY"] %>
   region: sfo2
