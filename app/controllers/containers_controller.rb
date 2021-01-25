@@ -5,7 +5,7 @@ class ContainersController < ApplicationController
   before_action :set_container, only: %i[show destroy update]
 
   def new
-    cid = Container.all.pluck(:custom_uid).max.to_i + 1
+    cid = Container.maximum(:custom_uid).to_i + 1
     name = "CONTAINER-#{cid}"
     @container = Container.new(custom_uid: cid, name: name, shipment_id: params[:shipment_id])
   end

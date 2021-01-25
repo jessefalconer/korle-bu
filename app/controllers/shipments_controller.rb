@@ -5,7 +5,7 @@ class ShipmentsController < ApplicationController
   before_action :set_shipment, only: %i[show destroy update]
 
   def new
-    cid = Shipment.all.pluck(:custom_uid).max.to_i + 1
+    cid = Shipment.maximum(:custom_uid).to_i + 1
     name = "SHIPMENT-#{cid}"
     @shipment = Shipment.new(custom_uid: cid, name: name)
   end
