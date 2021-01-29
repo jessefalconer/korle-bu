@@ -1,12 +1,16 @@
 = form_for @pallet, url: pallet_add_with_item_path, method: :post do |f|
   .row.padding-top-small
-    .col-xs-6
-      .form-group
-        %label Expiry Date
-        = text_field_tag :expiry_date, "", { class: "form-control datepickers" }
-    .col-xs-6
+    .col-xs-6.col-sm-4
       .form-group
         %label Quantity
         = number_field_tag :quantity, 0, { class: "form-control", min: 1}
+    .col-xs-6.col-sm-4
+      .form-group
+        %label Weight
+        = number_field_tag :weight, 0, { class: "form-control", min: 0}
+    .col-xs-12.col-sm-4
+      .form-group
+        %label Expiry Date
+        = text_field_tag :expiry_date, "", { class: "form-control datepickers" }
 
   = render partial: "items/form", locals: { item: Item.new }

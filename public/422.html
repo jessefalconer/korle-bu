@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <style>
   .rails-default-error-page {
-    background-color: #EFEFEF;
+    background-color: #FFF;
     color: #2E2F30;
     text-align: center;
     font-family: arial, sans-serif;
@@ -23,7 +23,7 @@
     border-right-color: #999;
     border-left-color: #999;
     border-bottom-color: #BBB;
-    border-top: #B00100 solid 4px;
+    border-top: #007096 solid 4px;
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
     background-color: white;
@@ -33,7 +33,7 @@
 
   .rails-default-error-page h1 {
     font-size: 100%;
-    color: #730E15;
+    color: #007096;
     line-height: 1.5em;
   }
 
@@ -51,6 +51,26 @@
     color: #666;
     box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
   }
+  .buttons {
+    margin-top: 25px;
+    display: inline-block;
+  }
+  a {
+    text-decoration: none;
+    padding: 1em 2em;
+
+    border-radius: 5px;
+    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
+    color: #fff;
+  }
+  .back {
+    margin-right: 5px;
+    background-color: #ed8b00;
+  }
+  .home {
+    margin-left: 5px;
+    background-color: #007096;
+  }
   </style>
 </head>
 
@@ -58,10 +78,14 @@
   <!-- This file lives in public/422.html -->
   <div class="dialog">
     <div>
-      <h1>The change you wanted was rejected.</h1>
-      <p>Maybe you tried to change something you didn't have access to.</p>
+      <h1>Gotcha! Error 422: Nope, You Can't Do That!</h1>
+      <p>You tried to do something you don't have access to.</p>
     </div>
-    <p>If you think you should have permission to access this page, please report the issue to a manager or administrator.</p>
+    <p>If you think you should have permission to access this page, report the issue to a manager or administrator.</p>
+  </div>
+  <div class="buttons">
+    <a href="javascript:history.back()" class="back">&lt; Go Back</a>
+    <a href="https://inventory.kbnf.org" class="home">Go Home &gt;</a>
   </div>
 </body>
 </html>
