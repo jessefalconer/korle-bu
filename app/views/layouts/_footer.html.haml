@@ -1,5 +1,4 @@
-#footer
-  .row
-    .col-xs-12.text-center
-      - flash.each do |type, messages|
-        .center{class: "flash #{type}"}= messages
+%footer
+  .text-center
+    - flash.each do |type, messages|
+      .center{class: "flash #{type}"}= messages

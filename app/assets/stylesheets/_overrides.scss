@@ -14,23 +14,22 @@ h2.page {
   line-height: 1.5em
 }
 
-.theme-1.color {
-  background: #007096
-}
-
 .theme-1 .navbar {
   background: #007096;
   border-bottom: 5px solid #ed8b00;
 }
 
 // Utility
-
-#footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+footer {
+  // position: relative;
+  // background-color: #007096;
+  // height: 85px;
+  // border-top: 10px solid #7A7A7A;
 
   .flash {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
     padding: 1em 0em 1em 0em;
     color: white;
 
@@ -204,4 +203,12 @@ input.list-quick-filter { border-radius: 4px 0 0 0; }
   .entry-info { margin-right: 15px; }
 
   h4 { margin: 0 15px 10px 0;}
+}
+
+img.kbnf-logo-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  margin-bottom: 35px;
 }

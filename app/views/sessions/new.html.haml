@@ -1,17 +1,19 @@
-.dialog
-  .panel.panel-default
-    %p.panel-heading.no-collapse Sign In
-    .panel-body
-      = form_tag login_path do
-        .form-group
-          %label Email
-          = text_field_tag :email, "", class: "form-control span12"
-        .form-group
-          %label Password
-          = text_field_tag :password, "", class: "form-control span12", type: "password"
-        .form-group
-          = submit_button("Sign In", "", "fa-user")
-        .clearfix
-    %p.panel-heading.no-collapse
-      = link_to signup_path do
-        Sign Up
+.dialog.sign-in
+  %img{src: "https://kbnf.org/wp-content/themes/kbnf/dist/images/kbnf-logo.png", class: "kbnf-logo-center"}
+  .col-xs-12
+    .panel.panel-default
+      %p.panel-heading.no-collapse Sign In
+      .panel-body
+        = form_tag login_path do
+          .form-group
+            %label Email
+            = text_field_tag :email, "", class: "form-control span12"
+          .form-group
+            %label Password
+            = text_field_tag :password, "", class: "form-control span12", type: "password"
+          .form-group
+            = submit_button("Sign In", "", "fa-user")
+          .clearfix
+      %p.panel-heading.no-collapse
+        = link_to signup_path do
+          Sign Up
