@@ -6,12 +6,12 @@ class ContainerItemsController < ApplicationController
 
   def create
     @container.container_items.create(container_item_params.merge(user: current_user))
-    redirect_to container_container_items_path(@container), flash: { success: "Item added!" }
+    redirect_to container_container_items_path(@container), flash: { success: "Item added." }
   end
 
   def update
     @container_item.update(container_item_params)
-    redirect_to container_container_items_path(@container), flash: { success: "Item updated!" }
+    redirect_to container_container_items_path(@container), flash: { success: "Item updated." }
   end
 
   def index
@@ -22,7 +22,7 @@ class ContainerItemsController < ApplicationController
 
     if item.save
       @container.container_items.create(expiry_date: params[:expiry_date], quantity: params[:quantity], user: current_user, item_id: item.id)
-      redirect_to container_container_items_path(@container), flash: { success: "Item created and added!" }
+      redirect_to container_container_items_path(@container), flash: { success: "Item created and added." }
     else
       redirect_to container_container_items_path(@container), flash: { error: item.errors }
     end
@@ -40,7 +40,10 @@ class ContainerItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description, :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2, :packaged_quantity, :category_id, :notes, :verified)
+    params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description,
+      :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
+      :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity,
+      :category_id, :notes, :verified, :photo, :flagged)
   end
 
   def set_container_item

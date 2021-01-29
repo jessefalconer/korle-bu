@@ -8,14 +8,14 @@
         %span.icon-bar
     = link_to index_path do
       %span.navbar-brand
-        Korle-Bu
+        KBNF Inventory Management
 
   - if current_user
     .navbar-collapse.collapse{style: "height: 1px;"}
       %ul#main-menu.nav.navbar-nav.navbar-right
         %li.dropdown.hidden-xs
           %a.dropdown-toggle{data: {toggle: "dropdown"}, href: "#"}
-            %i.fa.fa-user.padding-right-small{style: "position:relative; top: 3px;"}
+            %i.fa.fa-user.padding-right-small
             = current_user.name
             %i.fa.fa-caret-down
           %ul.dropdown-menu

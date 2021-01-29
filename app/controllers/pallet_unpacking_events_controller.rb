@@ -6,7 +6,7 @@ class PalletUnpackingEventsController < ApplicationController
 
   def create
     @packed_item.unpacking_events.create(unpacking_event_params.merge(user: current_user))
-    redirect_to pallet_pallet_items_path(@packed_item.pallet), flash: { success: "Unpacking logged!" }
+    redirect_to pallet_pallet_items_path(@packed_item.pallet), flash: { success: "Unpacking logged." }
   end
 
   def destroy

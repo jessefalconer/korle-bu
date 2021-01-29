@@ -12,7 +12,7 @@ class WarehousesController < ApplicationController
     warehouse = Warehouse.new(warehouse_params.merge(user: current_user))
 
     if warehouse.save
-      redirect_to warehouse_path(warehouse), flash: { success: "Warehouse creation successful." }
+      redirect_to warehouse_path(warehouse), flash: { success: "Warehouse created." }
     else
       redirect_to warehouses_path, flash: { error: "Failed to create new warehouse: #{warehouse.errors.full_messages.to_sentence}" }
     end
@@ -27,7 +27,7 @@ class WarehousesController < ApplicationController
 
   def update
     if @warehouse.update(warehouse_params)
-      redirect_to warehouse_path(@warehouse), flash: { success: "Warehouse update successful." }
+      redirect_to warehouse_path(@warehouse), flash: { success: "Warehouse updated." }
     else
       redirect_to warehouse_path(@warehouse), flash: { error: "Failed to update warehouse: #{@warehouse.errors.full_messages.to_sentence}" }
     end
@@ -35,7 +35,7 @@ class WarehousesController < ApplicationController
 
   def destroy
     @warehouse.destroy
-    redirect_to warehouses_path, flash: { success: "Warehouse deletion successful." }
+    redirect_to warehouses_path, flash: { success: "Warehouse deleted." }
   end
 
   private

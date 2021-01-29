@@ -12,7 +12,7 @@ class CategoriesController < ApplicationController
     category = Category.new(category_params.merge(user: current_user))
 
     if category.save
-      redirect_to category_path(category), flash: { success: "Category creation successful." }
+      redirect_to category_path(category), flash: { success: "Category created." }
     else
       redirect_to categories_path, flash: { error: "Failed to create new category: #{category.errors.full_messages.to_sentence}" }
     end
@@ -27,7 +27,7 @@ class CategoriesController < ApplicationController
 
   def update
     if @category.update(category_params)
-      redirect_to category_path(@category), flash: { success: "Category update successful." }
+      redirect_to category_path(@category), flash: { success: "Category updated." }
     else
       redirect_to category_path(@category), flash: { error: "Failed to update category: #{@category.errors.full_messages.to_sentence}" }
     end
@@ -35,7 +35,7 @@ class CategoriesController < ApplicationController
 
   def destroy
     @category.destroy
-    redirect_to categories_path, flash: { success: "Category deletion successful." }
+    redirect_to categories_path, flash: { success: "Category deleted." }
   end
 
   private

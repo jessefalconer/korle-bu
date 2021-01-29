@@ -6,7 +6,7 @@ class BoxUnpackingEventsController < ApplicationController
 
   def create
     @packed_item.unpacking_events.create(unpacking_event_params.merge(user: current_user))
-    redirect_to box_box_items_path(@packed_item.box), flash: { success: "Unpacking logged!" }
+    redirect_to box_box_items_path(@packed_item.box), flash: { success: "Unpacking logged." }
   end
 
   def destroy

@@ -14,7 +14,7 @@ class BoxesController < ApplicationController
     box = Box.new(box_params.merge(user: current_user))
 
     if box.save
-      redirect_to box_path(box), flash: { success: "Box creation successful." }
+      redirect_to box_path(box), flash: { success: "Box created." }
     else
       redirect_to boxes_path, flash: { error: "Failed to create new box: #{box.errors.full_messages.to_sentence}" }
     end
@@ -33,7 +33,7 @@ class BoxesController < ApplicationController
 
   def update
     if @box.update(box_params)
-      redirect_to box_path(@box), flash: { success: "Box update successful." }
+      redirect_to box_path(@box), flash: { success: "Box updated." }
     else
       redirect_to box_path(@box), flash: { error: "Failed to update box: #{@box.errors.full_messages.to_sentence}" }
     end
@@ -41,7 +41,7 @@ class BoxesController < ApplicationController
 
   def destroy
     @box.destroy
-    redirect_to boxes_path, flash: { success: "Box deletion successful." }
+    redirect_to boxes_path, flash: { success: "Box deleted." }
   end
 
   private

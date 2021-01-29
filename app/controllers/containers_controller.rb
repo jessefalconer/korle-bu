@@ -14,7 +14,7 @@ class ContainersController < ApplicationController
     container = Container.new(container_params.merge(user: current_user))
 
     if container.save
-      redirect_to container_path(container), flash: { success: "Container creation successful." }
+      redirect_to container_path(container), flash: { success: "Container created." }
     else
       redirect_to containers_path, flash: { error: "Failed to create new container: #{container.errors.full_messages.to_sentence}" }
     end
@@ -33,7 +33,7 @@ class ContainersController < ApplicationController
 
   def update
     if @container.update(container_params)
-      redirect_to container_path(@container), flash: { success: "Container update successful." }
+      redirect_to container_path(@container), flash: { success: "Container updated." }
     else
       redirect_to container_path(@container), flash: { error: "Failed to update container: #{@container.errors.full_messages.to_sentence}" }
     end
@@ -41,7 +41,7 @@ class ContainersController < ApplicationController
 
   def destroy
     @container.destroy
-    redirect_to containers_path, flash: { success: "Container deletion successful." }
+    redirect_to containers_path, flash: { success: "Container deleted." }
   end
 
   private

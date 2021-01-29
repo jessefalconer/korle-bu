@@ -19,7 +19,7 @@ class UsersController < ApplicationController
 
   def update
     if @user.update(user_params)
-      redirect_to user_path(@user), flash: { success: "User update successful." }
+      redirect_to user_path(@user), flash: { success: "User updated." }
     else
       redirect_to user_path(@user), flash: { error: @user.errors.full_messages.to_sentence }
     end
@@ -38,8 +38,7 @@ class UsersController < ApplicationController
     if @user.errors.any?
       redirect_to signup_path, flash: { error: @user.errors.full_messages.to_sentence }
     else
-      session[:user_id] = @user.id
-      redirect_to index_path, flash: { success: "User creation successful." }
+      redirect_to login_path, flash: { success: "User created, waiting for administrator approval." }
     end
   end
 

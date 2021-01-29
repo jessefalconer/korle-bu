@@ -14,7 +14,7 @@ class ShipmentsController < ApplicationController
     shipment = Shipment.new(shipment_params.merge(user: current_user))
 
     if shipment.save
-      redirect_to shipment_path(shipment), flash: { success: "Shipment creation successful." }
+      redirect_to shipment_path(shipment), flash: { success: "Shipment created." }
     else
       redirect_to shipments_path, flash: { error: "Failed to create new shipment: #{shipment.errors.full_messages.to_sentence}" }
     end
@@ -33,7 +33,7 @@ class ShipmentsController < ApplicationController
 
   def update
     if @shipment.update(shipment_params)
-      redirect_to shipment_path(@shipment), flash: { success: "Shipment update successful." }
+      redirect_to shipment_path(@shipment), flash: { success: "Shipment updated." }
     else
       redirect_to shipment_path(@shipment), flash: { error: "Failed to update shipment: #{@shipment.errors.full_messages.to_sentence}" }
     end
@@ -41,7 +41,7 @@ class ShipmentsController < ApplicationController
 
   def destroy
     @shipment.destroy
-    redirect_to shipments_path, flash: { success: "Shipment deletion successful." }
+    redirect_to shipments_path, flash: { success: "Shipment deleted." }
   end
 
   private

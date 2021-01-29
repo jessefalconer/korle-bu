@@ -21,7 +21,7 @@ a,
 .h4,
 .h5,
 .h6 {
-  font-family: 'Open Sans', helvetica, arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 a:hover {
@@ -325,12 +325,6 @@ footer hr {
   font-size: .85em;
   line-height: 1.5em;
   background: #efefef;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #efefef), color-stop(1, #fafafa));
-  background: -ms-linear-gradient(bottom, #efefef, #fafafa);
-  background: -moz-linear-gradient(center bottom, #efefef 0%, #fafafa 100%);
-  background: -o-linear-gradient(bottom, #efefef, #fafafa);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#efefef', EndColorStr='#fafafa');
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fafafa',EndColorStr='#efefef')";
   box-shadow: inset 0px 1px 1px white;
 }
 
@@ -433,12 +427,6 @@ a.panel-heading:hover,
   border-top: 1px solid #fcfcfc;
   border-bottom: 1px solid #c8c8cb;
   background: #efeff0;
-  background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #efeff0), color-stop(1, #fafafa));
-  background: -ms-linear-gradient(bottom, #efeff0, #fafafa);
-  background: -moz-linear-gradient(center bottom, #efeff0 0%, #fafafa 100%);
-  background: -o-linear-gradient(bottom, #efeff0, #fafafa);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#efeff0', EndColorStr='#fafafa');
-  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorStr='#fafafa',EndColorStr='#efeff0')";
   border-left: none;
   color: #444;
   display: block;
@@ -460,7 +448,7 @@ a.panel-heading:hover,
 }
 
 .sidebar-nav .nav-header:hover {
-  background: #efeff0;
+  background: #dbdbdd;
   background: -webkit-gradient(linear, left bottom, left top, color-stop(0, #efeff0), color-stop(1, #ffffff));
   background: -ms-linear-gradient(bottom, #efeff0, #ffffff);
   background: -moz-linear-gradient(center bottom, #efeff0 0%, #ffffff 100%);
@@ -548,75 +536,6 @@ a.panel-heading:hover,
 
 .sidebar-nav .nav-list.collapse.in {
   border-bottom: 1px solid #ccc;
-}
-
-/*Buttons*/
-.btn {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
-
-.btn-primary {
-  background-color: #414959;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#4c5568), to(#414959));
-  border: 1px solid #363d4a;
-  font-weight: normal;
-}
-
-.btn-primary:hover {
-  background-color: #414959;
-  *background-color: #414959;
-}
-
-.btn-danger {
-  background-color: #553333;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#653d3d), to(#553333));
-  border: 1px solid #452929;
-  font-weight: normal;
-}
-
-.btn-danger:hover {
-  background-color: #553333;
-  *background-color: #553333;
-}
-
-.btn-success {
-  background-color: #556665;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#617473), to(#556665));
-  border: 1px solid #495857;
-  font-weight: normal;
-}
-
-.btn-success:hover {
-  background-color: #556665;
-  *background-color: #556665;
-}
-
-.btn-warning {
-  background-color: #aaaa55;
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#b3b366), to(#aaaa55));
-  border: 1px solid #99994d;
-  font-weight: normal;
-}
-
-.btn-warning:hover {
-  background-color: #aaaa55;
-  *background-color: #aaaa55;
-}
-
-.well {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  -webkit-box-shadow: 1px 1px 0px #ffffff;
-  -moz-box-shadow: 1px 1px 0px #ffffff;
-  box-shadow: 1px 1px 0px #ffffff;
-  -webkit-border-radius: 0px;
-  -moz-border-radius: 0px;
-  border-radius: 0px;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
 }
 
 /*Gallery*/
@@ -918,47 +837,4 @@ table.table.list tr:first-child td {
   .row .dialog {
     max-width: 300px;
   }
-}
-
-/* Side notes for calling out things
--------------------------------------------------- */
-/* Base styles (regardless of theme) */
-.bs-callout {
-  margin: 20px 0;
-  padding: 15px 30px 15px 15px;
-  border-left: 5px solid #eee;
-}
-
-.bs-callout-right {
-  border-right: 5px solid #eee;
-  border-left: 0px;
-}
-
-.bs-callout h4 {
-  margin-top: 0;
-}
-
-.bs-callout p:last-child {
-  margin-bottom: 0;
-}
-
-.bs-callout code,
-.bs-callout .highlight {
-  background-color: #fff;
-}
-
-/* Themes for different contexts */
-.bs-callout-danger {
-  background-color: #fcf2f2;
-  border-color: #dFb5b4;
-}
-
-.bs-callout-warning {
-  background-color: #fefbed;
-  border-color: #f1e7bc;
-}
-
-.bs-callout-info {
-  background-color: #f0f7fd;
-  border-color: #d0e3f0;
 }

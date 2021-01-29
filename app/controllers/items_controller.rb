@@ -13,7 +13,7 @@ class ItemsController < ApplicationController
     item = Item.new(item_params.merge(user: current_user))
 
     if item.save
-      redirect_to item_path(item), flash: { success: "Item creation successful." }
+      redirect_to item_path(item), flash: { success: "Item created: #{item.generated_name}." }
     else
       redirect_to items_path, flash: { error: "Failed to create new item: #{item.errors.full_messages.to_sentence}" }
     end
@@ -45,7 +45,7 @@ class ItemsController < ApplicationController
 
   def update
     if @item.update(item_params)
-      redirect_to item_path(@item), flash: { success: "Item update successful." }
+      redirect_to item_path(@item), flash: { success: "Item updated." }
     else
       redirect_to item_path(@item), flash: { error: "Failed to update item: #{@item.errors.full_messages.to_sentence}" }
     end
@@ -53,7 +53,7 @@ class ItemsController < ApplicationController
 
   def destroy
     @item.destroy
-    redirect_to items_path, flash: { success: "Item deletion successful." }
+    redirect_to items_path, flash: { success: "Item deleted." }
   end
 
   private
@@ -74,7 +74,10 @@ class ItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description, :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2, :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity, :category_id, :notes, :verified, :photo, :flagged)
+    params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description,
+      :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
+      :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity,
+      :category_id, :notes, :verified, :photo, :flagged)
   end
 
   def set_item
