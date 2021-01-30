@@ -5,10 +5,12 @@ class Item < ApplicationRecord
 
   paginates_per 25
 
-  pg_search_scope :search_by_generated_name, against: [:generated_name],
-    using: {
-      tsearch: { prefix: true }
-    }
+  pg_search_scope :search_by_generated_name,
+                  against: :generated_name,
+                  using: {
+                    tsearch: { prefix: true }
+                  },
+                  ranked_by: ":trigram"
 
   belongs_to :user, optional: false
   belongs_to :category, optional: true
@@ -88,6 +90,29 @@ class Item < ApplicationRecord
 
   def strip_trailing_zero(n)
     n.to_s.sub(/\.?0+$/, "")
+  end
+
+  def trigram(word)
+    return [] if word.strip == ""
+
+    parts = []
+    padded = "  #{word} ".downcase
+    padded.chars.each_cons(3) { |w| parts << w.join }
+    parts
+  end
+
+  def name_similarity(comparison_item)
+    tri1 = trigram(generated_name)
+    tri2 = trigram(comparison_item.generated_name)
+
+    return 0.0 if [tri1, tri2].any? { |arr| arr.size == 0 }
+
+    # Find number of trigrams shared between them
+    same_size = (tri1 & tri2).size
+    # Find unique total trigrams in both arrays
+    all_size = (tri1 | tri2).size
+
+    (same_size.to_f / all_size * 100).round(2)
   end
 
   private

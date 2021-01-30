@@ -23,18 +23,17 @@ class ItemsController < ApplicationController
     @items = Item.all.order(:created_at).reverse_order.page params[:page]
   end
 
-  def search
+  def reconcile_search
     @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: params[:compare_id].to_i)
-    respond_to do |format|
-      format.js { render partial: "search-results", locals: { record: params[:compare_id] } }
-    end
+    @item = Item.find(params[:compare_id])
+
+    render json: render_to_string(partial: "results", layout: false, locals: { comparison_record_id: params[:compare_id] }).to_json
   end
 
   def search_form
     klass = params[:model].constantize
     record = klass.find(params[:id])
-
-    @search_results_items = Item.search_by_generated_name(params[:search])
+    @search_results_items = Item.search_by_generated_name(params[:search]).pluck(:id, :generated_name, :unit_weight)
     form_path, model = generate_form_url(params[:model], record)
 
     render json: render_to_string(partial: "results-form", layout: false, locals: { model: model, form_path: form_path }).to_json

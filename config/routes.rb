@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   get "signup", to: "users#signup"
   post "create_public_user", to: "users#create_public_user"
 
-  get "item_search", to: "items#search"
+  get "reconcile_item_search", to: "items#reconcile_search"
   get "item_search_form", to: "items#search_form"
   get "reconcile_unverified", to: "reconcile_items#unverified"
   get "reconcile_uncategorized", to: "reconcile_items#uncategorized"

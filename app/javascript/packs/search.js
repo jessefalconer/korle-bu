@@ -1,4 +1,4 @@
-function search(params) {
+function packingSearch(params) {
     const modelID = $("#search-model-id").val();
     const model = $("#search-model").val();
     $.ajax({
@@ -14,6 +14,21 @@ function search(params) {
               dateFormat: "yy-mm-dd"
             });
             initResultsDrawerListeners();
+        },
+        error: function () { alert("Search could not be completed."); }
+    });
+}
+
+function reconcileSearch(params) {
+    const compareID = $("#compare-id").val();
+    $.ajax({
+        url: "/reconcile_item_search",
+        type: "get",
+        data: { search: params,
+                compare_id: compareID },
+        async: false,
+        success: function (data) {
+            $("#search-results").append(data);
         },
         error: function () { alert("Search could not be completed."); }
     });
@@ -68,6 +83,8 @@ function initResultsDrawerListeners() {
 }
 
 function initManageDrawerListeners() {
+  if (document.querySelector(".manage-item-name") === null) { return; }
+
   $(".manage-item-name").on("click", e => {
     const icon = $(e.currentTarget).find("i");
     const sibling = $(e.currentTarget).next();
@@ -88,27 +105,46 @@ function initManageDrawerListeners() {
   })
 }
 
-function initListeners() {
-    if (document.querySelector("#search-submit") === null) { return; }
+function initPackingSearchListeners() {
+  if (document.querySelector("#packing-search-submit") === null) { return; }
 
-    $(document).on("click", "#search-submit", () => {
-        $("#search-results").empty();
-        const params = $("#search-params").val();
-        if ( params !== "" ) { search(params); }
-    });
+  var typingTimer;
+  var searchDelayInterval = 300;
+  var params;
+  var minimumChars = 3;
 
-    $(document).on("input", "#search-params", () => {
-        $("#search-results").empty();
-        const params = $("#search-params").val();
-        if ( params !== "" && params.length > 2 ) {
-          search(params);
-        }
-    });
+  $(document).on("input", "#search-params", function(){
+      clearTimeout(typingTimer);
+      params = $("#search-params").val();
+      if ( params !== "" && params.length >= minimumChars ) {
+          typingTimer = setTimeout(typingComplete, searchDelayInterval);
+      }
+  });
+
+  function typingComplete () {
+      $("#search-results").empty();
+      packingSearch(params);
+  }
+
+  $(document).on("click", "#packing-search-submit", () => {
+      $("#search-results").empty();
+      const params = $("#search-params").val();
+      if ( params !== "" ) { packingSearch(params); }
+  });
+}
+
+function initReconcileSearchListeners() {
+  if (document.querySelector("#reconcile-search-submit") === null) { return; }
+
+  $(document).on("click", "#reconcile-search-submit", () => {
+      $("#search-results").empty();
+      const params = $("#search-params").val();
+      if ( params !== "" ) { reconcileSearch(params); }
+  });
 }
 
 $(() => {
-  initListeners();
-  if (document.querySelector(".manage-item-name") === null) { return; }
-
+  initPackingSearchListeners();
+  initReconcileSearchListeners();
   initManageDrawerListeners();
 });

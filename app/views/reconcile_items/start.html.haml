@@ -10,9 +10,10 @@
   .main-content
     .row
       .col-xs-12
-        %h3 Select a target item to merge the reconcile item into.
+        %h3 Select a target for the reconcile item.
       .col-xs-12
         %h4 Reconcile Item
+        %h5 Merge this item into the selected target item.
     .row.stats-container
       .col-xs-12
         %h5.text-muted Name
@@ -41,8 +42,9 @@
       .row
         .col-xs-12
           %h4 Target Item Suggestions
-      - @similar_items.each_with_index do |(id, match_count), index|
-        = render partial: "item_card", locals: {id: id, match_count: match_count}
+          %h5 You can swap the target and reconcile item in the next stage if you wish.
+      - @similar_items.each do |item|
+        = render partial: "item_card", locals: {item: item}
 
     - else
       .row
@@ -52,6 +54,3 @@
     .row
       .col-xs-12
         = render "search_form"
-
-    %br
-    #search-results

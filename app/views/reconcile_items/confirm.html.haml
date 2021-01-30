@@ -32,7 +32,8 @@
       .col-lg-3.col-sm-4.col-xs-6
         %h5.text-muted Category
         %h4{style: "color: #{@item.category.present? ? "#ff4d4d" : "#02a556"}"}= @item.category&.name || "N/A"
-
+    .row.text-center
+      = swap_button(reconcile_confirm_path(@target_item, @item), "center")
     .row
       .col-xs-12
         %h4 Target Item

@@ -8,22 +8,23 @@
       tab to create one.
 - else
   - @search_results_items.each do |item|
+    -# @param item [array][0]: id, [1]:generated_name, [2]:unit_weight
     = form_for :packed_item, url: form_path, method: :post do |f|
       .row.inline-add-item
-        .col-xs-12.results-item-name{data: {unit_weight: item.unit_weight, item_id: item.id}}
-          %p= item.generated_name
+        .col-xs-12.results-item-name{data: {unit_weight: item[2], item_id: item[0]}}
+          %p= item[1]
           %i.fa.fa-ellipsis-v
         .col-xs-12.results-item-form.hidden
           .form-group
             = f.label :expires
-            = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "expiry-#{item.id}", placeholder: "yyyy-mm-dd"
+            = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "expiry-#{item[0]}", placeholder: "yyyy-mm-dd"
             = f.label :quantity
-            = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{item.id}"
-            = f.hidden_field :item_id, value: item.id, id: "item-#{item.id}"
+            = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{item[0]}"
+            = f.hidden_field :item_id, value: item[0], id: "item-#{item[0]}"
             = f.label "Weight (g)"
-            = f.number_field :weight, class: "form-control", id: "weight-#{item.id}", placeholder: "grams"
+            = f.number_field :weight, class: "form-control", id: "weight-#{item[0]}", placeholder: "grams"
           .btn-toolbar.list-toolbar
-            %a{id: "estimate-item-#{item.id}"}
+            %a{id: "estimate-item-#{item[0]}"}
               .btn.btn-primary.pull-left
                 %span Estimate Quantity
             = submit_button("Add", "pull-right")

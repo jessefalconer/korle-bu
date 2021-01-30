@@ -1,7 +1,10 @@
-= form_tag(item_search_path, method: "get", remote: true, class: "input-group search span12") do
-  = hidden_field_tag :compare_id, @item.id
+.input-group.search.span12.padding-bottom-small
+  = hidden_field_tag :compare_id, @item.id, id: "compare-id"
   .input-group
-    = text_field_tag :search, params[:search], placeholder: "Enter search term", class: "form-control"
-    %span.input-group-btn.span12
-      = submit_tag "Search", class: "btn btn-primary" do
+    = text_field_tag :search, params[:search], placeholder: "Enter search term...", class: "form-control", id: "search-params"
+    %span.input-group-btn.span12#reconcile-search-submit
+      %a.btn.btn-primary.responsive-button
+        %span Search
         %i.fa.fa-search
+
+#search-results
