@@ -11,7 +11,7 @@
       %thead
         %tr
           %th Name
-          %th City
+          %th.hidden-xs City
           %th Country
           %th Status
       %tbody
@@ -20,7 +20,7 @@
             %td
               = link_to warehouse_path(warehouse) do
                 = warehouse.name
-            %td= warehouse.city
+            %td.hidden-xs= warehouse.city
             %td= warehouse.country
             %td= warehouse.status
 

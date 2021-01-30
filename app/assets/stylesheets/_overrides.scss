@@ -20,9 +20,11 @@ h2.page {
 }
 
 .footer-block {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+  @media (min-width: 350px) {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
 
   .footer-links {
     border-top: 10px solid #7A7A7A;
@@ -67,7 +69,7 @@ footer {
 }
 
 @media (max-width: 768px) {
-  .responsive-button span { display: none; }
+  .responsive-button span.main-text { display: none; }
 }
 
 .reconcile-button { margin-top: 15px; }

@@ -11,17 +11,17 @@
       %thead
         %tr
           %th Name
-          %th Description
-          %th Created By
-          %th Created At
+          %th.hidden-xs Description
+          %th.hidden-xs Created By
+          %th.hidden-xs Created At
       %tbody
         - @categories.each do |category|
           %tr
             %td
               = link_to category_path(category) do
                 = category.name
-            %td= category.description
-            %td= category.user.name
-            %td= category.created_at.strftime("%Y-%m-%d")
+            %td.hidden-xs= category.description
+            %td.hidden-xs= category.user.name
+            %td.hidden-xs= category.created_at.strftime("%Y-%m-%d")
 
     = paginate @categories, window: 2

@@ -38,7 +38,8 @@ module ApplicationHelper
   def add_button(path, text, icon)
     link_to(path, class: "btn btn-primary responsive-button") do
       tag.i("", class: "fa fa-plus") +
-        tag.span(" #{text} ") +
+        tag.span(" ") +
+        tag.span("#{text} ", class: "main-text") +
         tag.i("", class: "fa #{icon}")
     end
   end
@@ -46,7 +47,8 @@ module ApplicationHelper
   def manage_button(path, text, icon)
     link_to(path, class: "btn btn-primary responsive-button") do
       tag.i("", class: "fa fa-tasks") +
-        tag.span(" #{text} ") +
+        tag.span(" ") +
+        tag.span("#{text} ", class: "main-text") +
         tag.i("", class: "fa #{icon}")
     end
   end

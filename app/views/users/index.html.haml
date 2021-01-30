@@ -11,7 +11,7 @@
       %thead
         %tr
           %th Name
-          %th Email
+          %th.hidden-xs Email
           %th.hidden-xs Phone
           %th Role
           %th.hidden-xs Created At
@@ -21,7 +21,7 @@
             %td
               = link_to user_path(user) do
                 = user.name
-            %td= user.email
+            %td.hidden-xs= user.email
             %td.hidden-xs= user.phone
             %td= user.role
             %td.hidden-xs= user.created_at.strftime("%Y-%m-%d")

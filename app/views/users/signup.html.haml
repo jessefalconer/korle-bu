@@ -21,6 +21,9 @@
             %label Password
             = f.password_field :password, class: "form-control span12"
           .form-group
+            %label Confirm Password
+            = f.password_field :password_confirmation, class: "form-control span12"
+          .form-group
             = submit_button("Sign Up", "", "fa-user")
           .clearfix
       %p.panel-heading.no-collapse

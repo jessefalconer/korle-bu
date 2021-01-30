@@ -21,6 +21,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true
   validates :status, inclusion: { in: STATUSES }
   validates :role, inclusion: { in: ROLES }
+  validates :password, presence: true, length: { minimum: 6 }
 
   paginates_per 25
 

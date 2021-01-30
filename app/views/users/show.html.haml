@@ -13,12 +13,18 @@
         %a{data: {toggle: "tab"}, href: "#view"} View
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
+      %li
+        %a{data: {toggle: "tab"}, href: "#change-password"} Change Password
     .row
       #myTabContent.tab-content
         #view.tab-pane.active.in
           %br
-          = render partial: "form", locals: { no_edit: true, delete: true, create_password: false }
+          = render partial: "form", locals: { no_edit: true, delete: true }
 
         #edit.tab-pane.fade
           %br
-          = render partial: "form", locals: { no_edit: false, delete: false, create_password: false }
+          = render partial: "form", locals: { no_edit: false, delete: false }
+
+        #change-password.tab-pane.fade
+          %br
+          = render partial: "change_password"
