@@ -1,8 +1,9 @@
-.footer-block
-  .footer-links.privacy.text-center
-    =link_to "Privacy", privacy_path
-  .footer-links.terms.text-center
-    =link_to "Terms", terms_path
+- unless current_user
+  .footer-block
+    .footer-links.privacy.text-center
+      =link_to "Privacy", privacy_path
+    .footer-links.terms.text-center
+      =link_to "Terms", terms_path
 %footer
   .text-center
     - flash.each do |type, messages|

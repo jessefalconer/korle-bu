@@ -18,6 +18,10 @@ class Item < ApplicationRecord
 
   has_one_attached :photo
 
+  scope :unverified, -> { where(verified: false) }
+  scope :uncategorized, -> { where(category: nil) }
+  scope :flagged, -> { where(flagged: true) }
+
   validates :generated_name, uniqueness: true
 
   STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XXL XXXL Infant Child Assorted Adult].freeze

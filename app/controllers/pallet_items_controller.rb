@@ -41,9 +41,9 @@ class PalletItemsController < ApplicationController
 
   def item_params
     params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description,
-      :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
-      :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity,
-      :category_id, :notes, :verified, :photo, :flagged)
+                                 :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
+                                 :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity,
+                                 :category_id, :notes, :verified, :photo, :flagged)
   end
 
   def set_pallet_item

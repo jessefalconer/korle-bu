@@ -4,8 +4,16 @@ class ReconcileItemsController < ApplicationController
   before_action :set_item, only: %i[start confirm execute item_instances]
   before_action :set_target_item, only: %i[confirm execute]
 
-  def show
-    @overview = ReconcileItem.new(current_user)
+  def unverified
+    @items = Item.unverified.page params[:page]
+  end
+
+  def uncategorized
+    @items = Item.uncategorized.page params[:page]
+  end
+
+  def flagged
+    @items = Item.flagged.page params[:page]
   end
 
   def start
@@ -19,9 +27,9 @@ class ReconcileItemsController < ApplicationController
 
   def execute
     @overview = ReconcileItem.new(current_user)
-    @overview.execute_merge(@item, @target_item, delete: params[:delete_item])
+    @overview.execute_merge(@item, @target_item, delete: params[:delete_item], verify: params[:verify_item])
 
-    redirect_to reconcile_overview_path
+    redirect_to reconcile_unverified_path
   end
 
   def item_instances

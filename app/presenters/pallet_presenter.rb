@@ -13,9 +13,9 @@ class PalletPresenter < BasePresenter
         tag.p("N/A")
       end
     end +
-    tag.td do
-      tag.p(status, class: "pull-right")
-    end
+      tag.td do
+        tag.p(status, class: "pull-right")
+      end
   end
 
   def shipment_location
@@ -30,9 +30,9 @@ class PalletPresenter < BasePresenter
         tag.p("N/A")
       end
     end +
-    tag.td do
-      tag.p(status, class: "pull-right")
-    end
+      tag.td do
+        tag.p(status, class: "pull-right")
+      end
   end
 
   def warehouse_location
@@ -41,8 +41,8 @@ class PalletPresenter < BasePresenter
     tag.td do
       tag.p(status)
     end +
-    tag.td do
-      tag.p(shipment&.status&.presence || "Unassigned", class: "pull-right")
-    end
+      tag.td do
+        tag.p(shipment&.status&.presence || "Unassigned", class: "pull-right")
+      end
   end
 end

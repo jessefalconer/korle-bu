@@ -548,6 +548,66 @@ readers do not read off random characters that represent icons */
   }
 }
 
+.fa-info {
+  &:before {
+    content: "\f129";
+  }
+}
+
+.fa-code {
+  &:before {
+    content: "\f121";
+  }
+}
+
+.fa-question {
+  &:before {
+    content: "\f128";
+  }
+}
+
+.fa-user-shield {
+  &:before {
+    content: "\f505";
+  }
+}
+
+.fa-balance-scale {
+  &:before {
+    content: "\f24e";
+  }
+}
+
+.fa-star {
+  &:before {
+    content: "\f005";
+  }
+}
+
+.fa-th-list {
+  &:before {
+    content: "\f00b";
+  }
+}
+
+.fa-home {
+  &:before {
+    content: "\f015";
+  }
+}
+
+.fa-users {
+  &:before {
+    content: "\f0c0";
+  }
+}
+
+.fa-flag {
+  &:before {
+    content: "\f024";
+  }
+}
+
 .sr-only {
   border: 0;
   clip: rect(0, 0, 0, 0);

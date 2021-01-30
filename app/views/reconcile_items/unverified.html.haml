@@ -1,0 +1,44 @@
+.content
+  .header
+    %h1.page-title Reconcile - Unverified
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active Reconcile - Unverified
+  .main-content
+    .row
+      .col-xs-12
+        - if @items.any?
+          %h3 Unverified Items (#{Item.unverified.count})
+          %p
+            These items are unverified. To begin merging, click |
+            %em Reconcile.
+            Or click on the item's name to begin verifying or deleting.
+          %table.table.table-striped
+            %thead
+              %tr
+                %th Name
+                %th Created At
+                %th Instances
+                %th Category
+                %th
+            %tbody
+              - @items.each do |item|
+                %tr
+                  %td
+                    = link_to item_path(item) do
+                      %p= item.generated_name
+                  %td
+                    %p= item.created_at.strftime("%Y-%m-%d")
+                  %td
+                    = link_to item_instances_path(item) do
+                      %p= Item.item_instances(item)
+                  %td
+                    = item.category&.name
+                  %td
+                    = link_to "Reconcile", reconcile_start_path(item)
+
+          = paginate @items
+
+        - else
+          %h3.text-center No items to reconcile.

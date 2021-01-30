@@ -65,8 +65,8 @@
               %tr
                 %th.hidden-xs Name
                 %th Email
-                %th Role
-                %th.hidden-xs Warehouse
+                %th.hidden-xs Role
+                %th Status
             %tbody
               - User.order(:created_at).reverse.first(5).each do |user|
                 %tr
@@ -74,31 +74,29 @@
                   %td
                     = link_to user_path(user) do
                       = user.email
-                  %td= user.role
-                  %td.hidden-xs= user.warehouse
+                  %td.hidden-xs= user.role
+                  %td= user.status
 
-    - if current_user.admin?
-      .row
-        .col-sm-12
-          .panel.panel-default
-            .panel-heading.no-collapse
-              Recently Added Items
-              %span.label.label-info Total: #{Item.count}
-            %table.table.list
-              %tbody
-                - Item.order(:created_at).reverse.first(10).each do |item|
-                  %tr
-                    %td
-                      = link_to item_path(item) do
-                        %p.title= item.generated_name
-                      %p.info= item.category&.name
-                    %td
-                      %p= item.created_at.strftime("%Y-%m-%d")
-                      = link_to user_path(item.user) do
-                        = item.user.name
-                    %td
-                      %p Usage Count:
-                      %p= PackedItem.where(item_id: item.id).count
+      .panel.panel-default
+        %a.panel-heading{data: {toggle: "collapse"}, href: "#new-items"}
+          Recently Added Items
+          %span.label.label-info Total: #{Item.count}
+        #new-items.collapse.in
+          %table.table.list
+            %tbody
+              - Item.order(:created_at).reverse.first(10).each do |item|
+                %tr
+                  %td
+                    = link_to item_path(item) do
+                      %p.title= item.generated_name
+                    %p.info= item.category&.name
+                  %td
+                    %p= item.created_at.strftime("%Y-%m-%d")
+                    = link_to user_path(item.user) do
+                      = item.user.name
+                  %td
+                    %p Usage Count:
+                    %p= PackedItem.where(item_id: item.id).count
 
     .panel.panel-default
       %a.panel-heading{data: {toggle: "collapse"}, href: "#notes"} Personal Notes

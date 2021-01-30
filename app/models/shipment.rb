@@ -28,7 +28,7 @@ class Shipment < ApplicationRecord
     when "In Progress"
       shipping_warehouse.name
     when "Complete"
-     "In Transit to #{receiving_warehouse.name}"
+      "In Transit to #{receiving_warehouse.name}"
     when "Received"
       receiving_warehouse.name
     else

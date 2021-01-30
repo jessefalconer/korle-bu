@@ -5,12 +5,14 @@
       %li
         = link_to "Home", index_path
       %li
-        = link_to "Reconcile Overview", reconcile_overview_path
+        = link_to "Reconcile Overview", reconcile_unverified_path
       %li
         = link_to "Reconciling: #{@item.generated_name}", reconcile_start_path(@item)
       %li.active Target: #{@target_item.generated_name}
   .main-content
     .row
+      .col-xs-12
+        %h3 Confirm merge item and target.
       .col-xs-12
         %h4 Reconcile Item
     .row.stats-container
@@ -132,5 +134,10 @@
             .form-group
               = check_box_tag :delete_item, class: "form-control"
               %label Delete Reconcile Item on Merge
+            - unless @target_item.verified
+              %br
+              .form-group
+                = check_box_tag :verify_item, true, class: "form-control"
+                %label Verify Target Item
 
             = submit_button_warning("Merge", "pull-right")

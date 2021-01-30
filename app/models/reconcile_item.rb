@@ -5,19 +5,6 @@ class ReconcileItem
     @current_user = current_user
   end
 
-  # TODO: move these to Item#scopes
-  def unverified_items
-    Item.where(verified: false)
-  end
-
-  def uncategorized_items
-    Item.where(category: nil)
-  end
-
-  def flagged_items
-    Item.where(flagged: true)
-  end
-
   def find_similar_records(item)
     arr = item.generated_name.split(/[\s-]+/)
 
@@ -30,10 +17,11 @@ class ReconcileItem
     results.sort_by { |_k, v| v }.reverse!
   end
 
-  def execute_merge(item, target_item, delete: false)
+  def execute_merge(item, target_item, delete: false, verify: true)
     PackedItem.where(item_id: item.id).update_all(item_id: target_item.id) # rubocop:disable Rails/SkipsModelValidations#
 
     Item.find(item.id).destroy if delete
+    Item.find(target_item.id).update(verified: verify) if verify
   end
 
   # TODO: Move this to a presenter

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   get "/privacy", to: static("privacy.html")
   get "/terms", to: static("terms.html")
+  get "/admin_help", to: static("admin_help.html")
+  get "/dev_updates", to: static("dev_updates.html")
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
   get "logout", to: "sessions#destroy"
@@ -16,7 +18,9 @@ Rails.application.routes.draw do
 
   get "item_search", to: "items#search"
   get "item_search_form", to: "items#search_form"
-  get "reconcile_overview", to: "reconcile_items#show"
+  get "reconcile_unverified", to: "reconcile_items#unverified"
+  get "reconcile_uncategorized", to: "reconcile_items#uncategorized"
+  get "reconcile_flagged", to: "reconcile_items#flagged"
   get "reconcile/:id", to: "reconcile_items#start", as: :reconcile_start
   get "reconcile/:id/confirm/:target_id", to: "reconcile_items#confirm", as: :reconcile_confirm
   get "reconcile/:id/execute_reconcile/:target_id", to: "reconcile_items#execute", as: :execute_reconcile

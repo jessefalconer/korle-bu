@@ -46,41 +46,60 @@
               Log Out
 
       %li
-        %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
-          %i.fa.fa-fw.fa-tachometer-alt
+        = link_to index_path, class: "nav-header" do
+          %i.fa.fa-fw.fa-home
           Dashboard
-          %i.fa.fa-collapse
-      %li
-        %ul.dashboard-menu.nav.nav-list.collapse
-          %li
-            = link_to index_path do
-              %span.fa.fa-caret-right
-              Home
-          - if can? :manage, Category
+
+      - unless current_user.volunteer?
+        %li
+          %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
+            %i.fa.fa-fw.fa-tachometer-alt
+            Admin
+            %i.fa.fa-collapse
+
+        %li
+          %ul.dashboard-menu.nav.nav-list.collapse
+            - if can? :manage, Category
+              %li
+                = link_to categories_path do
+                  %span.fa.fa-file-medical
+                  &nbsp; Categories
+            - if can? :manage, Item
+              %li
+                = link_to items_path do
+                  %span.fa.fa-stethoscope
+                  &nbsp;Items
+            - if can? :manage, Warehouse
+              %li
+                = link_to warehouses_path do
+                  %span.fa.fa-warehouse
+                  Warehouses
+            - if can? :manage, User
+              %li
+                = link_to users_path do
+                  %span.fa.fa-users
+                  Users
+
+      - if can? :manage, Item
+        %li
+          %a.nav-header.collapsed{data: {target: ".reconcile-menu", toggle: "collapse"}, href: "#"}
+            %i.fa.fa-fw.fa-compress-alt
+            Reconciliation
+            %i.fa.fa-collapse
+        %li
+          %ul.reconcile-menu.nav.nav-list.collapse
             %li
-              = link_to categories_path do
-                %span.fa.fa-caret-right
-                Categories
-          - if can? :manage, Item
+              = link_to reconcile_unverified_path do
+                %span.fa.fa-star
+                Unverified Items
             %li
-              = link_to items_path do
-                %span.fa.fa-caret-right
-                Items
-          - if can? :manage, Warehouse
+              = link_to reconcile_uncategorized_path do
+                %span.fa.fa-file-medical
+                &nbsp;Uncategorized
             %li
-              = link_to warehouses_path do
-                %span.fa.fa-caret-right
-                Warehouses
-          - if can? :manage, User
-            %li
-              = link_to users_path do
-                %span.fa.fa-caret-right
-                Users
-          - if can? :manage, Item
-            %li
-              = link_to reconcile_overview_path do
-                %span.fa.fa-caret-right
-                Reconciliation
+              = link_to reconcile_flagged_path do
+                %span.fa.fa-flag
+                User-flagged
       - if can? :read, Shipment
         %li
           %a.nav-header.collapsed{data: {target: ".shipments-menu", toggle: "collapse"}, href: "#"}
@@ -91,12 +110,12 @@
           %ul.shipments-menu.nav.nav-list.collapse
             %li
               = link_to shipments_path do
-                %span.fa.fa-caret-right
+                %span.fa.fa-th-list
                 All
             - if can? :create, Shipment
               %li
                 = link_to new_shipment_path do
-                  %span.fa.fa-caret-right
+                  %span.fa.fa-star
                   New
       - if can? :read, Container
         %li
@@ -108,17 +127,17 @@
           %ul.containers-menu.nav.nav-list.collapse
             %li
               = link_to containers_path do
-                %span.fa.fa-caret-right
+                %span.fa.fa-th-list
                 All
             - unless current_user.receiving_manager?
               %li
                 = link_to containers_path(display: :unassigned) do
-                  %span.fa.fa-caret-right
+                  %span.fa.fa-th-list
                   Unassigned
             - if can? :create, Container
               %li
                 = link_to new_container_path do
-                  %span.fa.fa-caret-right
+                  %span.fa.fa-star
                   New
 
       %li
@@ -130,17 +149,17 @@
         %ul.pallets-menu.nav.nav-list.collapse
           %li
             = link_to pallets_path do
-              %span.fa.fa-caret-right
+              %span.fa.fa-th-list
               All
           - unless current_user.receiving_manager?
             %li
               = link_to pallets_path(display: :unassigned) do
-                %span.fa.fa-caret-right
+                %span.fa.fa-th-list
                 Unassigned
           - if can? :create, Pallet
             %li
               = link_to new_pallet_path do
-                %span.fa.fa-caret-right
+                %span.fa.fa-star
                 New
 
       %li
@@ -152,20 +171,44 @@
         %ul.box-menu.nav.nav-list.collapse
           %li
             = link_to boxes_path do
-              %span.fa.fa-caret-right
+              %span.fa.fa-th-list
               All
           - unless current_user.receiving_manager?
             %li
               = link_to boxes_path(display: :unassigned) do
-                %span.fa.fa-caret-right
+                %span.fa.fa-th-list
                 Unassigned
           - if can? :create, Box
             %li
               = link_to new_box_path do
-                %span.fa.fa-caret-right
+                %span.fa.fa-star
                 New
 
       %li
         = link_to my_activity_path, class: "nav-header" do
           %i.fa.fa-fw.fa-history
           My Activity
+
+      %li
+        %a.nav-header.collapsed{data: {target: ".about-menu", toggle: "collapse"}, href: "#"}
+          %i.fa.fa-fw.fa-info
+          About
+          %i.fa.fa-collapse
+      %li
+        %ul.about-menu.nav.nav-list.collapse
+          %li
+            = link_to dev_updates_path do
+              %span.fa.fa-code
+              Developer Updates
+          %li
+            = link_to admin_help_path do
+              %span.fa.fa-question
+              &nbsp; Help
+          %li
+            = link_to privacy_path do
+              %span.fa.fa-user-shield
+              Privacy
+          %li
+            = link_to terms_path do
+              %span.fa.fa-balance-scale
+              Terms
