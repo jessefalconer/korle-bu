@@ -3,7 +3,7 @@
 class UsersController < ApplicationController
   load_and_authorize_resource except: %i[signup create_public_user]
   skip_before_action :authorized, only: %i[new signup create_public_user]
-  before_action :set_user, only: %i[show destroy update]
+  before_action :set_user, only: %i[show destroy update change_password]
   before_action :existing_session, only: %i[signup create_public_user]
 
   def new
@@ -14,12 +14,29 @@ class UsersController < ApplicationController
     @users = User.all.page params[:page]
   end
 
+  def create
+    user = User.create(user_params)
+    if user.errors.any?
+      redirect_to new_user_path, flash: { error: user.errors.full_messages.to_sentence }
+    else
+      redirect_to users_path, flash: { success: "User created." }
+    end
+  end
+
   def show
   end
 
   def update
     if @user.update(user_params)
       redirect_to user_path(@user), flash: { success: "User updated." }
+    else
+      redirect_to user_path(@user), flash: { error: @user.errors.full_messages.to_sentence }
+    end
+  end
+
+  def change_password
+    if @user.update(user_params)
+      redirect_to user_path(@user), flash: { success: "Password updated." }
     else
       redirect_to user_path(@user), flash: { error: @user.errors.full_messages.to_sentence }
     end

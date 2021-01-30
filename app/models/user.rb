@@ -17,11 +17,11 @@ class User < ApplicationRecord
   has_many :box_items, through: :boxes
   has_many :packed_items
 
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true
-  validates :first_name, :last_name, presence: true
-  validates :status, inclusion: { in: STATUSES }
-  validates :role, inclusion: { in: ROLES }
-  validates :password, presence: true, length: { minimum: 6 }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true, on: %i[create update]
+  validates :first_name, :last_name, presence: true, on: %i[create update]
+  validates :status, inclusion: { in: STATUSES }, on: %i[create update]
+  validates :role, inclusion: { in: ROLES }, on: %i[create update]
+  validates :password, presence: true, length: { minimum: 6 }, on: %i[create change_password]
 
   paginates_per 25
 

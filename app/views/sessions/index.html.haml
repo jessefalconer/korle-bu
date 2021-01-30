@@ -32,8 +32,8 @@
               %h5.text-muted.text-center New Pallets
 
     .panel.panel-default
-      %a.panel-heading{data: {toggle: "collapse"}, href: "#page-stats"} My Stats (All-time)
-      #page-stats.panel-collapse.panel-body.collapse.in
+      %a.panel-heading{data: {toggle: "collapse"}, href: "#user-stats"} My Stats (All-time)
+      #user-stats.panel-collapse.panel-body.collapse.in
         .row
           .col-md-2.col-sm-6.col-xs-6
             %h3.text-center= current_user.containers.count
@@ -53,39 +53,29 @@
           .col-md-2.col-sm-6.col-xs-6
             %h3.text-center= current_user.box_items.count
             %h5.text-muted.text-center Boxed Items
-    .row
-      - if current_user.admin?
-        .col-xs-12.col-sm-6
-          .panel.panel-default
-            .panel-heading.no-collapse
-              Recently Added Users
-              %span.label.label-info= User.count
-            %table.table.table-striped
-              %thead
-                %tr
-                  %th.hidden-xs Name
-                  %th Email
-                  %th Role
-              %tbody
-                - User.order(:created_at).reverse.first(5).each do |user|
-                  %tr
-                    %td.hidden-xs= user.name
-                    %td
-                      = link_to user_path(user) do
-                        = user.email
-                    %td= user.role
 
-      .col-xs-12{class: (current_user.admin? && "col-sm-6")}
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#notes"} Personal Notes
-          #notes.panel-body.collapse.in
-            - if current_user.notes.blank?
-              %p
-                Jot something down by visiting your
-                = link_to user_path(current_user) do
-                  user profile.
-            - else
-              %p= simple_format(current_user.notes)
+    - if current_user.admin?
+      .panel.panel-default
+        %a.panel-heading{data: {toggle: "collapse"}, href: "#new-users"}
+          Recently Added Users
+          %span.label.label-info Total: #{User.count}
+        #new-users.collapse.in
+          %table.table.table-striped
+            %thead
+              %tr
+                %th.hidden-xs Name
+                %th Email
+                %th Role
+                %th.hidden-xs Warehouse
+            %tbody
+              - User.order(:created_at).reverse.first(5).each do |user|
+                %tr
+                  %td.hidden-xs= user.name
+                  %td
+                    = link_to user_path(user) do
+                      = user.email
+                  %td= user.role
+                  %td.hidden-xs= user.warehouse
 
     - if current_user.admin?
       .row
@@ -93,6 +83,7 @@
           .panel.panel-default
             .panel-heading.no-collapse
               Recently Added Items
+              %span.label.label-info Total: #{Item.count}
             %table.table.list
               %tbody
                 - Item.order(:created_at).reverse.first(10).each do |item|
@@ -108,3 +99,14 @@
                     %td
                       %p Usage Count:
                       %p= PackedItem.where(item_id: item.id).count
+
+    .panel.panel-default
+      %a.panel-heading{data: {toggle: "collapse"}, href: "#notes"} Personal Notes
+      #notes.panel-body.collapse.in
+        - if current_user.notes.blank?
+          %p
+            Jot something down by visiting your
+            = link_to user_path(current_user) do
+              user profile.
+        - else
+          %p= simple_format(current_user.notes)

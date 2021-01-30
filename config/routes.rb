@@ -25,7 +25,11 @@ Rails.application.routes.draw do
   resources :exports, only: :create
   resources :categories
   resources :items
-  resources :users
+  resources :users do
+    member do
+      patch :change_password
+    end
+  end
   resources :warehouses
 
   concern :boxable_items do

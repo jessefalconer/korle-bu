@@ -24,6 +24,13 @@
       .form-group
         %label Warehouse
         = f.select(:warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @user.warehouse_id), { include_blank: "Unassigned" }, { disabled: no_edit, class: "form-control" })
+    -if create_password
+      .form-group
+        %label Password
+        = f.password_field :password, class: "form-control"
+      .form-group
+        %label Confirm Password
+        = f.password_field :password_confirmation, class: "form-control"
     .form-group
       %label Created At
       = f.text_field :created_at, value: time, disabled: true, class: "form-control"

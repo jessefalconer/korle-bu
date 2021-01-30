@@ -19,11 +19,11 @@
       #myTabContent.tab-content
         #view.tab-pane.active.in
           %br
-          = render partial: "form", locals: { no_edit: true, delete: true }
+          = render partial: "form", locals: { no_edit: true, delete: true, create_password: false }
 
         #edit.tab-pane.fade
           %br
-          = render partial: "form", locals: { no_edit: false, delete: false }
+          = render partial: "form", locals: { no_edit: false, delete: false, create_password: false }
 
         #change-password.tab-pane.fade
           %br
