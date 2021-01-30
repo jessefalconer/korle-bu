@@ -3,6 +3,8 @@
 Rails.application.routes.draw do
   root "sessions#new"
 
+  get "/privacy", to: static("privacy.html")
+  get "/terms", to: static("terms.html")
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
   get "logout", to: "sessions#destroy"

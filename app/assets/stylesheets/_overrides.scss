@@ -19,13 +19,43 @@ h2.page {
   border-bottom: 5px solid #ed8b00;
 }
 
+.footer-block {
+  @media (min-width: 350px) {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .footer-links {
+    border-top: 10px solid #7A7A7A;
+    background-color: #007096;
+    height: 100%;
+    color: #c0c0c0;
+    vertical-align: middle;
+    width: 50%;
+    margin-bottom: 0;
+    padding: 0.5em;
+
+    &.privacy {
+      float: left;
+      a {
+        color: #c0c0c0;
+        padding: 0 1em;
+      }
+    }
+
+    &.terms {
+      float: right;
+      a {
+        color: #c0c0c0;
+        padding: 0 1em;
+      }
+    }
+  }
+}
+
 // Utility
 footer {
-  // position: relative;
-  // background-color: #007096;
-  // height: 85px;
-  // border-top: 10px solid #7A7A7A;
-
   .flash {
     position: fixed;
     bottom: 0;
