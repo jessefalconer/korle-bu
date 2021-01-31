@@ -32,16 +32,16 @@
                 .col-xs-12
                   %h5.text-muted Notes
                   %h4= @container.notes
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Custom ID
                 %h4= @container.custom_uid
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Status
-                %h4= @container.status
-              .col-lg-3.col-sm-4.col-xs-6
+                %h4{class: "status-#{@container.status.parameterize}"}= @container.status
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Created By
                 %h4= @container.user.name
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Created At
                 %h4= @container.created_at.strftime("%Y-%m-%d")
 
@@ -60,12 +60,12 @@
                 %tbody
                   %tr
                     %td
-                      %p Shipment
-                    = container.shipment_location
-                  %tr
-                    %td
                       %p Warehouse
                     = container.warehouse_location
+                  %tr
+                    %td
+                      %p Shipment
+                    = container.shipment_location
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
@@ -88,7 +88,7 @@
                       %td
                         = link_to pallet_path(pallet) do
                           = pallet.name
-                      %td= pallet.status
+                      %td{class: "status-#{pallet.status.parameterize}"}= pallet.status
               .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
                 %span Close
           - else
@@ -116,7 +116,7 @@
                       %td
                         = link_to box_path(box) do
                           = box.name
-                      %td= box.status
+                      %td{class: "status-#{box.status.parameterize}"}= box.status
               .close-collapse{data: {toggle: "collapse"}, href: "#boxes"}
                 %span Close
           - else

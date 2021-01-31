@@ -10,11 +10,11 @@ class BoxPresenter < BasePresenter
           tag.p(pallet.name)
         end
       else
-        tag.p("N/A")
+        tag.p("N/A", class: "status-unassigned")
       end
     end +
       tag.td do
-        tag.p(status, class: "pull-right")
+        tag.p(status, class: "pull-right status-#{status.parameterize}")
       end
   end
 
@@ -28,11 +28,11 @@ class BoxPresenter < BasePresenter
           tag.p(record.name)
         end
       else
-        tag.p("N/A")
+        tag.p("N/A", class: "status-unassigned")
       end
     end +
       tag.td do
-        tag.p(status, class: "pull-right")
+        tag.p(status, class: "pull-right status-#{status.parameterize}")
       end
   end
 
@@ -45,22 +45,23 @@ class BoxPresenter < BasePresenter
           tag.p(shipment.name)
         end
       else
-        tag.p("N/A")
+        tag.p("N/A", class: "status-unassigned")
       end
     end +
       tag.td do
-        tag.p(status, class: "pull-right")
+        tag.p(status, class: "pull-right status-#{status.parameterize}")
       end
   end
 
   def warehouse_location
-    status = shipment&.current_location || "N/A"
+    location = shipment&.current_location || "N/A"
+    status = shipment&.status&.presence || "Unassigned"
 
     tag.td do
-      tag.p(status)
+      tag.p(location, class: "status-#{location.parameterize}")
     end +
       tag.td do
-        tag.p(shipment&.status&.presence || "Unassigned", class: "pull-right")
+        tag.p(status, class: "pull-right status-#{status.parameterize}")
       end
   end
 end

@@ -75,7 +75,10 @@
                     = link_to user_path(user) do
                       = user.email
                   %td.hidden-xs= user.role
-                  %td= user.status
+                  - if user.active?
+                    %td.text-success= user.status
+                  - else
+                    %td.text-danger= user.status
 
       .panel.panel-default
         %a.panel-heading{data: {toggle: "collapse"}, href: "#new-items"}
@@ -103,7 +106,7 @@
       #notes.panel-body.collapse.in
         - if current_user.notes.blank?
           %p
-            Jot something down by visiting your
+            Write something down by visiting your
             = link_to user_path(current_user) do
               user profile.
         - else

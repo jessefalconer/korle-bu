@@ -29,16 +29,16 @@
                 .col-xs-12
                   %h5.text-muted Notes
                   %h4= @box.notes
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Custom ID
                 %h4= @box.custom_uid
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Status
-                %h4= @box.status
-              .col-lg-3.col-sm-4.col-xs-6
+                %h4{class: "status-#{@box.status.parameterize}"}= @box.status
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Created By
                 %h4= @box.user.name
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Created At
                 %h4= @box.created_at.strftime("%Y-%m-%d")
 
@@ -55,24 +55,23 @@
             #location.collapse.in
               %table.table.list
                 %tbody
-                  - unless box.container.present? && box.pallet.nil?
-                    %tr
-                      %td
-                        %p Pallet
-                      = box.pallet_location
-
                   %tr
                     %td
-                      %p Container
-                    = box.container_location
+                      %p Warehouse
+                    = box.warehouse_location
                   %tr
                     %td
                       %p Shipment
                     = box.shipment_location
                   %tr
                     %td
-                      %p Warehouse
-                    = box.warehouse_location
+                      %p Container
+                    = box.container_location
+                  - unless box.container.present? && box.pallet.nil?
+                    %tr
+                      %td
+                        %p Pallet
+                      = box.pallet_location
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}

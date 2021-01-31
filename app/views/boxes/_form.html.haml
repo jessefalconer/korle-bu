@@ -18,10 +18,10 @@
     = f.text_field :notes, class: "form-control"
   .form-group
     %label Pallet Assignment
-    = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(:name), :id, :name, pallet_id), { include_blank: "Unassigned" }, { class: "form-control" }
+    = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(:name), :id, :name, pallet_id), { include_blank: "Unassigned" }, { class: "form-control", id: "pallet-assignment" }
   .form-group
     %label Container Assignment
-    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(:name), :id, :name, container_id), { include_blank: "Unassigned" }, { class: "form-control" }
+    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(:name), :id, :name, container_id), { include_blank: "Unassigned" }, { class: "form-control", id: "container-assignment" }
   .form-group
     %label Created By
     = f.text_field :user, value: user, disabled: true, class: "form-control"
@@ -33,3 +33,5 @@
     - if @box.persisted?
       = delete_button(box_path(@box), "Are you sure you want to delete #{@box.name}? This cannot be reversed")
     = submit_button_responsive("Save")
+
+= render partial: "layouts/assignment_modal", locals: {title: "Assignment Change Warning", body: "Unassigning this box from a pallet and container could result in errors."}

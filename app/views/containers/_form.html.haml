@@ -10,14 +10,14 @@
     = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(Container::STATUSES, @container.status), {}, { class: "form-control" }
+    = f.select :status, options_for_select(Container::STATUSES, @container.status), {}, { class: "form-control", id: "status" }
   .form-group
     = f.label :notes
     = f.text_field :notes, class: "form-control"
   - if can? :reassign, Container
     .form-group
       %label Shipment Assignment
-      = f.select :shipment_id, options_from_collection_for_select(Shipment.accessible_by(current_ability).order(:name), :id, :name, shipment_id), { include_blank: "Unassigned" }, { class: "form-control", id: "assignment"}
+      = f.select :shipment_id, options_from_collection_for_select(Shipment.accessible_by(current_ability).order(:name), :id, :name, shipment_id), { include_blank: "Unassigned" }, { class: "form-control", id: "shipment-assignment"}
   .form-group
     %label Created By
     = f.text_field :user, value: user, disabled: true, class: "form-control"
@@ -29,3 +29,6 @@
     - if @container.persisted?
       = delete_button(container_path(@container), "Are you sure you want to delete #{@container.name}? This cannot be reversed")
     = submit_button_responsive("Save")
+
+= render partial: "layouts/status_modal", locals: {title: "Status Change Warning", body: "Boxes and pallets within this container will automatically inherit this new status."}
+= render partial: "layouts/assignment_modal", locals: {title: "Assignment Change Warning", body: "Unassigning this container from a shipment could result in errors."}

@@ -5,7 +5,7 @@
   - @box.box_items.each do |bi|
     = form_for bi, url: box_box_item_path(@box, bi) do |f|
       .row.inline-add-item
-        .col-xs-12.manage-item-name{data: {unit_weight: bi.item.unit_weight, item_id: bi.item.id}}
+        .col-xs-12.manage-item-name{data: {unit_weight: bi.item.unit_weight.to_i, item_id: bi.item.id}}
           %p= bi.generated_name
           .drawer-info
             %span.label.label-success= bi.quantity

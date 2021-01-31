@@ -10,22 +10,23 @@ class ContainerPresenter < BasePresenter
           tag.p(shipment.name)
         end
       else
-        tag.p("N/A")
+        tag.p("N/A", class: "status-n-a")
       end
     end +
       tag.td do
-        tag.p(status, class: "pull-right")
+        tag.p(status, class: "pull-right status-#{status.parameterize}")
       end
   end
 
   def warehouse_location
-    status = shipment&.current_location || "N/A"
+    location = shipment&.current_location || "N/A"
+    status = shipment&.status&.presence || "Unassigned"
 
     tag.td do
-      tag.p(status)
+      tag.p(location, class: "status-#{location.parameterize}")
     end +
       tag.td do
-        tag.p(shipment&.status&.presence || "Unassigned", class: "pull-right")
+        tag.p(status, class: "pull-right status-#{status.parameterize}")
       end
   end
 end

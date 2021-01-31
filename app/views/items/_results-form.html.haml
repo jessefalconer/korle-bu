@@ -15,16 +15,25 @@
           %p= item[1]
           %i.fa.fa-ellipsis-v
         .col-xs-12.results-item-form.hidden
-          .form-group
-            = f.label :expires
-            = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "expiry-#{item[0]}", placeholder: "yyyy-mm-dd"
-            = f.label :quantity
-            = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{item[0]}"
-            = f.hidden_field :item_id, value: item[0], id: "item-#{item[0]}"
-            = f.label "Weight (g)"
-            = f.number_field :weight, class: "form-control", id: "weight-#{item[0]}", placeholder: "grams"
-          .btn-toolbar.list-toolbar
-            %a{id: "estimate-item-#{item[0]}"}
-              .btn.btn-primary.pull-left
-                %span Estimate Quantity
-            = submit_button("Add", "pull-right")
+          .row
+            .col-xs-6.col-sm-4.col-lg-3
+              .form-group
+                = f.label :quantity
+                = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{item[0]}"
+                = f.hidden_field :item_id, value: item[0], id: "item-#{item[0]}"
+            .col-xs-6.col-sm-4.col-lg-3
+              .form-group
+                = f.label "Weight (g)"
+                = f.number_field :weight, class: "form-control", id: "weight-#{item[0]}", placeholder: "grams"
+            .col-xs-12.col-sm-4.col-lg-3
+              .form-group
+                = f.label :expires
+                = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "expiry-#{item[0]}", placeholder: "yyyy-mm-dd"
+            .col-xs-12.col-sm-12.col-lg-3
+              .form-group
+                %label &nbsp;
+                .btn-toolbar.list-toolbar
+                  %a{id: "estimate-item-#{item[0]}"}
+                    .btn.btn-primary.pull-left
+                      %span Estimate
+                  = submit_button("Add", "pull-right")

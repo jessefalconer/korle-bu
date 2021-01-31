@@ -8,6 +8,7 @@ class Container < ApplicationRecord
 
   has_many :boxes, dependent: :nullify
   has_many :pallets, dependent: :nullify
+  has_many :pallet_boxes, through: :pallets, source: :boxes
   has_many :container_items, class_name: "PackedItem", dependent: :destroy
   has_many :items, through: :container_items
 
@@ -21,4 +22,20 @@ class Container < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
 
   paginates_per 25
+
+  after_save do
+    cascade_statuses if saved_change_to_status && cascadable?
+  end
+
+  def cascadable?
+    status == "Complete" || status == "Received"
+  end
+
+  private
+
+  # TODO: Move this to a service
+  def cascade_statuses
+    boxes.where.not(status: status).find_each { |b| b.update(status: status) }
+    pallets.where.not(status: status).find_each { |p| p.update(status: status) }
+  end
 end

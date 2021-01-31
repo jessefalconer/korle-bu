@@ -242,3 +242,20 @@ img.kbnf-logo-center {
   width: 50%;
   margin-bottom: 35px;
 }
+
+.status-in-progress {
+  color: #8a6d3b;
+}
+
+.status-complete {
+  color: #31708f;
+}
+
+.status-received {
+  color: #3c763d;
+}
+
+.status-n-a,
+.status-unassigned {
+  color: #a94442;
+}

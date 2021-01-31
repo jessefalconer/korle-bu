@@ -12,19 +12,19 @@ class SessionsController < ApplicationController
     if @user&.authenticate(params[:password])
       session[:user_id] = @user.id
       if @user.status == "Deactivated"
-        redirect_to :root, flash: { success: "Your account has been created, however an administrator must approve it. Please check back later." }
+        redirect_to login_path, flash: { success: "Your account has been created, however an administrator must approve it. Please check back later." }
         session.clear
       else
         redirect_to index_path, flash: { success: "Successfully logged in." }
       end
     else
-      redirect_to :root, flash: { error: "Email or password incorrect." }
+      redirect_to login_path, flash: { error: "Email or password incorrect." }
     end
   end
 
   def destroy
     session.clear
-    redirect_to :root, flash: { success: "Successfully logged out." }
+    redirect_to login_path, flash: { success: "Successfully logged out." }
   end
 
   def login

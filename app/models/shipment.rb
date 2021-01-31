@@ -23,6 +23,10 @@ class Shipment < ApplicationRecord
 
   paginates_per 25
 
+  after_save do
+    cascade_statuses if saved_change_to_status && cascadable?
+  end
+
   def current_location
     case status
     when "In Progress"
@@ -34,5 +38,16 @@ class Shipment < ApplicationRecord
     else
       "No Warehouses Assigned"
     end
+  end
+
+  def cascadable?
+    status == "Complete" || status == "Received"
+  end
+
+  private
+
+  # TODO: Move this to a service
+  def cascade_statuses
+    containers.where.not(status: status).find_each { |c| c.update(status: status) }
   end
 end

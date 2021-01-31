@@ -24,4 +24,19 @@ class Pallet < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
 
   paginates_per 25
+
+  after_save do
+    cascade_statuses if saved_change_to_status && cascadable?
+  end
+
+  def cascadable?
+    status == "Complete" || status == "Received"
+  end
+
+  private
+
+  # TODO: Move this to a service
+  def cascade_statuses
+    boxes.where.not(status: status).find_each { |p| p.update(status: status) }
+  end
 end

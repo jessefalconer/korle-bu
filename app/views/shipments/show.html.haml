@@ -32,22 +32,22 @@
                 .col-xs-12
                   %h5.text-muted Notes
                   %h4= @shipment.notes
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Receiving Warehouse
                 %h4= @shipment.receiving_warehouse&.name || "N/A"
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Shipping Warehouse
                 %h4= @shipment.shipping_warehouse&.name || "N/A"
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Custom ID
                 %h4= @shipment.custom_uid
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Status
-                %h4= @shipment.status
-              .col-lg-3.col-sm-4.col-xs-6
+                %h4{class: "status-#{@shipment.status.parameterize}"}= @shipment.status
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Created By
                 %h4= @shipment.user.name
-              .col-lg-3.col-sm-4.col-xs-6
+              .col-xs-6.col-sm-4.col-md-6
                 %h5.text-muted Created At
                 %h4= @shipment.created_at.strftime("%Y-%m-%d")
 
@@ -79,7 +79,7 @@
                       %td
                         = link_to container_path(container) do
                           = container.name
-                      %td= container.status
+                      %td{class: "status-#{container.status.parameterize}"}= container.status
               .close-collapse{data: {toggle: "collapse"}, href: "#containers"}
                 %span Close
           - else
@@ -106,7 +106,7 @@
                       %td
                         = link_to pallet_path(pallet) do
                           = pallet.name
-                      %td= pallet.status
+                      %td{class: "status-#{pallet.status.parameterize}"}= pallet.status
               .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
                 %span Close
           - else
@@ -133,7 +133,7 @@
                       %td
                         = link_to box_path(box) do
                           = box.name
-                      %td= box.status
+                      %td{class: "status-#{box.status.parameterize}"}= box.status
               .close-collapse{data: {toggle: "collapse"}, href: "#pallet_boxes"}
                 %span Close
           - else
@@ -160,7 +160,7 @@
                       %td
                         = link_to box_path(box) do
                           = box.name
-                      %td= box.status
+                      %td{class: "status-#{box.status.parameterize}"}= box.status
               .close-collapse{data: {toggle: "collapse"}, href: "#container_boxes"}
                 %span Close
           - else

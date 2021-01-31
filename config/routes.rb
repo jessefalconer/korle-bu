@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  root "sessions#new"
+  root "sessions#index", as: :index
 
   get "/privacy", to: static("privacy.html")
   get "/terms", to: static("terms.html")
@@ -10,7 +10,6 @@ Rails.application.routes.draw do
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
   get "logout", to: "sessions#destroy"
-  get "index", to: "sessions#index"
   get "my_activity", to: "sessions#my_activity"
 
   get "signup", to: "users#signup"

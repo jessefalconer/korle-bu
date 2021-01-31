@@ -36,26 +36,33 @@ function reconcileSearch(params) {
 
 function initEstimateButton(el) {
   const id = $(el).data("item-id");
-  const unit_weight = parseInt($(el).data("unit-weight"));
+  const unitWeight = parseInt($(el).data("unit-weight"));
 
   $(`#estimate-item-${id}`).on("click", () => {
-    const input_weight = parseInt($(`#weight-${id}`).val());
+    var inputWeight = parseInt($(`#weight-${id}`).val());
+    var inputQuantity = parseInt($(`#quantity-${id}`).val());
     var results = [];
 
-    if (unit_weight === 0) {
-      results.push("Error: this item has an unknown unit weight.");
-    }
-    if ( isNaN(input_weight) || input_weight === 0) {
-      results.push("Error: please input a non-zero weight.");
-    }
-    if (results.length === 0) {
-      let val = Math.ceil(input_weight/unit_weight);
-      results.push(`Quantity estimated to be ${val} based on input weight.
-                    \nUnit weight is recorded as ${unit_weight}grams.
-                    \nYour inputs have not been changed.`);
+    if (unitWeight === 0) {
+      results.push("Error: this item has an unknown unit weight. Weigh the individual item and update its information.");
+    } else {
+      if ( isNaN(inputWeight) || inputWeight === 0 ) {
+        results.push("Input a non-zero weight value to get a quantity estimate.");
+      } else {
+        let qVal = Math.ceil(inputWeight/unitWeight);
+        results.push(`Quantity estimated to be ${qVal} based on input weight.`);
+      }
+      if ( isNaN(inputQuantity) || inputQuantity === 0 ) {
+        results.push("Input a non-zero quantity value to get a weight estimate.");
+      } else {
+        let wVal = Math.ceil(inputQuantity*unitWeight);
+        results.push(`Weight estimated to be ${wVal} grams based on input quantity.`);
+      }
+      results.push(`<br>Unit weight is currently set at ${unitWeight} grams.<br>Your inputs have not been changed.`)
     }
 
-    alert(results.join("\n"));
+    $("#estimateModalBody").html(results.join("<br>"))
+    $("#estimateModal").modal();
   })
 }
 
@@ -136,7 +143,7 @@ function initPackingSearchListeners() {
 function initReconcileSearchListeners() {
   if (document.querySelector("#reconcile-search-submit") === null) { return; }
 
-  $(document).on("click", "#reconcile-search-submit", () => {
+  $(document).on("submit", "#reconcile-search-submit", () => {
       $("#search-results").empty();
       const params = $("#search-params").val();
       if ( params !== "" ) { reconcileSearch(params); }

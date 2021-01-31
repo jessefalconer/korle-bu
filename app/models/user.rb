@@ -44,4 +44,8 @@ class User < ApplicationRecord
   def receiving_manager?
     role == "Receiving Manager"
   end
+
+  def active?
+    status == "Active"
+  end
 end

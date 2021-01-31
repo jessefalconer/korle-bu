@@ -14,10 +14,10 @@ class ApplicationController < ActionController::Base
   end
 
   def authorized
-    redirect_to :root unless logged_in?
+    redirect_to login_path unless logged_in?
   end
 
   rescue_from CanCan::AccessDenied do |_exception|
-    redirect_back fallback_location: :root, flash: { error: "This action is not permitted with your user role." }
+    redirect_back fallback_location: login_path, flash: { error: "This action is not permitted with your user role." }
   end
 end

@@ -9,13 +9,13 @@
     = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), {}, { class: "form-control" }
-  .form-group
-    = f.label :receiving_warehouse_id
-    = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), { include_blank: "" }, { class: "form-control" }
+    = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), {}, { class: "form-control", id: "status" }
   .form-group
     = f.label :shipping_warehouse_id
     = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), { include_blank: "" }, { class: "form-control" }
+  .form-group
+    = f.label :receiving_warehouse_id
+    = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), { include_blank: "" }, { class: "form-control" }
   .form-group
     = f.label :notes
     = f.text_field :notes, class: "form-control"
@@ -30,3 +30,5 @@
     - if @shipment.persisted?
       = delete_button(shipment_path(@shipment), "Are you sure you want to delete #{@shipment.name}? This cannot be reversed")
     = submit_button_responsive("Save")
+
+= render partial: "layouts/status_modal", locals: {title: "Status Change Warning", body: "Boxes, pallets and containers within this shipment will automatically inherit this new status."}

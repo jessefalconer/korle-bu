@@ -11,7 +11,7 @@ import "../packs/errors";
 import "../packs/bootstrap";
 import "../packs/search";
 import "../packs/quick_filter";
-import "../packs/switches";
+import "../packs/modals";
 
 $(function () {
   var uls = $('.sidebar-nav > ul > *').clone();
