@@ -14,8 +14,8 @@
           %th Custom ID
           %th Name
           %th Status
-          %th Receiver
           %th.hidden-xs Shipper
+          %th Receiver
           %th.hidden-xs Created At
       %tbody
         - @shipments.each do |shipment|
@@ -25,8 +25,8 @@
               = link_to shipment_path(shipment) do
                 = shipment.name
             %td= shipment.status
+            %td.hidden-xs= shipment.shipping_warehouse.name
             %td= shipment.receiving_warehouse.name
-            %td= shipment.shipping_warehouse.name
             %td.hidden-xs= shipment.created_at.strftime("%Y-%m-%d")
 
     = paginate @shipments, window: 2

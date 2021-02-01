@@ -52,6 +52,7 @@
         - present(@pallet) do |pallet|
           .panel.panel-default
             %a.panel-heading{data: {toggle: "collapse"}, href: "#location"}
+              %i.fa.fa-map-marker-alt
               Location Details
             #location.collapse.in
               %table.table.list
@@ -71,6 +72,7 @@
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
+            %i.fa.fa-box-open
             Boxes on this Pallet
             %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.boxes.size
           - if @pallet.boxes.any?
@@ -95,10 +97,11 @@
                 %span Close
           - else
             #boxes.collapse.panel-body
-              %h5.text-center No boxes.
+              %h5.text-center No boxes on this pallet.
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
+            %i.fa.fa-stethoscope
             Packed Items on this Pallet
             %span.label{class: @pallet.pallet_items.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
           - if @pallet.pallet_items.any?
@@ -123,4 +126,4 @@
                 %span Close
           - else
             #pallet_items.collapse.panel-body
-              %h5.text-center No packed items.
+              %h5.text-center No packed items on this pallet.

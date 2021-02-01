@@ -54,6 +54,7 @@
         - present(@container) do |container|
           .panel.panel-default
             %a.panel-heading{data: {toggle: "collapse"}, href: "#location"}
+              %i.fa.fa-map-marker-alt
               Location Details
             #location.collapse.in
               %table.table.list
@@ -69,6 +70,7 @@
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
+            %i.fa.fa-pallet
             Pallets in this Container
             %span.label{class: @container.pallets.any? ? "label-success" : "label-warning"}= @container.pallets.size
           - if @container.pallets.any?
@@ -93,10 +95,11 @@
                 %span Close
           - else
             #pallets.collapse.panel-body
-              %h5.text-center No pallets.
+              %h5.text-center No pallets in this container.
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
+            %i.fa.fa-box-open
             Boxes in this Container
             %span.label{class: @container.boxes.any? ? "label-success" : "label-warning"}= @container.boxes.size
           - if @container.boxes.any?
@@ -121,10 +124,11 @@
                 %span Close
           - else
             #boxes.collapse.panel-body
-              %h5.text-center No boxes.
+              %h5.text-center No boxes in this pallet.
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+            %i.fa.fa-stethoscope
             Packed Items in this Container
             %span.label{class: @container.container_items.any? ? "label-success" : "label-warning"}= @container.container_items.size
           - if @container.container_items.any?
@@ -149,4 +153,4 @@
                 %span Close
           - else
             #container_items.collapse.panel-body
-              %h5.text-center No packed items.
+              %h5.text-center No packed items in this container.

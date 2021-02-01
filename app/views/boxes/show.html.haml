@@ -51,6 +51,7 @@
         - present(@box) do |box|
           .panel.panel-default
             %a.panel-heading{data: {toggle: "collapse"}, href: "#location"}
+              %i.fa.fa-map-marker-alt
               Location Details
             #location.collapse.in
               %table.table.list
@@ -75,6 +76,7 @@
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
+            %i.fa.fa-stethoscope
             Items in this Box
             %span.label{class: @box.box_items.any? ? "label-success" : "label-warning"}= @box.box_items.size
           - if @box.box_items.any?
@@ -99,4 +101,4 @@
                 %span Close
           - else
             #box_items.collapse.panel-body
-              %h5.text-center No packed items.
+              %h5.text-center No packed items in this box.
