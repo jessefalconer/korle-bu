@@ -36,7 +36,7 @@ module ApplicationHelper
   end
 
   def swap_button(path, classes = "")
-    link_to(path, class: "btn btn-warning responsive-button #{classes}") do
+    link_to(path, class: "btn btn-warning #{classes}") do
       tag.i("", class: "fa fa-exchange-alt fa-rotate-90") +
       tag.span(" Swap", class: "main-text")
     end
