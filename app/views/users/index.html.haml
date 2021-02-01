@@ -14,6 +14,7 @@
           %th.hidden-xs Email
           %th.hidden-xs Phone
           %th Role
+          %th Status
           %th.hidden-xs Created At
       %tbody
         - @users.each do |user|
@@ -24,6 +25,7 @@
             %td.hidden-xs= user.email
             %td.hidden-xs= user.phone
             %td= user.role
+            %td= user.status
             %td.hidden-xs= user.created_at.strftime("%Y-%m-%d")
 
     = paginate @users

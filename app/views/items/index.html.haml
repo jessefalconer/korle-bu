@@ -14,7 +14,7 @@
           %th Category
           %th.hidden-xs Created By
           %th.hidden-xs Created At
-          %th Verified
+          %th.hidden-xs Verified
       %tbody
         - @items.each do |item|
           %tr
@@ -24,6 +24,6 @@
             %td= item.category&.name
             %td.hidden-xs= item.user.name
             %td.hidden-xs= item.created_at.strftime("%Y-%m-%d")
-            %td= item.verified.to_s.capitalize
+            %td.hidden-xs= item.verified.to_s.capitalize
 
     = paginate @items, window: 2
