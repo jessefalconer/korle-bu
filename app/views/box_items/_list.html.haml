@@ -1,5 +1,5 @@
 - if @box.box_items.none?
-  %p.text-center This box has no items and may have been an error.
+  %h5.text-center This box has no items and may have been an error.
 - else
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
   - @box.box_items.each do |bi|

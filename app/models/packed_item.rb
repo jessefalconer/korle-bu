@@ -10,7 +10,7 @@ class PackedItem < ApplicationRecord
 
   has_one :category, through: :item
 
-  has_many :unpacking_events, dependent: :destroy
+  has_many :unpacking_events, dependent: :delete_all
 
   scope :with_inventory, -> { left_joins(:unpacking_events).where("remaining_quantity > ?", 0).uniq }
   scope :with_events, -> { joins(:unpacking_events).uniq }

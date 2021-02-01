@@ -4,7 +4,7 @@ module ApplicationHelper
   def delete_button(path, confirm_text, classes = "")
     link_to(path, class: "btn btn-danger responsive-button #{classes}", data: { confirm: confirm_text, method: :delete }) do
       tag.i("", class: "fa fa-trash") +
-        tag.span(" Delete")
+        tag.span(" Delete", class: "main-text")
     end
   end
 
@@ -17,7 +17,7 @@ module ApplicationHelper
   def submit_button_responsive(text, classes = "")
     button_tag(type: "submit", class: "btn btn-primary responsive-button #{classes}") do
       tag.i("", class: "fa fa-save") +
-        tag.span(" #{text}")
+        tag.span(" #{text}", class: "main-text")
     end
   end
 
@@ -31,7 +31,7 @@ module ApplicationHelper
   def submit_button_warning(text, classes = "")
     button_tag(type: "submit", class: "btn btn-danger responsive-button #{classes}") do
       tag.i("", class: "fa fa-compress-alt") +
-        tag.span(" #{text}")
+        tag.span(" #{text}", class: "main-text")
     end
   end
 

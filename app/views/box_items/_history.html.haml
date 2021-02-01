@@ -1,5 +1,5 @@
 - if @box.box_items.with_events.none?
-  %p.text-center No history to display.
+  %h5.text-center No history to display.
 - else
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "history-items"}
   - @box.box_items.with_events.each do |bi|

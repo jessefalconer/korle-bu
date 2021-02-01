@@ -1,5 +1,5 @@
 - if @pallet.pallet_items.none?
-  %p.text-center Use the tabs to search or create a new item.
+  %h5.text-center Use the tabs to search or create a new item.
 - else
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
   - @pallet.pallet_items.each do |pi|
@@ -23,7 +23,7 @@
             .col-xs-6.col-sm-4.col-lg-3
               .form-group
                 = f.label :expires
-                = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "yyyy-mm-dd"
+                = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "YYYY-MM-DD""
             .col-xs-6.col-sm-12.col-lg-3
               .form-group
                 %label &nbsp;

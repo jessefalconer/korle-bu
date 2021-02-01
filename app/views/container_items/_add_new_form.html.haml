@@ -3,14 +3,14 @@
     .col-xs-6.col-sm-4
       .form-group
         %label Quantity
-        = number_field_tag :quantity, 0, { class: "form-control", min: 1}
+        = number_field_tag :quantity, 1, min: 1, class: "form-control"
     .col-xs-6.col-sm-4
       .form-group
         %label Weight
-        = number_field_tag :weight, 0, { class: "form-control", min: 0}
+        = number_field_tag :weight, 0, min: 0, class: "form-control"
     .col-xs-12.col-sm-4
       .form-group
         %label Expiry Date
-        = text_field_tag :expiry_date, "", { class: "form-control datepickers" }
+        = text_field_tag :expiry_date, "", placeholder: "YYYY-MM-DD", class: "form-control datepickers"
 
   = render partial: "items/form", locals: { item: Item.new }

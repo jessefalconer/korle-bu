@@ -1,5 +1,5 @@
 - if @pallet.pallet_items.none?
-  %p.text-center This pallet has no items and may have been an error.
+  %h5.text-center This pallet has no items and may have been an error.
 - else
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
   - @pallet.pallet_items.each do |pi|

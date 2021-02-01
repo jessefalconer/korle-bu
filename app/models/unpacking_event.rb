@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class UnpackingEvent < ApplicationRecord
-  belongs_to :packed_item
-  belongs_to :user
+  belongs_to :packed_item, optional: false
+  belongs_to :user, optional: false
 
   delegate :generated_name, to: :item
 
