@@ -6,6 +6,8 @@
         = link_to "Home", index_path
       %li.active= @shipment.name
 
+    - if can? :read, Shipment
+      = link_index_button(shipments_path, "fa-ship")
     - if can? :create, Container
       = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
 

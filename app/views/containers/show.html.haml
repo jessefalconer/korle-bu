@@ -6,10 +6,12 @@
         = link_to "Home", index_path
       = present(@container).breadcrumbs
 
-    - if can? :create, Box
-      = add_button(new_box_path(container_id: @container.id), "Box", "fa-box-open")
+    - if can? :read, Container
+      = link_index_button(containers_path, "fa-truck")
     - if can? :create, Pallet
       = add_button(new_pallet_path(container_id: @container.id), "Pallet", "fa-pallet")
+    - if can? :create, Box
+      = add_button(new_box_path(container_id: @container.id), "Box", "fa-box-open")
     = manage_button(container_container_items_path(@container), "Items", "fa-stethoscope")
 
   .main-content
@@ -124,7 +126,7 @@
                 %span Close
           - else
             #boxes.collapse.panel-body
-              %h5.text-center No boxes in this pallet.
+              %h5.text-center No boxes in this container.
 
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}

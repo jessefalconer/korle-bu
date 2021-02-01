@@ -14,6 +14,14 @@ module ApplicationHelper
     end
   end
 
+  def link_index_button(path, icon)
+    link_to(path, class: "btn btn-primary hidden-sm hidden-md hidden-lg") do
+      tag.i("", class: "fa fa-th-list") +
+        tag.span(" ") +
+        tag.i("", class: "fa #{icon}")
+    end
+  end
+
   def submit_button_responsive(text, classes = "")
     button_tag(type: "submit", class: "btn btn-primary responsive-button #{classes}") do
       tag.i("", class: "fa fa-save") +
