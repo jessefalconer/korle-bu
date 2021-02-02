@@ -15,7 +15,7 @@
           %th Name
           %th Status
           %th.hidden-xs Shipper
-          %th Receiver
+          %th.hidden-xs Receiver
           %th.hidden-xs Created At
       %tbody
         - @shipments.each do |shipment|
@@ -32,7 +32,7 @@
             %td.hidden-xs
               = link_to shipment_path(shipment) do
                 %p= shipment.shipping_warehouse.name
-            %td
+            %td.hidden-xs
               = link_to shipment_path(shipment) do
                 %p= shipment.receiving_warehouse.name
             %td.hidden-xs

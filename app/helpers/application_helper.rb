@@ -36,6 +36,13 @@ module ApplicationHelper
     end
   end
 
+  def submit_export
+    button_tag(type: "submit", class: "btn btn-primary left") do
+      tag.span("Export ", class: "main-text") +
+      tag.i("", class: "fa fa-file-export")
+    end
+  end
+
   def submit_button(text, classes = "", icon = "fa-save")
     button_tag(type: "submit", class: "btn btn-primary #{classes}") do
       tag.i("", class: "fa #{icon}") +

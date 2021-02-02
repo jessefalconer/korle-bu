@@ -28,6 +28,6 @@
                 %p= warehouse.country
             %td
               = link_to warehouse_path(warehouse) do
-                %p= warehouse.status
+                %p{class: warehouse.active? ? "text-success" : "text-danger"}= warehouse.status
 
     = paginate @warehouses

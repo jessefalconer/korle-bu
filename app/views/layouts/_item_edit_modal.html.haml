@@ -150,27 +150,27 @@
               .form-group.inline-image-checkbox
                 = check_box_tag :destroy_photo, disabled: "disabled", class: "form-control"
                 %label Delete Photo
-          %h5.text-center Quick Reconcile
+          %h5.text-center Quick Fixes
           %hr
           .row
             .col-xs-6
               .form-group
-                = f.label :flagged, "Flag for Review"
+                = f.label :flagged, "Flagged for Review", class: item.flagged ? "text-danger" : "text-success"
                 = f.select(:flagged, options_for_select([true, false], item.flagged), { include_blank: "" }, { class: "form-control" })
             - if can? :reconcile, ReconcileItem
               .col-xs-6
                 .form-group
-                  = f.label :verified
+                  = f.label :verified, class: item.verified ? "text-success" : "text-danger"
                   = f.select(:verified, options_for_select([true, false], item.verified), { include_blank: "" }, { class: "form-control" })
 
           .row
             .col-xs-12.col-sm-6
               .form-group
-                = f.label :category
+                = f.label :category, class: item.category.nil? ? "text-danger" : "text-success"
                 = f.select(:category_id, options_from_collection_for_select(Category.order(:name), :id, :name, item.category_id), { include_blank: "" }, { class: "form-control" })
             .col-xs-12.col-sm-6
               .form-group
-                = f.label :unit_weight, "Unit Weight (g)"
+                = f.label :unit_weight, "Unit Weight (g)", class: item.unit_weight.to_i.zero? ? "text-danger" : "text-success"
                 = f.number_field :unit_weight, step: 1, class: "form-control"
 
           .row.padding-top
@@ -185,4 +185,4 @@
                   Cancel
                 = link_to reconcile_start_path(item), class: "btn btn-info" do
                   %i.fa.fa-compress-alt
-                  Reconcile
+                  Start Reconcile

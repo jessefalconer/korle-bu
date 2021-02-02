@@ -576,6 +576,12 @@ readers do not read off random characters that represent icons */
   }
 }
 
+.fa-file-export {
+  &:before {
+    content: "\f56e";
+  }
+}
+
 .sr-only {
   border: 0;
   clip: rect(0, 0, 0, 0);
