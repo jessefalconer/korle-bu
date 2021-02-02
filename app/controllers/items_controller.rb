@@ -43,16 +43,28 @@ class ItemsController < ApplicationController
   end
 
   def update
-    if @item.update(item_params)
-      redirect_to item_path(@item), flash: { success: "Item updated." }
+    path = if params[:redirect]
+      eval(params[:redirect])
     else
-      redirect_to item_path(@item), flash: { error: "Failed to update item: #{@item.errors.full_messages.to_sentence}" }
+      item_path(@item)
+    end
+
+    if @item.update(item_params)
+      redirect_to path, flash: { success: "Item updated." }
+    else
+      redirect_to path, flash: { error: "Failed to update item: #{@item.errors.full_messages.to_sentence}" }
     end
   end
 
   def destroy
+    path = if params[:redirect]
+      eval(params[:redirect])
+    else
+      items_path
+    end
+
     @item.destroy
-    redirect_to items_path, flash: { success: "Item deleted." }
+    redirect_to path, flash: { success: "Item deleted." }
   end
 
   private
@@ -75,7 +87,7 @@ class ItemsController < ApplicationController
   def item_params
     params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description,
                                  :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
-                                 :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity,
+                                 :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity, :unit_weight,
                                  :category_id, :notes, :verified, :photo, :flagged)
   end
 

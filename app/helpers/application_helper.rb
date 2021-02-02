@@ -22,6 +22,13 @@ module ApplicationHelper
     end
   end
 
+  def submit_button_redirect(text, redirect = "")
+    button_tag(type: "submit", name: "redirect", value: redirect, class: "btn btn-primary responsive-button") do
+      tag.i("", class: "fa fa-save") +
+        tag.span(" #{text}", class: "main-text")
+    end
+  end
+
   def submit_button_responsive(text, classes = "")
     button_tag(type: "submit", class: "btn btn-primary responsive-button #{classes}") do
       tag.i("", class: "fa fa-save") +

@@ -11,26 +11,34 @@
         - if @items.any?
           %h3 Uncategorized Items (#{Item.uncategorized.count})
           %p These items are uncategorized. Click on the item's name to begin categorizing.
-          %table.table.table-striped
+          %table.table.table-striped.table-hover.link-rows
             %thead
               %tr
                 %th Name
-                %th.hidden-xs Created At
                 %th Verified
+                %th.hidden-xs Flagged
                 %th Instances
+                %th.hidden-xs Created At
             %tbody
               - @items.each do |item|
                 %tr
                   %td
-                    = link_to item_path(item) do
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
                       %p= item.generated_name
-                  %td.hidden-xs
-                    %p= item.created_at.strftime("%Y-%m-%d")
                   %td
-                    %p= item.verified.to_s.capitalize
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      %p= item.verified.to_s.capitalize
+                  %td.hidden-xs
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      %p= item.flagged.to_s.capitalize
                   %td
                     = link_to item_instances_path(item) do
                       %p= Item.item_instances(item)
+                  %td.hidden-xs
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      %p= item.created_at.strftime("%Y-%m-%d")
+
+                = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_uncategorized_path"}
 
           = paginate @items
 

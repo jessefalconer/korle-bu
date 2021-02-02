@@ -143,7 +143,7 @@ function initPackingSearchListeners() {
 function initReconcileSearchListeners() {
   if (document.querySelector("#reconcile-search-submit") === null) { return; }
 
-  $(document).on("submit", "#reconcile-search-submit", () => {
+  $(document).on("click", "#reconcile-search-submit", () => {
       $("#search-results").empty();
       const params = $("#search-params").val();
       if ( params !== "" ) { reconcileSearch(params); }

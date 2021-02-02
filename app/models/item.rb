@@ -52,6 +52,7 @@ class Item < ApplicationRecord
      concentration_phrase.to_s, area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
   end
 
+  # TODO: Lots of repetition here, can be refactored
   def numerical_1_phrase
     return if numerical_size_1.blank?
 

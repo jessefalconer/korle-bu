@@ -10,35 +10,33 @@
       .col-xs-12
         - if @items.any?
           %h3 Unverified Items (#{Item.unverified.count})
-          %p
-            These items are unverified. To begin merging, click |
-            %em Reconcile.
-            Or click on the item's name to begin verifying or deleting.
-          %table.table.table-striped
+          %p These items are unverified. Click on the item's row to start.
+          %table.table.table-striped.table-hover.link-rows
             %thead
               %tr
                 %th Name
-                %th.hidden-xs Created At
-                %th Instances
                 %th.hidden-xs Category
-                %th
+                %th Instances
+                %th.hidden-xs Created At
             %tbody
               - @items.each do |item|
                 %tr
                   %td
-                    = link_to item_path(item) do
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
                       %p= item.generated_name
                   %td.hidden-xs
-                    %p= item.created_at.strftime("%Y-%m-%d")
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      %p= item.category&.name || "N/A"
                   %td
                     = link_to item_instances_path(item) do
                       %p= Item.item_instances(item)
                   %td.hidden-xs
-                    = item.category&.name
-                  %td
-                    = link_to "Reconcile", reconcile_start_path(item)
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      %p= item.created_at.strftime("%Y-%m-%d")
+
+                = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_unverified_path"}
 
           = paginate @items
 
         - else
-          %h3.text-center No items to reconcile.
+          %h3.text-center No items to verify.

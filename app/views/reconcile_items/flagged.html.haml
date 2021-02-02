@@ -11,11 +11,10 @@
         - if @items.any?
           %h3 Flagged Items (#{Item.flagged.count})
           %p These items were voluntarily flagged for admin inspection. Click on the item's name to begin verifying.
-          %table.table.table-striped
+          %table.table.table-striped.table-hover.link-rows
             %thead
               %tr
                 %th Name
-                %th Created At
                 %th Verified
                 %th Category
                 %th Instances
@@ -23,18 +22,21 @@
               - @items.each do |item|
                 %tr
                   %td
-                    = link_to item_path(item) do
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
                       %p= item.generated_name
                   %td
-                    %p= item.created_at.strftime("%Y-%m-%d")
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      %p= item.verified.to_s.capitalize
                   %td
-                    %p= item.verified.to_s.capitalize
-                  %td
-                    %p= item.category&.name || "N/A"
+                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      %p= item.category&.name || "N/A"
                   %td
                     = link_to item_instances_path(item) do
                       %p= Item.item_instances(item)
 
+                = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "flagged"}
+
           = paginate @items
+
         - else
           %h3.text-center No items to verify.

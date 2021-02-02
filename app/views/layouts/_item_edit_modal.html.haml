@@ -1,0 +1,188 @@
+- user = item.user&.name || current_user.name
+- time = item.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
+.modal.fade{id: "item-#{item.id}Modal"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h5#assignmentModalLabel.modal-title Edit #{item.generated_name}
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"}  ×
+      .modal-body#assignmentModalBody.margin-top
+        = form_for item do |f|
+          .panel.panel-default
+            %a.panel-heading{data: {toggle: "collapse"}, href: "#general-#{item.id}"}
+              General
+              %i.fa.fa-edit.pull-right
+            .collapse.in{id: "general-#{item.id}"}
+              .row.form-row
+                .col-xs-6
+                  .form-group
+                    = f.label :object, "Item"
+                    = f.text_field :object, class: "form-control", placeholder: "eg: syringe, acetaminophen, heart monitor"
+                .col-xs-6
+                  .form-group
+                    = f.label :packaged_quantity, "Packaged Quantity"
+                    = f.number_field :packaged_quantity, min: 1, step: "any", class: "form-control"
+                .col-xs-6
+                  .form-group
+                    = f.label :brand
+                    = f.text_field :brand, class: "form-control"
+                .col-xs-6
+                  .form-group
+                    = f.label :standardized_size, "Size"
+                    = f.select(:standardized_size, options_for_select(Item::STANDARD_SIZES, item.standardized_size), { include_blank: "" }, { class: "form-control" })
+
+          .panel.panel-default
+            %a.panel-heading{data: {toggle: "collapse"}, href: "#measurement1-#{item.id}"}
+              Measurement
+              %i.fa.fa-edit.pull-right
+            .collapse{class: (item.numerical_1_phrase.present? && "in" ), id: "measurement1-#{item.id}"}
+              .row.form-row
+                .col-xs-6
+                  .form-group
+                    = f.label :numerical_size_1, "Value"
+                    = f.number_field :numerical_size_1, min: 0, step: "any", class: "form-control"
+                .col-xs-6
+                  .form-group
+                    = f.label :numerical_units_1, "Units"
+                    = f.select(:numerical_units_1, options_for_select(Item::UNITS, item.numerical_units_1), { include_blank: "" }, { class: "form-control" })
+                .col-xs-12
+                  .form-group
+                    = f.label :numerical_description_1, "Description"
+                    = f.text_field :numerical_description_1, class: "form-control", placeholder: "eg: needle, tube, pill"
+
+          .panel.panel-default
+            %a.panel-heading{data: {toggle: "collapse"}, href: "#concentration-#{item.id}"}
+              Concentration
+              %i.fa.fa-edit.pull-right
+            .collapse{class: (item.concentration_phrase.present? && "in" ), id: "concentration-#{item.id}"}
+              .row.form-row
+                .col-xs-6
+                  .form-group
+                    = f.label :concentration, "Value"
+                    = f.number_field :concentration, min: 0, step: "any", class: "form-control"
+                .col-xs-6
+                  .form-group
+                    = f.label :concentration_units, "Units"
+                    = f.select(:concentration_units, options_for_select(Item::RATIOS, item.concentration_units), { include_blank: "" }, { class: "form-control" })
+                .col-xs-12
+                  .form-group
+                    = f.label :concentration_description, "Description"
+                    = f.text_field :concentration_description, class: "form-control", placeholder: "eg: liquid, topical, paste"
+
+          .panel.panel-default
+            %a.panel-heading{data: {toggle: "collapse"}, href: "#area-#{item.id}"}
+              Area
+              %i.fa.fa-edit.pull-right
+            .collapse{class: (item.area_phrase.present? && "in" ), id: "area-#{item.id}"}
+              .row.form-row
+                .col-xs-6
+                  .form-group
+                    = f.label :area_1, "Length"
+                    = f.number_field :area_1, min: 0, step: "any", class: "form-control"
+                .col-xs-6
+                  .form-group
+                    = f.label :area_2, "Width"
+                    = f.number_field :area_2, min: 0, step: "any", class: "form-control"
+                .col-xs-6
+                  .form-group
+                    = f.label :area_units, "Units"
+                    = f.select(:area_units, options_for_select(Item::LENGTHS, item.area_units), { include_blank: "" }, { class: "form-control" })
+                .col-xs-6
+                  .form-group
+                    = f.label :area_description, "Description"
+                    = f.text_field :area_description, class: "form-control", placeholder: "eg: needle, tube, pill"
+
+          .panel.panel-default
+            %a.panel-heading{data: {toggle: "collapse"}, href: "#range-#{item.id}"}
+              Range
+              %i.fa.fa-edit.pull-right
+            .collapse{class: (item.area_phrase.present? && "in" ), id: "range-#{item.id}"}
+              .row.form-row
+                .col-xs-6
+                  .form-group
+                    = f.label :range_1, "Minimum"
+                    = f.number_field :range_1, min: 0, step: "any", class: "form-control"
+                .col-xs-6
+                  .form-group
+                    = f.label :range_2, "Maximum"
+                    = f.number_field :range_2, min: 0, step: "any", class: "form-control"
+                .col-xs-6
+                  .form-group
+                    = f.label :range_units, "Units"
+                    = f.select(:range_units, options_for_select(Item::UNITS, item.range_units), { include_blank: "" }, { class: "form-control" })
+                .col-xs-6
+                  .form-group
+                    = f.label :range_description, "Description"
+                    = f.text_field :range_description, class: "form-control", placeholder: "eg: needle, tube, pill"
+
+          .panel.panel-default
+            %a.panel-heading{data: {toggle: "collapse"}, href: "#measurement2-#{item.id}"}
+              Extra Measurement
+              %i.fa.fa-edit.pull-right
+            .collapse{class: (item.numerical_2_phrase.present? && "in" ), id: "measurement2-#{item.id}"}
+              .row.form-row
+                .col-xs-6
+                  .form-group
+                    = f.label :numerical_size_2, "Value"
+                    = f.number_field :numerical_size_2, min: 0, step: "any", class: "form-control"
+                .col-xs-6
+                  .form-group
+                    = f.label :numerical_units_2, "Units"
+                    = f.select(:numerical_units_2, options_for_select(Item::UNITS, item.numerical_units_2), { include_blank: "" }, { class: "form-control" })
+                .col-xs-12
+                  .form-group
+                    = f.label :numerical_description_2, "Description"
+                    = f.text_field :numerical_description_2, class: "form-control", placeholder: "eg: vial, canister, blade"
+
+          .row
+            .col-xs-12
+              .form-group
+                = f.label :notes
+                = f.text_field :notes, class: "form-control"
+
+          .row
+            .col-xs-8
+              .form-group
+                = f.label :photo
+                = f.file_field :photo, class: "form-control", accept: "image/png, image/gif, image/jpeg"
+            .col-xs-4
+              .form-group.inline-image-checkbox
+                = check_box_tag :destroy_photo, disabled: "disabled", class: "form-control"
+                %label Delete Photo
+          %h5.text-center Quick Reconcile
+          %hr
+          .row
+            .col-xs-6
+              .form-group
+                = f.label :flagged, "Flag for Review"
+                = f.select(:flagged, options_for_select([true, false], item.flagged), { include_blank: "" }, { class: "form-control" })
+            - if can? :reconcile, ReconcileItem
+              .col-xs-6
+                .form-group
+                  = f.label :verified
+                  = f.select(:verified, options_for_select([true, false], item.verified), { include_blank: "" }, { class: "form-control" })
+
+          .row
+            .col-xs-12.col-sm-6
+              .form-group
+                = f.label :category
+                = f.select(:category_id, options_from_collection_for_select(Category.order(:name), :id, :name, item.category_id), { include_blank: "" }, { class: "form-control" })
+            .col-xs-12.col-sm-6
+              .form-group
+                = f.label :unit_weight, "Unit Weight (g)"
+                = f.number_field :unit_weight, step: 1, class: "form-control"
+
+          .row.padding-top
+            .col-xs-12
+              .btn-toolbar.list-toolbar.pull-left
+                - if item.persisted?
+                  = delete_button(item_path(item, redirect: :unverified), "Are you sure you want to delete #{item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
+                = submit_button_redirect("Save", redirect)
+              .btn-toolbar.list-toolbar.pull-right
+                %button.btn.btn-warning{data: {dismiss: "modal"}, type: "button"}
+                  %i.fa.fa-times
+                  Cancel
+                = link_to reconcile_start_path(item), class: "btn btn-info" do
+                  %i.fa.fa-compress-alt
+                  Reconcile
