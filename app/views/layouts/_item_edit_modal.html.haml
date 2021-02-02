@@ -177,7 +177,7 @@
             .col-xs-12
               .btn-toolbar.list-toolbar.pull-left
                 - if item.persisted?
-                  = delete_button(item_path(item, redirect: :unverified), "Are you sure you want to delete #{item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
+                  = delete_button(item_path(item, redirect: "reconcile_unverified_path"), "Are you sure you want to delete #{item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
                 = submit_button_redirect("Save", redirect)
               .btn-toolbar.list-toolbar.pull-right
                 %button.btn.btn-warning{data: {dismiss: "modal"}, type: "button"}
