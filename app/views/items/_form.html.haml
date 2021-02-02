@@ -158,12 +158,12 @@
     .col-xs-6
       .form-group
         = f.label :flagged, "Flag for Review"
-        = f.select(:flagged, options_for_select([true, false], @item.flagged), { include_blank: "" }, { class: "form-control" })
+        = f.select(:flagged, options_for_select([true, false], @item.flagged), {}, { class: "form-control" })
     - if can? :reconcile, ReconcileItem
       .col-xs-6
         .form-group
           = f.label :verified
-          = f.select(:verified, options_for_select([true, false], @item.verified), { include_blank: "" }, { class: "form-control" })
+          = f.select(:verified, options_for_select([true, false], @item.verified), {}, { class: "form-control" })
 
   .row
     .col-xs-12.col-sm-6

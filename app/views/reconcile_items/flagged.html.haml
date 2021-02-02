@@ -34,7 +34,7 @@
                     = link_to item_instances_path(item) do
                       %p.instances= Item.item_instances(item)
 
-                = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "flagged"}
+                = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_flagged_path"}
 
           = paginate @items
 
