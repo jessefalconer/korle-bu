@@ -7,23 +7,34 @@
       %li.active Items
     = add_button(new_item_path, "Item", "fa-stethoscope")
   .main-content
-    %table.table.table-striped
+    %table.table.table-striped.table-hover.link-rows
       %thead
         %tr
           %th Name
           %th Category
-          %th.hidden-xs Created By
-          %th.hidden-xs Created At
           %th.hidden-xs Verified
+          %th.hidden-xs Flagged
       %tbody
         - @items.each do |item|
           %tr
             %td
               = link_to item_path(item) do
-                = item.generated_name
-            %td= item.category&.name
-            %td.hidden-xs= item.user.name
-            %td.hidden-xs= item.created_at.strftime("%Y-%m-%d")
-            %td.hidden-xs= item.verified.to_s.capitalize
+                %p= item.generated_name
+            %td
+              = link_to item_path(item) do
+                %p= item.category&.name
+            %td.hidden-xs
+              = link_to item_path(item) do
+                - if item.verified
+                  %p.text-success= item.verified.to_s.capitalize
+                - else
+                  %p.text-danger= item.verified.to_s.capitalize
+            %td.hidden-xs
+              = link_to item_path(item) do
+                - if item.flagged
+                  %p.text-danger= item.flagged&.to_s.capitalize
+                - else
+                  %p.text-success= item.flagged&.to_s.capitalize
+
 
     = paginate @items, window: 2

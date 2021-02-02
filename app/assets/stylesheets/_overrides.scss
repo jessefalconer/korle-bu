@@ -1,7 +1,5 @@
 .navbar-default .navbar-brand,
-.navbar-default .navbar-brand:hover {
-  color: #fff;
-}
+.navbar-default .navbar-brand:hover { color: #fff; }
 
 h1.page {
   text-align: center;
@@ -38,6 +36,7 @@ h2.page {
 
     &.privacy {
       float: left;
+
       a {
         color: #c0c0c0;
         padding: 0 1em;
@@ -46,6 +45,7 @@ h2.page {
 
     &.terms {
       float: right;
+
       a {
         color: #c0c0c0;
         padding: 0 1em;
@@ -234,7 +234,6 @@ input.list-quick-filter { border-radius: 4px 0 0 0; }
   cursor: pointer;
 
   .entry-info { margin-right: 15px; }
-
   h4 { margin: 0 15px 10px 0;}
 }
 
@@ -246,34 +245,33 @@ img.kbnf-logo-center {
   margin-bottom: 35px;
 }
 
-.status-in-progress {
-  color: #8a6d3b;
-}
-
-.status-complete {
-  color: #31708f;
-}
-
-.status-received {
-  color: #3c763d;
-}
-
 .status-n-a,
-.status-unassigned {
-  color: #a94442;
-}
+.status-unassigned {color: #a94442; }
+.status-in-progress { color: #8a6d3b; }
+.status-complete { color: #31708f; }
+.status-received { color: #3c763d; }
 
 table.table-striped.link-rows tbody tr td {
-  padding-top: 0px;
-  padding-bottom: 0px;
+  padding: 0px;
   height: 37px;
 
-  a {
+  p {
+    padding: 0 8px;
     cursor: pointer;
+    height: 36px;
+    line-height: 36px;
+    color: #333;
+    vertical-align: middle;
 
-    p {
-      padding-top: 8px;
-      padding-bottom: 8px;
-    }
+    &.instances { color: #007096; }
+    &.text-success { color: #3c763d; }
+    &.text-danger{ color: #3c763d; }
+    &.text-info { color: #31708f; }
+    &.text-warning { color: #8a6d3b; }
+    &.text-danger { color: #a94442; }
+    &.status-in-progress { color: #8a6d3b; }
+    &.status-complete { color: #31708f; }
+    &.status-received { color: #3c763d; }
+    &.status-unassigned { color: #a94442; }
   }
 }

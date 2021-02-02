@@ -60,7 +60,7 @@
           Recently Added Users
           %span.label.label-info Total: #{User.count}
         #new-users.collapse.in
-          %table.table.table-striped
+          %table.table.table-striped.table-hover.link-rows
             %thead
               %tr
                 %th.hidden-xs Name
@@ -68,17 +68,23 @@
                 %th.hidden-xs Role
                 %th Status
             %tbody
-              - User.order(:created_at).reverse.first(5).each do |user|
+              - User.order(:created_at).reverse.first(10).each do |user|
                 %tr
-                  %td.hidden-xs= user.name
+                  %td.hidden-xs
+                    = link_to user_path(user) do
+                      %p= user.name
                   %td
                     = link_to user_path(user) do
-                      = user.email
-                  %td.hidden-xs= user.role
-                  - if user.active?
-                    %td.text-success= user.status
-                  - else
-                    %td.text-danger= user.status
+                      %p= user.email
+                  %td.hidden-xs
+                    = link_to user_path(user) do
+                      %p= user.role
+                  %td
+                    = link_to user_path(user) do
+                      - if user.active?
+                        %p.text-success= user.status
+                      - else
+                        %p.text-danger= user.status
 
       .panel.panel-default
         %a.panel-heading{data: {toggle: "collapse"}, href: "#new-items"}

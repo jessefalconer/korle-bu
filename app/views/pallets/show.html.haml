@@ -76,11 +76,11 @@
             %i.fa.fa-box-open
             Boxes on this Pallet
             %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.boxes.size
+
           - if @pallet.boxes.any?
             #boxes.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "boxes"}
-
-              %table.table.table-striped
+              %table.table.table-striped.link-rows
                 %thead
                   %tr
                     %th Custom ID
@@ -89,11 +89,15 @@
                 %tbody#filter-boxes-table
                   - @pallet.boxes.order(:custom_uid).reverse_order.each do |box|
                     %tr.filter-row
-                      %td= box.custom_uid
                       %td
                         = link_to box_path(box) do
-                          = box.name
-                      %td{class: "status-#{box.status.parameterize}"}= box.status
+                          %p= box.custom_uid
+                      %td
+                        = link_to box_path(box) do
+                          %p= box.name
+                      %td
+                        = link_to box_path(box) do
+                          %p{class: "status-#{box.status.parameterize}"}= box.status
               .close-collapse{data: {toggle: "collapse"}, href: "#boxes"}
                 %span Close
           - else
@@ -105,11 +109,11 @@
             %i.fa.fa-stethoscope
             Packed Items on this Pallet
             %span.label{class: @pallet.pallet_items.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
+
           - if @pallet.pallet_items.any?
             #pallet_items.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "pallet-items"}
-
-              %table.table.table-striped
+              %table.table.table-striped.link-rows
                 %thead
                   %tr
                     %th Name
@@ -120,9 +124,13 @@
                     %tr.filter-row
                       %td
                         = link_to item_path(pi.item) do
-                          = pi.generated_name
-                      %td= pi.expiry_date&.strftime("%Y-%m-%d")
-                      %td= pi.quantity
+                          %p= pi.generated_name
+                      %td
+                        = link_to item_path(pi.item) do
+                          %p= pi.expiry_date&.strftime("%Y-%m-%d")
+                      %td
+                        = link_to item_path(pi.item) do
+                          %p= pi.quantity
               .close-collapse{data: {toggle: "collapse"}, href: "#pallet_items"}
                 %span Close
           - else

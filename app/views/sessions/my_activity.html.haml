@@ -13,6 +13,7 @@
         - if @boxes.any?
           .panel.panel-default
             %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxes"}
+              %i.fa.fa-box-open
               Boxes
               %span.label.label-info= @boxes.size
             .collapse{id: "boxes"}
@@ -42,6 +43,7 @@
         - if @pallets.any?
           .panel.panel-default
             %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallets"}
+              %i.fa.fa-pallet
               Pallets
               %span.label.label-info= @pallets.size
             .collapse{id: "pallets"}
@@ -71,6 +73,7 @@
         - if @containers.any?
           .panel.panel-default
             %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containers"}
+              %i.fa.fa-truck
               Containers
               %span.label.label-info= @containers.size
             .collapse{id: "containers"}
@@ -100,6 +103,7 @@
         - if @box_items.any?
           .panel.panel-default
             %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
+              %i.fa.fa-stethoscope
               Boxed Items
               %span.label.label-info= @box_items.size
             .collapse{id: "box_items"}
@@ -130,6 +134,7 @@
         - if @pallet_items.any?
           .panel.panel-default
             %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
+              %i.fa.fa-stethoscope
               Palletized Items
               %span.label.label-info= @pallet_items.size
             .collapse{id: "pallet_items"}
@@ -160,6 +165,7 @@
         - if @container_items.any?
           .panel.panel-default
             %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+              %i.fa.fa-stethoscope
               Containerized Items
               %span.label.label-info= @container_items.size
             .collapse{id: "container_items"}

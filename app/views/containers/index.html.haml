@@ -8,25 +8,35 @@
     - if can? :manage, Container
       = add_button(new_container_path, "Unassigned Container", "fa-truck")
   .main-content
-    %table.table.table-striped
+    %table.table.table-striped.table-hover.link-rows
       %thead
         %tr
           %th Custom ID
           %th Name
           %th Status
-          %th.hidden-xs Receiver
           %th.hidden-xs Shipper
+          %th.hidden-xs Receiver
           %th.hidden-xs Created At
       %tbody
         - @containers.each do |container|
           %tr
-            %td= container.custom_uid
             %td
               = link_to container_path(container) do
-                = container.name
-            %td= container.status
-            %td.hidden-xs= container.shipment&.receiving_warehouse&.name
-            %td.hidden-xs= container.shipment&.shipping_warehouse&.name
-            %td.hidden-xs= container.created_at.strftime("%Y-%m-%d")
+                %p= container.custom_uid
+            %td
+              = link_to container_path(container) do
+                %p= container.name
+            %td
+              = link_to container_path(container) do
+                %p{class: "status-#{container.status.parameterize}"}= container.status
+            %td.hidden-xs
+              = link_to container_path(container) do
+                %p= container.shipment&.shipping_warehouse&.name
+            %td.hidden-xs
+              = link_to container_path(container) do
+                %p= container.shipment&.receiving_warehouse&.name
+            %td.hidden-xs
+              = link_to container_path(container) do
+                %p= container.created_at.strftime("%Y-%m-%d")
 
     = paginate @containers, window: 2

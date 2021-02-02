@@ -67,9 +67,10 @@
             %i.fa.fa-truck
             Containers in this Shipment
             %span.label{class: @shipment.containers.any? ? "label-success" : "label-warning"}= @shipment.containers.size
+
           - if @shipment.containers.any?
             #containers.collapse
-              %table.table.table-striped
+              %table.table.table-striped.link-rows
                 %thead
                   %tr
                     %th Custom ID
@@ -78,11 +79,15 @@
                 %tbody
                   - @shipment.containers.order(:custom_uid).reverse_order.each do |container|
                     %tr
-                      %td= container.custom_uid
                       %td
                         = link_to container_path(container) do
-                          = container.name
-                      %td{class: "status-#{container.status.parameterize}"}= container.status
+                          %p= container.custom_uid
+                      %td
+                        = link_to container_path(container) do
+                          %p= container.name
+                      %td
+                        = link_to container_path(container) do
+                          %p{class: "status-#{container.status.parameterize}"}= container.status
               .close-collapse{data: {toggle: "collapse"}, href: "#containers"}
                 %span Close
           - else
@@ -94,10 +99,11 @@
             %i.fa.fa-pallet
             Pallets Assigned to Containers
             %span.label{class: @shipment.pallets.any? ? "label-success" : "label-warning"}= @shipment.pallets.size
+
           - if @shipment.pallets.any?
             #pallets.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallets"}
-              %table.table.table-striped
+              %table.table.table-striped.link-rows
                 %thead
                   %tr
                     %th Custom ID
@@ -106,11 +112,15 @@
                 %tbody#filter-pallets-table
                   - @shipment.pallets.order(:custom_uid).reverse_order.each do |pallet|
                     %tr.filter-row
-                      %td= pallet.custom_uid
                       %td
                         = link_to pallet_path(pallet) do
-                          = pallet.name
-                      %td{class: "status-#{pallet.status.parameterize}"}= pallet.status
+                          %p= pallet.custom_uid
+                      %td
+                        = link_to pallet_path(pallet) do
+                          %p= pallet.name
+                      %td
+                        = link_to pallet_path(pallet) do
+                          %p{class: "status-#{pallet.status.parameterize}"}= pallet.status
               .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
                 %span Close
           - else
@@ -122,10 +132,11 @@
             %i.fa.fa-box-open
             Boxes Assigned to Pallets
             %span.label{class: @shipment.pallet_boxes.any? ? "label-success" : "label-warning"}= @shipment.pallet_boxes.size
+
           - if @shipment.pallet_boxes.any?
             #pallet_boxes.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallet-boxes"}
-              %table.table.table-striped
+              %table.table.table-striped.link-rows
                 %thead
                   %tr
                     %th Custom ID
@@ -134,11 +145,15 @@
                 %tbody#filter-pallet-boxes-table
                   - @shipment.pallet_boxes.order(:custom_uid).reverse_order.each do |box|
                     %tr.filter-row
-                      %td= box.custom_uid
                       %td
                         = link_to box_path(box) do
-                          = box.name
-                      %td{class: "status-#{box.status.parameterize}"}= box.status
+                          %p= box.custom_uid
+                      %td
+                        = link_to box_path(box) do
+                          %p= box.name
+                      %td
+                        = link_to box_path(box) do
+                          %p{class: "status-#{box.status.parameterize}"}= box.status
               .close-collapse{data: {toggle: "collapse"}, href: "#pallet_boxes"}
                 %span Close
           - else
@@ -150,10 +165,11 @@
             %i.fa.fa-box-open
             Boxes Assigned to Containers
             %span.label{class: @shipment.container_boxes.any? ? "label-success" : "label-warning"}= @shipment.container_boxes.size
+
           - if @shipment.container_boxes.any?
             #container_boxes.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "container-boxes"}
-              %table.table.table-striped
+              %table.table.table-striped.link-rows
                 %thead
                   %tr
                     %th Custom ID
@@ -162,11 +178,15 @@
                 %tbody#filter-container-boxes-table
                   - @shipment.container_boxes.order(:custom_uid).reverse_order.each do |box|
                     %tr.filter-row
-                      %td= box.custom_uid
                       %td
                         = link_to box_path(box) do
-                          = box.name
-                      %td{class: "status-#{box.status.parameterize}"}= box.status
+                          %p= box.custom_uid
+                      %td
+                        = link_to box_path(box) do
+                          %p= box.name
+                      %td
+                        = link_to box_path(box) do
+                          %p{class: "status-#{box.status.parameterize}"}= box.status
               .close-collapse{data: {toggle: "collapse"}, href: "#container_boxes"}
                 %span Close
           - else

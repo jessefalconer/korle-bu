@@ -7,7 +7,7 @@
       %li.active Warehouses
     = add_button(new_warehouse_path, "Warehouse", "fa-warehouse")
   .main-content
-    %table.table.table-striped
+    %table.table.table-striped.table-hover.link-rows
       %thead
         %tr
           %th Name
@@ -19,9 +19,15 @@
           %tr
             %td
               = link_to warehouse_path(warehouse) do
-                = warehouse.name
-            %td.hidden-xs= warehouse.city
-            %td= warehouse.country
-            %td= warehouse.status
+                %p= warehouse.name
+            %td.hidden-xs
+              = link_to warehouse_path(warehouse) do
+                %p= warehouse.city
+            %td
+              = link_to warehouse_path(warehouse) do
+                %p= warehouse.country
+            %td
+              = link_to warehouse_path(warehouse) do
+                %p= warehouse.status
 
     = paginate @warehouses

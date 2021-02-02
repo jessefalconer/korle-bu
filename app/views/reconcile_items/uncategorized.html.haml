@@ -23,20 +23,20 @@
               - @items.each do |item|
                 %tr
                   %td
-                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      %p= item.generated_name
+                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      = item.generated_name
                   %td
-                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      %p= item.verified.to_s.capitalize
+                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.verified ? "text-success" : "text-danger"}
+                      = item.verified.to_s.capitalize
                   %td.hidden-xs
-                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      %p= item.flagged.to_s.capitalize
+                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.flagged ? "text-danger" : "text-success"}
+                      = item.flagged&.to_s.capitalize
                   %td
                     = link_to item_instances_path(item) do
-                      %p= Item.item_instances(item)
+                      %p.instances= Item.item_instances(item)
                   %td.hidden-xs
-                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      %p= item.created_at.strftime("%Y-%m-%d")
+                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      = item.created_at.strftime("%Y-%m-%d")
 
                 = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_uncategorized_path"}
 

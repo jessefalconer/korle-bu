@@ -75,11 +75,12 @@
             %i.fa.fa-pallet
             Pallets in this Container
             %span.label{class: @container.pallets.any? ? "label-success" : "label-warning"}= @container.pallets.size
+
           - if @container.pallets.any?
             #pallets.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallets"}
 
-              %table.table.table-striped
+              %table.table.table-striped.link-rows
                 %thead
                   %tr
                     %th Custom ID
@@ -88,11 +89,15 @@
                 %tbody#filter-pallets-table
                   - @container.pallets.order(:custom_uid).reverse_order.each do |pallet|
                     %tr.filter-row
-                      %td= pallet.custom_uid
                       %td
                         = link_to pallet_path(pallet) do
-                          = pallet.name
-                      %td{class: "status-#{pallet.status.parameterize}"}= pallet.status
+                          %p= pallet.custom_uid
+                      %td
+                        = link_to pallet_path(pallet) do
+                          %p= pallet.name
+                      %td
+                        = link_to pallet_path(pallet) do
+                          %p{class: "status-#{pallet.status.parameterize}"}= pallet.status
               .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
                 %span Close
           - else
@@ -104,11 +109,12 @@
             %i.fa.fa-box-open
             Boxes in this Container
             %span.label{class: @container.boxes.any? ? "label-success" : "label-warning"}= @container.boxes.size
+
           - if @container.boxes.any?
             #boxes.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "boxes"}
 
-              %table.table.table-striped
+              %table.table.table-striped.link-rows
                 %thead
                   %tr
                     %th Custom ID
@@ -117,11 +123,15 @@
                 %tbody#filter-boxes-table
                   - @container.boxes.order(:custom_uid).reverse_order.each do |box|
                     %tr.filter-row
-                      %td= box.custom_uid
                       %td
                         = link_to box_path(box) do
-                          = box.name
-                      %td{class: "status-#{box.status.parameterize}"}= box.status
+                          %p= box.custom_uid
+                      %td
+                        = link_to box_path(box) do
+                          %p= box.name
+                      %td
+                        = link_to box_path(box) do
+                          %p{class: "status-#{box.status.parameterize}"}= box.status
               .close-collapse{data: {toggle: "collapse"}, href: "#boxes"}
                 %span Close
           - else
@@ -133,11 +143,12 @@
             %i.fa.fa-stethoscope
             Packed Items in this Container
             %span.label{class: @container.container_items.any? ? "label-success" : "label-warning"}= @container.container_items.size
+
           - if @container.container_items.any?
             #container_items.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "container-items"}
 
-              %table.table.table-striped
+              %table.table.table-striped.link-rows
                 %thead
                   %tr
                     %th Name
@@ -148,9 +159,13 @@
                     %tr.filter-row
                       %td
                         = link_to item_path(ci.item) do
-                          = ci.generated_name
-                      %td= ci.expiry_date&.strftime("%Y-%m-%d")
-                      %td= ci.quantity
+                          %p= ci.generated_name
+                      %td
+                        = link_to item_path(ci.item) do
+                          %p= ci.expiry_date&.strftime("%Y-%m-%d")
+                      %td
+                        = link_to item_path(ci.item) do
+                          %p= ci.quantity
               .close-collapse{data: {toggle: "collapse"}, href: "#container_items"}
                 %span Close
           - else

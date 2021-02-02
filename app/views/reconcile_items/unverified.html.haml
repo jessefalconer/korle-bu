@@ -16,23 +16,23 @@
               %tr
                 %th Name
                 %th.hidden-xs Category
+                %th.hidden-xs Flagged
                 %th Instances
-                %th.hidden-xs Created At
             %tbody
               - @items.each do |item|
                 %tr
                   %td
-                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      %p= item.generated_name
+                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      = item.generated_name
                   %td.hidden-xs
-                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      %p= item.category&.name || "N/A"
+                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                      = item.category&.name || "N/A"
+                  %td.hidden-xs
+                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.flagged ? "text-danger" : "text-success"}
+                      = item.flagged&.to_s.capitalize
                   %td
                     = link_to item_instances_path(item) do
-                      %p= Item.item_instances(item)
-                  %td.hidden-xs
-                    %a{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      %p= item.created_at.strftime("%Y-%m-%d")
+                      %p.instances= Item.item_instances(item)
 
                 = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_unverified_path"}
 
