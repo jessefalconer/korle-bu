@@ -42,7 +42,7 @@
       .row
         .col-xs-12
           %h4 Target Item Suggestions
-          %h5 You can swap the target and reconcile item in the next stage if you wish.
+          %p You can swap the target and reconcile item in the next stage if you wish.
       - @similar_items.each do |item|
         = render partial: "item_card", locals: {item: item}
 

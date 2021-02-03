@@ -8,7 +8,10 @@ class Item < ApplicationRecord
   pg_search_scope :search_by_generated_name,
                   against: :generated_name,
                   using: {
-                    tsearch: { prefix: true }
+                    tsearch: {
+                      prefix: true,
+                      any_word: true
+                     }
                   },
                   ranked_by: ":trigram"
 
