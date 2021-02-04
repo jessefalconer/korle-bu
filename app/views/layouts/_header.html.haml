@@ -205,6 +205,10 @@
               %span.fa.fa-question
               &nbsp; Help
           %li
+            = link_to "mailto:jesse@kbnf.org?subject=I%20Found%20a%20Bug!?body=Please%20respond%20with%20the%20following:%20browser,%20URL%20and%20name.", {target: "_blank",rel: "noopener noreferrer" } do
+              %span.fa.fa-bug
+              &nbsp;Report a Bug
+          %li
             = link_to privacy_path do
               %span.fa.fa-user-shield
               Privacy
