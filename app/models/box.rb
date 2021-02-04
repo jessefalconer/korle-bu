@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class Box < ApplicationRecord
-  STATUSES = ["In Progress", "Complete", "Received"].freeze
+  STATUSES = [
+    IN_PROGRESS = "In Progress",
+    COMPLETE = "Complete",
+    RECEIVED = "Received"
+  ].freeze
 
   belongs_to :user, optional: false
   belongs_to :container, optional: true
@@ -33,7 +37,19 @@ class Box < ApplicationRecord
     end
   end
 
+  after_initialize :set_defaults, if: :new_record?
+
   def shipment
     container&.shipment || pallet&.container&.shipment
+  end
+
+  private
+
+  def set_defaults
+    cid = Box.maximum(:custom_uid).to_i + 1
+    name = "BOX-#{cid}"
+    self.name = name
+    self.custom_uid = cid
+    self.status = IN_PROGRESS
   end
 end

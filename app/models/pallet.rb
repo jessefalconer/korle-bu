@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class Pallet < ApplicationRecord
-  STATUSES = ["In Progress", "Complete", "Received"].freeze
+  STATUSES = [
+    IN_PROGRESS = "In Progress",
+    COMPLETE = "Complete",
+    RECEIVED = "Received"
+  ].freeze
 
   belongs_to :user, optional: false
   belongs_to :container, optional: true
@@ -29,6 +33,8 @@ class Pallet < ApplicationRecord
     cascade_statuses if saved_change_to_status && cascadable?
   end
 
+  after_initialize :set_defaults, if: :new_record?
+
   def cascadable?
     status == "Complete" || status == "Received"
   end
@@ -38,5 +44,13 @@ class Pallet < ApplicationRecord
   # TODO: Move this to a service
   def cascade_statuses
     boxes.where.not(status: status).find_each { |p| p.update(status: status) }
+  end
+
+  def set_defaults
+    cid = Pallet.maximum(:custom_uid).to_i + 1
+    name = "PALLET-#{cid}"
+    self.name = name
+    self.custom_uid = cid
+    self.status = IN_PROGRESS
   end
 end

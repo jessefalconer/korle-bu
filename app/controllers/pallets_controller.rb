@@ -5,9 +5,7 @@ class PalletsController < ApplicationController
   before_action :set_pallet, only: %i[show destroy update]
 
   def new
-    cid = Pallet.maximum(:custom_uid).to_i + 1
-    name = "PALLET-#{cid}"
-    @pallet = Pallet.new(custom_uid: cid, name: name, container_id: params[:container_id])
+    @pallet = Pallet.new(container_id: params[:container_id])
   end
 
   def create
