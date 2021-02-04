@@ -10,10 +10,10 @@
     %table.table.table-striped.table-hover.link-rows
       %thead
         %tr
-          %th Name
+          %th= sortable "name"
           %th.hidden-xs Description
           %th.hidden-xs Created By
-          %th.hidden-xs Created At
+          %th.hidden-xs= sortable "created_at"
       %tbody
         - @categories.each do |category|
           %tr

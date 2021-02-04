@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CategoriesController < ApplicationController
+  include Sortable
+
   load_and_authorize_resource
   before_action :set_category, only: %i[show destroy update]
 
@@ -19,7 +21,7 @@ class CategoriesController < ApplicationController
   end
 
   def index
-    @categories = Category.all.page params[:page]
+    @categories = Category.order(sort_column + " " + sort_direction).page params[:page]
   end
 
   def show

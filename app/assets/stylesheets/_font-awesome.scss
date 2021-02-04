@@ -582,6 +582,20 @@ readers do not read off random characters that represent icons */
   }
 }
 
+//sort up
+.asc {
+  &:after {
+    content: " \f062";
+  }
+}
+
+//sort up
+.desc {
+  &:after {
+    content: " \f063";
+  }
+}
+
 .sr-only {
   border: 0;
   clip: rect(0, 0, 0, 0);

@@ -10,10 +10,10 @@
     %table.table.table-striped.table-hover.link-rows
       %thead
         %tr
-          %th Name
-          %th Category
-          %th.hidden-xs Verified
-          %th.hidden-xs Flagged
+          %th= sortable "generated_name", "Name"
+          %th= sortable "category"
+          %th.hidden-xs= sortable "verified"
+          %th.hidden-xs= sortable "flagged"
       %tbody
         - @items.each do |item|
           %tr
@@ -35,6 +35,5 @@
                   %p.text-danger= item.flagged&.to_s.capitalize
                 - else
                   %p.text-success= item.flagged&.to_s.capitalize
-
 
     = paginate @items, window: 2

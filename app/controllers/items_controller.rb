@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ItemsController < ApplicationController
+  include Sortable
+
   load_and_authorize_resource only: %i[create update destroy]
   before_action :set_item, only: %i[show destroy update]
   after_action :destroy_photo, only: :update
@@ -20,7 +22,7 @@ class ItemsController < ApplicationController
   end
 
   def index
-    @items = Item.all.order(:created_at).reverse_order.page params[:page]
+    @items = Item.all.order(sort_column + " " + sort_direction).page params[:page]
   end
 
   def reconcile_search

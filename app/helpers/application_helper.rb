@@ -82,6 +82,17 @@ module ApplicationHelper
     end
   end
 
+  def sortable(column, title = nil)
+    title ||= column.titleize
+    css_class = column == sort_column ? "current fa #{sort_direction}" : nil
+    direction = column == sort_column && sort_direction == "desc" ? "asc" : "desc"
+
+    link_to({sort: column, direction: direction}) do
+      tag.span("#{title} ") +
+      tag.i("", class: css_class)
+    end
+  end
+
   def present(model)
     klass = "#{model.class}Presenter".constantize
     presenter = klass.new(model, self)
