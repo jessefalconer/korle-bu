@@ -5,9 +5,7 @@ class BoxesController < ApplicationController
   before_action :set_box, only: %i[show destroy update]
 
   def new
-    cid = Box.maximum(:custom_uid).to_i + 1
-    name = "BOX-#{cid}"
-    @box = Box.new(custom_uid: cid, name: name, container_id: params[:container_id], pallet_id: params[:pallet_id])
+    @box = Box.new(container_id: params[:container_id], pallet_id: params[:pallet_id])
   end
 
   def create

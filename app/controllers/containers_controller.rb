@@ -5,9 +5,7 @@ class ContainersController < ApplicationController
   before_action :set_container, only: %i[show destroy update]
 
   def new
-    cid = Container.maximum(:custom_uid).to_i + 1
-    name = "CONTAINER-#{cid}"
-    @container = Container.new(custom_uid: cid, name: name, shipment_id: params[:shipment_id])
+    @container = Container.new(shipment_id: params[:shipment_id])
   end
 
   def create
