@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "/privacy", to: static("privacy.html")
   get "/terms", to: static("terms.html")
   get "/admin_help", to: static("admin_help.html")
+  get "/volunteer_help", to: static("volunteer_help.html")
   get "/dev_updates", to: static("dev_updates.html")
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
