@@ -588,6 +588,36 @@ readers do not read off random characters that represent icons */
   }
 }
 
+.fa-clinic-medical {
+  &:before {
+    content: "\f7f2";
+  }
+}
+
+.fa-flask {
+  &:before {
+    content: "\f0c3";
+  }
+}
+
+.fa-arrows-alt-h {
+  &:before {
+    content: "\f337";
+  }
+}
+
+.fa-ruler-combined {
+  &:before {
+    content: "\f546";
+  }
+}
+
+.fa-images {
+  &:before {
+    content: "\f302";
+  }
+}
+
 .sr-only {
   border: 0;
   clip: rect(0, 0, 0, 0);

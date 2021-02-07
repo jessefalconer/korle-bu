@@ -23,12 +23,12 @@ class PackedItem < ApplicationRecord
     validates :pallet, if: ->(packed_item) { packed_item.box.blank? && packed_item.container.blank? }
   end
 
+  delegate :generated_name, to: :item
+
   before_save do
     recalculate_remaining_items
     self.shipment = box&.shipment || pallet&.shipment || container&.shipment
   end
-
-  delegate :generated_name, to: :item
 
   def self.by_item
     all.group_by(&:item).each_with_object({}) do |(item, packed_items), hash|

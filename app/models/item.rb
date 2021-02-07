@@ -11,7 +11,7 @@ class Item < ApplicationRecord
                     tsearch: {
                       prefix: true,
                       any_word: true
-                     }
+                    }
                   },
                   ranked_by: ":trigram"
 
@@ -40,6 +40,13 @@ class Item < ApplicationRecord
 
   MASSES.each { |m| VOLUMES.each { |v| RATIOS << "#{m}/#{v}" } }
 
+  GROUPED_OPTIONS = [
+    ["Length", LENGTHS],
+    ["Volume", VOLUMES],
+    ["Mass", MASSES],
+    ["Concentration", RATIOS]
+  ].freeze
+
   before_validation do
     sanitize_whitespace
     self.generated_name = process_name.presence || "Unnamed Item"
@@ -52,7 +59,7 @@ class Item < ApplicationRecord
   def process_name
     [brand.to_s.titleize, object.titleize, standardized_size.to_s,
      package.to_s, numerical_1_phrase.to_s, numerical_2_phrase.to_s,
-     concentration_phrase.to_s, area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
+     area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
   end
 
   # TODO: Lots of repetition here, can be refactored
@@ -66,12 +73,6 @@ class Item < ApplicationRecord
     return if numerical_size_2.blank?
 
     strip_trailing_zero(numerical_size_2) + numerical_units_2.to_s + " #{numerical_description_2.to_s.titleize}"
-  end
-
-  def concentration_phrase
-    return if concentration.blank?
-
-    strip_trailing_zero(concentration) + concentration_units.to_s + " #{concentration_description.to_s.titleize}"
   end
 
   def area_phrase
@@ -109,7 +110,7 @@ class Item < ApplicationRecord
     tri1 = trigram(generated_name)
     tri2 = trigram(comparison_item.generated_name)
 
-    return 0.0 if [tri1, tri2].any? { |arr| arr.size == 0 }
+    return 0.0 if [tri1, tri2].any? { |arr| arr.size.zero? }
 
     # Find number of trigrams shared between them
     same_size = (tri1 & tri2).size

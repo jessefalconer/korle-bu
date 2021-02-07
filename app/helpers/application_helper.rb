@@ -39,7 +39,7 @@ module ApplicationHelper
   def submit_export
     button_tag(type: "submit", class: "btn btn-primary left") do
       tag.span("Export ", class: "main-text") +
-      tag.i("", class: "fa fa-file-export")
+        tag.i("", class: "fa fa-file-export")
     end
   end
 
@@ -60,7 +60,7 @@ module ApplicationHelper
   def swap_button(path, classes = "")
     link_to(path, class: "btn btn-warning #{classes}") do
       tag.i("", class: "fa fa-exchange-alt fa-rotate-90") +
-      tag.span(" Swap", class: "main-text")
+        tag.span(" Swap", class: "main-text")
     end
   end
 

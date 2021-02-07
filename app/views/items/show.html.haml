@@ -58,4 +58,4 @@
         - if can? :manage, Item
           #edit.tab-pane.fade
             %br
-            = render partial: "form"
+            = render partial: "form", locals: {submit_path: "item"}

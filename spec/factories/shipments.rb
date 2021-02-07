@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :shipment do
     user
-    receiving_warehouse { FactoryBot.create(:warehouse)}
-    shipping_warehouse { FactoryBot.create(:warehouse)}
+    receiving_warehouse { FactoryBot.create(:warehouse) }
+    shipping_warehouse { FactoryBot.create(:warehouse) }
   end
 end

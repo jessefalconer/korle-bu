@@ -7,7 +7,7 @@ describe PackedItem do
 
   let(:box) { create :box, pallet: pallet }
   let(:pallet) { create :pallet, container: container }
-  let(:container) { create :container, shipment: shipment}
+  let(:container) { create :container, shipment: shipment }
   let(:shipment) { create :shipment }
   let(:user) { create :user }
   let(:item) { create :item }

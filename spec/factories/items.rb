@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :item do
     user
 
-    sequence(:object) { |n| Faker::Appliance.equipment }
+    sequence(:object) { Faker::Appliance.equipment }
   end
 end

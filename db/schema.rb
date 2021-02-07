@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_30_212630) do
+ActiveRecord::Schema.define(version: 2021_02_07_014625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
 
   create_table "containers", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress", null: false
+    t.string "status", default: "In Progress"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -105,9 +105,6 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
     t.string "object", limit: 255
     t.string "brand", limit: 255
     t.string "standardized_size", limit: 255
-    t.float "concentration"
-    t.string "concentration_units", limit: 255
-    t.string "concentration_description", limit: 255
     t.float "numerical_size_1"
     t.string "numerical_units_1", limit: 255
     t.string "numerical_description_1", limit: 255
@@ -166,7 +163,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
 
   create_table "pallets", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress", null: false
+    t.string "status", default: "In Progress"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
