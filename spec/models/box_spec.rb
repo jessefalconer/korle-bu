@@ -4,17 +4,17 @@ require "rails_helper"
 
 describe Box do
   subject { create :box, user: user, pallet: pallet }
-  let(:pallet) { create :pallet }
-  let(:container) { create :container }
+  let!(:pallet) { create :pallet, user: user }
+  let!(:container) { create :container, shipment: shipment, user: user }
+  let!(:shipment) { create :shipment, user: user }
 
   let(:user) { create :user }
 
   describe "new" do
     it "initializes with defaults" do
-      box = Box.new
-      expect(box.name).to eq("BOX-1")
-      expect(box.custom_uid).to eq(1)
-      expect(box.status).to eq("In Progress")
+      expect(subject.name).to eq("BOX-1")
+      expect(subject.custom_uid).to eq(1)
+      expect(subject.status).to eq("In Progress")
     end
   end
 

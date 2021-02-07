@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :box do
+  factory :unpacking_event do
     user
-    pallet
-    container
+    packed_item
   end
 end

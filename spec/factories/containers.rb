@@ -3,5 +3,6 @@
 FactoryBot.define do
   factory :container do
     user
+    shipment
   end
 end
