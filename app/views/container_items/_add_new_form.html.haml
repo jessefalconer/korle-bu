@@ -13,4 +13,4 @@
         %label Expiry Date
         = text_field_tag :expiry_date, "", placeholder: "YYYY-MM-DD", class: "form-control datepickers"
 
-  = render partial: "items/form", locals: { item: Item.new }
+  = render partial: "items/form", locals: { item: Item.new, submit_path: "item" }
