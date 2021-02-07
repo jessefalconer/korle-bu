@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_many :boxes
   has_many :box_items, through: :boxes
   has_many :packed_items
+  has_many :warehouses
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true, on: %i[create update]
   validates :first_name, :last_name, presence: true, on: %i[create update]
@@ -47,5 +48,15 @@ class User < ApplicationRecord
 
   def active?
     status == "Active"
+  end
+
+  def created_records?
+    reflections = User.reflections.select do |_association_name, reflection|
+      reflection.macro == :has_many
+    end
+
+    reflections.keys.map do |assoc|
+      send(assoc).any?
+    end.any?(true)
   end
 end

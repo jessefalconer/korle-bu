@@ -43,8 +43,8 @@ class ItemsController < ApplicationController
   end
 
   def update
-    path = if params[:redirect]
-      eval(params[:redirect])
+    path = if permitted_redirect
+      eval(params[:redirect]) # rubocop:disable Security/Eval
     else
       item_path(@item)
     end
@@ -57,8 +57,8 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    path = if params[:redirect]
-      eval(params[:redirect])
+    path = if permitted_redirect
+      eval(params[:redirect]) # rubocop:disable Security/Eval
     else
       items_path
     end
@@ -82,6 +82,10 @@ class ItemsController < ApplicationController
     when "Container"
       [container_container_items_path(record.id), :container_item]
     end
+  end
+
+  def permitted_redirect
+    %w[reconcile_unverified_path reconcile_uncategorized_path reconcile_flagged_path].include? params[:redirect]
   end
 
   def item_params

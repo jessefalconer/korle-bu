@@ -43,7 +43,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    redirect_to user_path(@user), flash: { error: "#{@user.name} cannot be deleted. Instead, switch their status to Deactivated." }
+    @user.destroy
+    redirect_to users_path, flash: { success: "#{@user.name} deleted." }
   end
 
   def signup

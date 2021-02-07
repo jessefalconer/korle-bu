@@ -2,7 +2,7 @@
 
 class BoxUnpackingEventsController < ApplicationController
   before_action :set_packed_item
-  before_action :set_unpacking_event, only: %i[destroy update]
+  before_action :set_unpacking_event, only: :destroy
 
   def create
     @packed_item.unpacking_events.create(unpacking_event_params.merge(user: current_user))

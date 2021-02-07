@@ -25,7 +25,7 @@ class ShipmentsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.csv { send_data @shipment.to_csv, filename: "shipment-#{@shipment.id}-#{Date.today}.csv" }
+      format.csv { send_data @shipment.to_csv, filename: "shipment-#{@shipment.id}-#{Time.zone.today}.csv" }
     end
   end
 

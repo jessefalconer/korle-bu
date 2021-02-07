@@ -66,25 +66,25 @@ class Item < ApplicationRecord
   def numerical_1_phrase
     return if numerical_size_1.blank?
 
-    strip_trailing_zero(numerical_size_1) + numerical_units_1.to_s + " #{numerical_description_1.to_s.titleize}"
+    "#{strip_trailing_zero(numerical_size_1)}#{numerical_units_1} #{numerical_description_1.to_s.titleize}"
   end
 
   def numerical_2_phrase
     return if numerical_size_2.blank?
 
-    strip_trailing_zero(numerical_size_2) + numerical_units_2.to_s + " #{numerical_description_2.to_s.titleize}"
+    "#{strip_trailing_zero(numerical_size_2)}#{numerical_units_2} #{numerical_description_2.to_s.titleize}"
   end
 
   def area_phrase
     return if area_1.blank? || area_2.blank?
 
-    strip_trailing_zero(area_1) + "x" + strip_trailing_zero(area_2) + area_units.to_s + " #{area_description.to_s.titleize}"
+    "#{strip_trailing_zero(area_1)}x#{strip_trailing_zero(area_2)}#{area_units} #{area_description.to_s.titleize}"
   end
 
   def range_phrase
     return if range_1.blank? || range_2.blank?
 
-    strip_trailing_zero(range_1) + "-" + strip_trailing_zero(range_2) + range_units.to_s + " #{range_description.to_s.titleize}"
+    "#{strip_trailing_zero(range_1)}-#{strip_trailing_zero(range_2)}#{range_units} #{range_description.to_s.titleize}"
   end
 
   def package
@@ -93,8 +93,8 @@ class Item < ApplicationRecord
     "#{packaged_quantity}-Pack"
   end
 
-  def strip_trailing_zero(n)
-    n.to_s.sub(/\.?0+$/, "")
+  def strip_trailing_zero(num)
+    num.to_s.sub(/\.?0+$/, "")
   end
 
   def trigram(word)
@@ -107,15 +107,15 @@ class Item < ApplicationRecord
   end
 
   def name_similarity(comparison_item)
-    tri1 = trigram(generated_name)
-    tri2 = trigram(comparison_item.generated_name)
+    tri_1 = trigram(generated_name)
+    tri_2 = trigram(comparison_item.generated_name)
 
-    return 0.0 if [tri1, tri2].any? { |arr| arr.size.zero? }
+    return 0.0 if [tri_1, tri_2].any? { |arr| arr.size.zero? }
 
     # Find number of trigrams shared between them
-    same_size = (tri1 & tri2).size
+    same_size = (tri_1 & tri_2).size
     # Find unique total trigrams in both arrays
-    all_size = (tri1 | tri2).size
+    all_size = (tri_1 | tri_2).size
 
     (same_size.to_f / all_size * 100).round(2)
   end
