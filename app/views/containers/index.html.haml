@@ -4,7 +4,7 @@
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li.active #{params[:display]&.titleize} Containers
+      %li.active #{params[:display].present? ? params[:display].titleize + " " : "" }Containers
     - if can? :manage, Container
       = add_button(new_container_path, "Unassigned Container", "fa-truck")
   .main-content

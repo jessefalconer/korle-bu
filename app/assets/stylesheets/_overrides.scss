@@ -161,13 +161,16 @@ footer {
 
     .drawer-info {
       margin-left: 10px;
-      min-width: 35px;
 
       i {
         color: rgb(126, 123, 123);
         vertical-align: middle;
 
         &.fa-ellipsis-v { margin-left: 4.38px; }
+        &.fa-times {
+          margin-right: -2px;
+          margin-left: 2px;
+        }
       }
     }
   }

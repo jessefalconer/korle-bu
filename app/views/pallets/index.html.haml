@@ -4,7 +4,7 @@
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li.active #{params[:display]&.titleize} Pallets
+      %li.active #{params[:display].present? ? params[:display].titleize + " " : "" }Pallets
     - if can? :create, Pallet
       = add_button(new_pallet_path, "Unassigned Pallet", "fa-pallet")
   .main-content

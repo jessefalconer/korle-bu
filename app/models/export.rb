@@ -19,10 +19,10 @@ class Export
     CSV.generate(headers: true) do |csv|
       case @group_by
       when "category"
-        csv << %w[category item item\ quantity]
+        csv << %w[Category Item Item\ Quantity]
         generate_by_category(@object.packed_items, csv)
       when "item"
-        csv << %w[item item\ quantity category]
+        csv << %w[Item Item\ Quantity Category]
         generate_by_item(@object.packed_items, csv)
       else
         csv << ["Error generating CSV"]

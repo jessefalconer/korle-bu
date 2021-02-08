@@ -2913,7 +2913,6 @@ select[multiple].input-group-sm {
 }
 
 .navbar-collapse {
-  max-height: 340px;
   padding-right: 15px;
   padding-left: 15px;
   overflow-x: visible;
@@ -3064,7 +3063,7 @@ select[multiple].input-group-sm {
         }
 
         &:focus {
-          color: #333;
+          color: #afafaf;
           background-color: transparent;
         }
       }
