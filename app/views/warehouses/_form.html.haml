@@ -1,39 +1,38 @@
-- user = @warehouse.user&.name || current_user.name
-- time = @warehouse.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
 = form_for @warehouse do |f|
-  .form-group
-    = f.label :name
-    = f.text_field :name, disabled: no_edit, class: "form-control"
-  .form-group
-    = f.label :street
-    = f.text_field :street, disabled: no_edit, class: "form-control"
-  .form-group
-    = f.label :city
-    = f.text_field :city, disabled: no_edit, class: "form-control"
-  .form-group
-    = f.label :province
-    = f.text_field :province, disabled: no_edit, class: "form-control"
-  .form-group
-    = f.label :postal_code
-    = f.text_field :postal_code, disabled: no_edit, class: "form-control"
-  .form-group
-    = f.label :country
-    = f.text_field :country, disabled: no_edit, class: "form-control"
-  .form-group
-    = f.label :status
-    = f.select(:status, options_for_select(Warehouse::STATUSES, @warehouse.status), { include_blank: "" }, { disabled: no_edit, class: "form-control" })
-  .form-group
-    = f.label :description
-    = f.text_field :description, disabled: no_edit, class: "form-control"
-  .form-group
-    %label Created By
-    = f.text_field :user, value: user, disabled: true, class: "form-control"
-  .form-group
-    %label Created At
-    = f.text_field :created_at, value: time, disabled: true, class: "form-control"
-
-  .btn-toolbar.list-toolbar
-    - if delete
-      = delete_button(warehouse_path(@warehouse), "Are you sure you want to delete #{@warehouse.name}? This cannot be reversed")
-    - else
+  .col-xs-12.col-sm-4
+    .form-group
+      = f.label :name
+      = f.text_field :name, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
+      = f.label :street
+      = f.text_field :street, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
+      = f.label :city
+      = f.text_field :city, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
+      = f.label :province
+      = f.text_field :province, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
+      = f.label :postal_code
+      = f.text_field :postal_code, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
+      = f.label :country
+      = f.text_field :country, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
+      = f.label :status
+      = f.select(:status, options_for_select(Warehouse::STATUSES, @warehouse.status), {}, { class: "form-control" })
+  .col-xs-12.col-sm-8
+    .form-group
+      = f.label :description
+      = f.text_field :description, class: "form-control"
+  .col-xs-12
+    .btn-toolbar.list-toolbar
+      - unless @warehouse.new_record? || @warehouse.has_associations?
+        = delete_button(warehouse_path(@warehouse), "Are you sure you want to delete #{@warehouse.name}? This cannot be reversed")
       = submit_button_responsive("Save")
