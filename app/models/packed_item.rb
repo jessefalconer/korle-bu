@@ -38,7 +38,7 @@ class PackedItem < ApplicationRecord
 
   def self.by_category
     all.group_by(&:category).each_with_object({}) do |(category, packed_items), hash|
-      hash[category.name || "N/A"] =
+      hash[category&.name || "N/A"] =
         packed_items.group_by(&:item).each_with_object({}) { |(b, i), h| h[b.generated_name] = i.sum(&:quantity) }
     end
   end
