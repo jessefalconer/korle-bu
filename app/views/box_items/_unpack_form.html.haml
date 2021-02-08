@@ -1,5 +1,5 @@
 - if @box.box_items.with_inventory.none?
-  %h5.text-center No items to unpack.
+  %h3.text-center No items to unpack.
 - else
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "unpack-items"}
   - @box.box_items.with_inventory.each do |bi|

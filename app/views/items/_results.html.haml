@@ -1,7 +1,7 @@
 - if @search_results_items.none?
   .row
     .col-xs-12
-      No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
+      %h5.text-center No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
 - else
   - @search_results_items.each do |item|
     = render partial: "reconcile_items/item_card", locals: {item: item}
