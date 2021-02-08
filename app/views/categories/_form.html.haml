@@ -1,21 +1,16 @@
-- user = @category.user&.name || current_user.name
-- time = @category.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
 = form_for @category do |f|
-  .form-group
-    %label Name
-    = f.text_field :name, disabled: no_edit, class: "form-control"
-  .form-group
-    %label Description
-    = f.text_field :description, disabled: no_edit, class: "form-control"
-  .form-group
-    %label Created By
-    = f.text_field :user, value: user, disabled: true, class: "form-control"
-  .form-group
-    %label Created At
-    = f.text_field :created_at, value: time, disabled: true, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
+      %label Name
+      = f.text_field :name, class: "form-control"
+  .col-xs-12.col-sm-8
+    .form-group
+      %label Description
+      = f.text_field :description, class: "form-control"
 
-  .btn-toolbar.list-toolbar
-    - if delete
-      = delete_button(category_path(@category), "Are you sure you want to delete #{@category.name}? This cannot be reversed")
-    - else
-      = submit_button_responsive("Save")
+  .col-xs-12
+    .btn-toolbar.list-toolbar
+      - if @category.persisted? && @category.items.none?
+        = delete_button(category_path(@category), "Are you sure you want to delete #{@category.name}? This cannot be reversed")
+      - else
+        = submit_button_responsive("Save")

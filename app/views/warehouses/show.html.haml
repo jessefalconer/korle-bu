@@ -23,7 +23,7 @@
           - if @warehouse.description.present?
             .col-xs-12
               %h5.text-muted Description
-              %h4= @warehouse.notes
+              %h4= @warehouse.description
           - unless @warehouse.full_address.blank?
             .col-xs-12
               %h5.text-muted Address

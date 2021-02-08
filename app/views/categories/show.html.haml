@@ -14,11 +14,26 @@
       %li
         %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
-      .col-md-4
-        %br
-        #myTabContent.tab-content
-          #view.tab-pane.active.in
-            = render partial: "form", locals: { no_edit: true, delete: true }
+      #myTabContent.tab-content
+        #view.tab-pane.active.in
+          %br
+          .col-xs-12
+            %h5.text-muted Name
+            %h4= @category.name
+          - if @category.description.present?
+            .col-xs-12
+              %h5.text-muted Description
+              %h4= @category.description
+          .col-lg-3.col-sm-4.col-xs-6
+            %h5.text-muted Items with this Category
+            %h4= @category.items.count
+          .col-lg-3.col-sm-4.col-xs-6
+            %h5.text-muted Created By
+            %h4= @category.user.name
+          .col-lg-3.col-sm-4.col-xs-6
+            %h5.text-muted Created At
+            %h4= @category.created_at.strftime("%Y-%m-%d")
 
-          #edit.tab-pane.fade
-            = render partial: "form", locals: { no_edit: false, delete: false }
+        #edit.tab-pane.fade
+          %br
+          = render partial: "form"
