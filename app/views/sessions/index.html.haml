@@ -35,12 +35,13 @@
       %a.panel-heading{data: {toggle: "collapse"}, href: "#user-stats"} My Stats (All-time)
       #user-stats.panel-collapse.panel-body.collapse.in
         .row
-          .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= current_user.containers.count
-            %h5.text-muted.text-center Containers Created
-          .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= current_user.container_items.count
-            %h5.text-muted.text-center Containerized Items
+          - if current_user.admin? || current_user.shipping_manager?
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= current_user.containers.count
+              %h5.text-muted.text-center Containers Created
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= current_user.container_items.count
+              %h5.text-muted.text-center Containerized Items
           .col-md-2.col-sm-6.col-xs-6
             %h3.text-center= current_user.pallets.count
             %h5.text-muted.text-center Pallets Created
@@ -104,8 +105,9 @@
                     = link_to user_path(item.user) do
                       = item.user.name
                   %td
-                    %p Usage Count:
-                    %p= PackedItem.where(item_id: item.id).count
+                    %p Instances:
+                    = link_to item_instances_path(item) do
+                      %p= Item.item_instances(item)
 
     .panel.panel-default
       %a.panel-heading{data: {toggle: "collapse"}, href: "#notes"} Personal Notes
