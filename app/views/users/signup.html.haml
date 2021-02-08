@@ -4,6 +4,7 @@
     .panel.panel-default
       %p.panel-heading.no-collapse Sign Up
       .panel-body
+        %h6.padding-bottom All fields required.
         = form_for @user, url: create_public_user_path do |f|
           .form-group
             %label First Name

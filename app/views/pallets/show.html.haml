@@ -27,22 +27,23 @@
               .col-xs-12
                 %h5.text-muted Name
                 %h4= @pallet.name
+                %hr
               - if @pallet.notes.present?
                 .col-xs-12
-                  %h5.text-muted Notes
-                  %h4= @pallet.notes
+                  %h6.text-muted Notes
+                  %h5= @pallet.notes
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Custom ID
-                %h4= @pallet.custom_uid
+                %h6.text-muted Custom ID
+                %h5= @pallet.custom_uid
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Status
-                %h4{class: "status-#{@pallet.status.parameterize}"}= @pallet.status
+                %h6.text-muted Status
+                %h5{class: "status-#{@pallet.status.parameterize}"}= @pallet.status
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Created By
-                %h4= @pallet.user.name
+                %h6.text-muted Created By
+                %h5= @pallet.user.name
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Created At
-                %h4= @pallet.created_at.strftime("%Y-%m-%d")
+                %h6.text-muted Created At
+                %h5= @pallet.created_at.strftime("%Y-%m-%d")
 
           - if can? :manage, Pallet
             #edit.tab-pane.fade

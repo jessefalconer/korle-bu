@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :warehouses
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true, on: %i[create update]
+  validates :phone, format: { with: /\A(?:\+?\d{1,3}\s*-?)?\(?(?:\d{3})?\)?[- ]?\d{3}[- ]?\d{4}\z/ }
   validates :first_name, :last_name, presence: true, on: %i[create update]
   validates :status, inclusion: { in: STATUSES }, on: %i[create update]
   validates :role, inclusion: { in: ROLES }, on: %i[create update]

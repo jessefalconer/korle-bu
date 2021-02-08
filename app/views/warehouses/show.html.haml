@@ -20,29 +20,33 @@
           .col-xs-12
             %h5.text-muted Name
             %h4= @warehouse.name
+            %hr
           - if @warehouse.description.present?
             .col-xs-12
-              %h5.text-muted Description
-              %h4= @warehouse.description
+              %h6.text-muted Description
+              %h5= @warehouse.description
           - unless @warehouse.full_address.blank?
             .col-xs-12
-              %h5.text-muted Address
-              %h4= @warehouse.full_address
+              %h6.text-muted Address
+              %h5= @warehouse.full_address
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted In Progress Items Here
-            %h4= @warehouse.in_progress_packed_items.count
+            %h6.text-muted Items In Progress
+            %h5= @warehouse.in_progress_packed_items.count
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Complete Items Here
-            %h4= @warehouse.complete_packed_items.count
+            %h6.text-muted Items Completed
+            %h5= @warehouse.complete_packed_items.count
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Received Items Here
-            %h4= @warehouse.received_packed_items.count
+            %h6.text-muted Items Received
+            %h5= @warehouse.received_packed_items.count
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Created By
-            %h4= @warehouse.user.name
+            %h6.text-muted Status
+            %h5{style: "color: #{@warehouse.active? ? "#02a556" : "#ff4d4d"}"}= @warehouse.status
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Created At
-            %h4= @warehouse.created_at.strftime("%Y-%m-%d")
+            %h6.text-muted Created By
+            %h5= @warehouse.user.name
+          .col-lg-3.col-sm-4.col-xs-6
+            %h6.text-muted Created At
+            %h5= @warehouse.created_at.strftime("%Y-%m-%d")
 
         #edit.tab-pane.fade
           %br

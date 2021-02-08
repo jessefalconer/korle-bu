@@ -14,23 +14,7 @@
       .col-xs-12
         %h4 Reconcile Item
         %p Merge this item into the selected target item.
-    .row.stats-container
-      .col-xs-12
-        %h5.text-muted Name
-        = link_to item_path(@item) do
-          %h4= @item.generated_name
-      .col-lg-3.col-sm-4.col-xs-6
-        %h5.text-muted Created By
-        %h4= @item.user.name
-      .col-lg-3.col-sm-4.col-xs-6
-        %h5.text-muted Created At
-        %h4= @item.created_at.strftime("%Y-%m-%d")
-      .col-lg-3.col-sm-4.col-xs-6
-        %h5.text-muted Verified
-        %h4{style: "color: #{@item.verified ? "#ff4d4d" : "#02a556"}"}= @item.verified.to_s.capitalize
-      .col-lg-3.col-sm-4.col-xs-6
-        %h5.text-muted Category
-        %h4{style: "color: #{@item.category.present? ? "#ff4d4d" : "#02a556"}"}= @item.category&.name || "N/A"
+    = render partial: "item_card", locals: {item: @item}
 
     - if Item.item_instances(@item).zero?
       .row

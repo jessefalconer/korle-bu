@@ -12,5 +12,4 @@
     .btn-toolbar.list-toolbar
       - if @category.persisted? && @category.items.none?
         = delete_button(category_path(@category), "Are you sure you want to delete #{@category.name}? This cannot be reversed")
-      - else
-        = submit_button_responsive("Save")
+      = submit_button_responsive("Save")
