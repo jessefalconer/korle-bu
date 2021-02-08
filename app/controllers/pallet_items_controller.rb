@@ -36,7 +36,7 @@ class PalletItemsController < ApplicationController
   private
 
   def pallet_item_params
-    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id)
+    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight)
   end
 
   def item_params
