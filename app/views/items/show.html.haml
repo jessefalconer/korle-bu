@@ -44,13 +44,12 @@
             %h6.text-muted Created At
             %h5= @item.created_at.strftime("%Y-%m-%d")
           .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Instances
-            - item_instances = Item.item_instances(@item)
-            - if item_instances.positive?
-              = link_to item_instances_path(@item) do
-                %h5= item_instances
-            - else
-              %h5 0
+            = link_to item_instances_path(@item) do
+              - item_instances = Item.item_instances(@item)
+              %h6.text-muted
+                Instances
+                %i.fa.fa-search
+              %h5= item_instances
           - if @item.photo.attached?
             .col-xs-12
               %h6.text-muted Attached Photo

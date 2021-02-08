@@ -26,8 +26,11 @@
               %h6.text-muted Description
               %h5= @category.description
           .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Items with this Category
-            %h5= @category.items.count
+            = link_to items_path(category: @category.id) do
+              %h6.text-muted
+                Items with this Category
+                %i.fa.fa-search
+              %h5= @category.items.count
           .col-lg-3.col-sm-4.col-xs-6
             %h6.text-muted Created By
             %h5= @category.user.name

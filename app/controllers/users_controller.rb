@@ -11,7 +11,11 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.all.page params[:page]
+    @users = if params[:warehouse]
+      User.where(warehouse_id: params[:warehouse]).page params[:page]
+    else
+      User.all.page params[:page]
+    end
   end
 
   def create
