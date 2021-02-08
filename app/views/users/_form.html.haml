@@ -37,6 +37,6 @@
 
   .col-xs-12
     .btn-toolbar.list-toolbar
-      - if current_user != @user && !@user.created_records?
+      - if current_user != @user && !@user.created_records? && @user.persisted?
         = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed.")
       = submit_button_responsive("Save")
