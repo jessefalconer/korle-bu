@@ -57,8 +57,8 @@ namespace :legacy_data do
 
     # Containers previously did not belong to a Shipment. Warehouses are seeded manually due to how few there are
     Container.all.order(:created_at).each_with_index do |container, index|
-      shipping = Warehouse.find_by(name: "Delta")
-      receiving = Warehouse.find_by(name: container.destination) || Warehouse.find_by(name: "Delta")
+      shipping = Warehouse.find_by(name: "Main Warehouse")
+      receiving = Warehouse.find_by(name: container.destination) || Warehouse.find_by(name: "Main Warehouse")
       status = STATUS_TRANSLATIONS[container.status&.to_sym] || "Not Started"
 
       ship = Shipment.create(user_id: user_id, name: "SHIPMENT-#{index + 1}", custom_uid: index + 1,
