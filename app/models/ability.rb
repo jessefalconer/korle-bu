@@ -18,15 +18,15 @@ class Ability
       cannot :manage, UnpackingEvent
       can :manage, PackedItem
       can :cr, Item
-      can :manage, Box, status: "In Progress"
-      can :read, Box, status: "Complete"
-      can :manage, Pallet, status: "In Progress"
-      can :read, Pallet, status: "Complete"
-      can :read, Container, status: "In Progress"
-      cannot :read, Pallet, status: "Received"
-      cannot :read, Box, status: "Received"
+      can :manage, Box, status: Box::IN_PROGRESS
+      can :read, Box, status: Box::COMPLETE
+      can :manage, Pallet, status: Pallet::IN_PROGRESS
+      can :read, Pallet, status: Pallet::COMPLETE
+      can :read, Container, status: [Container::IN_PROGRESS, Container::COMPLETE]
+      cannot :read, Pallet, status: Pallet::RECEIVED
+      cannot :read, Box, status: Box::RECEIVED
     when "Shipping Manager"
-      can :manage, Container, status: "In Progress"
+      can :manage, Container, Container::IN_PROGRESS
       can :read, [Warehouse, Shipment, Container]
       cannot :cud, [Warehouse, Shipment, Container]
       can :manage, [Item, User, Category]
