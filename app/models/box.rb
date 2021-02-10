@@ -41,7 +41,7 @@ class Box < ApplicationRecord
   end
 
   def shipment
-    return nil if container&.shipment || pallet&.container&.shipment
+    container&.shipment || pallet&.container&.shipment
   end
 
   private
