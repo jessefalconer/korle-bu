@@ -127,7 +127,7 @@ namespace :legacy_data do
   task link_boxes_and_pallets: :environment do
     containers = Container.order(:created_at)
     containers.each_with_index do |container, index|
-      date_end = container == containers.last? ? DateTime.now : containers[index + 1].created_at
+      date_end = container == containers.last ? DateTime.now : containers[index + 1].created_at
       range = container.created_at..date_end
 
       Box.where(created_at: range, pallet_id: nil).find_each { |b| b.update(container_id: container.id) }
