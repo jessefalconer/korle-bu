@@ -26,8 +26,14 @@
     %h5{style: "color: #{item.flagged ? "#ff4d4d" : "#02a556"}"}= item.flagged.to_s.capitalize
 
   .col-xs-6.col-md-3
-    %h6.text-muted Match %
-    %h5 #{@item.name_similarity(item)}%
+    - if @item != item
+      %h6.text-muted Match %
+      %h5 #{@item.name_similarity(item)}%
+    - else
+      .btn-toolbar.list-toolbar.padding-top
+        = form_for item do |f|
+          = f.hidden_field :verified, value: true
+          = submit_button_redirect("Verify and Return", "reconcile_unverified_path")
   .col-xs-6.col-md-3
     .btn-toolbar.list-toolbar
       = link_button("Confirm", reconcile_confirm_path(@item, item), "pull-right reconcile-button")
