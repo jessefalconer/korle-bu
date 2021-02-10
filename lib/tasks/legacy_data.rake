@@ -122,6 +122,19 @@ namespace :legacy_data do
     end
   end
 
+  # Many boxes and pallets were left unassigned
+  # Use container creation intervals to estimate
+  task link_boxes_and_pallets: :environment do
+    containers = Container.order(:created_at)
+    containers.each_with_index do |container, index|
+      date_end = container == containers.last? ? DateTime.now : containers[index + 1].created_at
+      range = container.created_at..date_end
+
+      Box.where(created_at: range, pallet_id: nil).find_each { |b| b.update(container_id: container.id) }
+      Box.where(created_at: range).where.not(pallet_id: nil).find_each { |b| b.pallet.update(container_id: container.id) }
+    end
+  end
+
   task prune_data: :environment do
     counter = 0
     Item.all.find_each do |item|
