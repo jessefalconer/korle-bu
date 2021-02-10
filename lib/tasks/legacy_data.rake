@@ -132,6 +132,7 @@ namespace :legacy_data do
 
       Box.where(created_at: range, pallet_id: nil).find_each { |b| b.update(container_id: container.id) }
       Box.where(created_at: range).where.not(pallet_id: nil).find_each { |b| b.pallet.update(container_id: container.id) }
+      Pallet.where(created_at: range, container_id: nil).find_each { |p| p.update(container_id: container.id) }
     end
   end
 
