@@ -29,23 +29,29 @@ class Item < ApplicationRecord
 
   validates :generated_name, uniqueness: true
 
-  STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XXL XXXL Infant Child Assorted Adult].freeze
+  STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XXL XXXL].freeze
+  INFANT_SIZES = STANDARD_SIZES.map { |s| "Infant #{s}" }.freeze
+  CHILD_SIZES = STANDARD_SIZES.map { |s| "Child #{s}" }.freeze
+  ADULT_SIZES = STANDARD_SIZES.map { |s| "Adult #{s}" }.freeze
   VOLUMES = %w[mL dL L floz cc qt pt gal].freeze
   LENGTHS = %w[nm μm mm cm m km ga in ft].freeze
   MASSES = %w[ng μg mg g kg lb oz mmol mol].freeze
-
   UNITS = VOLUMES + LENGTHS + MASSES
+  RATIOS = %w[%] + MASSES.map { |m| VOLUMES.map { |v| "#{m}/#{v}" } }.flatten.freeze
 
-  RATIOS = %w[%] # rubocop:disable Style/MutableConstant
-
-  MASSES.each { |m| VOLUMES.each { |v| RATIOS << "#{m}/#{v}" } }
-
-  GROUPED_OPTIONS = [
+  GROUPED_MEASUREMENTS = [
     ["Length", LENGTHS],
     ["Volume", VOLUMES],
     ["Mass", MASSES],
     ["Concentration", RATIOS]
   ].freeze
+
+  GROUPED_SIZES = [
+    ["Standard", STANDARD_SIZES],
+    ["Infant", INFANT_SIZES],
+    ["Child", CHILD_SIZES],
+    ["Adult", ADULT_SIZES]
+  ]
 
   before_validation do
     sanitize_whitespace
@@ -57,7 +63,7 @@ class Item < ApplicationRecord
   end
 
   def process_name
-    [brand.to_s.titleize, object.titleize, standardized_size.to_s,
+    [brand.to_s.titleize, object, standardized_size.to_s,
      package.to_s, numerical_1_phrase.to_s, numerical_2_phrase.to_s,
      area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
   end

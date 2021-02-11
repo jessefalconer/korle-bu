@@ -22,7 +22,7 @@
         .col-xs-6
           .form-group
             = f.label :standardized_size, "Size"
-            = f.select(:standardized_size, options_for_select(Item::STANDARD_SIZES, item.standardized_size), { include_blank: "" }, { class: "form-control" })
+            = f.select(:standardized_size, grouped_options_for_select(Item::GROUPED_SIZES, item.standardized_size), { include_blank: "" }, { class: "form-control" })
 
   .panel.panel-default
     %a.panel-heading{data: {toggle: "collapse"}, href: "#measurement1-#{item.id}"}
@@ -38,7 +38,7 @@
         .col-xs-6
           .form-group
             = f.label :numerical_units_1, "Units"
-            = f.select(:numerical_units_1, grouped_options_for_select(Item::GROUPED_OPTIONS, item.numerical_units_1), { include_blank: "" }, { class: "form-control" })
+            = f.select(:numerical_units_1, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.numerical_units_1), { include_blank: "" }, { class: "form-control" })
         .col-xs-12
           .form-group
             = f.label :numerical_description_1, "Description"
@@ -86,7 +86,7 @@
         .col-xs-6
           .form-group
             = f.label :range_units, "Units"
-            = f.select(:range_units, grouped_options_for_select(Item::GROUPED_OPTIONS, item.range_units), { include_blank: "" }, { class: "form-control" })
+            = f.select(:range_units, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.range_units), { include_blank: "" }, { class: "form-control" })
         .col-xs-6
           .form-group
             = f.label :range_description, "Description"
@@ -106,7 +106,7 @@
         .col-xs-6
           .form-group
             = f.label :numerical_units_2, "Units"
-            = f.select(:numerical_units_2, grouped_options_for_select(Item::GROUPED_OPTIONS, item.numerical_units_2), { include_blank: "" }, { class: "form-control" })
+            = f.select(:numerical_units_2, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.numerical_units_2), { include_blank: "" }, { class: "form-control" })
         .col-xs-12
           .form-group
             = f.label :numerical_description_2, "Description"
