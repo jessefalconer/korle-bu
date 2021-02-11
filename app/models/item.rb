@@ -29,7 +29,7 @@ class Item < ApplicationRecord
 
   validates :generated_name, uniqueness: true
 
-  STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XXL XXXL].freeze
+  STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XXL XXXL Assorted].freeze
   INFANT_SIZES = %w[Infant] + STANDARD_SIZES.map { |s| "Infant #{s}" }.freeze
   CHILD_SIZES = %w[Child] + STANDARD_SIZES.map { |s| "Child #{s}" }.freeze
   ADULT_SIZES = %w[Adult] + STANDARD_SIZES.map { |s| "Adult #{s}" }.freeze
