@@ -26,7 +26,7 @@ class Ability
       cannot :read, Pallet, status: Pallet::RECEIVED
       cannot :read, Box, status: Box::RECEIVED
     when "Shipping Manager"
-      can :manage, Container, Container::IN_PROGRESS
+      can :manage, Container, status: Container::IN_PROGRESS
       can :read, [Warehouse, Shipment, Container]
       cannot :cud, [Warehouse, Shipment, Container]
       can :manage, [Item, User, Category]
