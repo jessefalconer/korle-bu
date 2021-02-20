@@ -63,7 +63,7 @@ class Item < ApplicationRecord
   end
 
   def process_name
-    [brand.to_s.titleize, object, standardized_size.to_s,
+    [brand.to_s, object, standardized_size.to_s,
      package.to_s, numerical_1_phrase.to_s, numerical_2_phrase.to_s,
      area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
   end
