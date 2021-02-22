@@ -1,4 +1,4 @@
-= form_for @pallet, url: pallet_add_with_item_path, method: :post do |f|
+= form_for @pallet, url: pallet_add_with_item_path, method: :post, html: {multipart: true} do |f|
   .row.padding-top-small
     .col-xs-6.col-sm-4
       .form-group
