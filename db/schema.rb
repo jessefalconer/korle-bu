@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_220345) do
     t.string "city", limit: 255
     t.string "province", limit: 255
     t.string "country", limit: 255
+    t.string "phone", limit: 255
     t.bigint "warehouse_id"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false

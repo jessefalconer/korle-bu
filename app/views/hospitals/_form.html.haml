@@ -25,6 +25,10 @@
       = f.text_field :country, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
+      = f.label :phone
+      = f.text_field :phone, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
       %label Warehouse Assignment
       = f.select :warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @hospital.warehouse_id), { include_blank: "Unassigned" }, { class: "form-control", id: "container-assignment" }
   .col-xs-12.col-sm-4

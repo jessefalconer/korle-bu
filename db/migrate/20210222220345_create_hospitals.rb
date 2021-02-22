@@ -9,6 +9,7 @@ class CreateHospitals < ActiveRecord::Migration[6.0]
       t.string :city, limit: 255
       t.string :province, limit: 255
       t.string :country, limit: 255
+      t.string :phone, limit: 255
 
       t.belongs_to :warehouse
       t.belongs_to :user
