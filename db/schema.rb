@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_07_234400) do
+ActiveRecord::Schema.define(version: 2021_02_22_220345) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -87,6 +87,23 @@ ActiveRecord::Schema.define(version: 2021_02_07_234400) do
     t.string "destination"
     t.index ["shipment_id"], name: "index_containers_on_shipment_id"
     t.index ["user_id"], name: "index_containers_on_user_id"
+  end
+
+  create_table "hospitals", force: :cascade do |t|
+    t.string "status", default: "Active", null: false
+    t.string "description", limit: 255
+    t.string "name", limit: 255
+    t.string "street", limit: 255
+    t.string "postal_code", limit: 255
+    t.string "city", limit: 255
+    t.string "province", limit: 255
+    t.string "country", limit: 255
+    t.bigint "warehouse_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_hospitals_on_user_id"
+    t.index ["warehouse_id"], name: "index_hospitals_on_warehouse_id"
   end
 
   create_table "item_boxes", force: :cascade do |t|
@@ -200,6 +217,8 @@ ActiveRecord::Schema.define(version: 2021_02_07_234400) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "hospital_id"
+    t.index ["hospital_id"], name: "index_unpacking_events_on_hospital_id"
     t.index ["packed_item_id"], name: "index_unpacking_events_on_packed_item_id"
     t.index ["user_id"], name: "index_unpacking_events_on_user_id"
   end

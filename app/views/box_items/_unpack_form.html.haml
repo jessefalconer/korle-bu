@@ -20,11 +20,15 @@
               .form-group
                 = f.label "Weight (g)"
                 = f.number_field :weight, value: bi.remaining_weight, class: "form-control", placeholder: "grams"
-            .col-xs-10.col-sm-8.col-lg-4
+            .col-xs-12.col-lg-6
+              .form-group
+                = f.label "Hospital"
+                = f.select :hospital_id, options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: "Unassigned" }, { class: "form-control", id: "hospital-assignment" }
+            .col-xs-10.col-sm-9.col-lg-10
               .form-group
                 = f.label "Notes"
                 = f.text_field :notes, class: "form-control", placeholder: "Explanation"
-            .col-xs-2.col-sm-4.col-lg-2
+            .col-xs-2.col-sm-3.col-lg-2
               .form-group
                 %label &nbsp;
                 .btn-toolbar.list-toolbar

@@ -14,7 +14,7 @@ class Ability
       can :cru, User, id: user.id
       cannot :index, User
       cannot :alter_role, User
-      cannot :manage, [Item, Warehouse, Category, Shipment, Container]
+      cannot :manage, [Item, Warehouse, Hospital, Category, Shipment, Container]
       cannot :manage, UnpackingEvent
       can :manage, PackedItem
       can :cr, Item
@@ -27,7 +27,7 @@ class Ability
       cannot :read, Box, status: Box::RECEIVED
     when "Shipping Manager"
       can :manage, Container, status: Container::IN_PROGRESS
-      can :read, [Warehouse, Shipment, Container]
+      can :read, [Warehouse, Hospital, Shipment, Container]
       cannot :cud, [Warehouse, Shipment, Container]
       can :manage, [Item, User, Category]
       cannot :manage, UnpackingEvent
@@ -35,6 +35,7 @@ class Ability
       can :reconcile, ReconcileItem
     when "Receiving Manager"
       can :read, Shipment, receiving_warehouse: user.warehouse
+      can :read, Hospital, warehouse: user.warehouse.hospitals
       can :read, [Container, Pallet], shipment: { receiving_warehouse: user.warehouse }
       can :read, Box, container: { shipment: { receiving_warehouse_id: user.warehouse_id } }
       can :read, Box, pallet: { container: { shipment: { receiving_warehouse_id: user.warehouse_id } } }

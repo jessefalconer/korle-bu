@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     end
   end
   resources :warehouses
+  resources :hospitals
 
   concern :boxable_items do
     resources :boxes do

@@ -74,6 +74,11 @@
                 = link_to warehouses_path do
                   %span.fa.fa-warehouse
                   Warehouses
+            - if can? :manage, Hospital
+              %li
+                = link_to hospitals_path do
+                  %span.fa.fa-hospital
+                  Hospitals
             - if can? :manage, User
               %li
                 = link_to users_path do
