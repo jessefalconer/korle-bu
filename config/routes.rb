@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     end
   end
   resources :warehouses
+  resources :hospitals
   resources :packed_items
   post "packed_item_add_with_item", to: "packed_items#add_with_item"
 

@@ -17,7 +17,7 @@
                 • #{event.created_at.strftime("%Y-%m-%d")}:
                 = link_to user_path(event.user) do
                   = event.user.name
-                removed #{event.quantity} #{event.quantity > 1 ? "items" : "item"}.
+                removed #{event.quantity} #{event.quantity > 1 ? "items" : "item"}. Sent to #{event.hospital.name}.
               - unless event.notes.blank?
                 %p
                   Notes:

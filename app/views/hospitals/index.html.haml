@@ -1,0 +1,33 @@
+.content
+  .header
+    %h1.page-title Hospitals
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active Hospitals
+    = add_button(new_hospital_path, "Hospital", "fa-hospital")
+  .main-content
+    %table.table.table-striped.table-hover.link-rows
+      %thead
+        %tr
+          %th Name
+          %th Warehouse
+          %th Country
+          %th.hidden-xs Status
+      %tbody
+        - @hospitals.each do |hospital|
+          %tr
+            %td
+              = link_to hospital_path(hospital) do
+                %p= hospital.name
+            %td
+              = link_to hospital_path(hospital) do
+                %p= hospital.warehouse&.name
+            %td
+              = link_to hospital_path(hospital) do
+                %p= hospital.country
+            %td.hidden-xs
+              = link_to hospital_path(hospital) do
+                %p{class: hospital.active? ? "text-success" : "text-danger"}= hospital.status
+
+    = paginate @hospitals
