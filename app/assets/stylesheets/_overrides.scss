@@ -134,6 +134,7 @@ footer {
 
 .modal-body { padding-top: 15px; }
 
+.new_packed_item,
 .edit_container,
 .edit_pallet,
 .edit_box {
@@ -251,7 +252,7 @@ img.kbnf-logo-center {
 }
 
 .status-n-a,
-.status-unassigned {color: #a94442; }
+.status-staged {color: #a94442; }
 .status-in-progress { color: #8a6d3b; }
 .status-complete { color: #31708f; }
 .status-received { color: #3c763d; }
@@ -277,6 +278,6 @@ table.table-striped.link-rows tbody tr td {
     &.status-in-progress { color: #8a6d3b; }
     &.status-complete { color: #31708f; }
     &.status-received { color: #3c763d; }
-    &.status-unassigned { color: #a94442; }
+    &.status-staged { color: #a94442; }
   }
 }

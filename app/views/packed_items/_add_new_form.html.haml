@@ -1,0 +1,18 @@
+= form_for PackedItem.new, url: packed_item_add_with_item_path, method: :post, html: {multipart: true} do |f|
+  %h5.text-center Packing Information
+  .row.padding-top-small
+    .col-xs-6.col-sm-4
+      .form-group
+        %label Quantity
+        = number_field_tag :quantity, 1, min: 1, class: "form-control"
+    .col-xs-6.col-sm-4
+      .form-group
+        %label Weight
+        = number_field_tag :weight, 0, min: 0, class: "form-control"
+    .col-xs-12.col-sm-4
+      .form-group
+        %label Expiry Date
+        = text_field_tag :expiry_date, "", placeholder: "YYYY-MM-DD", class: "form-control datepickers"
+
+  %h5.text-center.padding-bottom New Item Information
+  = render partial: "items/form", locals: { item: Item.new, submit_path: "item" }

@@ -21,7 +21,8 @@ class Container < ApplicationRecord
 
   accepts_nested_attributes_for :container_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
-  scope :unassigned, -> { where(shipment_id: nil) }
+  scope :staged, -> { where(shipment_id: nil) }
+  scope :in_progress, -> { where(status: IN_PROGRESS) }
 
   validates :name, :custom_uid, :user, presence: true
   validates :custom_uid, :name, uniqueness: true

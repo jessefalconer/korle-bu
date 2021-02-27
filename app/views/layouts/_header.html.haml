@@ -129,11 +129,6 @@
               = link_to containers_path do
                 %span.fa.fa-th-list
                 All
-            - unless current_user.receiving_manager?
-              %li
-                = link_to containers_path(display: :unassigned) do
-                  %span.fa.fa-th-list
-                  Unassigned
             - if can? :create, Container
               %li
                 = link_to new_container_path do
@@ -148,14 +143,13 @@
       %li
         %ul.pallets-menu.nav.nav-list.collapse
           %li
+            = link_to pallets_path(display: :assigned) do
+              %span.fa.fa-th-list
+              Assigned
+          %li
             = link_to pallets_path do
               %span.fa.fa-th-list
               All
-          - unless current_user.receiving_manager?
-            %li
-              = link_to pallets_path(display: :unassigned) do
-                %span.fa.fa-th-list
-                Unassigned
           - if can? :create, Pallet
             %li
               = link_to new_pallet_path do
@@ -170,19 +164,41 @@
       %li
         %ul.box-menu.nav.nav-list.collapse
           %li
+            = link_to boxes_path(display: :assigned) do
+              %span.fa.fa-th-list
+              Assigned
+          %li
             = link_to boxes_path do
               %span.fa.fa-th-list
               All
-          - unless current_user.receiving_manager?
-            %li
-              = link_to boxes_path(display: :unassigned) do
-                %span.fa.fa-th-list
-                Unassigned
           - if can? :create, Box
             %li
               = link_to new_box_path do
                 %span.fa.fa-star
                 New
+
+      - unless current_user.receiving_manager?
+        %li
+          %a.nav-header.collapsed{data: {target: ".staging-menu", toggle: "collapse"}, href: "#"}
+            %i.fa.fa-fw.fa-clipboard-list
+            Staging
+            %i.fa.fa-collapse
+        %li
+          %ul.staging-menu.nav.nav-list.collapse
+            %li
+              = link_to pallets_path(display: :staged) do
+                %span.fa.fa-pallet
+                Pallets
+
+            %li
+              = link_to boxes_path(display: :staged) do
+                %span.fa.fa-box-open
+                Boxes
+
+            %li
+              = link_to packed_items_path do
+                %span.fa.fa-stethoscope
+                &nbsp;Items
 
       %li
         = link_to my_activity_path, class: "nav-header" do

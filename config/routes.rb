@@ -35,6 +35,8 @@ Rails.application.routes.draw do
     end
   end
   resources :warehouses
+  resources :packed_items
+  post "packed_item_add_with_item", to: "packed_items#add_with_item"
 
   concern :boxable_items do
     resources :boxes do

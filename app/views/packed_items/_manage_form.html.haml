@@ -1,0 +1,49 @@
+- if @packed_items.none?
+  %h5.text-center Use the tabs to search or create a new item.
+- else
+  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
+  - @packed_items.each do |pi|
+    = form_for pi, url: packed_item_path(pi) do |f|
+      .row.inline-add-item
+        .col-xs-12.manage-item-name{data: {unit_weight: pi.item.unit_weight.to_i, item_id: pi.item.id}}
+          %p= pi.generated_name
+          .drawer-info
+            %span.label.label-success= pi.quantity
+            %i.fa.fa-ellipsis-v
+        .col-xs-12.manage-item-form.hidden
+          .row
+            .col-xs-6.col-sm-4
+              .form-group
+                = f.label :quantity
+                = f.number_field :quantity, value: pi.quantity, class: "form-control", min: 1, id: "quantity-#{pi.id}"
+                = f.hidden_field :staged, value: true, id: "stage-flag-#{pi.id}"
+            .col-xs-6.col-sm-4
+              .form-group
+                = f.label "Weight (g)"
+                = f.number_field :weight, class: "form-control", id: "weight-#{pi.id}", placeholder: "grams"
+            .col-xs-6.col-sm-4
+              .form-group
+                = f.label :expires
+                = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "YYYY-MM-DD"
+            .col-xs-6.col-sm-4
+              .form-group.staging-assignments{data: {id: pi.id}}
+                %label Assign to...
+                = select_tag("", options_for_select(["Staging", "Box", "Pallet", "Container"], "Staging"), { class: "form-control", id: "staging-assignment-#{pi.id}" })
+            .col-xs-6.col-sm-4
+              .form-group.hidden{id: "box-assignment-form-#{pi.id}"}
+                = f.label :box_id, "Box Name"
+                = f.select :box_id, options_from_collection_for_select(@boxes, :id, :name), { include_blank: "None" }, { class: "form-control", id: "box-assignment-input-#{pi.id}" }
+              .form-group.hidden{id: "pallet-assignment-form-#{pi.id}"}
+                = f.label :pallet_id, "Pallet Name"
+                = f.select :pallet_id, options_from_collection_for_select(@pallets, :id, :name), { include_blank: "None" }, { class: "form-control", id: "pallet-assignment-input-#{pi.id}" }
+              .form-group.hidden{id: "container-assignment-form-#{pi.id}"}
+                = f.label :container_id, "Container Name"
+                = f.select :container_id, options_from_collection_for_select(@containers, :id, :name), { include_blank: "None" }, { class: "form-control", id: "container-assignment-input-#{pi.id}" }
+            .col-xs-6.col-sm-4
+              .form-group
+                %label &nbsp;
+                .btn-toolbar.list-toolbar
+                  = submit_button_responsive("Update", "pull-right")
+                  = delete_button(packed_item_path(pi), "Are you sure you want to delete #{pi.generated_name}?", "pull-right")
+
+= paginate @packed_items, window: 2

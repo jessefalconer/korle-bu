@@ -36,11 +36,15 @@ class ItemsController < ApplicationController
 
   def search_form
     klass = params[:model].constantize
-    record = klass.find(params[:id])
     @search_results_items = Item.search_by_generated_name(params[:search]).pluck(:id, :generated_name, :unit_weight)
-    form_path, model = generate_form_url(params[:model], record)
 
-    render json: render_to_string(partial: "results-form", layout: false, locals: { model: model, form_path: form_path }).to_json
+    form_path = if params[:id]
+      generate_form_url(params[:model], klass.find(params[:id]))
+    else
+      packed_items_path
+    end
+
+    render json: render_to_string(partial: "results-form", layout: false, locals: { form_path: form_path }).to_json
   end
 
   def show
@@ -80,11 +84,11 @@ class ItemsController < ApplicationController
   def generate_form_url(klass, record)
     case klass
     when "Box"
-      [box_box_items_path(record.id), :box_item]
+      box_box_items_path(record.id)
     when "Pallet"
-      [pallet_pallet_items_path(record.id), :pallet_item]
+      pallet_pallet_items_path(record.id)
     when "Container"
-      [container_container_items_path(record.id), :container_item]
+      container_container_items_path(record.id)
     end
   end
 

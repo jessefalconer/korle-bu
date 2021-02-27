@@ -2,7 +2,7 @@
 
 class BoxPresenter < BasePresenter
   def pallet_location
-    status = pallet&.status || "Unassigned"
+    status = pallet&.status || "Staged"
 
     tag.td do
       if pallet
@@ -10,7 +10,7 @@ class BoxPresenter < BasePresenter
           tag.p(pallet.name)
         end
       else
-        tag.p("N/A", class: "status-unassigned")
+        tag.p("N/A", class: "status-staged")
       end
     end +
       tag.td do
@@ -20,7 +20,7 @@ class BoxPresenter < BasePresenter
 
   def container_location
     record = container || pallet&.container
-    status = record&.status || "Unassigned"
+    status = record&.status || "Staged"
 
     tag.td do
       if record
@@ -28,7 +28,7 @@ class BoxPresenter < BasePresenter
           tag.p(record.name)
         end
       else
-        tag.p("N/A", class: "status-unassigned")
+        tag.p("N/A", class: "status-staged")
       end
     end +
       tag.td do
@@ -37,7 +37,7 @@ class BoxPresenter < BasePresenter
   end
 
   def shipment_location
-    status = shipment&.status || "Unassigned"
+    status = shipment&.status || "Staged"
 
     tag.td do
       if shipment
@@ -45,7 +45,7 @@ class BoxPresenter < BasePresenter
           tag.p(shipment.name)
         end
       else
-        tag.p("N/A", class: "status-unassigned")
+        tag.p("N/A", class: "status-staged")
       end
     end +
       tag.td do
@@ -55,7 +55,7 @@ class BoxPresenter < BasePresenter
 
   def warehouse_location
     location = shipment&.current_location || "N/A"
-    status = shipment&.status&.presence || "Unassigned"
+    status = shipment&.status&.presence || "Staged"
 
     tag.td do
       tag.p(location, class: "status-#{location.parameterize}")

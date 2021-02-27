@@ -19,7 +19,9 @@ class Pallet < ApplicationRecord
 
   accepts_nested_attributes_for :pallet_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
-  scope :unassigned, -> { where(container_id: nil) }
+  scope :assigned, -> { where.not(container_id: nil) }
+  scope :staged, -> { where(container_id: nil) }
+  scope :in_progress, -> { where(status: IN_PROGRESS) }
 
   delegate :shipment, to: :container, allow_nil: true
 
