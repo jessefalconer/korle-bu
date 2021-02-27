@@ -18,8 +18,8 @@
                 = f.number_field :quantity, value: pi.quantity, class: "form-control", min: 1, id: "quantity-#{pi.id}"
             .col-xs-6.col-sm-4.col-lg-3
               .form-group
-                = f.label "Weight (g)"
-                = f.number_field :weight, class: "form-control", id: "weight-#{pi.id}", placeholder: "grams"
+                = f.label "Weight (kg)"
+                = f.number_field :weight, class: "form-control", id: "weight-#{pi.id}", placeholder: "kilograms"
             .col-xs-6.col-sm-4.col-lg-3
               .form-group
                 = f.label :expires

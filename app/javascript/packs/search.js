@@ -56,9 +56,9 @@ function initEstimateButton(el) {
         results.push("Input a non-zero quantity value to get a weight estimate.");
       } else {
         let wVal = Math.ceil(inputQuantity*unitWeight);
-        results.push(`Weight estimated to be ${wVal} grams based on input quantity.`);
+        results.push(`Weight estimated to be ${wVal} kilograms based on input quantity.`);
       }
-      results.push(`<br>Unit weight is currently set at ${unitWeight} grams.<br>Your inputs have not been changed.`)
+      results.push(`<br>Unit weight is currently set at ${unitWeight} kilograms.<br>Your inputs have not been changed.`)
     }
 
     $("#estimateModalBody").html(results.join("<br>"))

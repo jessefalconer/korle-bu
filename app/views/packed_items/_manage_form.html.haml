@@ -19,8 +19,8 @@
                 = f.hidden_field :staged, value: true, id: "stage-flag-#{pi.id}"
             .col-xs-6.col-sm-4
               .form-group
-                = f.label "Weight (g)"
-                = f.number_field :weight, class: "form-control", id: "weight-#{pi.id}", placeholder: "grams"
+                = f.label "Weight (kg)"
+                = f.number_field :weight, class: "form-control", id: "weight-#{pi.id}", placeholder: "kilograms"
             .col-xs-6.col-sm-4
               .form-group
                 = f.label :expires

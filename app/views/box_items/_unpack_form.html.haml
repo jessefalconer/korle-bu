@@ -18,8 +18,8 @@
                 = f.number_field :quantity, value: bi.remaining_quantity, class: "form-control", min: 1, max: bi.remaining_quantity
             .col-xs-6.col-lg-3
               .form-group
-                = f.label "Weight (g)"
-                = f.number_field :weight, value: bi.remaining_weight, class: "form-control", placeholder: "grams"
+                = f.label "Weight (kg)"
+                = f.number_field :weight, value: bi.remaining_weight, class: "form-control", placeholder: "kilograms"
             .col-xs-12.col-lg-6
               .form-group
                 = f.label "Hospital"

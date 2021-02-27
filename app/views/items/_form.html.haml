@@ -139,7 +139,7 @@
         = f.select(:category_id, options_from_collection_for_select(Category.order(:name), :id, :name, item.category_id), { include_blank: "" }, { class: "form-control" })
     .col-xs-12.col-sm-6
       .form-group
-        = f.label :unit_weight, "Unit Weight (g)"
+        = f.label :unit_weight, "Unit Weight (kg)"
         = f.number_field :unit_weight, step: 1, class: "form-control"
 
   .row

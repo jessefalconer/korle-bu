@@ -23,8 +23,8 @@
                 = f.hidden_field :item_id, value: item[0], id: "item-#{item[0]}"
             .col-xs-6.col-sm-4.col-lg-3
               .form-group
-                = f.label "Weight (g)"
-                = f.number_field :weight, class: "form-control", id: "weight-#{item[0]}", placeholder: "grams"
+                = f.label "Weight (kg)"
+                = f.number_field :weight, class: "form-control", id: "weight-#{item[0]}", placeholder: "kilograms"
             .col-xs-12.col-sm-4.col-lg-3
               .form-group
                 = f.label :expires
