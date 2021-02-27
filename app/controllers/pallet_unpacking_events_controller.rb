@@ -22,7 +22,7 @@ class PalletUnpackingEventsController < ApplicationController
   private
 
   def unpacking_event_params
-    params.require(:unpacking_event).permit(:quantity, :weight, :notes, :pallet_item_id, :hospital_id
+    params.require(:unpacking_event).permit(:quantity, :weight, :notes, :pallet_item_id, :hospital_id)
   end
 
   def set_unpacking_event
