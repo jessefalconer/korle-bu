@@ -21,9 +21,6 @@ class PackedItem < ApplicationRecord
   accepts_nested_attributes_for :unpacking_events, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   with_options presence: true do
-    # validates :box, if: ->(packed_item) { packed_item.container.blank? && packed_item.pallet.blank? && packed_item.staged.nil? }
-    # validates :container, if: ->(packed_item) { packed_item.box.blank? && packed_item.pallet.blank? && packed_item.staged.nil?}
-    # validates :pallet, if: ->(packed_item) { packed_item.box.blank? && packed_item.container.blank? && packed_item.staged.nil? }
     validates :box, if: ->(packed_item) { packed_item.container.blank? && packed_item.pallet.blank? && packed_item.staged == "false" }
     validates :container, if: ->(packed_item) { packed_item.box.blank? && packed_item.pallet.blank? && packed_item.staged == "false" }
     validates :pallet, if: ->(packed_item) { packed_item.box.blank? && packed_item.container.blank? && packed_item.staged == "false" }

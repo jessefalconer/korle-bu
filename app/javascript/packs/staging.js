@@ -15,10 +15,11 @@ function initAssignmentListeners() {
          #pallet-assignment-input-${id} option:selected,
          #container-assignment-input-${id} option:selected`).prop("selected", false);
 
-      $(`#stage-flag-${id}`).val(false);
-
       if (selected != "Staging") {
+        $(`#stage-flag-${id}`).val(false);
         $(`#${selected.toLowerCase()}-assignment-form-${id}`).removeClass("hidden").hide().fadeIn();
+      } else {
+        $(`#stage-flag-${id}`).val(true);
       }
     });
   });
