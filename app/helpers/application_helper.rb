@@ -22,9 +22,10 @@ module ApplicationHelper
     end
   end
 
-  def submit_button_redirect(text, redirect = "")
+  def submit_button_redirect(text, redirect = "", icon = nil)
+    icon ||= "fa-save"
     button_tag(type: "submit", name: "redirect", value: redirect, class: "btn btn-primary responsive-button") do
-      tag.i("", class: "fa fa-save") +
+      tag.i("", class: "fa #{icon}") +
         tag.span(" #{text}", class: "main-text")
     end
   end

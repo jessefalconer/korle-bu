@@ -19,7 +19,7 @@ class CategoriesController < ApplicationController
   end
 
   def index
-    @categories = Category.all.page params[:page]
+    @categories = Category.all.order(:name).page params[:page]
   end
 
   def show

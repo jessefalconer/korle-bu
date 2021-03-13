@@ -163,14 +163,15 @@
   - elsif submit_path == "reconcile" && redirect
     .row.padding-top
       .col-xs-12
-        .btn-toolbar.list-toolbar.pull-left
+        .btn-toolbar.list-toolbar.text-center
           - if item.persisted?
             = delete_button(item_path(item, redirect: "reconcile_unverified_path"), "Are you sure you want to delete #{item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
-          = submit_button_redirect("Save", redirect)
-        .btn-toolbar.list-toolbar.pull-right
-          = link_to reconcile_start_path(item), class: "btn btn-info" do
-            %i.fa.fa-compress-alt
-            Start Reconcile
+          = submit_button_redirect("Save and Exit", redirect)
           %button.btn.btn-warning{data: {dismiss: "modal"}, type: "button"}
             %i.fa.fa-times
             Cancel
+        .btn-toolbar.list-toolbar.text-center
+          = submit_button_redirect("Save and Reconcile", "reconcile_start_path", "fa-compress-alt")
+          = link_to reconcile_start_path(item), class: "btn btn-info" do
+            %i.fa.fa-compress-alt
+            Start Reconcile

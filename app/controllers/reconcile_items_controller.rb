@@ -5,15 +5,15 @@ class ReconcileItemsController < ApplicationController
   before_action :set_target_item, only: %i[confirm execute]
 
   def unverified
-    @items = Item.unverified.page params[:page]
+    @items = Item.unverified.order(:updated_at).reverse_order.page params[:page]
   end
 
   def uncategorized
-    @items = Item.uncategorized.page params[:page]
+    @items = Item.uncategorized.order(:updated_at).reverse_order.page params[:page]
   end
 
   def flagged
-    @items = Item.flagged.page params[:page]
+    @items = Item.flagged.order(:updated_at).reverse_order.page params[:page]
   end
 
   def start
