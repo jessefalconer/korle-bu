@@ -18,6 +18,7 @@ Rails.application.routes.draw do
 
   get "reconcile_item_search", to: "items#reconcile_search"
   get "item_search_form", to: "items#search_form"
+  get "index_item_search", to: "items#index_search"
   get "reconcile_unverified", to: "reconcile_items#unverified"
   get "reconcile_uncategorized", to: "reconcile_items#uncategorized"
   get "reconcile_flagged", to: "reconcile_items#flagged"

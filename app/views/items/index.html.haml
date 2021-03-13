@@ -7,6 +7,7 @@
       %li.active Items
     = add_button(new_item_path, "Item", "fa-stethoscope")
   .main-content
+    = render "search_form"
     %table.table.table-striped.table-hover.link-rows
       %thead
         %tr
@@ -14,7 +15,7 @@
           %th Category
           %th.hidden-xs Verified
           %th.hidden-xs Flagged
-      %tbody
+      %tbody#search-results
         - @items.each do |item|
           %tr
             %td
@@ -35,6 +36,5 @@
                   %p.text-danger= item.flagged&.to_s.capitalize
                 - else
                   %p.text-success= item.flagged&.to_s.capitalize
-
 
     = paginate @items, window: 2

@@ -27,6 +27,12 @@ class ItemsController < ApplicationController
     end
   end
 
+  def index_search
+    @items = Item.search_by_generated_name(params[:search])
+
+    render json: render_to_string(partial: "results_index", layout: false).to_json
+  end
+
   def reconcile_search
     @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: params[:compare_id].to_i)
     @item = Item.find(params[:compare_id])

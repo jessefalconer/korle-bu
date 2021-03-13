@@ -3,12 +3,13 @@
 require "rails_helper"
 
 describe UnpackingEvent do
-  subject { create :unpacking_event, user: user, packed_item: boxed_item }
+  subject { create :unpacking_event, user: user, packed_item: boxed_item, hospital: hospital }
 
   let(:boxed_item) { create :packed_item, item: item, user: user, box: box, quantity: 10, remaining_quantity: 10 }
   let(:box) { create :box, user: user }
   let(:item) { create :item, user: user }
   let(:user) { create :user }
+  let(:hospital) { create :hospital }
 
   describe "delegate naming" do
     it "has a name" do

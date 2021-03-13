@@ -13,9 +13,9 @@ describe Item do
       expect(subject.generated_name).to eq("Syringe 15mL Tube")
     end
 
-    it "removes unwanted whitespace and titleizes" do
-      subject.update(object: " topical   solution")
-      expect(subject.generated_name).to eq("Topical Solution")
+    it "removes unwanted whitespace" do
+      subject.update(object: " Topical   solution")
+      expect(subject.generated_name).to eq("Topical solution")
     end
   end
 end
