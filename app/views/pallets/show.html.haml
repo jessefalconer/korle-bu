@@ -38,6 +38,10 @@
               .col-xs-6.col-sm-4.col-md-6
                 %h6.text-muted Status
                 %h5{class: "status-#{@pallet.status.parameterize}"}= @pallet.status
+              - if @pallet.category
+                .col-xs-6.col-sm-4.col-md-6
+                  %h6.text-muted Category
+                  %h5= @pallet.category.name
               .col-xs-6.col-sm-4.col-md-6
                 %h6.text-muted Created By
                 %h5= @pallet.user.name

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_22_220345) do
+ActiveRecord::Schema.define(version: 2021_03_14_231024) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 2021_02_22_220345) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "destination"
+    t.integer "weight"
     t.index ["shipment_id"], name: "index_containers_on_shipment_id"
     t.index ["user_id"], name: "index_containers_on_user_id"
   end
@@ -129,7 +130,6 @@ ActiveRecord::Schema.define(version: 2021_02_22_220345) do
     t.float "numerical_size_2"
     t.string "numerical_units_2", limit: 255
     t.string "numerical_description_2", limit: 255
-    t.integer "packaged_quantity"
     t.string "generated_name"
     t.string "generated_name_with_keywords"
     t.string "notes", limit: 255
@@ -190,6 +190,9 @@ ActiveRecord::Schema.define(version: 2021_02_22_220345) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "location"
     t.string "description"
+    t.bigint "category_id"
+    t.integer "weight"
+    t.index ["category_id"], name: "index_pallets_on_category_id"
     t.index ["container_id"], name: "index_pallets_on_container_id"
     t.index ["user_id"], name: "index_pallets_on_user_id"
   end

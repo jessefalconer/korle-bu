@@ -66,7 +66,7 @@ class Item < ApplicationRecord
 
   def process_name
     [brand.to_s, object, standardized_size.to_s,
-     package.to_s, numerical_1_phrase.to_s, numerical_2_phrase.to_s,
+     numerical_1_phrase.to_s, numerical_2_phrase.to_s,
      area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
   end
 
@@ -93,12 +93,6 @@ class Item < ApplicationRecord
     return if range_1.blank? || range_2.blank?
 
     "#{strip_trailing_zero(range_1)}-#{strip_trailing_zero(range_2)}#{range_units} #{range_description.to_s.titleize}"
-  end
-
-  def package
-    return if packaged_quantity.blank?
-
-    "#{packaged_quantity}-Pack"
   end
 
   def strip_trailing_zero(num)

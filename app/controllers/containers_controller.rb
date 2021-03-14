@@ -45,7 +45,7 @@ class ContainersController < ApplicationController
   private
 
   def container_params
-    params.require(:container).permit(:name, :status, :notes, :custom_uid, :shipment_id)
+    params.require(:container).permit(:name, :status, :notes, :custom_uid, :shipment_id, :weight)
   end
 
   def set_container

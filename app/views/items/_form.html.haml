@@ -7,18 +7,14 @@
       %i.fa.fa-edit.pull-right
     .collapse.in{id: "general-#{item.id}"}
       .row.form-row
-        .col-xs-12.col-sm-6
+        .col-xs-12
           .form-group
-            = f.label :object, "Base Name"
+            = f.label :object, "Base Name*"
             = f.text_field :object, class: "form-control", placeholder: "Eg: syringe, acetaminophen, heart monitor"
-        .col-xs-12.col-sm-6
+        .col-sm-6
           .form-group
             = f.label :brand, "Brand/Model"
             = f.text_field :brand, class: "form-control"
-        .col-xs-6
-          .form-group
-            = f.label :packaged_quantity, "Packaged Quantity"
-            = f.number_field :packaged_quantity, min: 1, step: "any", class: "form-control"
         .col-xs-6
           .form-group
             = f.label :standardized_size, "Size"

@@ -45,7 +45,7 @@ class PalletsController < ApplicationController
   private
 
   def pallet_params
-    params.require(:pallet).permit(:name, :status, :notes, :custom_uid, :container_id)
+    params.require(:pallet).permit(:name, :status, :notes, :custom_uid, :container_id, :category_id, :weight)
   end
 
   def set_pallet

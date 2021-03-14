@@ -9,6 +9,7 @@ class PackedItem < ApplicationRecord
   belongs_to :pallet, optional: true
   belongs_to :shipment, optional: true
   belongs_to :user, optional: false
+  belongs_to :category, optional: true
 
   has_one :category, through: :item
 

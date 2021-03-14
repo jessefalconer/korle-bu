@@ -9,6 +9,7 @@ class Pallet < ApplicationRecord
 
   belongs_to :user, optional: false
   belongs_to :container, optional: true
+  belongs_to :category, optional: true
 
   has_many :boxes, dependent: :nullify
   has_many :box_items, through: :boxes
