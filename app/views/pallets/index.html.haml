@@ -7,6 +7,11 @@
       %li.active #{params[:display].present? ? params[:display].titleize + " " : "" }Pallets
     - if can? :create, Pallet
       = add_button(new_pallet_path, "Staged Pallet", "fa-pallet")
+
+    = form_for :pallet, url: find_pallet_path, html: {class: "inline-search-form" } do |f|
+      = submit_button("Go To", nil, "fa-search")
+      = f.number_field :custom_uid, {placeholder: "Custom ID"}
+
   .main-content
     %table.table.table-striped.table-hover.link-rows
       %thead

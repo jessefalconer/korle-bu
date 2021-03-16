@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_22_220345) do
+ActiveRecord::Schema.define(version: 2021_03_16_154624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -129,7 +129,6 @@ ActiveRecord::Schema.define(version: 2021_02_22_220345) do
     t.float "numerical_size_2"
     t.string "numerical_units_2", limit: 255
     t.string "numerical_description_2", limit: 255
-    t.integer "packaged_quantity"
     t.string "generated_name"
     t.string "generated_name_with_keywords"
     t.string "notes", limit: 255
