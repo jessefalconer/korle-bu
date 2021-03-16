@@ -26,7 +26,7 @@ class Pallet < ApplicationRecord
   delegate :shipment, to: :container, allow_nil: true
 
   validates :name, :custom_uid, :user, presence: true
-  validates :custom_uid, :name, uniqueness: true
+  # validates :custom_uid, :name, uniqueness: true
   validates :status, inclusion: { in: STATUSES }
 
   paginates_per 25
