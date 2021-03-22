@@ -37,15 +37,34 @@ class PackedItem < ApplicationRecord
 
   def self.by_item
     all.group_by(&:item).each_with_object({}) do |(item, packed_items), hash|
-      hash[item.generated_name] = { category: (item.category&.name || "N/A"), quantity: packed_items.sum(&:quantity) }
+      hash[item.generated_name] = {
+        category: (item.category&.name || "N/A"),
+        quantity: packed_items.sum(&:quantity),
+        weight: packed_items.pluck(:weight).compact.sum,
+        location: packed_items.map(&:location_name).uniq.join(", ")
+      }
     end
   end
 
   def self.by_category
     all.group_by(&:category).each_with_object({}) do |(category, packed_items), hash|
       hash[category&.name || "N/A"] =
-        packed_items.group_by(&:item).each_with_object({}) { |(b, i), h| h[b.generated_name] = i.sum(&:quantity) }
+        packed_items.group_by(&:item).each_with_object({}) do |(item, pi), h|
+          h[item.generated_name] = {
+            quantity: pi.sum(&:quantity),
+            weight: pi.pluck(:weight).compact.sum,
+            location: pi.map(&:location_name).uniq.join(", ")
+          }
+        end
     end
+  end
+
+  def location_name
+    return box.name if box
+    return pallet.name if pallet
+    return container.name if container
+
+    "Staged"
   end
 
   def recalculate_remaining_items
