@@ -4,16 +4,27 @@ class PackedItemsController < ApplicationController
   before_action :set_packed_item, except: %i[create index add_with_item]
 
   def create
-    @packed_item = PackedItem.create(packed_item_params.merge(user: current_user))
-    redirect_to packed_items_path, flash: { success: "Item added." }
+    packed_item = PackedItem.new(packed_item_params)
+
+    if packed_item.save
+      id_sentence = packed_item.show_id ? "ID: ##{packed_item.id}." : ""
+      message = { success: "#{packed_item.quantity} #{packed_item.generated_name.pluralize} added. #{id_sentence}" }
+    else
+      message = { error: packed_item.errors.full_messages.to_sentence }
+    end
+
+    redirect_to packed_items_path, flash: message
   end
 
   def update
     if @packed_item.update(packed_item_params)
-      redirect_to packed_items_path, flash: { success: "Item updated." }
+      id_sentence = @packed_item.show_id ? "ID: ##{@packed_item.id}." : ""
+      message = { success: "#{@packed_item.quantity} #{@packed_item.generated_name.pluralize} updated. #{id_sentence}" }
     else
-      redirect_to packed_items_path, flash: { error: @packed_item.errors.full_messages.to_sentence }
+      message = { error: @packed_item.errors.full_messages.to_sentence }
     end
+
+    redirect_to packed_items_path, flash: message
   end
 
   def index
@@ -24,14 +35,18 @@ class PackedItemsController < ApplicationController
   end
 
   def add_with_item
-    item = Item.new(item_params.merge(user: current_user))
+    item = Item.new(item_params)
+    packed_item = item.packed_items.build(packed_item_params)
 
-    if item.save
-      PackedItem.create(expiry_date: params[:expiry_date], quantity: params[:quantity], user: current_user, item_id: item.id)
-      redirect_to packed_items_path, flash: { success: "Item created and added." }
+    if item.save && packed_item.save
+      id_sentence = packed_item.show_id ? "ID: ##{packed_item.id}." : ""
+      message = { success: "Item created. #{packed_item.quantity} #{item.generated_name.pluralize} added. #{id_sentence}" }
     else
-      redirect_to packed_items_path, flash: { error: item.errors.full_messages.to_sentence }
+      error_message = item.errors.full_messages + packed_item.errors.full_messages
+      message = { error: error_message.to_sentence }
     end
+
+    redirect_to packed_items_path, flash: message
   end
 
   def destroy
@@ -42,14 +57,16 @@ class PackedItemsController < ApplicationController
   private
 
   def packed_item_params
-    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :box_id, :pallet_id, :container_id, :staged)
+    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :box_id, :pallet_id, :container_id, :staged, :show_id).merge(user: current_user)
   end
 
   def item_params
-    params.require(:item).permit(:brand, :object, :standardized_size,
-                                 :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
-                                 :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :unit_weight,
-                                 :category_id, :notes, :verified, :photo, :flagged)
+    params.require(:item)
+          .permit(:brand, :object, :standardized_size,
+                  :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
+                  :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :unit_weight,
+                  :category_id, :notes, :verified, :photo, :flagged)
+          .merge(user: current_user)
   end
 
   def set_packed_item

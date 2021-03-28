@@ -1,16 +1,21 @@
-= form_for @container, url: container_add_with_item_path, method: :post, html: {multipart: true} do |f|
+= form_for :packed_item, url: container_add_with_item_path, method: :post, html: {multipart: true, class: "new_item"} do |f|
   .row.padding-top-small
-    .col-xs-6.col-sm-4
+    .col-xs-6.col-sm-3
       .form-group
         %label Quantity
-        = number_field_tag :quantity, 1, min: 1, class: "form-control"
-    .col-xs-6.col-sm-4
+        = f.number_field :quantity, value: 1, min: 1, class: "form-control"
+        = f.hidden_field :staged, value: false
+    .col-xs-6.col-sm-3
       .form-group
         %label Weight
-        = number_field_tag :weight, 0, min: 0, class: "form-control"
-    .col-xs-12.col-sm-4
+        = f.number_field :weight, value: 0, min: 0, class: "form-control"
+    .col-xs-6.col-sm-3
       .form-group
         %label Expiry Date
-        = text_field_tag :expiry_date, "", placeholder: "YYYY-MM-DD", class: "form-control datepickers"
+        = f.text_field :expiry_date, value: "", placeholder: "YYYY-MM-DD", class: "form-control datepickers"
+    .col-xs-6.col-sm-3
+      .padding-top
+        %label.padding-top Generate ID?
+        = f.check_box :show_id
 
   = render partial: "items/form", locals: { item: Item.new, submit_path: "item" }

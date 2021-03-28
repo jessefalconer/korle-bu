@@ -100,6 +100,37 @@
                       %td.hidden-xs
                         %p= container.container_items.size
 
+        - if @staged_items.any?
+          .panel.panel-default
+            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#staged_items"}
+              %i.fa.fa-stethoscope
+              Staged Items
+              %span.label.label-info= @staged_items.size
+            .collapse{id: "staged_items"}
+              %table.table.table-striped
+                %tbody
+                  %thead
+                    %tr
+                      %th.hidden-xs Quantity
+                      %th Name
+                      %th.hidden-xs
+                      %th Staging
+                      %th Date
+                  - @staged_items.each do |item|
+                    %tr
+                      %td.hidden-xs
+                        %p= item.quantity
+                      %td
+                        = link_to item_path(item.item_id) do
+                          = item.generated_name
+                      %td.hidden-xs.text-center
+                        %i.fa.fa-arrow-right
+                      %td
+                        = link_to packed_items_path do
+                          Staging Area
+                      %td
+                        %p= item.created_at.strftime("%Y-%m-%d")
+
         - if @box_items.any?
           .panel.panel-default
             %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}

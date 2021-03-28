@@ -16,7 +16,7 @@ class Box < ApplicationRecord
 
   accepts_nested_attributes_for :box_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
-  scope :assigned, -> { where.not(pallet_id: nil).where.not(container_id: nil) }
+  scope :assigned, -> { where("pallet_id IS NOT NULL OR container_id IS NOT NULL") }
   scope :loose_boxes, -> { where(pallet_id: nil).where.not(container_id: nil) }
   scope :staged, -> { where(pallet_id: nil, container_id: nil) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }

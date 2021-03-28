@@ -281,3 +281,23 @@ table.table-striped.link-rows tbody tr td {
     &.status-staged { color: #a94442; }
   }
 }
+
+.inline-search-form {
+  display: inline-block;
+  padding-top: 7px;
+  button,
+  input { display: inline-block; }
+
+  input {
+    vertical-align: middle;
+    height: 34px;
+    width: 100px;
+    text-align: center;
+  }
+}
+
+em.show-id {
+  background-color: #e9dfa7;
+  padding: 0.25em 0.5em;
+  border-radius: 3px;
+}

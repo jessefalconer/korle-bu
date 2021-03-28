@@ -12,7 +12,7 @@
     .form-group
       %label Phone Number
       = f.text_field :phone, class: "form-control"
-    - unless cannot? :alter_roles, User
+    - unless (cannot? :alter_roles, User) && !@user.masquerader
       .form-group
         %label Role
         = f.select(:role, options_for_select(User::ROLES, @user.role), {}, { class: "form-control" })
@@ -21,7 +21,7 @@
         = f.select(:status, options_for_select(User::STATUSES, @user.status), {}, { class: "form-control" })
       .form-group
         %label Warehouse
-        = f.select(:warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @user.warehouse_id), { include_blank: "Staged" }, { class: "form-control" })
+        = f.select(:warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @user.warehouse_id), { include_blank: "None" }, { class: "form-control" })
     -if create_password
       .form-group
         %label Password
