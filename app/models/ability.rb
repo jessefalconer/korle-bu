@@ -33,8 +33,9 @@ class Ability
       can :manage, PackedItem
       can :reconcile, ReconcileItem
     when "Receiving Manager"
+      can :cru, User, id: user.id
       can :read, Shipment, receiving_warehouse: user.warehouse
-      can :read, Hospital, warehouse: user.warehouse.hospitals
+      can :read, Hospital, warehouse: user.warehouse
       can :read, [Container, Pallet], shipment: { receiving_warehouse: user.warehouse }
       can :read, Box, container: { shipment: { receiving_warehouse_id: user.warehouse_id } }
       can :read, Box, pallet: { container: { shipment: { receiving_warehouse_id: user.warehouse_id } } }

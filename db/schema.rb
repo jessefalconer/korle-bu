@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_16_154624) do
+ActiveRecord::Schema.define(version: 2021_03_27_195039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -170,6 +170,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_154624) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "remaining_quantity", default: 0, null: false
     t.integer "remaining_weight", default: 0, null: false
+    t.boolean "show_id", default: false, null: false
     t.index ["box_id"], name: "index_packed_items_on_box_id"
     t.index ["container_id"], name: "index_packed_items_on_container_id"
     t.index ["item_id"], name: "index_packed_items_on_item_id"
@@ -235,6 +236,7 @@ ActiveRecord::Schema.define(version: 2021_03_16_154624) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "role", default: "Volunteer", null: false
     t.bigint "warehouse_id"
+    t.boolean "masquerader", default: false, null: false
     t.index ["warehouse_id"], name: "index_users_on_warehouse_id"
   end
 
