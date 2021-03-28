@@ -42,6 +42,9 @@
                 %h6.text-muted Status
                 %h5{class: "status-#{@container.status.parameterize}"}= @container.status
               .col-xs-6.col-sm-4.col-md-6
+                %h6.text-muted Weight (kg)
+                %h5= @container.weight || "N/A"
+              .col-xs-6.col-sm-4.col-md-6
                 %h6.text-muted Created By
                 %h5= @container.user.name
               .col-xs-6.col-sm-4.col-md-6

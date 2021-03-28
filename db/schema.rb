@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 2021_03_27_195039) do
     t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
-    t.integer "weight"
+    t.float "weight"
     t.bigint "user_id"
     t.bigint "pallet_id"
     t.bigint "container_id"
@@ -85,7 +85,7 @@ ActiveRecord::Schema.define(version: 2021_03_27_195039) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "destination"
-    t.integer "weight"
+    t.float "weight"
     t.index ["shipment_id"], name: "index_containers_on_shipment_id"
     t.index ["user_id"], name: "index_containers_on_user_id"
   end
@@ -141,7 +141,7 @@ ActiveRecord::Schema.define(version: 2021_03_27_195039) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "category"
-    t.integer "unit_weight", default: 0, null: false
+    t.float "unit_weight", default: 0.0, null: false
     t.float "area_1"
     t.float "area_2"
     t.string "area_units", limit: 255
@@ -158,7 +158,7 @@ ActiveRecord::Schema.define(version: 2021_03_27_195039) do
 
   create_table "packed_items", force: :cascade do |t|
     t.integer "quantity", default: 0, null: false
-    t.integer "weight"
+    t.float "weight"
     t.datetime "expiry_date"
     t.bigint "box_id"
     t.bigint "pallet_id"
@@ -169,7 +169,7 @@ ActiveRecord::Schema.define(version: 2021_03_27_195039) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "remaining_quantity", default: 0, null: false
-    t.integer "remaining_weight", default: 0, null: false
+    t.float "remaining_weight", default: 0.0, null: false
     t.boolean "show_id", default: false, null: false
     t.index ["box_id"], name: "index_packed_items_on_box_id"
     t.index ["container_id"], name: "index_packed_items_on_container_id"
@@ -191,7 +191,7 @@ ActiveRecord::Schema.define(version: 2021_03_27_195039) do
     t.string "location"
     t.string "description"
     t.bigint "category_id"
-    t.integer "weight"
+    t.float "weight"
     t.index ["category_id"], name: "index_pallets_on_category_id"
     t.index ["container_id"], name: "index_pallets_on_container_id"
     t.index ["user_id"], name: "index_pallets_on_user_id"
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 2021_03_27_195039) do
 
   create_table "unpacking_events", force: :cascade do |t|
     t.integer "quantity", default: 0, null: false
-    t.integer "weight"
+    t.float "weight"
     t.string "notes", limit: 255
     t.bigint "packed_item_id"
     t.bigint "user_id"

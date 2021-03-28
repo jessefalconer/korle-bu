@@ -12,6 +12,9 @@
     = f.label :status
     = f.select :status, options_for_select(Container::STATUSES, @container.status), {}, { class: "form-control", id: "status" }
   .form-group
+    %label Weight (kg)
+    = f.number_field :weight, min: 0, class: "form-control"
+  .form-group
     = f.label :notes
     = f.text_field :notes, class: "form-control"
   - if can? :reassign, Container

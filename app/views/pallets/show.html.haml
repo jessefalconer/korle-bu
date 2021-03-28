@@ -38,6 +38,9 @@
               .col-xs-6.col-sm-4.col-md-6
                 %h6.text-muted Status
                 %h5{class: "status-#{@pallet.status.parameterize}"}= @pallet.status
+              .col-xs-6.col-sm-4.col-md-6
+                %h6.text-muted Weight (kg)
+                %h5= @pallet.weight || "N/A"
               - if @pallet.category
                 .col-xs-6.col-sm-4.col-md-6
                   %h6.text-muted Category
