@@ -159,7 +159,6 @@ ActiveRecord::Schema.define(version: 2021_03_27_195039) do
   create_table "packed_items", force: :cascade do |t|
     t.integer "quantity", default: 0, null: false
     t.integer "weight"
-    t.string "weight_units"
     t.datetime "expiry_date"
     t.bigint "box_id"
     t.bigint "pallet_id"
@@ -216,7 +215,6 @@ ActiveRecord::Schema.define(version: 2021_03_27_195039) do
   create_table "unpacking_events", force: :cascade do |t|
     t.integer "quantity", default: 0, null: false
     t.integer "weight"
-    t.string "weight_units"
     t.string "notes", limit: 255
     t.bigint "packed_item_id"
     t.bigint "user_id"
