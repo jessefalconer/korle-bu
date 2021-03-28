@@ -24,7 +24,7 @@
             .col-xs-6.col-sm-3
               .form-group
                 = f.label "Weight (kg)"
-                = f.number_field :weight, class: "form-control", id: "weight-#{item[0]}", placeholder: "kilograms"
+                = f.number_field :weight, step: :any, class: "form-control", id: "weight-#{item[0]}"
             .col-xs-6.col-sm-3
               .form-group
                 = f.label :expires

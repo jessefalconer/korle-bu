@@ -19,7 +19,7 @@
             .col-xs-6.col-lg-3
               .form-group
                 = f.label "Weight (kg)"
-                = f.number_field :weight, value: pi.remaining_weight, class: "form-control", placeholder: "kilograms"
+                = f.number_field :weight, step: :any, value: pi.remaining_weight, class: "form-control"
             .col-xs-12.col-lg-6
               .form-group
                 = f.label "Hospital"

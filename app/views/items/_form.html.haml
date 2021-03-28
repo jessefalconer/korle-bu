@@ -136,7 +136,7 @@
     .col-xs-12.col-sm-6
       .form-group
         = f.label :unit_weight, "Unit Weight (kg)"
-        = f.number_field :unit_weight, step: 1, class: "form-control"
+        = f.number_field :unit_weight, step: :any, class: "form-control"
 
   .row
     .col-xs-6
