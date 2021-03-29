@@ -1,4 +1,5 @@
 = form_for :packed_item, url: pallet_add_with_item_path, method: :post, html: {multipart: true, class: "new_item"} do |f|
+  %h5 Use this form to simultaneously add a new item to the database and to this pallet. Indicate the new item's packing information in the form below.
   .row.padding-top-small
     .col-xs-6.col-sm-3
       .form-group
@@ -17,5 +18,5 @@
       .padding-top
         %label.padding-top Generate ID?
         = f.check_box :show_id
-
+  %h5 Complete the new item's general information below.
   = render partial: "items/form", locals: { item: Item.new, submit_path: "item" }

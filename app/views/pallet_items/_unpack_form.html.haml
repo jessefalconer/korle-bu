@@ -1,12 +1,17 @@
 - if @pallet.pallet_items.with_inventory.none?
-  %h3.text-center No items to unpack.
+  %h5.text-center No items to unpack.
 - else
+  %h5 Unpack and remove items from this pallet. Items completely unpacked with no remaining quantity and weight will not be shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "unpack-items"}
   - @pallet.pallet_items.with_inventory.each do |pi|
     = form_for :unpacking_event, url: pallet_pallet_item_pallet_unpacking_events_path(@pallet, pi) do |f|
       .row.inline-add-item
         .col-xs-12.manage-item-name
-          %p #{pi.generated_name}
+          %p
+            = pi.generated_name
+            - if pi.show_id
+              —
+              %em.show-id ID: ##{pi.id}
           .drawer-info
             %span.label.label-info= pi.remaining_quantity
             %i.fa.fa-ellipsis-v

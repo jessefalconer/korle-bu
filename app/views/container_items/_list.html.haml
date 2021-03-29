@@ -1,11 +1,16 @@
 - if @container.container_items.none?
-  %h3.text-center This container has no items and may have been an error.
+  %h5.text-center This container has no items and may have been an error.
 - else
+  %h5 The shipping manifest for this box is shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
   - @container.container_items.each do |ci|
     .row.inline-add-item
       .col-xs-12.manage-item-name{data: {unit_weight: ci.item.unit_weight, item_id: ci.item.id}}
-        %p= ci.generated_name
+        %p
+          = ci.generated_name
+          - if ci.show_id
+            —
+            %em.show-id ID: ##{ci.id}
         .drawer-info
           %span.label.label-success= ci.quantity
           %i.fa.fa-ellipsis-v

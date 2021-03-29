@@ -1,6 +1,7 @@
 - if @container.container_items.none?
-  %h5.text-center Use the tabs to search or create a new item.
+  %h5.text-center No existing packed items. Use the tabs to search or create a new item.
 - else
+  %h5 Update or remove existing items packed in this container.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name or ID...", assoc: "manage-items"}
   - @container.container_items.each do |ci|
     = form_for ci, url: container_container_item_path(@container, ci) do |f|
@@ -24,6 +25,7 @@
               .form-group
                 = f.label "Weight (kg)"
                 = f.number_field :weight, step: :any, class: "form-control", id: "weight-#{ci.id}"
+            .col-xs-6.col-sm-4.col-lg-3
               .form-group
                 = f.label :expires
                 = f.text_field :expiry_date, value: ci.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{ci.id}", placeholder: "YYYY-MM-DD"

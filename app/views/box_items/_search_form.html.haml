@@ -1,8 +1,9 @@
+%h5 Search for an existing item in the database to add to this box.
 .input-group.search.span12
   = hidden_field_tag :id, @box.id, id: "search-model-id"
   = hidden_field_tag :model, "Box", id: "search-model"
   .input-group
-    = text_field_tag :search, params[:search], placeholder: "Begin typing or enter a search term...", class: "form-control", id: "search-params"
+    = text_field_tag :search, params[:search], placeholder: "Begin typing to search...", class: "form-control", id: "search-params"
     %span.input-group-btn.span12#packing-search-submit
       %a.btn.btn-primary.responsive-button
         %span Search

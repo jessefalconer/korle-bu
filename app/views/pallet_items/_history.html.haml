@@ -1,13 +1,18 @@
 - if @pallet.pallet_items.with_events.none?
-  %h3.text-center No history to display.
+  %h5.text-center No history to display.
 - else
+  %h5 Unpacking history for this pallet is shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "history-items"}
   - @pallet.pallet_items.with_events.each do |pi|
     .row.inline-add-item
       .col-xs-12.manage-item-name
-        %p #{pi.generated_name}
+        %p
+          = pi.generated_name
+          - if pi.show_id
+            —
+            %em.show-id ID: ##{pi.id}
         .drawer-info
-          %span.label.label-warning= pi.quantity - pi.remaining_quantity
+          %span.label.label-default= pi.quantity - pi.remaining_quantity
           %i.fa.fa-ellipsis-v
       .col-xs-12.manage-item-form.hidden
         - pi.unpacking_events.order(:created_at).reverse_order.each do |event|
