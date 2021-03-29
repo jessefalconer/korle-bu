@@ -14,8 +14,10 @@
           .row
             .col-md-2.col-sm-6.col-xs-6
               - new_items = Item.where("created_at > ?", 30.days.ago).count
-              - unverified_items = Item.where("created_at > ? AND verified IS FALSE", 30.days.ago).count
-              - uncategorized_items = Item.where("created_at > ? AND category_id IS NULL", 30.days.ago).count
+              - unverified_items = Item.where(verified: false).count
+              - unverified_items_30 = Item.where("created_at > ? AND verified IS FALSE", 30.days.ago).count
+              - uncategorized_items = Item.where(category: nil).count
+              - uncategorized_items_30 = Item.where("created_at > ? AND category_id IS NULL", 30.days.ago).count
               - packed_items = PackedItem.where("created_at > ?", 30.days.ago).count
               - box_count = Box.where("created_at > ?", 30.days.ago).count
               - pallet_count = Pallet.where("created_at > ?", 30.days.ago).count
@@ -25,17 +27,25 @@
                 #{sprintf("%0.02f", new_items/Item.count.to_f*100)}%
                 %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
-              %h3.text-center= unverified_items
+              %h3.text-center= unverified_items_30
               %h5.text-muted.text-center Unverified Items
               %h5.text-center.text-danger
-                #{sprintf("%0.02f", unverified_items/Item.count.to_f*100)}%
-                %i.fa.fa-level-up-alt
+                - if unverified_items.zero?
+                  0.00%
+                  %i.fa.fa-level-up-alt
+                - else
+                  #{sprintf("%0.02f", unverified_items_30/unverified_items.to_f*100)}%
+                  %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
-              %h3.text-center= uncategorized_items
+              %h3.text-center= uncategorized_items_30
               %h5.text-muted.text-center Uncategorized Items
               %h5.text-center.text-danger
-                #{sprintf("%0.02f", uncategorized_items/Item.count.to_f*100)}%
-                %i.fa.fa-level-up-alt
+                - if uncategorized_items.zero?
+                  0.00%
+                  %i.fa.fa-level-up-alt
+                - else
+                  #{sprintf("%0.02f", uncategorized_items_30/uncategorized_items.to_f*100)}%
+                  %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
               %h3.text-center= packed_items
               %h5.text-muted.text-center Packed Items
