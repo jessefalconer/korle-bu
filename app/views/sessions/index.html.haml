@@ -22,37 +22,37 @@
               %h3.text-center= new_items
               %h5.text-muted.text-center New Items
               %h5.text-center.text-success
-                #{sprintf("%0.02f", new_items/Item.count.to_f)}%
+                #{sprintf("%0.02f", new_items/Item.count.to_f*100)}%
                 %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
               %h3.text-center= unverified_items
               %h5.text-muted.text-center Unverified Items
               %h5.text-center.text-danger
-                #{sprintf("%0.02f", unverified_items/Item.count.to_f)}%
+                #{sprintf("%0.02f", unverified_items/Item.count.to_f*100)}%
                 %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
               %h3.text-center= uncategorized_items
               %h5.text-muted.text-center Uncategorized Items
               %h5.text-center.text-danger
-                #{sprintf("%0.02f", uncategorized_items/Item.count.to_f)}%
+                #{sprintf("%0.02f", uncategorized_items/Item.count.to_f*100)}%
                 %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
               %h3.text-center= packed_items
               %h5.text-muted.text-center Packed Items
               %h5.text-center.text-success
-                #{sprintf("%0.02f", packed_items/PackedItem.count.to_f)}%
+                #{sprintf("%0.02f", packed_items/PackedItem.count.to_f*100)}%
                 %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
               %h3.text-center= box_count
               %h5.text-muted.text-center New Boxes
               %h5.text-center.text-success
-                #{sprintf("%0.02f", box_count/Box.count.to_f)}%
+                #{sprintf("%0.02f", box_count/Box.count.to_f*100)}%
                 %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
               %h3.text-center= pallet_count
               %h5.text-muted.text-center New Pallets
               %h5.text-center.text-success
-                #{sprintf("%0.02f", pallet_count/Pallet.count.to_f)}%
+                #{sprintf("%0.02f", pallet_count/Pallet.count.to_f*100)}%
                 %i.fa.fa-level-up-alt
 
     .panel.panel-default
