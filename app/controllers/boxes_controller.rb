@@ -43,7 +43,7 @@ class BoxesController < ApplicationController
   end
 
   def find
-    box = Box.find_by(custom_uid: box_params[:custom_uid])
+    box = Box.accessible_by(current_ability).find_by(custom_uid: box_params[:custom_uid])
     if box
       redirect_to box_path(box)
     else

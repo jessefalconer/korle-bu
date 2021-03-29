@@ -19,7 +19,7 @@ class ShipmentsController < ApplicationController
   end
 
   def index
-    @shipments = Shipment.all.order(:custom_uid).reverse_order.page params[:page]
+    @shipments = Shipment.accessible_by(current_ability).order(:custom_uid).reverse_order.page params[:page]
   end
 
   def show

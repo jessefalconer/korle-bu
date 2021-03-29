@@ -43,7 +43,7 @@ class PalletsController < ApplicationController
   end
 
   def find
-    pallet = Pallet.find_by(custom_uid: pallet_params[:custom_uid])
+    pallet = Pallet.accessible_by(current_ability).find_by(custom_uid: pallet_params[:custom_uid])
     if pallet
       redirect_to pallet_path(pallet)
     else

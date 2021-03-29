@@ -50,7 +50,7 @@
           %i.fa.fa-fw.fa-home
           Dashboard
 
-      - unless current_user.volunteer?
+      - if current_user.admin? || current_user.shipping_manager?
         %li
           %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
             %i.fa.fa-fw.fa-tachometer-alt
@@ -105,6 +105,7 @@
               = link_to reconcile_flagged_path do
                 %span.fa.fa-flag
                 User-flagged
+
       - if can? :read, Shipment
         %li
           %a.nav-header.collapsed{data: {target: ".shipments-menu", toggle: "collapse"}, href: "#"}
@@ -122,6 +123,7 @@
                 = link_to new_shipment_path do
                   %span.fa.fa-star
                   New
+
       - if can? :read, Container
         %li
           %a.nav-header.collapsed{data: {target: ".containers-menu", toggle: "collapse"}, href: "#"}
