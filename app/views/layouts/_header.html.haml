@@ -117,7 +117,7 @@
             %li
               = link_to shipments_path do
                 %span.fa.fa-th-list
-                All
+                List
             - if can? :create, Shipment
               %li
                 = link_to new_shipment_path do
@@ -135,7 +135,7 @@
             %li
               = link_to containers_path do
                 %span.fa.fa-th-list
-                All
+                List
             - if can? :create, Container
               %li
                 = link_to new_container_path do
@@ -150,13 +150,9 @@
       %li
         %ul.pallets-menu.nav.nav-list.collapse
           %li
-            = link_to pallets_path(display: :assigned) do
-              %span.fa.fa-th-list
-              Assigned
-          %li
             = link_to pallets_path do
               %span.fa.fa-th-list
-              All
+              List
           - if can? :create, Pallet
             %li
               = link_to new_pallet_path do
@@ -171,13 +167,9 @@
       %li
         %ul.box-menu.nav.nav-list.collapse
           %li
-            = link_to boxes_path(display: :assigned) do
-              %span.fa.fa-th-list
-              Assigned
-          %li
             = link_to boxes_path do
               %span.fa.fa-th-list
-              All
+              List
           - if can? :create, Box
             %li
               = link_to new_box_path do
