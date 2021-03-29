@@ -13,23 +13,47 @@
         #page-stats.panel-collapse.panel-body.collapse.in
           .row
             .col-md-2.col-sm-6.col-xs-6
-              %h3.text-center= Item.where(verified: false).count
-              %h5.text-muted.text-center Unverified Items
-            .col-md-2.col-sm-6.col-xs-6
-              %h3.text-center= Item.where(category: nil).count
-              %h5.text-muted.text-center Uncategorized Items
-            .col-md-2.col-sm-6.col-xs-6
-              %h3.text-center= PackedItem.where("created_at > ?", 30.days.ago).count
-              %h5.text-muted.text-center Packed Items
-            .col-md-2.col-sm-6.col-xs-6
-              %h3.text-center= Item.where("created_at > ?", 30.days.ago).count
+              - new_items = Item.where("created_at > ?", 30.days.ago).count
+              - unverified_items = Item.where("created_at > ? AND verified IS FALSE", 30.days.ago).count
+              - uncategorized_items = Item.where("created_at > ? AND category_id IS NULL", 30.days.ago).count
+              - packed_items = PackedItem.where("created_at > ?", 30.days.ago).count
+              - box_count = Box.where("created_at > ?", 30.days.ago).count
+              - pallet_count = Pallet.where("created_at > ?", 30.days.ago).count
+              %h3.text-center= new_items
               %h5.text-muted.text-center New Items
+              %h5.text-center.text-success
+                #{sprintf("%0.02f", new_items/Item.count.to_f)}%
+                %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
-              %h3.text-center= Box.where("created_at > ?", 30.days.ago).count
+              %h3.text-center= unverified_items
+              %h5.text-muted.text-center Unverified Items
+              %h5.text-center.text-danger
+                #{sprintf("%0.02f", unverified_items/Item.count.to_f)}%
+                %i.fa.fa-level-up-alt
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= uncategorized_items
+              %h5.text-muted.text-center Uncategorized Items
+              %h5.text-center.text-danger
+                #{sprintf("%0.02f", uncategorized_items/Item.count.to_f)}%
+                %i.fa.fa-level-up-alt
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= packed_items
+              %h5.text-muted.text-center Packed Items
+              %h5.text-center.text-success
+                #{sprintf("%0.02f", packed_items/PackedItem.count.to_f)}%
+                %i.fa.fa-level-up-alt
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= box_count
               %h5.text-muted.text-center New Boxes
+              %h5.text-center.text-success
+                #{sprintf("%0.02f", box_count/Box.count.to_f)}%
+                %i.fa.fa-level-up-alt
             .col-md-2.col-sm-6.col-xs-6
-              %h3.text-center= Pallet.where("created_at > ?", 30.days.ago).count
+              %h3.text-center= pallet_count
               %h5.text-muted.text-center New Pallets
+              %h5.text-center.text-success
+                #{sprintf("%0.02f", pallet_count/Pallet.count.to_f)}%
+                %i.fa.fa-level-up-alt
 
     .panel.panel-default
       %a.panel-heading{data: {toggle: "collapse"}, href: "#user-stats"} My Stats (All-time)
