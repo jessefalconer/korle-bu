@@ -15,24 +15,20 @@
         %li
           %a{data: {toggle: "tab"}, href: "#manage-items"}
             Manage
-            &nbsp;
             %span.label.label-success= @pallet.pallet_items.count
       - elsif cannot? :manage, PackedItem
         %li.active
           %a{data: {toggle: "tab"}, href: "#manage-items"}
             Inventory
-            &nbsp;
             %span.label.label-success= @pallet.pallet_items.count
       - if can? :manage, UnpackingEvent
         %li
           %a{data: {toggle: "tab"}, href: "#unpack-items"}
             Unpack
-            &nbsp;
             %span.label.label-info= @pallet.pallet_items.with_inventory.count
         %li
           %a{data: {toggle: "tab"}, href: "#history-items"}
             History
-            &nbsp;
             %span.label.label-default= @pallet.pallet_items.with_events.count
 
     .row
