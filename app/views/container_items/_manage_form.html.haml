@@ -13,6 +13,10 @@
               —
               %em.show-id ID: ##{ci.id}
           .drawer-info
+            - unless ci.expiry_date.nil?
+              %span.label.label-warning= ci.expiry_date.strftime("%Y-%m-%d")
+            - unless ci.weight.to_f.zero?
+              %span.label.label-primary #{ci.weight}kg
             %span.label.label-success= ci.quantity
             %i.fa.fa-ellipsis-v
         .col-xs-12.manage-item-form.hidden
