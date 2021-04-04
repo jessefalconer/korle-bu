@@ -58,6 +58,7 @@ module ApplicationHelper
     end
   end
 
+  # @todos re-enable when swapping reconcile items is implemented
   # def swap_button(new_id, old_id, merge_ids, classes = "")
   #   merge_ids = merge_ids.reject { |n| n == new_id} << old_id
   #   tag.a(id: new_id, class: "btn btn-warning #{classes} swap-button", data: {merge_items: merge_ids}) do
