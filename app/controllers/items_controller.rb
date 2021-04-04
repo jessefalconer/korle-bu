@@ -34,10 +34,12 @@ class ItemsController < ApplicationController
   end
 
   def reconcile_search
-    @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: params[:compare_id].to_i)
+    excluded_ids = params[:similar_ids] || []
+    excluded_ids << params[:compare_id]
+    @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: excluded_ids)
     @item = Item.find(params[:compare_id])
 
-    render json: render_to_string(partial: "results", layout: false, locals: { comparison_record_id: params[:compare_id] }).to_json
+    render json: render_to_string(partial: "results_reconcile", layout: false, locals: { comparison_record_id: params[:compare_id] }).to_json
   end
 
   def search_form
@@ -50,7 +52,7 @@ class ItemsController < ApplicationController
       packed_items_path
     end
 
-    render json: render_to_string(partial: "results-form", layout: false, locals: { form_path: form_path }).to_json
+    render json: render_to_string(partial: "results_form", layout: false, locals: { form_path: form_path }).to_json
   end
 
   def show

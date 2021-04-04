@@ -20,15 +20,20 @@ function packingSearch(params) {
 }
 
 function reconcileSearch(params) {
-    const compareID = $("#compare-id").val();
+    const compareId = $("#compare-id").val();
+    const similarIds = $("#compare-id").data("similar-ids")
     $.ajax({
         url: "/reconcile_item_search",
         type: "get",
         data: { search: params,
-                compare_id: compareID },
+                compare_id: compareId,
+                similar_ids: similarIds },
         async: false,
         success: function (data) {
+            $("#search-results").empty();
             $("#search-results").append(data);
+            initCheckBoxListeners();
+            updateCheckCount();
         },
         error: function () { alert("Search could not be completed."); }
     });
@@ -161,8 +166,36 @@ function initPackingSearchListeners() {
   });
 }
 
+function updateCheckCount() {
+  var checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+  const buttons = document.querySelectorAll(".reconcile-count")
+
+  for (var i = 0; i < buttons.length; i++) {
+      var text = checkedCount === 0 ? "\t Confirm Reconcile" : `\tConfirm Reconcile (${checkedCount})`
+      buttons[i].getElementsByTagName("span")[0].textContent = text
+  }
+}
+
+function initCheckBoxListeners() {
+  const checkboxes = document.querySelectorAll("input[type=checkbox]");
+
+  for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].addEventListener("change", updateCheckCount, false);
+  }
+}
+
 function initReconcileSearchListeners() {
   if (document.querySelector("#reconcile-search-submit") === null) { return; }
+
+  initCheckBoxListeners();
+  updateCheckCount();
+
+  $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      return false;
+    }
+  });
 
   $(document).on("click", "#reconcile-search-submit", () => {
       $("#search-results").empty();

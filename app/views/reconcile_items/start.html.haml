@@ -19,33 +19,35 @@
         .col-xs-12
           %p This item is not currently in use. You may wish to delete it.
           = delete_button(item_path(@item, redirect: "reconcile_unverified_path"), "Are you sure you want to delete #{@item.generated_name}? This cannot be reversed.")
-
-    %br
-    %ul.nav.nav-tabs
-      %li.active
-        %a{data: {toggle: "tab"}, href: "#suggestions"}
-          Suggestions
-          %span.label.label-success= @similar_items.count
-      %li
-        %a{data: {toggle: "tab"}, href: "#search"}
-          Search
-    %br
-    .row
-      .col-xs-12
-        .tab-content
-          #suggestions.tab-pane.active.in
-            - if @similar_items.any?
-              %table.table.table-striped.table-hover
-                %thead
-                  %tr
-                    %th Name
-                    %th.hidden-xs Category
-                    %th.hidden-xs Verified
-                    %th.hidden-xs Flagged
-                    %th Instances
-                    %th
-                %tbody
-                  = form_for reconcile_confirm_path(@item) do |f|
+    = form_for reconcile_confirm_path(@item) do |f|
+      %br
+      %br
+      %ul.nav.nav-tabs
+        %li.active
+          %a{data: {toggle: "tab"}, href: "#suggestions"}
+            Suggestions
+            %span.label.label-success= @similar_items.count
+        %li
+          %a{data: {toggle: "tab"}, href: "#search"}
+            Search
+      %br
+      .row
+        .col-xs-12
+          .tab-content
+            #suggestions.tab-pane.active.in
+              = submit_button("Confirm Reconcile", classes = "reconcile-count", icon = "fa-compress-alt")
+              %h5 Items with similar names are shown here.
+              - if @similar_items.any?
+                %table.table.table-striped.table-hover
+                  %thead
+                    %tr
+                      %th Name
+                      %th.hidden-xs Category
+                      %th.hidden-xs Verified
+                      %th.hidden-xs Flagged
+                      %th Instances
+                      %th
+                  %tbody
                     - @similar_items.each do |item|
                       %tr
                         %td
@@ -64,13 +66,13 @@
                           = link_to item_instances_path(item) do
                             %p.instances= item.packed_items.count
                         %td
-                          = check_box_tag "reconcile_ids[]", item.id
-                    = submit_button("Confirm Reconcile", classes = "", icon = "fa-compress-alt")
-            - else
-              .row
-                .col-xs-12
-                  %h5.text-center No suggestions found. Try searching for an item.
+                          = check_box_tag "reconcile_ids[]", item.id, false, {id: item.id}
+              - else
+                .row
+                  .col-xs-12
+                    %h5.text-center No suggestions found. Try searching for an item.
 
-          #search.tab-pane.fade
-            %br
-            = render "search_form"
+            #search.tab-pane.fade
+              = submit_button("Confirm Reconcile", classes = "reconcile-count", icon = "fa-compress-alt")
+              %h5 Results from the suggestions tab are automatically filtered from search results.
+              = render "search_form"
