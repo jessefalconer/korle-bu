@@ -83,7 +83,7 @@
               containers, pallets and boxes with the target item. Quantities,
               expiration dates and other information will be preserved.
 
-            - target_used = @item.packed_items.count.positive?
+            - target_used = @item.packed_items.any?
             %p.body This checklist is only a suggestion of review areas:
             %ul.fa-ul
 

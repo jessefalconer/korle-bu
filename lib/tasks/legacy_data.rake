@@ -139,7 +139,7 @@ namespace :legacy_data do
   task prune_data: :environment do
     counter = 0
     Item.all.find_each do |item|
-      if item.packed_items.count.zero?
+      if item.packed_items.none?
         item.destroy
         counter += 1
         puts "Destroyed #{counter} items"
