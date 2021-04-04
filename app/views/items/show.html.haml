@@ -7,7 +7,7 @@
       %li
         = link_to "Items", items_path
       %li.active= @item.generated_name
-    - if can? :reconcile, ReconcileItem
+    - if can? :reconcile, Item
       = link_button("Start Reconcile", reconcile_start_path(@item))
   .main-content
     %ul.nav.nav-tabs
@@ -48,7 +48,7 @@
               %h6.text-muted
                 Instances
                 %i.fa.fa-search
-              %h5= Item.item_instances(@item)
+              %h5= @item.packed_items.count
           - if @item.photo.attached?
             .col-xs-12
               %h6.text-muted Attached Photo

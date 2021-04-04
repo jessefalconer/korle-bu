@@ -23,8 +23,8 @@ Rails.application.routes.draw do
   get "reconcile_uncategorized", to: "reconcile_items#uncategorized"
   get "reconcile_flagged", to: "reconcile_items#flagged"
   get "reconcile/:id", to: "reconcile_items#start", as: :reconcile_start
-  get "reconcile/:id/confirm/:target_id", to: "reconcile_items#confirm", as: :reconcile_confirm
-  get "reconcile/:id/execute_reconcile/:target_id", to: "reconcile_items#execute", as: :execute_reconcile
+  post "reconcile/:id", to: "reconcile_items#confirm", as: :reconcile_confirm
+  post "reconcile/:id/execute_reconcile", to: "reconcile_items#execute", as: :execute_reconcile
   get "reconcile/:id/item_instances", to: "reconcile_items#item_instances", as: :item_instances
   post "find_box", to: "boxes#find"
   post "find_pallet", to: "pallets#find"

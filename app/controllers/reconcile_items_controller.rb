@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 class ReconcileItemsController < ApplicationController
-  before_action :set_item, only: %i[start confirm execute item_instances]
-  before_action :set_target_item, only: %i[confirm execute]
+  before_action :set_item, only: %i[start confirm confirm_multiple item_instances execute swap]
 
   def unverified
     @items = Item.unverified.order(:updated_at).reverse_order.page params[:page]
@@ -17,23 +16,26 @@ class ReconcileItemsController < ApplicationController
   end
 
   def start
-    @overview = ReconcileItem.new(current_user)
-    @similar_items = @overview.find_similar_records(@item)
+    @similar_items = Item.find_similar_records(@item)
   end
 
   def confirm
-    @overview = ReconcileItem.new(current_user)
+    if params[:reconcile_ids].nil?
+      redirect_to reconcile_start_path(@item), flash: { error: "No items where selected."}
+    else
+      @merge_items = Item.where(id: params[:reconcile_ids])
+    end
   end
 
   def execute
-    @overview = ReconcileItem.new(current_user)
-    @overview.execute_merge(@item, @target_item, delete: params[:delete_item], verify: params[:verify_item])
+    merge_items = Item.where(id: params[:reconcile_ids])
+    Item.execute_merge(@item, merge_items, delete: params[:delete_item], verify: params[:verify_item])
 
     redirect_to reconcile_unverified_path
   end
 
   def item_instances
-    items = PackedItem.where(item: @item)
+    items = @item.packed_items
     @staged_items = items.staged.order(:created_at).reverse_order
     @box_items = items.where.not(box_id: nil).order(:created_at).reverse_order
     @pallet_items = items.where.not(pallet_id: nil).order(:created_at).reverse_order
@@ -44,9 +46,5 @@ class ReconcileItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
-  end
-
-  def set_target_item
-    @target_item = Item.find(params[:target_id])
   end
 end

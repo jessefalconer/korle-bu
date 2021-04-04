@@ -32,7 +32,7 @@
                       = item.flagged&.to_s.capitalize
                   %td
                     = link_to item_instances_path(item) do
-                      %p.instances= Item.item_instances(item)
+                      %p.instances= item.packed_items.count
 
                 = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_unverified_path"}
 

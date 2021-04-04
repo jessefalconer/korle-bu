@@ -31,7 +31,7 @@ class Ability
       can :manage, [Item, User, Category, Container, Pallet, Box]
       cannot :manage, UnpackingEvent
       can :manage, PackedItem
-      can :reconcile, ReconcileItem
+      can :reconcile, Item
     when "Receiving Manager"
       can :cru, User, id: user.id
       can :read, Hospital, warehouse: user.warehouse

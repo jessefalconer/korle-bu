@@ -60,8 +60,17 @@ class Item < ApplicationRecord
     self.generated_name = process_name.presence || "Unnamed Item"
   end
 
-  def self.item_instances(item)
-    PackedItem.where(item_id: item.id).count
+  def self.find_similar_records(item)
+    Item.search_by_generated_name(item.generated_name).where.not(id: item.id)
+  end
+
+ def self.execute_merge(item, merge_items, delete: false, verify: true)
+    merge_items.each do |merge_item|
+      PackedItem.where(item_id: merge_item.id).update_all(item_id: item.id) # rubocop:disable Rails/SkipsModelValidations#
+
+      Item.find(merge_item.id).destroy if delete
+      Item.find(item.id).update(verified: verify) if verify
+    end
   end
 
   def process_name

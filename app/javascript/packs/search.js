@@ -152,6 +152,13 @@ function initPackingSearchListeners() {
       const params = $("#search-params").val();
       if ( params !== "" ) { packingSearch(params); }
   });
+
+  $(document).on("keyup", "#search-params", e => {
+      if (e.key === "Enter") {
+        const params = $("#search-params").val();
+        if ( params !== "" ) { packingSearch(params); }
+      }
+  });
 }
 
 function initReconcileSearchListeners() {
@@ -161,6 +168,13 @@ function initReconcileSearchListeners() {
       $("#search-results").empty();
       const params = $("#search-params").val();
       if ( params !== "" ) { reconcileSearch(params); }
+  });
+
+  $(document).on("keyup", "#search-params", e => {
+      if (e.key === "Enter") {
+        const params = $("#search-params").val();
+        if ( params !== "" ) { reconcileSearch(params); }
+      }
   });
 }
 

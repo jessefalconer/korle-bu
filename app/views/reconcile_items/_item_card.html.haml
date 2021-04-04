@@ -9,7 +9,7 @@
     %h5{style: "color: #{item.category.present? ? "#02a556" : "#ff4d4d"}"}= item.category&.name || "N/A"
   .col-xs-6.col-md-3
     %h6.text-muted Instances
-    - item_instances = Item.item_instances(item)
+    - item_instances = item.packed_items.count
     - if item_instances.positive?
       = link_to item_instances_path(item) do
         %h5= item_instances

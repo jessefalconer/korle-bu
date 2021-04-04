@@ -141,7 +141,7 @@
                   %td
                     %p Instances:
                     = link_to item_instances_path(item) do
-                      %p= Item.item_instances(item)
+                      %p= item.packed_items.count
 
     .panel.panel-default
       %a.panel-heading{data: {toggle: "collapse"}, href: "#notes"} Personal Notes

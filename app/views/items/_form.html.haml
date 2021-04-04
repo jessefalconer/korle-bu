@@ -143,7 +143,7 @@
       .form-group
         = f.label :flagged, "Flag for Review"
         = f.select(:flagged, options_for_select([true, false], item.flagged), {}, { class: "form-control" })
-    - if can? :reconcile, ReconcileItem
+    - if can? :reconcile, Item
       .col-xs-6
         .form-group
           = f.label :verified
