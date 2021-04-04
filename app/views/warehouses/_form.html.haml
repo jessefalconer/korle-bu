@@ -33,6 +33,6 @@
       = f.text_field :description, class: "form-control"
   .col-xs-12
     .btn-toolbar.list-toolbar
-      - unless @warehouse.new_record? || @warehouse.has_associations?
+      - unless @warehouse.new_record? || @warehouse.associations?
         = delete_button(warehouse_path(@warehouse), "Are you sure you want to delete #{@warehouse.name}? This cannot be reversed")
       = submit_button_responsive("Save")

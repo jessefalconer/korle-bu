@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ReconcileItemsController < ApplicationController
-  before_action :set_item, only: %i[start confirm confirm_multiple item_instances execute swap]
+  before_action :set_item, only: %i[start confirm item_instances execute]
 
   def unverified
     @items = Item.unverified.order(:updated_at).reverse_order.page params[:page]
@@ -21,7 +21,7 @@ class ReconcileItemsController < ApplicationController
 
   def confirm
     if params[:reconcile_ids].nil?
-      redirect_to reconcile_start_path(@item), flash: { error: "No items where selected."}
+      redirect_to reconcile_start_path(@item), flash: { error: "No items where selected." }
     else
       @merge_items = Item.where(id: params[:reconcile_ids])
     end

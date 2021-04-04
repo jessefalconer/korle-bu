@@ -64,7 +64,7 @@ class Item < ApplicationRecord
     Item.search_by_generated_name(item.generated_name).where.not(id: item.id)
   end
 
- def self.execute_merge(item, merge_items, delete: false, verify: true)
+  def self.execute_merge(item, merge_items, delete: false, verify: true)
     merge_items.each do |merge_item|
       PackedItem.where(item_id: merge_item.id).update_all(item_id: item.id) # rubocop:disable Rails/SkipsModelValidations#
 

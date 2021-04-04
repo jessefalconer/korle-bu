@@ -28,7 +28,7 @@ class Warehouse < ApplicationRecord
     [street, postal_code, city, province, country].reject(&:blank?).join(", ")
   end
 
-  def has_associations?
+  def associations?
     reflections = Warehouse.reflections.select do |_association_name, reflection|
       reflection.macro == :has_many
     end

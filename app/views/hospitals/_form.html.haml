@@ -41,6 +41,6 @@
       = f.text_field :description, class: "form-control"
   .col-xs-12
     .btn-toolbar.list-toolbar
-      - unless @hospital.new_record? || @hospital.has_associations?
+      - unless @hospital.new_record? || @hospital.associations?
         = delete_button(hospital_path(@hospital), "Are you sure you want to delete #{@hospital.name}? This cannot be reversed")
       = submit_button_responsive("Save")
