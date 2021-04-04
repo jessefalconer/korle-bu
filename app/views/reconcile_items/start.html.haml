@@ -11,7 +11,7 @@
     .row
       .col-xs-12
         %h3 Select all relevant items to reconcile.
-        %p Items can be swapped in the next stage to change the merge direction. Any combination of suggested and search items can be selected.
+        %p Any combination of suggested and search items can be selected.
     = render partial: "item_card", locals: {item: @item}
 
     - if @item.packed_items.count.zero?
