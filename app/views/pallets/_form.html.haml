@@ -19,7 +19,7 @@
     = f.text_field :notes, class: "form-control"
   .form-group
     %label Container Assignment
-    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(:name), :id, :name, container_id), { include_blank: "Staged" }, { class: "form-control", id: "container-assignment" }
+    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(:id).reverse_order, :id, :name, container_id), { include_blank: "Staged" }, { class: "form-control", id: "container-assignment" }
   .form-group
     %label Category
     = f.select :category_id, options_from_collection_for_select(Category.all.order(:name), :id, :name, @pallet.category_id), { include_blank: "None" }, { class: "form-control", id: "category-assignment" }

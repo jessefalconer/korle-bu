@@ -28,10 +28,10 @@ class PackedItemsController < ApplicationController
   end
 
   def index
-    @boxes = Box.in_progress.order(:name)
-    @pallets = Pallet.in_progress.order(:name)
-    @containers = Container.in_progress.order(:name)
-    @packed_items = PackedItem.staged.page params[:page]
+    @boxes = Box.in_progress.order(:id).reverse_order
+    @pallets = Pallet.in_progress.order(:id).reverse_order
+    @containers = Container.in_progress.order(:id).reverse_order
+    @packed_items = PackedItem.staged.order(:created_at).reverse_order.page params[:page]
   end
 
   def add_with_item

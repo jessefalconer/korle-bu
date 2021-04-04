@@ -1,6 +1,6 @@
 .content
   .header
-    %h1.page-title Boxes
+    %h1.page-title New Box
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
@@ -8,4 +8,6 @@
   .main-content
     .row
       .col-md-4
+        - unless @box.persisted?
+          %h5 Confirm new box information.
         = render partial: "form"

@@ -1,6 +1,6 @@
 .content
   .header
-    %h1.page-title Containers
+    %h1.page-title New Container
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
@@ -8,4 +8,6 @@
   .main-content
     .row
       .col-md-4
+        - unless @container.persisted?
+          %h5 Confirm new container information.
         = render partial: "form"

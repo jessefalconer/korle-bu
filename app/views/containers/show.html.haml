@@ -6,6 +6,7 @@
         = link_to "Home", index_path
       = present(@container).breadcrumbs
 
+    %h5 Add to Container:
     - if can? :read, Container
       = link_index_button(containers_path, "fa-truck")
     - if can? :create, Pallet
@@ -162,13 +163,13 @@
                   - @container.container_items.order(:updated_at).reverse_order.each do |ci|
                     %tr.filter-row
                       %td
-                        = link_to item_path(ci.item) do
+                        = link_to container_container_items_path(@container) do
                           %p= ci.generated_name
                       %td
-                        = link_to item_path(ci.item) do
+                        = link_to container_container_items_path(@container) do
                           %p= ci.expiry_date&.strftime("%Y-%m-%d")
                       %td
-                        = link_to item_path(ci.item) do
+                        = link_to container_container_items_path(@container) do
                           %p= ci.quantity
               .close-collapse{data: {toggle: "collapse"}, href: "#container_items"}
                 %span Close
