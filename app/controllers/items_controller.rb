@@ -21,9 +21,9 @@ class ItemsController < ApplicationController
 
   def index
     @items = if params[:category]
-      Item.where(category_id: params[:category]).order(:updated_at).reverse_order.page params[:page]
+      Item.where(category_id: params[:category]).order(:created_at).reverse_order.page params[:page]
     else
-      Item.all.order(:updated_at).reverse_order.page params[:page]
+      Item.all.order(:created_at).reverse_order.page params[:page]
     end
   end
 
