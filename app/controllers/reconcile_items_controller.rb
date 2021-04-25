@@ -3,6 +3,12 @@
 class ReconcileItemsController < ApplicationController
   before_action :set_item, only: %i[start confirm item_instances execute]
 
+  def reconcile_search
+    @items = Item.search_by_generated_name(params[:search])
+
+    render json: render_to_string(partial: "unverified_results", layout: false).to_json
+  end
+
   def unverified
     @items = Item.unverified.order(:created_at).reverse_order.page params[:page]
   end

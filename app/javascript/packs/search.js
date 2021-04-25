@@ -19,7 +19,7 @@ function packingSearch(params) {
     });
 }
 
-function reconcileSearch(params) {
+function reconcileSuggestionSearch(params) {
     const compareId = $("#compare-id").val();
     const similarIds = $("#compare-id").data("similar-ids")
     $.ajax({
@@ -42,6 +42,20 @@ function reconcileSearch(params) {
 function indexSearch(params) {
     $.ajax({
         url: "/index_item_search",
+        type: "get",
+        data: { search: params },
+        async: false,
+        success: function (data) {
+            $(".pagination").empty();
+            $("#search-results").empty().append(data);
+        },
+        error: function () { alert("Search could not be completed."); }
+    });
+}
+
+function reconcileSearch(params) {
+    $.ajax({
+        url: "/reconcile_search",
         type: "get",
         data: { search: params },
         async: false,
@@ -184,8 +198,8 @@ function initCheckBoxListeners() {
   }
 }
 
-function initReconcileSearchListeners() {
-  if (document.querySelector("#reconcile-search-submit") === null) { return; }
+function initReconcileSuggestionSearchListeners() {
+  if (document.querySelector("#reconcile-suggestions-search-submit") === null) { return; }
 
   initCheckBoxListeners();
   updateCheckCount();
@@ -197,16 +211,16 @@ function initReconcileSearchListeners() {
     }
   });
 
-  $(document).on("click", "#reconcile-search-submit", () => {
+  $(document).on("click", "#reconcile-suggestions-search-submit", () => {
       $("#search-results").empty();
       const params = $("#search-params").val();
-      if ( params !== "" ) { reconcileSearch(params); }
+      if ( params !== "" ) { reconcileSuggestionSearch(params); }
   });
 
   $(document).on("keyup", "#search-params", e => {
       if (e.key === "Enter") {
         const params = $("#search-params").val();
-        if ( params !== "" ) { reconcileSearch(params); }
+        if ( params !== "" ) { reconcileSuggestionSearch(params); }
       }
   });
 }
@@ -229,8 +243,27 @@ function initIndexSearchListeners() {
   });
 }
 
+function initReconcileSearchListeners() {
+  if (document.querySelector("#reconcile-search-submit") === null) { return; }
+
+  $(document).on("click", "#reconcile-search-submit", () => {
+      const params = $("#search-params").val();
+      if ( params !== "" ) {
+        reconcileSearch(params);
+      }
+  });
+
+  $(document).on("keyup", "#search-params", e => {
+      if (e.key === "Enter") {
+        const params = $("#search-params").val();
+        if ( params !== "" ) { reconcileSearch(params); }
+      }
+  });
+}
+
 $(() => {
   initPackingSearchListeners();
+  initReconcileSuggestionSearchListeners();
   initReconcileSearchListeners();
   initIndexSearchListeners();
   initManageDrawerListeners();

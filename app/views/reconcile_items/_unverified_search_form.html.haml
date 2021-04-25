@@ -1,0 +1,7 @@
+.input-group.search.span12.padding-bottom-small
+  .input-group
+    = text_field_tag :search, params[:search], placeholder: "Enter search term...", class: "form-control", id: "search-params", data: { path: path }
+    %span.input-group-btn.span12#reconcile-search-submit
+      %a.btn.btn-primary.responsive-button
+        %span Search
+        %i.fa.fa-search
