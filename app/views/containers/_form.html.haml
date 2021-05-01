@@ -1,5 +1,3 @@
-- user = @container.user&.name || current_user.name
-- time = @container.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
 - shipment_id = @container.shipment_id.presence || params[:shipment_id]
 = form_for @container do |f|
   .form-group
@@ -21,17 +19,8 @@
     .form-group
       %label Shipment Assignment
       = f.select :shipment_id, options_from_collection_for_select(Shipment.accessible_by(current_ability).order(:id).reverse_order, :id, :name, shipment_id), { include_blank: "Staged" }, { class: "form-control", id: "shipment-assignment"}
-  .form-group
-    %label Created By
-    = f.text_field :user, value: user, disabled: true, class: "form-control"
-  .form-group
-    %label Created At
-    = f.text_field :created_at, value: time, disabled: true, class: "form-control"
 
   .btn-toolbar.list-toolbar
     - if @container.persisted?
       = delete_button(container_path(@container), "Are you sure you want to delete #{@container.name}? This cannot be reversed")
     = submit_button_responsive("Save")
-
-= render partial: "layouts/status_modal", locals: {title: "Status Change Warning", body: "Boxes and pallets within this container will automatically inherit this new status."}
-= render partial: "layouts/assignment_modal", locals: {title: "Assignment Change Warning", body: "Unassigning this container from a shipment could result in errors."}
