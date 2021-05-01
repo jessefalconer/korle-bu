@@ -4,31 +4,4 @@
   %h5 The shipping manifest for this pallet is shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
   - @pallet.pallet_items.each do |pi|
-    .row.inline-add-item
-      .col-xs-12.manage-item-name{data: {unit_weight: pi.item.unit_weight, item_id: pi.item.id}}
-        %p
-          = pi.generated_name
-          - if pi.show_id
-            —
-            %em.show-id ID: ##{pi.id}
-        .drawer-info
-          %span.label.label-success= pi.quantity
-          %i.fa.fa-ellipsis-v
-      .col-xs-12.manage-item-form.hidden
-        .row
-          .col-xs-6.col-sm-4.col-lg-3
-            %h5.text-muted Received Quantity
-            %h4= pi.quantity
-          .col-xs-6.col-sm-4.col-lg-3
-            %h5.text-muted Remaining Quantity
-            %h4= pi.remaining_quantity
-          .col-xs-6.col-sm-4.col-lg-3
-            %h5.text-muted Received Weight
-            %h4= pi.weight || "N/A"
-          .col-xs-6.col-sm-4.col-lg-3
-            %h5.text-muted Remaining Weight
-            %h4= pi.remaining_weight
-          - if pi.expiry_date
-            .col-xs-6.col-sm-4.col-lg-3
-              %h5.text-muted Expiry Date
-              %h4= pi.expiry_date.strftime("%Y-%m-%d")
+    = render "packed_items/list_card", pi: pi
