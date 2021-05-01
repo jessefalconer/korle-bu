@@ -21,7 +21,7 @@ class CategoriesController < ApplicationController
   end
 
   def index
-    @categories = Category.order(sort_column + " " + sort_direction).page params[:page]
+    @categories = Category.order(sort_column + " " + sort_direction).order(:name).page params[:page]
   end
 
   def show

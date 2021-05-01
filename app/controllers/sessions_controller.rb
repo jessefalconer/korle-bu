@@ -34,6 +34,7 @@ class SessionsController < ApplicationController
   end
 
   def my_activity
+    @staged_items = PackedItem.staged.where("packed_items.created_at > ? AND user_id = ?", 30.days.ago, current_user.id).order(:updated_at).reverse_order
     @boxes = current_user.boxes.where("boxes.created_at > ?", 30.days.ago).order(:updated_at).reverse_order
     @box_items = current_user.box_items.where("packed_items.created_at > ?", 30.days.ago).order(:updated_at).reverse_order
     @pallets = current_user.pallets.where("pallets.created_at > ?", 30.days.ago).order(:updated_at).reverse_order

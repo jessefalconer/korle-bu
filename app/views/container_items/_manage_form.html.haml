@@ -1,13 +1,22 @@
 - if @container.container_items.none?
-  %h5.text-center Use the tabs to search or create a new item.
+  %h5.text-center No existing packed items. Use the tabs to search or create a new item.
 - else
-  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
+  %h5 Update or remove existing items packed in this container.
+  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name or ID...", assoc: "manage-items"}
   - @container.container_items.each do |ci|
     = form_for ci, url: container_container_item_path(@container, ci) do |f|
       .row.inline-add-item
         .col-xs-12.manage-item-name{data: {unit_weight: ci.item.unit_weight, item_id: ci.item.id}}
-          %p= ci.generated_name
+          %p
+            = ci.generated_name
+            - if ci.show_id
+              —
+              %em.show-id ID: ##{ci.id}
           .drawer-info
+            - unless ci.expiry_date.nil?
+              %span.label.label-warning= ci.expiry_date.strftime("%Y-%m-%d")
+            - unless ci.weight.to_f.zero?
+              %span.label.label-primary #{ci.weight}kg
             %span.label.label-success= ci.quantity
             %i.fa.fa-ellipsis-v
         .col-xs-12.manage-item-form.hidden
@@ -18,12 +27,16 @@
                 = f.number_field :quantity, value: ci.quantity, class: "form-control", min: 1, id: "quantity-#{ci.id}"
             .col-xs-6.col-sm-4.col-lg-3
               .form-group
-                = f.label "Weight (g)"
-                = f.number_field :weight, class: "form-control", id: "weight-#{ci.id}", placeholder: "grams"
+                = f.label "Weight (kg)"
+                = f.number_field :weight, step: :any, class: "form-control", id: "weight-#{ci.id}"
             .col-xs-6.col-sm-4.col-lg-3
               .form-group
                 = f.label :expires
                 = f.text_field :expiry_date, value: ci.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{ci.id}", placeholder: "YYYY-MM-DD"
+            .col-xs-6.col-lg-3
+              .pull-left.padding-top
+                %label.padding-top Generate ID?
+                = f.check_box :show_id
             .col-xs-6.col-sm-12.col-lg-3
               .form-group
                 %label &nbsp;

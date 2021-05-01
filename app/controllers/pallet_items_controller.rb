@@ -5,27 +5,45 @@ class PalletItemsController < ApplicationController
   before_action :set_pallet_item, except: %i[create index add_with_item]
 
   def create
-    @pallet.pallet_items.create(pallet_item_params.merge(user: current_user))
-    redirect_to pallet_pallet_items_path(@pallet), flash: { success: "Item added." }
+    pallet_item = @pallet.pallet_items.build(pallet_item_params)
+
+    if pallet_item.save
+      id_sentence = pallet_item.show_id ? "ID: ##{pallet_item.id}." : ""
+      message = { success: "#{pallet_item.quantity} #{pallet_item.generated_name.pluralize} added. #{id_sentence}" }
+    else
+      message = { error: pallet_item.errors.full_messages.to_sentence }
+    end
+
+    redirect_to pallet_pallet_items_path(@pallet), flash: message
   end
 
   def update
-    @pallet_item.update(pallet_item_params)
-    redirect_to pallet_pallet_items_path(@pallet), flash: { success: "Item updated." }
+    if @pallet_item.update(pallet_item_params)
+      id_sentence = @pallet_item.show_id ? "ID: ##{@pallet_item.id}." : ""
+      message = { success: "#{@pallet_item.quantity} #{@pallet_item.generated_name.pluralize} updated. #{id_sentence}" }
+    else
+      message = { error: @pallet_item.errors.full_messages.to_sentence }
+    end
+
+    redirect_to pallet_pallet_items_path(@pallet), flash: message
   end
 
   def index
   end
 
   def add_with_item
-    item = Item.new(item_params.merge(user: current_user))
+    item = Item.new(item_params)
+    pallet_item = @pallet.pallet_items.build(pallet_item_params.merge(item: item))
 
-    if item.save
-      @pallet.pallet_items.create(expiry_date: params[:expiry_date], quantity: params[:quantity], user: current_user, item_id: item.id)
-      redirect_to pallet_pallet_items_path(@pallet), flash: { success: "Item created and added." }
+    if item.save && pallet_item.save
+      id_sentence = pallet_item.show_id ? "ID: ##{pallet_item.id}." : ""
+      message = { success: "Item created. #{pallet_item.quantity} #{item.generated_name.pluralize} added. #{id_sentence}" }
     else
-      redirect_to pallet_pallet_items_path(@pallet), flash: { error: item.errors }
+      error_message = item.errors.full_messages + pallet_item.errors.full_messages
+      message = { error: error_message.to_sentence }
     end
+
+    redirect_to pallet_pallet_items_path(@pallet), flash: message
   end
 
   def destroy
@@ -36,14 +54,16 @@ class PalletItemsController < ApplicationController
   private
 
   def pallet_item_params
-    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id)
+    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :show_id).merge(user: current_user)
   end
 
   def item_params
-    params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description,
-                                 :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
-                                 :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity, :unit_weight,
-                                 :category_id, :notes, :verified, :photo, :flagged)
+    params.require(:item)
+          .permit(:brand, :object, :standardized_size,
+                  :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
+                  :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :unit_weight,
+                  :category_id, :notes, :verified, :photo, :flagged)
+          .merge(user: current_user)
   end
 
   def set_pallet_item

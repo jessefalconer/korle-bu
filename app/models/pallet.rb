@@ -1,12 +1,19 @@
 # frozen_string_literal: true
 
 class Pallet < ApplicationRecord
-  STATUSES = ["In Progress", "Complete", "Received"].freeze
+  STATUSES = [
+    WAREHOUSED = "Warehoused",
+    IN_PROGRESS = "In Progress",
+    COMPLETE = "Complete",
+    RECEIVED = "Received"
+  ].freeze
 
   belongs_to :user, optional: false
   belongs_to :container, optional: true
+  belongs_to :category, optional: true
 
   has_many :boxes, dependent: :nullify
+  has_many :box_items, through: :boxes
   has_many :pallet_items, class_name: "PackedItem", dependent: :destroy
   has_many :items, through: :pallet_items
 
@@ -14,8 +21,10 @@ class Pallet < ApplicationRecord
 
   accepts_nested_attributes_for :pallet_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
-  scope :unassigned, -> { where(container_id: nil) }
-  scope :recent, -> { where("created_at > ?", 30.days.ago) }
+  scope :assigned, -> { where.not(container_id: nil) }
+  scope :staged, -> { where(container_id: nil, status: IN_PROGRESS) }
+  scope :in_progress, -> { where(status: IN_PROGRESS) }
+  scope :warehoused, -> { where(container_id: nil, status: WAREHOUSED) }
 
   delegate :shipment, to: :container, allow_nil: true
 
@@ -27,7 +36,10 @@ class Pallet < ApplicationRecord
 
   after_save do
     cascade_statuses if saved_change_to_status && cascadable?
+    cascade_packed_items_location if saved_change_to_container_id && container&.shipment
   end
+
+  after_initialize :set_defaults, if: :new_record?
 
   def cascadable?
     status == "Complete" || status == "Received"
@@ -35,8 +47,21 @@ class Pallet < ApplicationRecord
 
   private
 
-  # TODO: Move this to a service
+  # TODO: Move these to a service
   def cascade_statuses
     boxes.where.not(status: status).find_each { |p| p.update(status: status) }
+  end
+
+  def cascade_packed_items_location
+    pallet_items.where.not(shipment_id: container.shipment_id).find_each { |pi| pi.update(shipment_id: container.shipment_id) }
+    box_items.where.not(shipment_id: container.shipment_id).find_each { |bi| bi.update(shipment_id: container.shipment_id) }
+  end
+
+  def set_defaults
+    cid = Pallet.maximum(:custom_uid).to_i + 1
+    name = "PALLET-#{cid}"
+    self.name = name
+    self.custom_uid = cid
+    self.status = IN_PROGRESS
   end
 end

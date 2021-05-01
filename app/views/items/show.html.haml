@@ -7,7 +7,7 @@
       %li
         = link_to "Items", items_path
       %li.active= @item.generated_name
-    - if can? :reconcile, ReconcileItem
+    - if can? :reconcile, Item
       = link_button("Start Reconcile", reconcile_start_path(@item))
   .main-content
     %ul.nav.nav-tabs
@@ -23,39 +23,38 @@
           .col-xs-12
             %h5.text-muted Name
             %h4= @item.generated_name
+            %hr
           - if @item.notes.present?
             .col-xs-12
-              %h5.text-muted Notes
-              %h4= @item.notes
+              %h6.text-muted Notes
+              %h5= @item.notes
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Category
-            %h4{style: "color: #{@item.category.present? ? "#02a556" : "#ff4d4d"}"}= @item.category&.name || "N/A"
+            %h6.text-muted Category
+            %h5{style: "color: #{@item.category.present? ? "#02a556" : "#ff4d4d"}"}= @item.category&.name || "N/A"
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Verified
-            %h4{style: "color: #{@item.verified ? "#02a556" : "#ff4d4d"}"}= @item.verified.to_s.capitalize
+            %h6.text-muted Verified
+            %h5{style: "color: #{@item.verified ? "#02a556" : "#ff4d4d"}"}= @item.verified.to_s.capitalize
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Flagged
-            %h4{style: "color: #{@item.flagged ? "#ff4d4d" : "#02a556"}"}= @item.flagged.to_s.capitalize
+            %h6.text-muted Flagged
+            %h5{style: "color: #{@item.flagged ? "#ff4d4d" : "#02a556"}"}= @item.flagged.to_s.capitalize
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Created By
-            %h4= @item.user.name
+            %h6.text-muted Created By
+            %h5= @item.user.name
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Created At
-            %h4= @item.created_at.strftime("%Y-%m-%d")
+            %h6.text-muted Created At
+            %h5= @item.created_at.strftime("%Y-%m-%d")
           .col-lg-3.col-sm-4.col-xs-6
-            %h5.text-muted Instances
-            - item_instances = Item.item_instances(@item)
-            - if item_instances.positive?
-              = link_to item_instances_path(@item) do
-                %h4= item_instances
-            - else
-              %h4 0
+            = link_to item_instances_path(@item) do
+              %h6.text-muted
+                Instances
+                %i.fa.fa-search
+              %h5= @item.packed_items.count
           - if @item.photo.attached?
             .col-xs-12
-              %h5.text-muted Attached Photo
+              %h6.text-muted Attached Photo
               %img{src: url_for(@item.photo), style: "width: 100%;"}
 
         - if can? :manage, Item
           #edit.tab-pane.fade
             %br
-            = render partial: "form"
+            = render partial: "form", locals: {submit_path: "item"}

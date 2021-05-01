@@ -14,30 +14,32 @@ class Ability
       can :cru, User, id: user.id
       cannot :index, User
       cannot :alter_role, User
-      cannot :manage, [Item, Warehouse, Category, Shipment, Container]
+      cannot :manage, [Item, Warehouse, Hospital, Category, Shipment, Container]
       cannot :manage, UnpackingEvent
       can :manage, PackedItem
       can :cr, Item
-      can :manage, Box, status: "In Progress"
-      can :read, Box, status: "Complete"
-      can :manage, Pallet, status: "In Progress"
-      can :read, Pallet, status: "Complete"
-      can :read, Container, status: "In Progress"
-      cannot :read, Pallet, status: "Received"
-      cannot :read, Box, status: "Received"
+      can :manage, Box, status: Box::IN_PROGRESS
+      can :read, Box, status: Box::COMPLETE
+      can :manage, Pallet, status: Pallet::IN_PROGRESS
+      can :read, Pallet, status: Pallet::COMPLETE
+      can :read, Container, status: [Container::IN_PROGRESS, Container::COMPLETE]
+      cannot :read, Pallet, status: Pallet::RECEIVED
+      cannot :read, Box, status: Box::RECEIVED
     when "Shipping Manager"
-      can :manage, Container, status: "In Progress"
-      can :read, [Warehouse, Shipment, Container]
+      can :read, [Warehouse, Hospital, Shipment]
       cannot :cud, [Warehouse, Shipment, Container]
-      can :manage, [Item, User, Category]
+      can :manage, [Item, User, Category, Container, Pallet, Box]
       cannot :manage, UnpackingEvent
       can :manage, PackedItem
-      can :reconcile, ReconcileItem
+      can :reconcile, Item
     when "Receiving Manager"
-      can :read, Shipment, receiving_warehouse: user.warehouse
-      can :read, [Container, Pallet], shipment: { receiving_warehouse: user.warehouse }
-      can :read, Box, container: { shipment: { receiving_warehouse_id: user.warehouse_id } }
-      can :read, Box, pallet: { container: { shipment: { receiving_warehouse_id: user.warehouse_id } } }
+      can :cru, User, id: user.id
+      can :read, Hospital, warehouse: user.warehouse
+      can :read, Shipment, receiving_warehouse: user.warehouse, status: Shipment::RECEIVED
+      can :read, Container, shipment: { receiving_warehouse_id: user.warehouse_id }, status: Container::RECEIVED
+      can :read, Pallet, shipment: { receiving_warehouse_id: user.warehouse_id }, status: Pallet::RECEIVED
+      can :read, Box, container: { shipment: { receiving_warehouse_id: user.warehouse_id } }, status: Box::RECEIVED
+      can :read, Box, pallet: { container: { shipment: { receiving_warehouse_id: user.warehouse_id } } }, status: Box::RECEIVED
       can :manage, UnpackingEvent
       cannot :manage, PackedItem
       cannot :manage, Item

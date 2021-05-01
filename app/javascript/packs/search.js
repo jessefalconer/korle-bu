@@ -20,15 +20,34 @@ function packingSearch(params) {
 }
 
 function reconcileSearch(params) {
-    const compareID = $("#compare-id").val();
+    const compareId = $("#compare-id").val();
+    const similarIds = $("#compare-id").data("similar-ids")
     $.ajax({
         url: "/reconcile_item_search",
         type: "get",
         data: { search: params,
-                compare_id: compareID },
+                compare_id: compareId,
+                similar_ids: similarIds },
         async: false,
         success: function (data) {
+            $("#search-results").empty();
             $("#search-results").append(data);
+            initCheckBoxListeners();
+            updateCheckCount();
+        },
+        error: function () { alert("Search could not be completed."); }
+    });
+}
+
+function indexSearch(params) {
+    $.ajax({
+        url: "/index_item_search",
+        type: "get",
+        data: { search: params },
+        async: false,
+        success: function (data) {
+            $(".pagination").empty();
+            $("#search-results").empty().append(data);
         },
         error: function () { alert("Search could not be completed."); }
     });
@@ -56,9 +75,9 @@ function initEstimateButton(el) {
         results.push("Input a non-zero quantity value to get a weight estimate.");
       } else {
         let wVal = Math.ceil(inputQuantity*unitWeight);
-        results.push(`Weight estimated to be ${wVal} grams based on input quantity.`);
+        results.push(`Weight estimated to be ${wVal} kilograms based on input quantity.`);
       }
-      results.push(`<br>Unit weight is currently set at ${unitWeight} grams.<br>Your inputs have not been changed.`)
+      results.push(`<br>Unit weight is currently set at ${unitWeight} kilograms.<br>Your inputs have not been changed.`)
     }
 
     $("#estimateModalBody").html(results.join("<br>"))
@@ -138,20 +157,81 @@ function initPackingSearchListeners() {
       const params = $("#search-params").val();
       if ( params !== "" ) { packingSearch(params); }
   });
+
+  $(document).on("keyup", "#search-params", e => {
+      if (e.key === "Enter") {
+        const params = $("#search-params").val();
+        if ( params !== "" ) { packingSearch(params); }
+      }
+  });
+}
+
+function updateCheckCount() {
+  var checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+  const buttons = document.querySelectorAll(".reconcile-count")
+
+  for (var i = 0; i < buttons.length; i++) {
+      var text = checkedCount === 0 ? "\t Confirm Reconcile" : `\tConfirm Reconcile (${checkedCount})`
+      buttons[i].getElementsByTagName("span")[0].textContent = text
+  }
+}
+
+function initCheckBoxListeners() {
+  const checkboxes = document.querySelectorAll("input[type=checkbox]");
+
+  for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].addEventListener("change", updateCheckCount, false);
+  }
 }
 
 function initReconcileSearchListeners() {
   if (document.querySelector("#reconcile-search-submit") === null) { return; }
+
+  initCheckBoxListeners();
+  updateCheckCount();
+
+  $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
+    if(e.which == 13) {
+      e.preventDefault();
+      return false;
+    }
+  });
 
   $(document).on("click", "#reconcile-search-submit", () => {
       $("#search-results").empty();
       const params = $("#search-params").val();
       if ( params !== "" ) { reconcileSearch(params); }
   });
+
+  $(document).on("keyup", "#search-params", e => {
+      if (e.key === "Enter") {
+        const params = $("#search-params").val();
+        if ( params !== "" ) { reconcileSearch(params); }
+      }
+  });
+}
+
+function initIndexSearchListeners() {
+  if (document.querySelector("#index-search-submit") === null) { return; }
+
+  $(document).on("click", "#index-search-submit", () => {
+      const params = $("#search-params").val();
+      if ( params !== "" ) {
+        indexSearch(params);
+      }
+  });
+
+  $(document).on("keyup", "#search-params", e => {
+      if (e.key === "Enter") {
+        const params = $("#search-params").val();
+        if ( params !== "" ) { indexSearch(params); }
+      }
+  });
 }
 
 $(() => {
   initPackingSearchListeners();
   initReconcileSearchListeners();
+  initIndexSearchListeners();
   initManageDrawerListeners();
 });

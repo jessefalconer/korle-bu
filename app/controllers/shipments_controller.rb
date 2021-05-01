@@ -5,9 +5,7 @@ class ShipmentsController < ApplicationController
   before_action :set_shipment, only: %i[show destroy update]
 
   def new
-    cid = Shipment.maximum(:custom_uid).to_i + 1
-    name = "SHIPMENT-#{cid}"
-    @shipment = Shipment.new(custom_uid: cid, name: name)
+    @shipment = Shipment.new
   end
 
   def create
@@ -21,13 +19,13 @@ class ShipmentsController < ApplicationController
   end
 
   def index
-    @shipments = Shipment.all.order(:custom_uid).reverse_order.page params[:page]
+    @shipments = Shipment.accessible_by(current_ability).order(:custom_uid).reverse_order.page params[:page]
   end
 
   def show
     respond_to do |format|
       format.html
-      format.csv { send_data @shipment.to_csv, filename: "shipment-#{@shipment.id}-#{Date.today}.csv" }
+      format.csv { send_data @shipment.to_csv, filename: "shipment-#{@shipment.id}-#{Time.zone.today}.csv" }
     end
   end
 

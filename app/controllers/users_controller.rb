@@ -11,7 +11,11 @@ class UsersController < ApplicationController
   end
 
   def index
-    @users = User.all.page params[:page]
+    @users = if params[:warehouse]
+      User.where(warehouse_id: params[:warehouse]).page params[:page]
+    else
+      User.all.page params[:page]
+    end
   end
 
   def create
@@ -43,7 +47,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    redirect_to user_path(@user), flash: { error: "#{@user.name} cannot be deleted. Instead, switch their status to Deactivated." }
+    @user.destroy
+    redirect_to users_path, flash: { success: "#{@user.name} deleted." }
   end
 
   def signup

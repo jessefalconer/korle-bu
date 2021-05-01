@@ -10,47 +10,69 @@
   .main-content
     .row
       .col-xs-12
-        %h3 Select a target for the reconcile item.
-      .col-xs-12
-        %h4 Reconcile Item
-        %p Merge this item into the selected target item.
-    .row.stats-container
-      .col-xs-12
-        %h5.text-muted Name
-        = link_to item_path(@item) do
-          %h4= @item.generated_name
-      .col-lg-3.col-sm-4.col-xs-6
-        %h5.text-muted Created By
-        %h4= @item.user.name
-      .col-lg-3.col-sm-4.col-xs-6
-        %h5.text-muted Created At
-        %h4= @item.created_at.strftime("%Y-%m-%d")
-      .col-lg-3.col-sm-4.col-xs-6
-        %h5.text-muted Verified
-        %h4{style: "color: #{@item.verified ? "#ff4d4d" : "#02a556"}"}= @item.verified.to_s.capitalize
-      .col-lg-3.col-sm-4.col-xs-6
-        %h5.text-muted Category
-        %h4{style: "color: #{@item.category.present? ? "#ff4d4d" : "#02a556"}"}= @item.category&.name || "N/A"
+        %h3 Select all relevant items to reconcile.
+        %p Any combination of suggested and search items can be selected.
+    = render partial: "item_card", locals: {item: @item}
 
-    - if Item.item_instances(@item).zero?
+    - if @item.packed_items.count.zero?
       .row
         .col-xs-12
           %p This item is not currently in use. You may wish to delete it.
           = delete_button(item_path(@item, redirect: "reconcile_unverified_path"), "Are you sure you want to delete #{@item.generated_name}? This cannot be reversed.")
-
-    - if @similar_items.any?
+    = form_for reconcile_confirm_path(@item) do |f|
+      %br
+      %br
+      %ul.nav.nav-tabs
+        %li.active
+          %a{data: {toggle: "tab"}, href: "#suggestions"}
+            Suggestions
+            %span.label.label-success= @similar_items.count
+        %li
+          %a{data: {toggle: "tab"}, href: "#search"}
+            Search
+      %br
       .row
         .col-xs-12
-          %h4 Target Item Suggestions
-          %p You can swap the target and reconcile item in the next stage if you wish.
-      - @similar_items.each do |item|
-        = render partial: "item_card", locals: {item: item}
+          .tab-content
+            #suggestions.tab-pane.active.in
+              = submit_button("Confirm Reconcile", classes = "reconcile-count", icon = "fa-compress-alt")
+              %h5 Items with similar names are shown here.
+              - if @similar_items.any?
+                %table.table.table-striped.table-hover
+                  %thead
+                    %tr
+                      %th Name
+                      %th.hidden-xs Category
+                      %th.hidden-xs Verified
+                      %th.hidden-xs Flagged
+                      %th Instances
+                      %th
+                  %tbody
+                    - @similar_items.each do |item|
+                      %tr
+                        %td
+                          %p
+                            = item.generated_name
+                        %td.hidden-xs
+                          %p
+                            = item.category&.name || "N/A"
+                        %td.hidden-xs
+                          %p{class: !item.verified ? "text-danger" : "text-success"}
+                            = item.verified&.to_s.capitalize
+                        %td.hidden-xs
+                          %p{class: item.flagged ? "text-danger" : "text-success"}
+                            = item.flagged&.to_s.capitalize
+                        %td
+                          = link_to item_instances_path(item) do
+                            %p.instances= item.packed_items.count
+                        %td
+                          = check_box_tag "reconcile_ids[]", item.id, false, {id: item.id}
+              - else
+                .row
+                  .col-xs-12
+                    %h5.text-center No suggestions found. Try searching for an item.
 
-    - else
-      .row
-        .col-xs-12
-          %h5.text-center No suggestions found. Try searching for an item.
-
-    .row
-      .col-xs-12
-        = render "search_form"
+            #search.tab-pane.fade
+              = submit_button("Confirm Reconcile", classes = "reconcile-count", icon = "fa-compress-alt")
+              %h5 Results from the suggestions tab are automatically filtered from search results.
+              = render "search_form"

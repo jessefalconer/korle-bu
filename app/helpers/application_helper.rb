@@ -22,9 +22,10 @@ module ApplicationHelper
     end
   end
 
-  def submit_button_redirect(text, redirect = "")
+  def submit_button_redirect(text, redirect = "", icon = nil)
+    icon ||= "fa-save"
     button_tag(type: "submit", name: "redirect", value: redirect, class: "btn btn-primary responsive-button") do
-      tag.i("", class: "fa fa-save") +
+      tag.i("", class: "fa #{icon}") +
         tag.span(" #{text}", class: "main-text")
     end
   end
@@ -39,7 +40,7 @@ module ApplicationHelper
   def submit_export
     button_tag(type: "submit", class: "btn btn-primary left") do
       tag.span("Export ", class: "main-text") +
-      tag.i("", class: "fa fa-file-export")
+        tag.i("", class: "fa fa-file-export")
     end
   end
 
@@ -57,12 +58,14 @@ module ApplicationHelper
     end
   end
 
-  def swap_button(path, classes = "")
-    link_to(path, class: "btn btn-warning #{classes}") do
-      tag.i("", class: "fa fa-exchange-alt fa-rotate-90") +
-      tag.span(" Swap", class: "main-text")
-    end
-  end
+  # @todos re-enable when swapping reconcile items is implemented
+  # def swap_button(new_id, old_id, merge_ids, classes = "")
+  #   merge_ids = merge_ids.reject { |n| n == new_id} << old_id
+  #   tag.a(id: new_id, class: "btn btn-warning #{classes} swap-button", data: {merge_items: merge_ids}) do
+  #     tag.i("", class: "fa fa-exchange-alt fa-rotate-90") +
+  #       tag.span(" Swap", class: "main-text")
+  #   end
+  # end
 
   def add_button(path, text, icon)
     link_to(path, class: "btn btn-primary responsive-button") do

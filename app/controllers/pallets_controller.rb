@@ -5,9 +5,7 @@ class PalletsController < ApplicationController
   before_action :set_pallet, only: %i[show destroy update]
 
   def new
-    cid = Pallet.maximum(:custom_uid).to_i + 1
-    name = "PALLET-#{cid}"
-    @pallet = Pallet.new(custom_uid: cid, name: name, container_id: params[:container_id])
+    @pallet = Pallet.new(container_id: params[:container_id])
   end
 
   def create
@@ -44,10 +42,19 @@ class PalletsController < ApplicationController
     redirect_to pallets_path, flash: { success: "Pallet deleted." }
   end
 
+  def find
+    pallet = Pallet.accessible_by(current_ability).find_by(custom_uid: pallet_params[:custom_uid])
+    if pallet
+      redirect_to pallet_path(pallet)
+    else
+      redirect_to pallets_path, flash: { error: "Pallet with custom ID #{pallet_params[:custom_uid]} not found." }
+    end
+  end
+
   private
 
   def pallet_params
-    params.require(:pallet).permit(:name, :status, :notes, :custom_uid, :container_id)
+    params.require(:pallet).permit(:name, :status, :notes, :custom_uid, :container_id, :category_id, :weight)
   end
 
   def set_pallet

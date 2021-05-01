@@ -11,7 +11,7 @@ class Item < ApplicationRecord
                     tsearch: {
                       prefix: true,
                       any_word: true
-                     }
+                    }
                   },
                   ranked_by: ":trigram"
 
@@ -29,71 +29,83 @@ class Item < ApplicationRecord
 
   validates :generated_name, uniqueness: true
 
-  STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XXL XXXL Infant Child Assorted Adult].freeze
+  STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XXL XXXL].freeze
+  INFANT_SIZES = %w[Infant Newborn Preemie Infant\ Size\ 1 Infant\ Size\ 2 Infant\ Size\ 2.5
+                    Infant\ Size\ 3 Infant\ Size\ 3.5 Infant\ Size\ 4 Infant\ Size\ 4.5 Infant\ Size\ 5 Infant\ Size\ 6 Infant\ Size\ 7] +
+                 STANDARD_SIZES.map { |s| "Infant #{s}" }.freeze
+  CHILD_SIZES = %w[Child] + STANDARD_SIZES.map { |s| "Child #{s}" }.freeze
+  ADULT_SIZES = %w[Adult] + STANDARD_SIZES.map { |s| "Adult #{s}" }.freeze
   VOLUMES = %w[mL dL L floz cc qt pt gal].freeze
   LENGTHS = %w[nm μm mm cm m km ga in ft].freeze
   MASSES = %w[ng μg mg g kg lb oz mmol mol].freeze
-
   UNITS = VOLUMES + LENGTHS + MASSES
+  RATIOS = %w[%] + MASSES.map { |m| VOLUMES.map { |v| "#{m}/#{v}" } }.flatten.freeze
 
-  RATIOS = %w[%] # rubocop:disable Style/MutableConstant
+  GROUPED_MEASUREMENTS = [
+    ["Length", LENGTHS],
+    ["Volume", VOLUMES],
+    ["Mass", MASSES],
+    ["Concentration", RATIOS]
+  ].freeze
 
-  MASSES.each { |m| VOLUMES.each { |v| RATIOS << "#{m}/#{v}" } }
+  GROUPED_SIZES = [
+    ["Standard", STANDARD_SIZES],
+    ["Infant", INFANT_SIZES],
+    ["Child", CHILD_SIZES],
+    ["Adult", ADULT_SIZES]
+  ].freeze
 
   before_validation do
     sanitize_whitespace
     self.generated_name = process_name.presence || "Unnamed Item"
   end
 
-  def self.item_instances(item)
-    PackedItem.where(item_id: item.id).count
+  def self.find_similar_records(item)
+    Item.search_by_generated_name(item.generated_name).where.not(id: item.id)
+  end
+
+  def self.execute_merge(item, merge_items, delete: false, verify: true)
+    merge_items.each do |merge_item|
+      PackedItem.where(item_id: merge_item.id).update_all(item_id: item.id) # rubocop:disable Rails/SkipsModelValidations#
+
+      Item.find(merge_item.id).destroy if delete
+      Item.find(item.id).update(verified: verify) if verify
+    end
   end
 
   def process_name
-    [brand.to_s.titleize, object.titleize, standardized_size.to_s,
-     package.to_s, numerical_1_phrase.to_s, numerical_2_phrase.to_s,
-     concentration_phrase.to_s, area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
+    [brand.to_s, object, standardized_size.to_s,
+     numerical_1_phrase.to_s, numerical_2_phrase.to_s,
+     area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
   end
 
   # TODO: Lots of repetition here, can be refactored
   def numerical_1_phrase
     return if numerical_size_1.blank?
 
-    strip_trailing_zero(numerical_size_1) + numerical_units_1.to_s + " #{numerical_description_1.to_s.titleize}"
+    "#{strip_trailing_zero(numerical_size_1)}#{numerical_units_1} #{numerical_description_1.to_s.titleize}"
   end
 
   def numerical_2_phrase
     return if numerical_size_2.blank?
 
-    strip_trailing_zero(numerical_size_2) + numerical_units_2.to_s + " #{numerical_description_2.to_s.titleize}"
-  end
-
-  def concentration_phrase
-    return if concentration.blank?
-
-    strip_trailing_zero(concentration) + concentration_units.to_s + " #{concentration_description.to_s.titleize}"
+    "#{strip_trailing_zero(numerical_size_2)}#{numerical_units_2} #{numerical_description_2.to_s.titleize}"
   end
 
   def area_phrase
     return if area_1.blank? || area_2.blank?
 
-    strip_trailing_zero(area_1) + "x" + strip_trailing_zero(area_2) + area_units.to_s + " #{area_description.to_s.titleize}"
+    "#{strip_trailing_zero(area_1)}x#{strip_trailing_zero(area_2)}#{area_units} #{area_description.to_s.titleize}"
   end
 
   def range_phrase
     return if range_1.blank? || range_2.blank?
 
-    strip_trailing_zero(range_1) + "-" + strip_trailing_zero(range_2) + range_units.to_s + " #{range_description.to_s.titleize}"
+    "#{strip_trailing_zero(range_1)}-#{strip_trailing_zero(range_2)}#{range_units} #{range_description.to_s.titleize}"
   end
 
-  def package
-    return if packaged_quantity.blank?
-
-    "#{packaged_quantity}-Pack"
-  end
-
-  def strip_trailing_zero(n)
-    n.to_s.sub(/\.?0+$/, "")
+  def strip_trailing_zero(num)
+    num.to_s.sub(/\.?0+$/, "")
   end
 
   def trigram(word)
@@ -106,15 +118,15 @@ class Item < ApplicationRecord
   end
 
   def name_similarity(comparison_item)
-    tri1 = trigram(generated_name)
-    tri2 = trigram(comparison_item.generated_name)
+    tri_1 = trigram(generated_name)
+    tri_2 = trigram(comparison_item.generated_name)
 
-    return 0.0 if [tri1, tri2].any? { |arr| arr.size == 0 }
+    return 0.0 if [tri_1, tri_2].any? { |arr| arr.size.zero? }
 
     # Find number of trigrams shared between them
-    same_size = (tri1 & tri2).size
+    same_size = (tri_1 & tri_2).size
     # Find unique total trigrams in both arrays
-    all_size = (tri1 | tri2).size
+    all_size = (tri_1 | tri_2).size
 
     (same_size.to_f / all_size * 100).round(2)
   end

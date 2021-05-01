@@ -2,7 +2,7 @@
 
 class ContainerPresenter < BasePresenter
   def shipment_location
-    status = shipment&.status || "Unassigned"
+    status = shipment&.status || "Staged"
 
     tag.td do
       if shipment
@@ -20,7 +20,7 @@ class ContainerPresenter < BasePresenter
 
   def warehouse_location
     location = shipment&.current_location || "N/A"
-    status = shipment&.status&.presence || "Unassigned"
+    status = shipment&.status&.presence || "Staged"
 
     tag.td do
       tag.p(location, class: "status-#{location.parameterize}")

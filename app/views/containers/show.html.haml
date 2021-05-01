@@ -6,6 +6,7 @@
         = link_to "Home", index_path
       = present(@container).breadcrumbs
 
+    %h5 Add to Container:
     - if can? :read, Container
       = link_index_button(containers_path, "fa-truck")
     - if can? :create, Pallet
@@ -30,22 +31,26 @@
               .col-xs-12
                 %h5.text-muted Name
                 %h4= @container.name
+                %hr
               - if @container.notes.present?
                 .col-xs-12
-                  %h5.text-muted Notes
-                  %h4= @container.notes
+                  %h6.text-muted Notes
+                  %h5= @container.notes
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Custom ID
-                %h4= @container.custom_uid
+                %h6.text-muted Custom ID
+                %h5= @container.custom_uid
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Status
-                %h4{class: "status-#{@container.status.parameterize}"}= @container.status
+                %h6.text-muted Status
+                %h5{class: "status-#{@container.status.parameterize}"}= @container.status
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Created By
-                %h4= @container.user.name
+                %h6.text-muted Weight (kg)
+                %h5= @container.weight || "N/A"
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Created At
-                %h4= @container.created_at.strftime("%Y-%m-%d")
+                %h6.text-muted Created By
+                %h5= @container.user.name
+              .col-xs-6.col-sm-4.col-md-6
+                %h6.text-muted Created At
+                %h5= @container.created_at.strftime("%Y-%m-%d")
 
           - if can? :manage, Container
             #edit.tab-pane.fade
@@ -158,13 +163,13 @@
                   - @container.container_items.order(:updated_at).reverse_order.each do |ci|
                     %tr.filter-row
                       %td
-                        = link_to item_path(ci.item) do
+                        = link_to container_container_items_path(@container) do
                           %p= ci.generated_name
                       %td
-                        = link_to item_path(ci.item) do
+                        = link_to container_container_items_path(@container) do
                           %p= ci.expiry_date&.strftime("%Y-%m-%d")
                       %td
-                        = link_to item_path(ci.item) do
+                        = link_to container_container_items_path(@container) do
                           %p= ci.quantity
               .close-collapse{data: {toggle: "collapse"}, href: "#container_items"}
                 %span Close

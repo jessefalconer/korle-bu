@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_30_212630) do
+ActiveRecord::Schema.define(version: 2021_03_27_195039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
     t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
-    t.integer "weight"
+    t.float "weight"
     t.bigint "user_id"
     t.bigint "pallet_id"
     t.bigint "container_id"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
 
   create_table "containers", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress", null: false
+    t.string "status", default: "In Progress"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -85,8 +85,27 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "destination"
+    t.float "weight"
     t.index ["shipment_id"], name: "index_containers_on_shipment_id"
     t.index ["user_id"], name: "index_containers_on_user_id"
+  end
+
+  create_table "hospitals", force: :cascade do |t|
+    t.string "status", default: "Active", null: false
+    t.string "description", limit: 255
+    t.string "name", limit: 255
+    t.string "street", limit: 255
+    t.string "postal_code", limit: 255
+    t.string "city", limit: 255
+    t.string "province", limit: 255
+    t.string "country", limit: 255
+    t.string "phone", limit: 255
+    t.bigint "warehouse_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_hospitals_on_user_id"
+    t.index ["warehouse_id"], name: "index_hospitals_on_warehouse_id"
   end
 
   create_table "item_boxes", force: :cascade do |t|
@@ -105,16 +124,12 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
     t.string "object", limit: 255
     t.string "brand", limit: 255
     t.string "standardized_size", limit: 255
-    t.float "concentration"
-    t.string "concentration_units", limit: 255
-    t.string "concentration_description", limit: 255
     t.float "numerical_size_1"
     t.string "numerical_units_1", limit: 255
     t.string "numerical_description_1", limit: 255
     t.float "numerical_size_2"
     t.string "numerical_units_2", limit: 255
     t.string "numerical_description_2", limit: 255
-    t.integer "packaged_quantity"
     t.string "generated_name"
     t.string "generated_name_with_keywords"
     t.string "notes", limit: 255
@@ -126,7 +141,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "category"
-    t.integer "unit_weight", default: 0, null: false
+    t.float "unit_weight", default: 0.0, null: false
     t.float "area_1"
     t.float "area_2"
     t.string "area_units", limit: 255
@@ -143,8 +158,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
 
   create_table "packed_items", force: :cascade do |t|
     t.integer "quantity", default: 0, null: false
-    t.integer "weight"
-    t.string "weight_units"
+    t.float "weight"
     t.datetime "expiry_date"
     t.bigint "box_id"
     t.bigint "pallet_id"
@@ -155,7 +169,8 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "remaining_quantity", default: 0, null: false
-    t.integer "remaining_weight", default: 0, null: false
+    t.float "remaining_weight", default: 0.0, null: false
+    t.boolean "show_id", default: false, null: false
     t.index ["box_id"], name: "index_packed_items_on_box_id"
     t.index ["container_id"], name: "index_packed_items_on_container_id"
     t.index ["item_id"], name: "index_packed_items_on_item_id"
@@ -166,7 +181,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
 
   create_table "pallets", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress", null: false
+    t.string "status", default: "In Progress"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -175,6 +190,9 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "location"
     t.string "description"
+    t.bigint "category_id"
+    t.float "weight"
+    t.index ["category_id"], name: "index_pallets_on_category_id"
     t.index ["container_id"], name: "index_pallets_on_container_id"
     t.index ["user_id"], name: "index_pallets_on_user_id"
   end
@@ -196,13 +214,14 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
 
   create_table "unpacking_events", force: :cascade do |t|
     t.integer "quantity", default: 0, null: false
-    t.integer "weight"
-    t.string "weight_units"
+    t.float "weight"
     t.string "notes", limit: 255
     t.bigint "packed_item_id"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "hospital_id"
+    t.index ["hospital_id"], name: "index_unpacking_events_on_hospital_id"
     t.index ["packed_item_id"], name: "index_unpacking_events_on_packed_item_id"
     t.index ["user_id"], name: "index_unpacking_events_on_user_id"
   end
@@ -219,6 +238,7 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "role", default: "Volunteer", null: false
     t.bigint "warehouse_id"
+    t.boolean "masquerader", default: false, null: false
     t.index ["warehouse_id"], name: "index_users_on_warehouse_id"
   end
 
@@ -231,7 +251,6 @@ ActiveRecord::Schema.define(version: 2021_01_30_212630) do
     t.string "city", limit: 255
     t.string "province", limit: 255
     t.string "country", limit: 255
-    t.integer "custom_uid"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

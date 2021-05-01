@@ -57,8 +57,8 @@ namespace :legacy_data do
 
     # Containers previously did not belong to a Shipment. Warehouses are seeded manually due to how few there are
     Container.all.order(:created_at).each_with_index do |container, index|
-      shipping = Warehouse.find_by(name: "Delta")
-      receiving = Warehouse.find_by(name: container.destination) || Warehouse.find_by(name: "Delta")
+      shipping = Warehouse.find_by(name: "Main Warehouse")
+      receiving = Warehouse.find_by(name: container.destination) || Warehouse.find_by(name: "Main Warehouse")
       status = STATUS_TRANSLATIONS[container.status&.to_sym] || "Not Started"
 
       ship = Shipment.create(user_id: user_id, name: "SHIPMENT-#{index + 1}", custom_uid: index + 1,
@@ -122,10 +122,24 @@ namespace :legacy_data do
     end
   end
 
+  # Many boxes and pallets were left unassigned
+  # Use container creation intervals to estimate
+  task link_boxes_and_pallets: :environment do
+    containers = Container.order(:created_at)
+    containers.each_with_index do |container, index|
+      date_end = container == containers.last ? DateTime.now : containers[index + 1].created_at
+      range = container.created_at..date_end
+
+      Box.where(created_at: range, pallet_id: nil).find_each { |b| b.update(container_id: container.id) }
+      Box.where(created_at: range).where.not(pallet_id: nil).find_each { |b| b.pallet.update(container_id: container.id) }
+      Pallet.where(created_at: range, container_id: nil).find_each { |p| p.update(container_id: container.id) }
+    end
+  end
+
   task prune_data: :environment do
     counter = 0
     Item.all.find_each do |item|
-      if Item.item_instances(item).zero?
+      if item.packed_items.none?
         item.destroy
         counter += 1
         puts "Destroyed #{counter} items"

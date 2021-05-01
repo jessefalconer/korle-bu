@@ -10,30 +10,36 @@
     %ul.nav.nav-tabs
       - if can? :manage, PackedItem
         %li.active
-          %a{data: {toggle: "tab"}, href: "#manage-items"} Manage
-        %li
           %a{data: {toggle: "tab"}, href: "#search"} Search
         %li
           %a{data: {toggle: "tab"}, href: "#new"} New
+        %li
+          %a{data: {toggle: "tab"}, href: "#manage-items"}
+            Manage
+            %span.label.label-success= @box.box_items.count
       - elsif cannot? :manage, PackedItem
         %li.active
-          %a{data: {toggle: "tab"}, href: "#manage-items"} Inventory
-
+          %a{data: {toggle: "tab"}, href: "#manage-items"}
+            Inventory
+            %span.label.label-success= @box.box_items.count
       - if can? :manage, UnpackingEvent
         %li
-          %a{data: {toggle: "tab"}, href: "#unpack-items"} Unpack
+          %a{data: {toggle: "tab"}, href: "#unpack-items"}
+            Unpack
+            %span.label.label-info= @box.box_items.with_inventory.count
         %li
-          %a{data: {toggle: "tab"}, href: "#history-items"} History
-
+          %a{data: {toggle: "tab"}, href: "#history-items"}
+            History
+            %span.label.label-default= @box.box_items.with_events.count
     .row
       .col-xs-12
         %br
         .tab-content
           - if can? :manage, PackedItem
-            #manage-items.tab-pane.active.in
+            #manage-items.tab-pane.fade
               = render "box_items/manage_form"
 
-            #search.tab-pane.fade
+            #search.tab-pane.active.in
               = render "box_items/search_form"
 
             #new.tab-pane.fade

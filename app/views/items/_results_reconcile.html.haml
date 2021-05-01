@@ -1,0 +1,34 @@
+- if @search_results_items.none?
+  .row
+    .col-xs-12
+      %h5.text-center No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
+- else
+  %table.table.table-striped.table-hover
+    %thead
+      %tr
+        %th Name
+        %th.hidden-xs Category
+        %th.hidden-xs Verified
+        %th.hidden-xs Flagged
+        %th Instances
+        %th
+    %tbody
+      - @search_results_items.each do |item|
+        %tr
+          %td
+            %p
+              = item.generated_name
+          %td.hidden-xs
+            %p
+              = item.category&.name || "N/A"
+          %td.hidden-xs
+            %p{class: !item.verified ? "text-danger" : "text-success"}
+              = item.verified&.to_s.capitalize
+          %td.hidden-xs
+            %p{class: item.flagged ? "text-danger" : "text-success"}
+              = item.flagged&.to_s.capitalize
+          %td
+            = link_to item_instances_path(item) do
+              %p.instances= item.packed_items.count
+          %td
+            = check_box_tag "reconcile_ids[]", item.id, false, {id: item.id}

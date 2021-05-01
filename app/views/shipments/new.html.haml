@@ -1,6 +1,6 @@
 .content
   .header
-    %h1.page-title Shipments
+    %h1.page-title New Shipment
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
@@ -10,4 +10,6 @@
   .main-content
     .row
       .col-md-4
+        - unless @shipment.persisted?
+          %h5 Confirm new container information.
         = render partial: "form"

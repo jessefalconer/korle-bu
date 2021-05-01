@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "/privacy", to: static("privacy.html")
   get "/terms", to: static("terms.html")
   get "/admin_help", to: static("admin_help.html")
+  get "/volunteer_help", to: static("volunteer_help.html")
   get "/dev_updates", to: static("dev_updates.html")
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
@@ -17,13 +18,16 @@ Rails.application.routes.draw do
 
   get "reconcile_item_search", to: "items#reconcile_search"
   get "item_search_form", to: "items#search_form"
+  get "index_item_search", to: "items#index_search"
   get "reconcile_unverified", to: "reconcile_items#unverified"
   get "reconcile_uncategorized", to: "reconcile_items#uncategorized"
   get "reconcile_flagged", to: "reconcile_items#flagged"
   get "reconcile/:id", to: "reconcile_items#start", as: :reconcile_start
-  get "reconcile/:id/confirm/:target_id", to: "reconcile_items#confirm", as: :reconcile_confirm
-  get "reconcile/:id/execute_reconcile/:target_id", to: "reconcile_items#execute", as: :execute_reconcile
+  post "reconcile/:id", to: "reconcile_items#confirm", as: :reconcile_confirm
+  post "reconcile/:id/execute_reconcile", to: "reconcile_items#execute", as: :execute_reconcile
   get "reconcile/:id/item_instances", to: "reconcile_items#item_instances", as: :item_instances
+  post "find_box", to: "boxes#find"
+  post "find_pallet", to: "pallets#find"
 
   resources :exports, only: :create
   resources :categories
@@ -34,6 +38,9 @@ Rails.application.routes.draw do
     end
   end
   resources :warehouses
+  resources :hospitals
+  resources :packed_items
+  post "packed_item_add_with_item", to: "packed_items#add_with_item"
 
   concern :boxable_items do
     resources :boxes do

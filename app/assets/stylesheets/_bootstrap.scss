@@ -2714,8 +2714,9 @@ select[multiple].input-group-sm {
     >a {
       margin-right: 2px;
       line-height: 1.42857143;
-      border: 1px solid transparent;
       border-radius: 4px 4px 0 0;
+      background-color: #fff;
+      border: 1px solid #ddd;
 
       &:hover {
         border-color: #eee #eee #ddd;
@@ -2913,7 +2914,6 @@ select[multiple].input-group-sm {
 }
 
 .navbar-collapse {
-  max-height: 340px;
   padding-right: 15px;
   padding-left: 15px;
   overflow-x: visible;
@@ -3064,7 +3064,7 @@ select[multiple].input-group-sm {
         }
 
         &:focus {
-          color: #333;
+          color: #afafaf;
           background-color: transparent;
         }
       }

@@ -1,0 +1,20 @@
+- @items.each do |item|
+  %tr
+    %td
+      = link_to item_path(item) do
+        %p= item.generated_name
+    %td.hidden-xs
+      = link_to item_path(item) do
+        %p= item.category&.name
+    %td.hidden-xs
+      = link_to item_path(item) do
+        - if item.verified
+          %p.text-success= item.verified.to_s.capitalize
+        - else
+          %p.text-danger= item.verified.to_s.capitalize
+    %td.hidden-xs
+      = link_to item_path(item) do
+        - if item.flagged
+          %p.text-danger= item.flagged&.to_s.capitalize
+        - else
+          %p.text-success= item.flagged&.to_s.capitalize

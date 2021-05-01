@@ -128,14 +128,17 @@ footer {
 .edit_item {
   padding: 0 15px;
 
+  .collapsing .row.form-row,
   .collapse .row.form-row { padding: 5px 15px 0 15px; }
 }
 
 .modal-body { padding-top: 15px; }
 
+.new_packed_item,
 .edit_container,
 .edit_pallet,
 .edit_box {
+  .collapsing .row.form-row,
   .collapse .row.form-row { padding: 5px 15px 0 15px; }
 }
 
@@ -159,13 +162,16 @@ footer {
 
     .drawer-info {
       margin-left: 10px;
-      min-width: 35px;
 
       i {
         color: rgb(126, 123, 123);
         vertical-align: middle;
 
         &.fa-ellipsis-v { margin-left: 4.38px; }
+        &.fa-times {
+          margin-right: -2px;
+          margin-left: 2px;
+        }
       }
     }
   }
@@ -246,20 +252,20 @@ img.kbnf-logo-center {
 }
 
 .status-n-a,
-.status-unassigned {color: #a94442; }
+.status-staged {color: #a94442; }
 .status-in-progress { color: #8a6d3b; }
 .status-complete { color: #31708f; }
 .status-received { color: #3c763d; }
 
 table.table-striped.link-rows tbody tr td {
   padding: 0px;
-  height: 37px;
+  height: 39px;
 
   p {
     padding: 0 8px;
     cursor: pointer;
-    height: 36px;
-    line-height: 36px;
+    height: 38px;
+    line-height: 38px;
     color: #333;
     vertical-align: middle;
 
@@ -272,6 +278,26 @@ table.table-striped.link-rows tbody tr td {
     &.status-in-progress { color: #8a6d3b; }
     &.status-complete { color: #31708f; }
     &.status-received { color: #3c763d; }
-    &.status-unassigned { color: #a94442; }
+    &.status-staged { color: #a94442; }
   }
+}
+
+.inline-search-form {
+  display: inline-block;
+  padding-top: 7px;
+  button,
+  input { display: inline-block; }
+
+  input {
+    vertical-align: middle;
+    height: 34px;
+    width: 100px;
+    text-align: center;
+  }
+}
+
+em.show-id {
+  background-color: #e9dfa7;
+  padding: 0.25em 0.5em;
+  border-radius: 3px;
 }

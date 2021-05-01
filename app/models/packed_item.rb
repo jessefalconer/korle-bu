@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PackedItem < ApplicationRecord
+  attr_accessor :staged
+
   belongs_to :box, optional: true
   belongs_to :container, optional: true
   belongs_to :item, optional: false
@@ -14,33 +16,55 @@ class PackedItem < ApplicationRecord
 
   scope :with_inventory, -> { left_joins(:unpacking_events).where("remaining_quantity > ?", 0).uniq }
   scope :with_events, -> { joins(:unpacking_events).uniq }
+  scope :staged, -> { where(box_id: nil, pallet_id: nil, container_id: nil) }
 
   accepts_nested_attributes_for :unpacking_events, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   with_options presence: true do
-    validates :box, if: ->(packed_item) { packed_item.container.blank? && packed_item.pallet.blank? }
-    validates :container, if: ->(packed_item) { packed_item.box.blank? && packed_item.pallet.blank? }
-    validates :pallet, if: ->(packed_item) { packed_item.box.blank? && packed_item.container.blank? }
+    validates :box, if: ->(packed_item) { packed_item.container.blank? && packed_item.pallet.blank? && packed_item.staged == "false" }
+    validates :container, if: ->(packed_item) { packed_item.box.blank? && packed_item.pallet.blank? && packed_item.staged == "false" }
+    validates :pallet, if: ->(packed_item) { packed_item.box.blank? && packed_item.container.blank? && packed_item.staged == "false" }
   end
+
+  paginates_per 25
+
+  delegate :generated_name, to: :item
 
   before_save do
     recalculate_remaining_items
     self.shipment = box&.shipment || pallet&.shipment || container&.shipment
   end
 
-  delegate :generated_name, to: :item
-
   def self.by_item
     all.group_by(&:item).each_with_object({}) do |(item, packed_items), hash|
-      hash[item.generated_name] = { category: (item.category&.name || "N/A"), quantity: packed_items.sum(&:quantity) }
+      hash[item.generated_name] = {
+        category: (item.category&.name || "N/A"),
+        quantity: packed_items.sum(&:quantity),
+        weight: packed_items.pluck(:weight).compact.sum,
+        location: packed_items.map(&:location_name).uniq.join(", ")
+      }
     end
   end
 
   def self.by_category
     all.group_by(&:category).each_with_object({}) do |(category, packed_items), hash|
-      hash[category.name || "N/A"] =
-        packed_items.group_by(&:item).each_with_object({}) { |(b, i), h| h[b.generated_name] = i.sum(&:quantity) }
+      hash[category&.name || "N/A"] =
+        packed_items.group_by(&:item).each_with_object({}) do |(item, pi), h|
+          h[item.generated_name] = {
+            quantity: pi.sum(&:quantity),
+            weight: pi.pluck(:weight).compact.sum,
+            location: pi.map(&:location_name).uniq.join(", ")
+          }
+        end
     end
+  end
+
+  def location_name
+    return box.name if box
+    return pallet.name if pallet
+    return container.name if container
+
+    "Staged"
   end
 
   def recalculate_remaining_items

@@ -12,6 +12,7 @@ import "../packs/bootstrap";
 import "../packs/search";
 import "../packs/quick_filter";
 import "../packs/modals";
+import "../packs/staging";
 
 $(function () {
   var uls = $('.sidebar-nav > ul > *').clone();

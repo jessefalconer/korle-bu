@@ -1,29 +1,27 @@
-- time = @user.created_at&.strftime("%Y-%m-%d") || DateTime.now.strftime("%Y-%m-%d")
-
 = form_for @user do |f|
   .col-xs-12.col-sm-6
     .form-group
       %label First Name
-      = f.text_field :first_name, disabled: no_edit, class: "form-control"
+      = f.text_field :first_name, class: "form-control"
     .form-group
       %label Last Name
-      = f.text_field :last_name, disabled: no_edit, class: "form-control"
+      = f.text_field :last_name, class: "form-control"
     .form-group
       %label Email
-      = f.text_field :email, disabled: no_edit, class: "form-control"
+      = f.text_field :email, class: "form-control"
     .form-group
       %label Phone Number
-      = f.text_field :phone, disabled: no_edit, class: "form-control"
-    - unless cannot? :alter_roles, User
+      = f.text_field :phone, class: "form-control"
+    - unless (cannot? :alter_roles, User) && !@user.masquerader
       .form-group
         %label Role
-        = f.select(:role, options_for_select(User::ROLES, @user.role), {}, { disabled: no_edit, class: "form-control" })
+        = f.select(:role, options_for_select(User::ROLES, @user.role), {}, { class: "form-control" })
       .form-group
         %label Status
-        = f.select(:status, options_for_select(User::STATUSES, @user.status), {}, { disabled: no_edit, class: "form-control" })
+        = f.select(:status, options_for_select(User::STATUSES, @user.status), {}, { class: "form-control" })
       .form-group
         %label Warehouse
-        = f.select(:warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @user.warehouse_id), { include_blank: "Unassigned" }, { disabled: no_edit, class: "form-control" })
+        = f.select(:warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @user.warehouse_id), { include_blank: "None" }, { class: "form-control" })
     -if create_password
       .form-group
         %label Password
@@ -31,17 +29,14 @@
       .form-group
         %label Confirm Password
         = f.password_field :password_confirmation, class: "form-control"
-    .form-group
-      %label Created At
-      = f.text_field :created_at, value: time, disabled: true, class: "form-control"
+
   .col-xs-12.col-sm-6
     .form-group
       %label Notes
-      = f.text_area :notes, disabled: no_edit || (current_user.id != @user.id), class: "form-control", style: "height: 475px;"
+      = f.text_area :notes, disabled: current_user.id != @user.id, class: "form-control", style: "height: 475px;"
 
   .col-xs-12
     .btn-toolbar.list-toolbar
-      - if delete && current_user != @user
+      - if current_user != @user && !@user.created_records? && @user.persisted?
         = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed.")
-      - elsif !delete
-        = submit_button_responsive("Save")
+      = submit_button_responsive("Save")

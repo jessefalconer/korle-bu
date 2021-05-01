@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class Shipment < ApplicationRecord
-  STATUSES = ["In Progress", "Complete", "Received"].freeze
+  STATUSES = [
+    IN_PROGRESS = "In Progress",
+    COMPLETE = "Complete",
+    RECEIVED = "Received"
+  ].freeze
 
   belongs_to :user, optional: false
   belongs_to :receiving_warehouse, class_name: "Warehouse", optional: false
@@ -28,6 +32,8 @@ class Shipment < ApplicationRecord
     cascade_statuses if saved_change_to_status && cascadable?
   end
 
+  after_initialize :set_defaults, if: :new_record?
+
   def current_location
     case status
     when "In Progress"
@@ -50,5 +56,13 @@ class Shipment < ApplicationRecord
   # TODO: Move this to a service
   def cascade_statuses
     containers.where.not(status: status).find_each { |c| c.update(status: status) }
+  end
+
+  def set_defaults
+    cid = Shipment.maximum(:custom_uid).to_i + 1
+    name = "SHIPMENT-#{cid}"
+    self.name = name
+    self.custom_uid = cid
+    self.status = IN_PROGRESS
   end
 end

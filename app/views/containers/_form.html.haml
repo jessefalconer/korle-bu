@@ -12,12 +12,15 @@
     = f.label :status
     = f.select :status, options_for_select(Container::STATUSES, @container.status), {}, { class: "form-control", id: "status" }
   .form-group
+    %label Weight (kg)
+    = f.number_field :weight, min: 0, step: :any, class: "form-control"
+  .form-group
     = f.label :notes
     = f.text_field :notes, class: "form-control"
   - if can? :reassign, Container
     .form-group
       %label Shipment Assignment
-      = f.select :shipment_id, options_from_collection_for_select(Shipment.accessible_by(current_ability).order(:name), :id, :name, shipment_id), { include_blank: "Unassigned" }, { class: "form-control", id: "shipment-assignment"}
+      = f.select :shipment_id, options_from_collection_for_select(Shipment.accessible_by(current_ability).order(:id).reverse_order, :id, :name, shipment_id), { include_blank: "Staged" }, { class: "form-control", id: "shipment-assignment"}
   .form-group
     %label Created By
     = f.text_field :user, value: user, disabled: true, class: "form-control"

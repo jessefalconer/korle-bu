@@ -5,9 +5,7 @@ class BoxesController < ApplicationController
   before_action :set_box, only: %i[show destroy update]
 
   def new
-    cid = Box.maximum(:custom_uid).to_i + 1
-    name = "BOX-#{cid}"
-    @box = Box.new(custom_uid: cid, name: name, container_id: params[:container_id], pallet_id: params[:pallet_id])
+    @box = Box.new(container_id: params[:container_id], pallet_id: params[:pallet_id])
   end
 
   def create
@@ -44,10 +42,19 @@ class BoxesController < ApplicationController
     redirect_to boxes_path, flash: { success: "Box deleted." }
   end
 
+  def find
+    box = Box.accessible_by(current_ability).find_by(custom_uid: box_params[:custom_uid])
+    if box
+      redirect_to box_path(box)
+    else
+      redirect_to boxes_path, flash: { error: "Box with custom ID #{box_params[:custom_uid]} not found." }
+    end
+  end
+
   private
 
   def box_params
-    params.require(:box).permit(:name, :status, :notes, :custom_uid, :pallet_id, :container_id)
+    params.require(:box).permit(:name, :status, :notes, :custom_uid, :pallet_id, :container_id, :weight)
   end
 
   def set_box

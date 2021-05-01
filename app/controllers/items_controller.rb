@@ -22,31 +22,51 @@ class ItemsController < ApplicationController
   end
 
   def index
-    @items = Item.all.order(sort_column + " " + sort_direction).page params[:page]
+    # TODO: sort this out
+    # @items = Item.all.order(sort_column + " " + sort_direction).page params[:page]
+    @items = if params[:category]
+      Item.where(category_id: params[:category]).order(:created_at).reverse_order.page params[:page]
+    else
+      Item.all.order(:created_at).reverse_order.page params[:page]
+    end
+  end
+
+  def index_search
+    @items = Item.search_by_generated_name(params[:search])
+
+    render json: render_to_string(partial: "results_index", layout: false).to_json
   end
 
   def reconcile_search
-    @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: params[:compare_id].to_i)
+    excluded_ids = params[:similar_ids] || []
+    excluded_ids << params[:compare_id]
+    @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: excluded_ids)
     @item = Item.find(params[:compare_id])
 
-    render json: render_to_string(partial: "results", layout: false, locals: { comparison_record_id: params[:compare_id] }).to_json
+    render json: render_to_string(partial: "results_reconcile", layout: false, locals: { comparison_record_id: params[:compare_id] }).to_json
   end
 
   def search_form
     klass = params[:model].constantize
-    record = klass.find(params[:id])
     @search_results_items = Item.search_by_generated_name(params[:search]).pluck(:id, :generated_name, :unit_weight)
-    form_path, model = generate_form_url(params[:model], record)
 
-    render json: render_to_string(partial: "results-form", layout: false, locals: { model: model, form_path: form_path }).to_json
+    form_path = if params[:id]
+      generate_form_url(params[:model], klass.find(params[:id]))
+    else
+      packed_items_path
+    end
+
+    render json: render_to_string(partial: "results_form", layout: false, locals: { form_path: form_path }).to_json
   end
 
   def show
   end
 
   def update
-    path = if params[:redirect]
-      eval(params[:redirect])
+    path = if permitted_redirect
+      eval(params[:redirect]) # rubocop:disable Security/Eval
+    elsif params[:redirect] == "reconcile_start_path"
+      reconcile_start_path(@item)
     else
       item_path(@item)
     end
@@ -59,8 +79,8 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    path = if params[:redirect]
-      eval(params[:redirect])
+    path = if permitted_redirect
+      eval(params[:redirect]) # rubocop:disable Security/Eval
     else
       items_path
     end
@@ -78,18 +98,22 @@ class ItemsController < ApplicationController
   def generate_form_url(klass, record)
     case klass
     when "Box"
-      [box_box_items_path(record.id), :box_item]
+      box_box_items_path(record.id)
     when "Pallet"
-      [pallet_pallet_items_path(record.id), :pallet_item]
+      pallet_pallet_items_path(record.id)
     when "Container"
-      [container_container_items_path(record.id), :container_item]
+      container_container_items_path(record.id)
     end
   end
 
+  def permitted_redirect
+    %w[reconcile_unverified_path reconcile_uncategorized_path reconcile_flagged_path].include? params[:redirect]
+  end
+
   def item_params
-    params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description,
+    params.require(:item).permit(:brand, :object, :standardized_size,
                                  :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
-                                 :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity, :unit_weight,
+                                 :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :unit_weight,
                                  :category_id, :notes, :verified, :photo, :flagged)
   end
 

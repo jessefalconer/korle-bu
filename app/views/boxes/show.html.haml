@@ -7,6 +7,7 @@
       = present(@box).breadcrumbs
 
     = link_index_button(boxes_path, "fa-box-open")
+    %h5 Add to Box:
     = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
 
   .main-content
@@ -26,22 +27,26 @@
               .col-xs-12
                 %h5.text-muted Name
                 %h4= @box.name
+                %hr
               - if @box.notes.present?
                 .col-xs-12
                   %h5.text-muted Notes
                   %h4= @box.notes
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Custom ID
-                %h4= @box.custom_uid
+                %h6.text-muted Custom ID
+                %h5= @box.custom_uid
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Status
-                %h4{class: "status-#{@box.status.parameterize}"}= @box.status
+                %h6.text-muted Status
+                %h5{class: "status-#{@box.status.parameterize}"}= @box.status
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Created By
-                %h4= @box.user.name
+                %h6.text-muted Weight (kg)
+                %h5= @box.weight || "N/A"
               .col-xs-6.col-sm-4.col-md-6
-                %h5.text-muted Created At
-                %h4= @box.created_at.strftime("%Y-%m-%d")
+                %h6.text-muted Created By
+                %h5= @box.user.name
+              .col-xs-6.col-sm-4.col-md-6
+                %h6.text-muted Created At
+                %h5= @box.created_at.strftime("%Y-%m-%d")
 
           - if can? :manage, Box
             #edit.tab-pane.fade
@@ -94,13 +99,13 @@
                   - @box.box_items.order(:updated_at).reverse_order.each do |bi|
                     %tr.filter-row
                       %td
-                        = link_to item_path(bi.item) do
+                        = link_to box_box_items_path(@box) do
                           %p= bi.generated_name
                       %td
-                        = link_to item_path(bi.item) do
+                        = link_to box_box_items_path(@box) do
                           %p= bi.expiry_date&.strftime("%Y-%m-%d")
                       %td
-                        = link_to item_path(bi.item) do
+                        = link_to box_box_items_path(@box) do
                           %p= bi.quantity
               .close-collapse{data: {toggle: "collapse"}, href: "#box_items"}
                 %span Close

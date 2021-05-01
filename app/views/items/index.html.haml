@@ -7,6 +7,7 @@
       %li.active Items
     = add_button(new_item_path, "Item", "fa-stethoscope")
   .main-content
+    = render "search_form"
     %table.table.table-striped.table-hover.link-rows
       %thead
         %tr
@@ -14,13 +15,13 @@
           %th= sortable "category"
           %th.hidden-xs= sortable "verified"
           %th.hidden-xs= sortable "flagged"
-      %tbody
+      %tbody#search-results
         - @items.each do |item|
           %tr
             %td
               = link_to item_path(item) do
                 %p= item.generated_name
-            %td
+            %td.hidden-xs
               = link_to item_path(item) do
                 %p= item.category&.name
             %td.hidden-xs

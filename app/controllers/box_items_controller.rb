@@ -5,27 +5,45 @@ class BoxItemsController < ApplicationController
   before_action :set_box_item, except: %i[create index add_with_item]
 
   def create
-    @box.box_items.create(box_item_params.merge(user: current_user))
-    redirect_to box_box_items_path(@box), flash: { success: "Item added." }
+    box_item = @box.box_items.build(box_item_params)
+
+    if box_item.save
+      id_sentence = box_item.show_id ? "ID: ##{box_item.id}." : ""
+      message = { success: "#{box_item.quantity} #{box_item.generated_name.pluralize} added. #{id_sentence}" }
+    else
+      message = { error: box_item.errors.full_messages.to_sentence }
+    end
+
+    redirect_to box_box_items_path(@box), flash: message
   end
 
   def update
-    @box_item.update(box_item_params)
-    redirect_to box_box_items_path(@box), flash: { success: "Item updated." }
+    if @box_item.update(box_item_params)
+      id_sentence = @box_item.show_id ? "ID: ##{@box_item.id}." : ""
+      message = { success: "#{@box_item.quantity} #{@box_item.generated_name.pluralize} updated. #{id_sentence}" }
+    else
+      message = { error: @box_item.errors.full_messages.to_sentence }
+    end
+
+    redirect_to box_box_items_path(@box), flash: message
   end
 
   def index
   end
 
   def add_with_item
-    item = Item.new(item_params.merge(user: current_user))
+    item = Item.new(item_params)
+    box_item = @box.box_items.build(box_item_params.merge(item: item))
 
-    if item.save
-      @box.box_items.create(expiry_date: params[:expiry_date], quantity: params[:quantity], user: current_user, item_id: item.id)
-      redirect_to box_box_items_path(@box), flash: { success: "Item created and added." }
+    if item.save && box_item.save
+      id_sentence = box_item.show_id ? "ID: ##{box_item.id}." : ""
+      message = { success: "Item created. #{box_item.quantity} #{item.generated_name.pluralize} added. #{id_sentence}" }
     else
-      redirect_to box_box_items_path(@box), flash: { error: item.errors }
+      error_message = item.errors.full_messages + box_item.errors.full_messages
+      message = { error: error_message.to_sentence }
     end
+
+    redirect_to box_box_items_path(@box), flash: message
   end
 
   def destroy
@@ -36,14 +54,16 @@ class BoxItemsController < ApplicationController
   private
 
   def box_item_params
-    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id)
+    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :show_id).merge(user: current_user)
   end
 
   def item_params
-    params.require(:item).permit(:brand, :object, :standardized_size, :concentration, :concentration_units, :concentration_description,
-                                 :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
-                                 :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :packaged_quantity, :unit_weight,
-                                 :category_id, :notes, :verified, :photo, :flagged)
+    params.require(:item)
+          .permit(:brand, :object, :standardized_size,
+                  :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
+                  :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :unit_weight,
+                  :category_id, :notes, :verified, :photo, :flagged)
+          .merge(user: current_user)
   end
 
   def set_box_item

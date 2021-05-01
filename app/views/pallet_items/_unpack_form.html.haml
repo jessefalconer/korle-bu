@@ -1,12 +1,17 @@
 - if @pallet.pallet_items.with_inventory.none?
   %h5.text-center No items to unpack.
 - else
+  %h5 Unpack and remove items from this pallet. Items completely unpacked with no remaining quantity and weight will not be shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "unpack-items"}
   - @pallet.pallet_items.with_inventory.each do |pi|
     = form_for :unpacking_event, url: pallet_pallet_item_pallet_unpacking_events_path(@pallet, pi) do |f|
       .row.inline-add-item
         .col-xs-12.manage-item-name
-          %p #{pi.generated_name}
+          %p
+            = pi.generated_name
+            - if pi.show_id
+              —
+              %em.show-id ID: ##{pi.id}
           .drawer-info
             %span.label.label-info= pi.remaining_quantity
             %i.fa.fa-ellipsis-v
@@ -18,13 +23,17 @@
                 = f.number_field :quantity, value: pi.remaining_quantity, class: "form-control", min: 1, max: pi.remaining_quantity
             .col-xs-6.col-lg-3
               .form-group
-                = f.label "Weight (g)"
-                = f.number_field :weight, value: pi.remaining_weight, class: "form-control", placeholder: "grams"
-            .col-xs-10.col-sm-8.col-lg-4
+                = f.label "Weight (kg)"
+                = f.number_field :weight, step: :any, value: pi.remaining_weight, class: "form-control"
+            .col-xs-12.col-lg-6
+              .form-group
+                = f.label "Hospital"
+                = f.select :hospital_id, options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: "Unassigned" }, { class: "form-control", id: "hospital-assignment" }
+            .col-xs-10.col-sm-9.col-lg-10
               .form-group
                 = f.label "Notes"
                 = f.text_field :notes, class: "form-control", placeholder: "Explanation"
-            .col-xs-2.col-sm-4.col-lg-2
+            .col-xs-2.col-sm-3.col-lg-2
               .form-group
                 %label &nbsp;
                 .btn-toolbar.list-toolbar
