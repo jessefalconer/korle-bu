@@ -18,8 +18,10 @@ function initAssignmentListeners() {
       if (selected != "Staging") {
         $(`#stage-flag-${id}`).val(false);
         $(`#${selected.toLowerCase()}-assignment-form-${id}`).removeClass("hidden").hide().fadeIn();
-      } else {
+      } else if (selected === "Staging") {
         $(`#stage-flag-${id}`).val(true);
+      } else {
+        $(`#stage-flag-${id}`).val(false);
       }
     });
   });

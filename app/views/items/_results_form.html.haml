@@ -32,7 +32,7 @@
             .col-xs-6.col-sm-3
               .padding-top
                 = f.label "Generate ID?", class: "padding-top"
-                = f.check_box :show_id
+                = f.check_box :show_id, value: false, id: "show-id-#{item[0]}"
             .col-xs-12
               .form-group
                 %label &nbsp;

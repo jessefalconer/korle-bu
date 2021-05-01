@@ -29,6 +29,9 @@ class PalletItemsController < ApplicationController
   end
 
   def index
+    @boxes = Box.in_progress.order(:id).reverse_order
+    @pallets = Pallet.in_progress.order(:id).reverse_order
+    @containers = Container.in_progress.order(:id).reverse_order
   end
 
   def add_with_item
@@ -54,7 +57,13 @@ class PalletItemsController < ApplicationController
   private
 
   def pallet_item_params
-    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :show_id).merge(user: current_user)
+    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :box_id, :pallet_id, :container_id, :staged, :show_id).merge(user: current_user).tap do |u|
+      if u[:staged] == "false" && u[:box_id].blank? && u[:pallet_id].blank? && u[:container_id].blank?
+        u.delete(:box_id)
+        u.delete(:pallet_id)
+        u.delete(:container_id)
+      end
+    end
   end
 
   def item_params
