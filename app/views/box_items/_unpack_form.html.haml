@@ -3,38 +3,6 @@
 - else
   %h5 Unpack and remove items from this box. Items completely unpacked with no remaining quantity and weight will not be shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "unpack-items"}
-  - @box.box_items.with_inventory.each do |bi|
-    = form_for :unpacking_event, url: box_box_item_box_unpacking_events_path(@box, bi) do |f|
-      .row.inline-add-item
-        .col-xs-12.manage-item-name
-          %p
-            = bi.generated_name
-            - if bi.show_id
-              —
-              %em.show-id ID: ##{bi.id}
-          .drawer-info
-            %span.label.label-info= bi.remaining_quantity
-            %i.fa.fa-ellipsis-v
-        .col-xs-12.manage-item-form.hidden
-          .row
-            .col-xs-6.col-lg-3
-              .form-group
-                = f.label :quantity
-                = f.number_field :quantity, value: bi.remaining_quantity, class: "form-control", min: 1, max: bi.remaining_quantity
-            .col-xs-6.col-lg-3
-              .form-group
-                = f.label "Weight (kg)"
-                = f.number_field :weight, step: :any, value: bi.remaining_weight, class: "form-control"
-            .col-xs-12.col-lg-6
-              .form-group
-                = f.label "Hospital"
-                = f.select :hospital_id, options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: "Unassigned" }, { class: "form-control", id: "hospital-assignment" }
-            .col-xs-10.col-sm-9.col-lg-10
-              .form-group
-                = f.label "Notes"
-                = f.text_field :notes, class: "form-control", placeholder: "Explanation"
-            .col-xs-2.col-sm-3.col-lg-2
-              .form-group
-                %label &nbsp;
-                .btn-toolbar.list-toolbar
-                  = submit_button_responsive("Unpack", "pull-right")
+  - @box.box_items.with_inventory.each do |pi|
+    = form_for :unpacking_event, url: box_box_item_box_unpacking_events_path(@box, pi) do |f|
+      = render "packed_items/unpack_form_card", f: f, pi: pi
