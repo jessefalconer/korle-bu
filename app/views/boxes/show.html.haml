@@ -1,13 +1,12 @@
 .content
   .header
-    %h1.page-title= @box.name
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
       = present(@box).breadcrumbs
 
     = link_index_button(boxes_path, "fa-box-open")
-    %h5 Add to Box:
+    %h5 Add to this Box:
     = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
 
   .main-content
@@ -112,3 +111,12 @@
           - else
             #box_items.collapse.panel-body
               %h5.text-center No packed items in this box.
+
+  %h4.text-muted Quick Add
+  %hr
+  - if @staged_items.any?
+    = form_for @box, url: box_mass_reassign_path(@box) do |f|
+      %h5 Select staged items to reassign to this box.
+      = render "packed_items/mass_reassign", f: f
+  - else
+    %h5.text-center No staged items.

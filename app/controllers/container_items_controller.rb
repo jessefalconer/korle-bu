@@ -2,7 +2,7 @@
 
 class ContainerItemsController < ApplicationController
   before_action :set_container
-  before_action :set_container_item, except: %i[create index add_with_item]
+  before_action :set_container_item, except: %i[create index add_with_item mass_reassign]
 
   def create
     container_item = @container.container_items.build(container_item_params)
@@ -47,6 +47,15 @@ class ContainerItemsController < ApplicationController
     end
 
     redirect_to container_container_items_path(@container), flash: message
+  end
+
+  def mass_reassign
+    if params[:packed_item_ids].nil?
+      redirect_to container_path(@container), flash: { error: "No items where selected." }
+    else
+      PackedItem.where(id: params[:packed_item_ids]).update_all(container_id: @container.id)
+      redirect_to container_path(@container), flash: { success: "Staged items reassigned." }
+    end
   end
 
   def destroy

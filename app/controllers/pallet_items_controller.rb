@@ -2,7 +2,7 @@
 
 class PalletItemsController < ApplicationController
   before_action :set_pallet
-  before_action :set_pallet_item, except: %i[create index add_with_item]
+  before_action :set_pallet_item, except: %i[create index add_with_item mass_reassign]
 
   def create
     pallet_item = @pallet.pallet_items.build(pallet_item_params)
@@ -47,6 +47,15 @@ class PalletItemsController < ApplicationController
     end
 
     redirect_to pallet_pallet_items_path(@pallet), flash: message
+  end
+
+  def mass_reassign
+    if params[:packed_item_ids].nil?
+      redirect_to pallet_path(@pallet), flash: { error: "No items where selected." }
+    else
+      PackedItem.where(id: params[:packed_item_ids]).update_all(pallet_id: @pallet.id)
+      redirect_to pallet_path(@pallet), flash: { success: "Staged items reassigned." }
+    end
   end
 
   def destroy

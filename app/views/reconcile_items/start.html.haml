@@ -35,7 +35,7 @@
         .col-xs-12
           .tab-content
             #suggestions.tab-pane.active.in
-              = submit_button("Confirm Reconcile", classes = "reconcile-count", icon = "fa-compress-alt")
+              = submit_button("Confirm Reconcile", classes = "submit-count", icon = "fa-compress-alt")
               %h5 Items with similar names are shown here.
               - if @similar_items.any?
                 %table.table.table-striped.table-hover
@@ -73,6 +73,6 @@
                     %h5.text-center No suggestions found. Try searching for an item.
 
             #search.tab-pane.fade
-              = submit_button("Confirm Reconcile", classes = "reconcile-count", icon = "fa-compress-alt")
+              = submit_button("Confirm Reconcile", classes = "submit-count", icon = "fa-compress-alt")
               %h5 Results from the suggestions tab are automatically filtered from search results.
               = render "search_form"

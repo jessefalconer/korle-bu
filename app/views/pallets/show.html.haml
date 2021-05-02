@@ -1,6 +1,5 @@
 .content
   .header
-    %h1.page-title= @pallet.name
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
@@ -8,7 +7,7 @@
 
     = link_index_button(pallets_path, "fa-pallet")
 
-    %h5 Add to Pallet:
+    %h5 Add to this Pallet:
     - if can? :create, Box
       = add_button(new_box_path(pallet_id: @pallet.id), "Box", "fa-box-open")
     = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
@@ -146,3 +145,12 @@
           - else
             #pallet_items.collapse.panel-body
               %h5.text-center No packed items on this pallet.
+
+  %h4.text-muted Quick Add
+  %hr
+  - if @staged_items.any?
+    = form_for @pallet, url: pallet_mass_reassign_path(@pallet) do |f|
+      %h5 Select staged items to reassign to this pallet.
+      = render "packed_items/mass_reassign", f: f
+  - else
+    %h5.text-center No staged items.

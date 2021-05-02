@@ -1,14 +1,13 @@
 .content
   .header
-    %h1.page-title= @container.name
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
       = present(@container).breadcrumbs
 
-    %h5 Add to Container:
     - if can? :read, Container
       = link_index_button(containers_path, "fa-truck")
+    %h5 Add to this Container:
     - if can? :create, Pallet
       = add_button(new_pallet_path(container_id: @container.id), "Pallet", "fa-pallet")
     - if can? :create, Box
@@ -176,3 +175,12 @@
           - else
             #container_items.collapse.panel-body
               %h5.text-center No packed items in this container.
+
+  %h4.text-muted Quick Add
+  %hr
+  - if @staged_items.any?
+    = form_for @container, url: container_mass_reassign_path(@container) do |f|
+      %h5 Select staged items to reassign to this container.
+      = render "packed_items/mass_reassign", f: f
+  - else
+    %h5.text-center No staged items.

@@ -168,15 +168,17 @@ function initPackingSearchListeners() {
 
 function updateCheckCount() {
   var checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
-  const buttons = document.querySelectorAll(".reconcile-count")
+  const buttons = document.querySelectorAll(".submit-count")
 
   for (var i = 0; i < buttons.length; i++) {
-      var text = checkedCount === 0 ? "\t Confirm Reconcile" : `\tConfirm Reconcile (${checkedCount})`
+      const textValue = buttons[i].classList.contains("mass-reassign") ? "Reassign" : "Confirm Reconcile"
+      var text = checkedCount === 0 ? `\t ${textValue}` : `\t${textValue} (${checkedCount})`
       buttons[i].getElementsByTagName("span")[0].textContent = text
   }
 }
 
 function initCheckBoxListeners() {
+  if (!document.querySelectorAll(".submit-count")) return;
   const checkboxes = document.querySelectorAll("input[type=checkbox]");
 
   for (var i = 0; i < checkboxes.length; i++) {
@@ -187,7 +189,6 @@ function initCheckBoxListeners() {
 function initReconcileSearchListeners() {
   if (document.querySelector("#reconcile-search-submit") === null) { return; }
 
-  initCheckBoxListeners();
   updateCheckCount();
 
   $(document).on('keyup keypress', 'form input[type="text"]', function(e) {
@@ -234,4 +235,5 @@ $(() => {
   initReconcileSearchListeners();
   initIndexSearchListeners();
   initManageDrawerListeners();
+  initCheckBoxListeners();
 });

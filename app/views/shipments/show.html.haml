@@ -1,11 +1,11 @@
 .content
   .header
-    %h1.page-title= @shipment.name
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
       %li.active= @shipment.name
 
+    %h5 Add to this Shipment:
     - if can? :read, Shipment
       = link_index_button(shipments_path, "fa-ship")
     - if can? :create, Container

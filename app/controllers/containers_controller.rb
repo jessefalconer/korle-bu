@@ -27,6 +27,7 @@ class ContainersController < ApplicationController
   end
 
   def show
+    @staged_items = PackedItem.staged
   end
 
   def update
