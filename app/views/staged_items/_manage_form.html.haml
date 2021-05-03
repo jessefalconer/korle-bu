@@ -4,7 +4,7 @@
   %h5 Update or remove existing staged items.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name or ID...", assoc: "manage-items"}
   - @packed_items.each do |pi|
-    = form_for pi, url: packed_item_path(pi) do |f|
-      = render "packed_items/manage_form_card", f: f, pi: pi, path: packed_item_path(pi)
+    = form_for pi, url: staged_item_path(pi) do |f|
+      = render "packed_items/manage_form_card", f: f, pi: pi, path: staged_item_path(pi)
 
 = paginate @packed_items, window: 2

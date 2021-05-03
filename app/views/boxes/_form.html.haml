@@ -19,10 +19,10 @@
     = f.text_field :notes, class: "form-control"
   .form-group
     %label Pallet Assignment
-    = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(:id).reverse_order, :id, :name, pallet_id), { include_blank: "Staged" }, { class: "form-control", id: "pallet-assignment" }
+    = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(:id).reverse_order, :id, :name, pallet_id), { include_blank: "None" }, { class: "form-control", id: "pallet-assignment" }
   .form-group
     %label Container Assignment
-    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(:id).reverse_order, :id, :name, container_id), { include_blank: "Staged" }, { class: "form-control", id: "container-assignment" }
+    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(:id).reverse_order, :id, :name, container_id), { include_blank: "None" }, { class: "form-control", id: "container-assignment" }
 
   .btn-toolbar.list-toolbar
     - if @box.persisted?

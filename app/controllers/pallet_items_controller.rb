@@ -54,7 +54,7 @@ class PalletItemsController < ApplicationController
       redirect_to pallet_path(@pallet), flash: { error: "No items where selected." }
     else
       PackedItem.where(id: params[:packed_item_ids]).update_all(pallet_id: @pallet.id)
-      redirect_to pallet_path(@pallet), flash: { success: "Staged items reassigned." }
+      redirect_to pallet_path(@pallet), flash: { success: "Items reassigned." }
     end
   end
 
@@ -65,14 +65,9 @@ class PalletItemsController < ApplicationController
 
   private
 
+  # TODO: params not submitting
   def pallet_item_params
-    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :box_id, :pallet_id, :container_id, :staged, :show_id).merge(user: current_user).tap do |u|
-      if u[:staged] == "false" && u[:box_id].blank? && u[:pallet_id].blank? && u[:container_id].blank?
-        u.delete(:box_id)
-        u.delete(:pallet_id)
-        u.delete(:container_id)
-      end
-    end
+    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :box_id, :pallet_id, :container_id, :show_id, :status).merge(user: current_user)
   end
 
   def item_params

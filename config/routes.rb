@@ -39,8 +39,10 @@ Rails.application.routes.draw do
   end
   resources :warehouses
   resources :hospitals
-  resources :packed_items
-  post "packed_item_add_with_item", to: "packed_items#add_with_item"
+  resources :packed_items, only: :index
+  resources :staged_items
+  resources :warehoused_items
+  post "staged_item_add_with_item", to: "staged_items#add_with_item"
 
   concern :boxable_items do
     resources :boxes do

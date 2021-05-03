@@ -18,7 +18,7 @@
   - if can? :reassign, Container
     .form-group
       %label Shipment Assignment
-      = f.select :shipment_id, options_from_collection_for_select(Shipment.accessible_by(current_ability).order(:id).reverse_order, :id, :name, shipment_id), { include_blank: "Staged" }, { class: "form-control", id: "shipment-assignment"}
+      = f.select :shipment_id, options_from_collection_for_select(Shipment.accessible_by(current_ability).order(:id).reverse_order, :id, :name, shipment_id), { include_blank: "None" }, { class: "form-control", id: "shipment-assignment"}
 
   .btn-toolbar.list-toolbar
     - if @container.persisted?

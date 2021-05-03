@@ -3,6 +3,7 @@
 class Box < ApplicationRecord
   STATUSES = [
     WAREHOUSED = "Warehoused",
+    STAGED = "Staged",
     IN_PROGRESS = "In Progress",
     COMPLETE = "Complete",
     RECEIVED = "Received"
@@ -18,7 +19,7 @@ class Box < ApplicationRecord
   accepts_nested_attributes_for :box_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :assigned, -> { where("pallet_id IS NOT NULL OR container_id IS NOT NULL") }
-  scope :staged, -> { where(pallet_id: nil, container_id: nil, status: IN_PROGRESS) }
+  scope :staged, -> { where(pallet_id: nil, container_id: nil, status: STAGED) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }
   scope :warehoused, -> { where(pallet_id: nil, container_id: nil, status: WAREHOUSED) }
 

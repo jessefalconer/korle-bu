@@ -6,7 +6,7 @@
         = link_to "Home", index_path
       %li.active #{params[:display].present? ? params[:display].titleize + " " : "" }Pallets
     - if can? :create, Pallet
-      = add_button(new_pallet_path, "Staged Pallet", "fa-pallet")
+      = add_button(new_pallet_path, "Pallet", "fa-pallet")
 
     = form_for :pallet, url: find_pallet_path, html: {class: "inline-search-form" } do |f|
       = submit_button("Go To", nil, "fa-search")

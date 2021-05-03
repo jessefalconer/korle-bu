@@ -3,6 +3,7 @@
 class Pallet < ApplicationRecord
   STATUSES = [
     WAREHOUSED = "Warehoused",
+    STAGED = "Staged",
     IN_PROGRESS = "In Progress",
     COMPLETE = "Complete",
     RECEIVED = "Received"
@@ -22,7 +23,7 @@ class Pallet < ApplicationRecord
   accepts_nested_attributes_for :pallet_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :assigned, -> { where.not(container_id: nil) }
-  scope :staged, -> { where(container_id: nil, status: IN_PROGRESS) }
+  scope :staged, -> { where(container_id: nil, status: STAGED) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }
   scope :warehoused, -> { where(container_id: nil, status: WAREHOUSED) }
 

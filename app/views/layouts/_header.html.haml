@@ -179,8 +179,8 @@
       - unless current_user.receiving_manager?
         %li
           %a.nav-header.collapsed{data: {target: ".staging-menu", toggle: "collapse"}, href: "#"}
-            %i.fa.fa-fw.fa-clipboard-list
-            Staging
+            %i.fa.fa-fw.fa-truck-loading
+            Staging Area
             %i.fa.fa-collapse
         %li
           %ul.staging-menu.nav.nav-list.collapse
@@ -195,9 +195,30 @@
                 Boxes
 
             %li
-              = link_to packed_items_path do
+              = link_to staged_items_path do
                 %span.fa.fa-stethoscope
                 &nbsp;Items
+        -# %li
+        -#   %a.nav-header.collapsed{data: {target: ".warehouse-menu", toggle: "collapse"}, href: "#"}
+        -#     %i.fa.fa-fw.fa-clipboard-list
+        -#     Warehouse Area
+        -#     %i.fa.fa-collapse
+        -# %li
+        -#   %ul.warehouse-menu.nav.nav-list.collapse
+        -#     %li
+        -#       = link_to pallets_path(display: :warehoused) do
+        -#         %span.fa.fa-pallet
+        -#         Pallets
+
+        -#     %li
+        -#       = link_to boxes_path(display: :warehoused) do
+        -#         %span.fa.fa-box-open
+        -#         Boxes
+
+        -#     %li
+        -#       = link_to packed_items_path(display: :warehoused) do
+        -#         %span.fa.fa-stethoscope
+        -#         &nbsp;Items
 
       %li
         = link_to my_activity_path, class: "nav-header" do

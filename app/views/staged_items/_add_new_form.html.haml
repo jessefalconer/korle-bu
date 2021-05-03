@@ -1,3 +1,3 @@
-= form_for :packed_item, url: packed_item_add_with_item_path, method: :post, html: {multipart: true, class: "new_item"} do |f|
+= form_for :packed_item, url: staged_item_add_with_item_path, method: :post, html: {multipart: true, class: "new_item"} do |f|
   %h5 Use this form to simultaneously add a new item to the database and to staging. Indicate the new item's packing information in the form below.
   = render "packed_items/add_new_form_card", f: f, staged: true

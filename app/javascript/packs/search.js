@@ -1,12 +1,14 @@
 function packingSearch(params) {
     const modelID = $("#search-model-id").val();
     const model = $("#search-model").val();
+    const status = $("#status").val();
     $.ajax({
         url: "/item_search_form",
         type: "get",
         data: { search: params,
                 id: modelID,
-                model: model },
+                model: model,
+                status: status },
         async: false,
         success: function (data) {
             $("#search-results").append(data);

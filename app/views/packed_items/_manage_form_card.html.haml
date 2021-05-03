@@ -1,4 +1,3 @@
-- staged = @box.nil? && @pallet.nil? && @container.nil?
 .row.inline-add-item
   .col-xs-12.manage-item-name{data: {unit_weight: pi.item.unit_weight.to_i, item_id: pi.item.id}}
     %p
@@ -19,7 +18,9 @@
         .form-group
           = f.label :quantity
           = f.number_field :quantity, value: pi.quantity, class: "form-control", min: 1, id: "quantity-#{pi.id}"
-          = f.hidden_field :staged, value: staged, id: "stage-flag-#{pi.id}"
+          = f.hidden_field :box_id, value: pi.box_id, id: "box-flag-#{pi.id}"
+          = f.hidden_field :pallet_id, value: pi.pallet_id.to_s, id: "pallet-flag-#{pi.id}"
+          = f.hidden_field :container_id, value: pi.container_id, id: "container-flag-#{pi.id}"
       .col-xs-6.col-sm-4
         .form-group
           = f.label "Weight (kg)"
@@ -48,4 +49,4 @@
           = f.check_box :show_id, value: pi.show_id, id: "show-id-#{pi.id}"
         .btn-toolbar.list-toolbar
           = submit_button_responsive("Update", "pull-right")
-          = delete_button(packed_item_path(pi), "Are you sure you want to delete #{pi.generated_name}?", "pull-right")
+          = delete_button(path, "Are you sure you want to delete #{pi.generated_name}?", "pull-right")

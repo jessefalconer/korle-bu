@@ -49,10 +49,10 @@ class ItemsController < ApplicationController
     form_path = if params[:id]
       generate_form_url(params[:model], klass.find(params[:id]))
     else
-      packed_items_path
+      staged_items_path
     end
 
-    render json: render_to_string(partial: "results_form", layout: false, locals: { form_path: form_path }).to_json
+    render json: render_to_string(partial: "results_form", layout: false, locals: { form_path: form_path, status: params[:status] }).to_json
   end
 
   def show

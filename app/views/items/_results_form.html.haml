@@ -21,6 +21,7 @@
                 = f.label :quantity
                 = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{item[0]}"
                 = f.hidden_field :item_id, value: item[0], id: "item-#{item[0]}"
+                = f.hidden_field :status, value: status, id: "status-#{item[0]}"
             .col-xs-6.col-sm-3
               .form-group
                 = f.label "Weight (kg)"
