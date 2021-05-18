@@ -1,0 +1,32 @@
+.content
+  .header
+    %h1.page-title Warehoused Items
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active Warehoused Items
+
+  .main-content
+    %ul.nav.nav-tabs
+      - if can? :manage, PackedItem
+        %li.active
+          %a{data: {toggle: "tab"}, href: "#search"} Search
+        %li
+          %a{data: {toggle: "tab"}, href: "#new"} New
+        %li
+          %a{data: {toggle: "tab"}, href: "#manage-items"}
+            Manage
+            %span.label.label-success= @packed_items.count
+    .row
+      .col-xs-12
+        %br
+        .tab-content
+          - if can? :manage, PackedItem
+            #manage-items.tab-pane.fade
+              = render "manage_form"
+
+            #search.tab-pane.active.in
+              = render "search_form"
+
+            #new.tab-pane.fade
+              = render "add_new_form"

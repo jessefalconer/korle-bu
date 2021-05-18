@@ -1,0 +1,10 @@
+- if @packed_items.none?
+  %h5.text-center No existing packed items. Use the tabs to search or create a new item.
+- else
+  %h5 Update or remove existing warehoused items.
+  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name or ID...", assoc: "manage-items"}
+  - @packed_items.each do |pi|
+    = form_for pi, url: warehoused_item_path(pi) do |f|
+      = render "packed_items/manage_form_card", f: f, pi: pi, path: warehoused_item_path(pi)
+
+= paginate @packed_items, window: 2

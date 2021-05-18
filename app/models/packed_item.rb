@@ -2,8 +2,8 @@
 
 class PackedItem < ApplicationRecord
   STATUSES = [
-    WAREHOUSED = "Warehoused",
-    STAGED = "Staged"
+    WAREHOUSE = "Warehouse",
+    STAGING = "Staging"
   ].freeze
 
   belongs_to :box, optional: true
@@ -19,16 +19,16 @@ class PackedItem < ApplicationRecord
 
   scope :with_inventory, -> { left_joins(:unpacking_events).where("remaining_quantity > ?", 0).uniq }
   scope :with_events, -> { joins(:unpacking_events).uniq }
-  scope :staged, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: STAGED) }
-  scope :warehoused, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: WAREHOUSED) }
+  scope :staged, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: STAGING) }
+  scope :warehoused, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: WAREHOUSE) }
 
   accepts_nested_attributes_for :unpacking_events, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
-  validates :status, inclusion: { in: STATUSES }, if: ->(packed_item) { packed_item.will_not_assign }
+  validates :status, inclusion: { in: STATUSES }, if: ->(packed_item) { packed_item.will_not_assign? }
   with_options presence: true do
-    validates :box, if: ->(packed_item) { packed_item.container.blank? && packed_item.pallet.blank? && packed_item.status.blank? }
-    validates :container, if: ->(packed_item) { packed_item.box.blank? && packed_item.pallet.blank? && packed_item.status.blank? }
-    validates :pallet, if: ->(packed_item) { packed_item.box.blank? && packed_item.container.blank? && packed_item.status.blank? }
+    validates :box, if: ->(packed_item) { packed_item.box.present? && packed_item.status.blank? }
+    validates :container, if: ->(packed_item) { packed_item.container.present? && packed_item.status.blank? }
+    validates :pallet, if: ->(packed_item) { packed_item.pallet.present? && packed_item.status.blank? }
   end
 
   paginates_per 25
@@ -64,7 +64,7 @@ class PackedItem < ApplicationRecord
     end
   end
 
-  def will_not_assign
+  def will_not_assign?
     box.blank? && pallet.blank? && container.blank?
   end
 

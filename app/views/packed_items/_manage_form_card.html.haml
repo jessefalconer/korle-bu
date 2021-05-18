@@ -21,6 +21,7 @@
           = f.hidden_field :box_id, value: pi.box_id, id: "box-flag-#{pi.id}"
           = f.hidden_field :pallet_id, value: pi.pallet_id.to_s, id: "pallet-flag-#{pi.id}"
           = f.hidden_field :container_id, value: pi.container_id, id: "container-flag-#{pi.id}"
+          = f.hidden_field :status, value: pi.status, id: "status-flag-#{pi.id}"
       .col-xs-6.col-sm-4
         .form-group
           = f.label "Weight (kg)"

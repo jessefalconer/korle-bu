@@ -15,13 +15,13 @@ function initAssignmentListeners() {
          #pallet-assignment-input-${id} option:selected,
          #container-assignment-input-${id} option:selected`).prop("selected", false);
 
-      if (selected != "Staging") {
-        $(`#stage-flag-${id}`).val(false);
+      if (selected != "Staging" && selected != "Warehouse") {
+        $(`#status-flag-${id}`).val(null);
         $(`#${selected.toLowerCase()}-assignment-form-${id}`).removeClass("hidden").hide().fadeIn();
-      } else if (selected === "Staging") {
-        $(`#stage-flag-${id}`).val(true);
+      } else if (selected === "Staging" || selected === "Warehouse") {
+        $(`#status-flag-${id}`).val(selected);
       } else {
-        $(`#stage-flag-${id}`).val(false);
+        $(`#status-flag-${id}`).val(null);
       }
     });
   });

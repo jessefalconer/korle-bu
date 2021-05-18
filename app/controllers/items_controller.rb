@@ -99,6 +99,10 @@ class ItemsController < ApplicationController
       pallet_pallet_items_path(record.id)
     when "Container"
       container_container_items_path(record.id)
+    when "Staging"
+      staged_items_path(record.id)
+    when "Warehouse"
+      warehoused_items_path(record.id)
     end
   end
 
