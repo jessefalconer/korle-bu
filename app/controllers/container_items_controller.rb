@@ -53,7 +53,7 @@ class ContainerItemsController < ApplicationController
     if params[:packed_item_ids].nil?
       redirect_to container_path(@container), flash: { error: "No items where selected." }
     else
-      PackedItem.where(id: params[:packed_item_ids]).update_all(container_id: @container.id)
+      PackedItem.where(id: params[:packed_item_ids]).update(container_id: @container.id)
       redirect_to container_path(@container), flash: { success: "Staged items reassigned." }
     end
   end
