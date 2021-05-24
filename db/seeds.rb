@@ -1,4 +1,5 @@
-# Uncomment these development seeding
+# Uncomment these for development seeding and prior to inserting SQL dump
+
 # User.create!(email: "jesse@email.com",
 #                   first_name: "Jesse",
 #                   last_name: "Falconer",
@@ -64,33 +65,6 @@
 #   Category.create(name: cat, user_id: 1, description: Faker::Lorem.sentence)
 # end
 
-CATEGORIES = [
-  "Hospital Pieces",
-  "Hospital Equipment",
-  "Hospital Maintenance",
-  "Office Furniture",
-  "Hospital Linen",
-  "Medical Supplies - Misc",
-  "Medical Supplies - Ophthalmology & ENT",
-  "Medical Supplies - Neuro Surgery",
-  "Medical Supplies - Anaesthesiology",
-  "Medical Supplies - Operating Room",
-  "Medical Supplies - Pulmonary and Cardiology",
-  "Medical Supplies - Nursing Supplies",
-  "Medical Supplies - Gastro, Intestinal and Urology",
-  "Medical Supplies - Obstetrics and Gynaecology",
-  "Medical Supplies - Orthopaedics",
-  "Hospital Administration",
-  "Hygiene Products",
-  "Staff Physical Activity Supplies",
-  "Staff Accomodation",
-  "Housekeeping Department",
-  "Pediatrics",
-  "Bags Blankets"
-].each do |cat|
-  Category.create(name: cat, user_id: 1)
-end
-
-WAREHOUSES = [
-  "Main Warehouse", "Undetermined", "Liberia", "Tappita Hospital", "Sierra Leone", "Ahomka Foundation", "Nigeria"
-].each { |name| Warehouse.create(name: name, user_id: User.first.id, status: "Active") }
+# WAREHOUSES = [
+#   "Main Warehouse", "Undetermined", "Liberia", "Tappita Hospital", "Sierra Leone", "Ahomka Foundation", "Nigeria"
+# ].each { |name| Warehouse.create(name: name, user_id: User.first.id, status: "Active") }

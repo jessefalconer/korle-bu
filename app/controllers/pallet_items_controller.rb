@@ -53,7 +53,7 @@ class PalletItemsController < ApplicationController
     if params[:packed_item_ids].nil?
       redirect_to pallet_path(@pallet), flash: { error: "No items where selected." }
     else
-      PackedItem.where(id: params[:packed_item_ids]).update_all(pallet_id: @pallet.id)
+      PackedItem.where(id: params[:packed_item_ids]).update(pallet_id: @pallet.id)
       redirect_to pallet_path(@pallet), flash: { success: "Items reassigned." }
     end
   end
