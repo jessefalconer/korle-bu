@@ -31,9 +31,9 @@
           = f.label :expires
           = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "YYYY-MM-DD"
       .col-xs-6.col-sm-4
-        .form-group.staging-assignments{data: {id: pi.id}}
+        .form-group.item-assignments{data: {id: pi.id}}
           %label Reassign to...
-          = select_tag("", options_for_select(["", "Staging", "Box", "Pallet", "Container"], ""), { class: "form-control", id: "staging-assignment-#{pi.id}" })
+          = select_tag("", options_for_select(["", "Warehouse", "Staging", "Box", "Pallet", "Container"], ""), { class: "form-control", id: "item-assignment-#{pi.id}" })
       .col-xs-6.col-sm-4
         .form-group.hidden{id: "box-assignment-form-#{pi.id}"}
           = f.label :box_id, "Box Name"

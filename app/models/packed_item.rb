@@ -2,15 +2,16 @@
 
 class PackedItem < ApplicationRecord
   STATUSES = [
+    PACKED = "Packed",
     WAREHOUSE = "Warehouse",
     STAGING = "Staging"
   ].freeze
 
-  belongs_to :box, optional: true
-  belongs_to :container, optional: true
+  belongs_to :box, optional: true, inverse_of: :box_items
+  belongs_to :container, optional: true, inverse_of: :container_items
   belongs_to :item, optional: false
-  belongs_to :pallet, optional: true
-  belongs_to :shipment, optional: true
+  belongs_to :pallet, optional: true, inverse_of: :pallet_items
+  belongs_to :shipment, optional: true, inverse_of: :packed_items
   belongs_to :user, optional: false
 
   has_one :category, through: :item
@@ -36,8 +37,9 @@ class PackedItem < ApplicationRecord
   delegate :generated_name, to: :item
 
   before_save do
+    sanitize_status
+    set_shipment
     recalculate_remaining_items
-    self.shipment = box&.shipment || pallet&.shipment || container&.shipment
   end
 
   def self.by_item
@@ -74,6 +76,16 @@ class PackedItem < ApplicationRecord
     return container.name if container
 
     status
+  end
+
+  private
+
+  def set_shipment
+    self.shipment = box&.shipment || pallet&.shipment || container&.shipment
+  end
+
+  def sanitize_status
+    self.status = PACKED if !will_not_assign?
   end
 
   def recalculate_remaining_items

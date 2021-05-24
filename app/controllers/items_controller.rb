@@ -43,14 +43,8 @@ class ItemsController < ApplicationController
   end
 
   def search_form
-    klass = params[:model].constantize
     @search_results_items = Item.search_by_generated_name(params[:search]).pluck(:id, :generated_name, :unit_weight)
-
-    form_path = if params[:id]
-      generate_form_url(params[:model], klass.find(params[:id]))
-    else
-      staged_items_path
-    end
+    form_path = generate_form_url(params[:model], params[:id])
 
     render json: render_to_string(partial: "results_form", layout: false, locals: { form_path: form_path, status: params[:status] }).to_json
   end
@@ -91,18 +85,18 @@ class ItemsController < ApplicationController
     @item.photo.destroy if params[:destroy_photo] && @item.photo.present?
   end
 
-  def generate_form_url(klass, record)
+  def generate_form_url(klass, id)
     case klass
     when "Box"
-      box_box_items_path(record.id)
+      box_box_items_path(id)
     when "Pallet"
-      pallet_pallet_items_path(record.id)
+      pallet_pallet_items_path(id)
     when "Container"
-      container_container_items_path(record.id)
+      container_container_items_path(id)
     when "Staging"
-      staged_items_path(record.id)
+      staged_items_path
     when "Warehouse"
-      warehoused_items_path(record.id)
+      warehoused_items_path
     end
   end
 

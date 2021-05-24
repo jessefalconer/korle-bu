@@ -1,11 +1,11 @@
 function initAssignmentListeners() {
-  const stagingSelectEls = document.querySelectorAll(".staging-assignments");
+  const stagingSelectEls = document.querySelectorAll(".item-assignments");
 
   Reflect.apply(Array, undefined, stagingSelectEls).forEach(selectEl => {
     const id = selectEl.dataset.id;
 
-    $(document).on("change", `#staging-assignment-${id}`, () => {
-      const selected = $(`#staging-assignment-${id} option:selected`).text();
+    $(document).on("change", `#item-assignment-${id}`, () => {
+      const selected = $(`#item-assignment-${id} option:selected`).text();
 
       $(`#box-assignment-form-${id},
          #pallet-assignment-form-${id},
@@ -28,5 +28,5 @@ function initAssignmentListeners() {
 }
 
 $(() => {
-  if ($(".staging-assignments")[0] !== undefined) initAssignmentListeners();
+  if ($(".item-assignments")[0] !== undefined) initAssignmentListeners();
 });
