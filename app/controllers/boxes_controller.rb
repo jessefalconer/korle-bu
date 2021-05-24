@@ -28,6 +28,7 @@ class BoxesController < ApplicationController
 
   def show
     @staged_items = PackedItem.staged
+    @warehoused_items = PackedItem.warehoused
   end
 
   def update

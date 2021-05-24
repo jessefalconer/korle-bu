@@ -176,11 +176,6 @@
             #container_items.collapse.panel-body
               %h5.text-center No packed items in this container.
 
-  %h4.text-muted Quick Add
-  %hr
-  - if @staged_items.any?
+  - if (can? :manage, PackedItem) && (@staged_items.any? || @warehoused_items.any?)
     = form_for @container, url: container_mass_reassign_path(@container) do |f|
-      %h5 Select staged items to reassign to this container.
-      = render "packed_items/mass_reassign", f: f
-  - else
-    %h5.text-center No staged items.
+      = render "packed_items/mass_reassign_form", f: f

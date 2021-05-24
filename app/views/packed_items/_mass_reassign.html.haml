@@ -1,4 +1,3 @@
-= submit_button("Reassign", classes = "submit-count mass-reassign", icon = "fa-arrow-right")
 %table.table.table-striped.table-hover
   %thead
     %tr
@@ -9,7 +8,7 @@
       %th Expiry Date
       %th
   %tbody
-    - @staged_items.each do |item|
+    - objects.each do |item|
       %tr
         %td
           %p= item.generated_name

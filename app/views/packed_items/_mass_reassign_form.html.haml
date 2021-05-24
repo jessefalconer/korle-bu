@@ -1,0 +1,27 @@
+%h4.text-muted Quick Add
+%hr
+.main-content
+  %ul.nav.nav-tabs
+    %li.active
+      %a{data: {toggle: "tab"}, href: "#staging"} Staging Items
+
+    %li
+      %a{data: {toggle: "tab"}, href: "#warehoused"} Warehoused Items
+
+  .row
+    .col-xs-12
+      .tab-content
+        %br
+        = submit_button("Reassign", classes = "submit-count mass-reassign", icon = "fa-arrow-right")
+        #staging.tab-pane.active.in
+          - if @staged_items.any?
+            %h5 Select staged items to reassign to this box.
+            = render "packed_items/mass_reassign", f: f, objects: @staged_items
+          - else
+            %h5 No staged items.
+        #warehoused.tab-pane.fade
+          - if @warehoused_items.any?
+            %h5 Select warehoused items to reassign to this box.
+            = render "packed_items/mass_reassign", f: f, objects: @warehoused_items
+          - else
+            %h5 No warehoused items.
