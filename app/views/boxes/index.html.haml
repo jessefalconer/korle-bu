@@ -13,35 +13,39 @@
       = f.number_field :custom_uid, {placeholder: "Custom ID"}
 
   .main-content
-    %table.table.table-striped.table-hover.link-rows
-      %thead
-        %tr
-          %th Custom ID
-          %th Name
-          %th Status
-          %th.hidden-xs Shipper
-          %th.hidden-xs Receiver
-          %th.hidden-xs Created By
-      %tbody
-        - @boxes.each do |box|
+    - if @boxes.any?
+      %table.table.table-striped.table-hover.link-rows
+        %thead
           %tr
-            %td
-              = link_to box_path(box) do
-                %p= box.custom_uid
-            %td
-              = link_to box_path(box) do
-                %p= box.name
-            %td
-              = link_to box_path(box) do
-                %p{class: "status-#{box.status.parameterize}"}= box.status
-            %td.hidden-xs
-              = link_to box_path(box) do
-                %p= box&.shipment&.shipping_warehouse&.name
-            %td.hidden-xs
-              = link_to box_path(box) do
-                %p= box&.shipment&.receiving_warehouse&.name
-            %td.hidden-xs
-              = link_to box_path(box) do
-                %p= box.user.name
+            %th Custom ID
+            %th Name
+            %th Status
+            %th.hidden-xs Shipper
+            %th.hidden-xs Receiver
+            %th.hidden-xs Created At
+        %tbody
+          - @boxes.each do |box|
+            %tr
+              %td
+                = link_to box_path(box) do
+                  %p= box.custom_uid
+              %td
+                = link_to box_path(box) do
+                  %p= box.name
+              %td
+                = link_to box_path(box) do
+                  %p{class: "status-#{box.status.parameterize}"}= box.status
+              %td.hidden-xs
+                = link_to box_path(box) do
+                  %p= box&.shipment&.shipping_warehouse&.name
+              %td.hidden-xs
+                = link_to box_path(box) do
+                  %p= box&.shipment&.receiving_warehouse&.name
+              %td.hidden-xs
+                = link_to box_path(box) do
+                  %p= box.created_at.strftime("%Y-%m-%d")
 
-    = paginate @boxes, window: 2
+      = paginate @boxes, window: 2
+
+    - else
+      %h5.text-center No #{params[:display].present? ? params[:display] + " " : "" }boxes.
