@@ -17,7 +17,7 @@
         %td.hidden-xs
           %p= item.quantity
         %td.hidden-xs
-          %p= item.weight
+          %p= item.weight.to_f.zero? ? "" : "#{item.weight}kg"
         %td
           %p= item.expiry_date&.strftime("%Y-%m-%d")
         %td
