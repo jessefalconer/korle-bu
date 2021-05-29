@@ -63,6 +63,5 @@ class Pallet < ApplicationRecord
     name = "PALLET-#{cid}"
     self.name = name
     self.custom_uid = cid
-    self.status = IN_PROGRESS
   end
 end

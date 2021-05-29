@@ -59,6 +59,5 @@ class Box < ApplicationRecord
     name = "BOX-#{cid}"
     self.name = name
     self.custom_uid = cid
-    self.status = IN_PROGRESS
   end
 end
