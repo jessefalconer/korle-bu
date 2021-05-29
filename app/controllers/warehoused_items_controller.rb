@@ -36,7 +36,7 @@ class WarehousedItemsController < ApplicationController
 
   def add_with_item
     item = Item.new(item_params)
-    packed_item = item.packed_items.build(packed_item_params)
+    packed_item = item.packed_items.build(packed_item_params.merge(status: PackedItem::WAREHOUSE))
 
     if item.save && packed_item.save
       id_sentence = packed_item.show_id ? "ID: ##{packed_item.id}." : ""
