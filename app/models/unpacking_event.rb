@@ -8,7 +8,6 @@ class UnpackingEvent < ApplicationRecord
   delegate :generated_name, to: :packed_item
 
   after_commit do
-    packed_item.recalculate_remaining_items
     packed_item.save!
   end
 end
