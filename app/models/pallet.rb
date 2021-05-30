@@ -39,6 +39,7 @@ class Pallet < ApplicationRecord
 
   before_save do
     orphan_pallet if orphanable_status?
+    adopt_status if adopting_by_parent?
   end
 
   after_save do
@@ -47,14 +48,22 @@ class Pallet < ApplicationRecord
   end
 
   def cascadable?
-    status == "Complete" || status == "Received"
+    status == COMPLETE || status == RECEIVED
   end
 
   def orphanable_status?
     will_save_change_to_status?(to: "Warehoused") || will_save_change_to_status?(to: "Staged")
   end
 
+  def adopting_by_parent?
+    will_save_change_to_container_id?(from: nil) && (status == STAGED || status == WAREHOUSED) && !will_save_change_to_status?
+  end
+
   private
+
+  def adopt_status
+    self.status = container.status
+  end
 
   def orphan_pallet
     self.container_id = nil

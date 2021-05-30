@@ -42,6 +42,7 @@ class Box < ApplicationRecord
 
   before_save do
     orphan_box if orphanable_status?
+    adopt_status if adopting_by_parent?
   end
 
   after_save do
@@ -56,7 +57,15 @@ class Box < ApplicationRecord
     will_save_change_to_status?(to: "Warehoused") || will_save_change_to_status?(to: "Staged")
   end
 
+  def adopting_by_parent?
+    (will_save_change_to_container_id?(from: nil) || will_save_change_to_pallet_id?(from: nil)) && (status == STAGED || status == WAREHOUSED) && !will_save_change_to_status?
+  end
+
   private
+
+  def adopt_status
+    self.status = pallet&.status || container&.status
+  end
 
   def orphan_box
     self.container_id = nil
