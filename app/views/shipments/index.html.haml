@@ -14,7 +14,6 @@
           %th Custom ID
           %th Name
           %th Status
-          %th.hidden-xs Shipper
           %th.hidden-xs Receiver
           %th.hidden-xs Created At
       %tbody
@@ -29,9 +28,6 @@
             %td
               = link_to shipment_path(shipment) do
                 %p{class: "status-#{shipment.status.parameterize}"}= shipment.status
-            %td.hidden-xs
-              = link_to shipment_path(shipment) do
-                %p= shipment.shipping_warehouse.name
             %td.hidden-xs
               = link_to shipment_path(shipment) do
                 %p= shipment.receiving_warehouse.name

@@ -48,6 +48,15 @@
                 %h6.text-muted Status
                 %h5{class: "status-#{@shipment.status.parameterize}"}= @shipment.status
               .col-xs-6.col-sm-4.col-md-6
+                %h6.text-muted Items (Unique)
+                %h5= @shipment.packed_items.distinct.count(:item_id)
+              .col-xs-6.col-sm-4.col-md-6
+                %h6.text-muted Items (Instances)
+                %h5= @shipment.packed_items.count
+              .col-xs-6.col-sm-4.col-md-6
+                %h6.text-muted Items (Instances * Quantity)
+                %h5= @shipment.packed_items.pluck(:quantity).inject {|sum, quantity| sum + quantity }.to_i
+              .col-xs-6.col-sm-4.col-md-6
                 %h6.text-muted Created By
                 %h5= @shipment.user.name
               .col-xs-6.col-sm-4.col-md-6
