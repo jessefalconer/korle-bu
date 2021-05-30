@@ -19,9 +19,9 @@ class Box < ApplicationRecord
   accepts_nested_attributes_for :box_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :assigned, -> { where("pallet_id IS NOT NULL OR container_id IS NOT NULL") }
-  scope :staged, -> { where(pallet_id: nil, container_id: nil, status: STAGED) }
+  scope :staged, -> { left_outer_joins(:pallet).where("boxes.status = ? OR pallets.status = ?", STAGED, STAGED) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }
-  scope :warehoused, -> { where(pallet_id: nil, container_id: nil, status: WAREHOUSED) }
+  scope :warehoused, -> { left_outer_joins(:pallet).where("boxes.status = ? OR pallets.status = ?", WAREHOUSED, WAREHOUSED) }
 
   validates :name, :custom_uid, :user, presence: true
   validates :custom_uid, :name, uniqueness: true
@@ -40,6 +40,10 @@ class Box < ApplicationRecord
     end
   end
 
+  before_save do
+    orphan_box if orphanable_status?
+  end
+
   after_save do
     cascade_packed_items_location if saved_change_to_container_id || saved_change_to_pallet_id
   end
@@ -48,7 +52,16 @@ class Box < ApplicationRecord
     container&.shipment || pallet&.container&.shipment
   end
 
+  def orphanable_status?
+    will_save_change_to_status?(to: "Warehoused") || will_save_change_to_status?(to: "Staged")
+  end
+
   private
+
+  def orphan_box
+    self.container_id = nil
+    self.pallet_id = nil
+  end
 
   def cascade_packed_items_location
     box_items.where.not(shipment_id: shipment&.id).find_each { |bi| bi.update(shipment_id: shipment&.id) }

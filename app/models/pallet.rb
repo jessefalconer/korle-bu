@@ -35,18 +35,30 @@ class Pallet < ApplicationRecord
 
   paginates_per 25
 
-  after_save do
-    cascade_statuses if saved_change_to_status && cascadable?
-    cascade_packed_items_location if saved_change_to_container_id && container&.shipment
+  after_initialize :set_defaults, if: :new_record?
+
+  before_save do
+    orphan_pallet if orphanable_status?
   end
 
-  after_initialize :set_defaults, if: :new_record?
+  after_save do
+    cascade_statuses if saved_change_to_status && cascadable?
+    cascade_packed_items_location if saved_change_to_container_id
+  end
 
   def cascadable?
     status == "Complete" || status == "Received"
   end
 
+  def orphanable_status?
+    will_save_change_to_status?(to: "Warehoused") || will_save_change_to_status?(to: "Staged")
+  end
+
   private
+
+  def orphan_pallet
+    self.container_id = nil
+  end
 
   # TODO: Move these to a service
   def cascade_statuses
@@ -54,8 +66,8 @@ class Pallet < ApplicationRecord
   end
 
   def cascade_packed_items_location
-    pallet_items.where.not(shipment_id: container.shipment_id).find_each { |pi| pi.update(shipment_id: container.shipment_id) }
-    box_items.where.not(shipment_id: container.shipment_id).find_each { |bi| bi.update(shipment_id: container.shipment_id) }
+    pallet_items.where.not(shipment_id: container&.shipment_id).find_each { |pi| pi.update(shipment_id: container&.shipment_id) }
+    box_items.where.not(shipment_id: container&.shipment_id).find_each { |bi| bi.update(shipment_id: container&.shipment_id) }
   end
 
   def set_defaults
