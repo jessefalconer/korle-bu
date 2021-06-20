@@ -22,6 +22,7 @@ class Box < ApplicationRecord
   scope :staged, -> { left_outer_joins(:pallet).where("boxes.status = ? OR pallets.status = ?", STAGED, STAGED) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }
   scope :warehoused, -> { left_outer_joins(:pallet).where("boxes.status = ? OR pallets.status = ?", WAREHOUSED, WAREHOUSED) }
+  scope :reassignable, ->(box_id) { where(status: [WAREHOUSED, STAGED, IN_PROGRESS]).or(where(id: box_id))}
 
   validates :name, :custom_uid, :user, presence: true
   validates :custom_uid, :name, uniqueness: true

@@ -28,9 +28,9 @@ class StagedItemsController < ApplicationController
   end
 
   def index
-    @boxes = Box.in_progress.order(:id).reverse_order
-    @pallets = Pallet.in_progress.order(:id).reverse_order
-    @containers = Container.in_progress.order(:id).reverse_order
+    @boxes = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @pallets = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @containers = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
     @packed_items = PackedItem.staged.order(:created_at).reverse_order.page params[:page]
   end
 

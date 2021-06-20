@@ -18,9 +18,6 @@
         .form-group
           = f.label :quantity
           = f.number_field :quantity, value: pi.quantity, class: "form-control", min: 1, id: "quantity-#{pi.id}"
-          = f.hidden_field :box_id, value: pi.box_id, id: "box-flag-#{pi.id}"
-          = f.hidden_field :pallet_id, value: pi.pallet_id.to_s, id: "pallet-flag-#{pi.id}"
-          = f.hidden_field :container_id, value: pi.container_id, id: "container-flag-#{pi.id}"
           = f.hidden_field :status, value: pi.status, id: "status-flag-#{pi.id}"
       .col-xs-6.col-sm-4
         .form-group
@@ -32,18 +29,18 @@
           = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "YYYY-MM-DD"
       .col-xs-6.col-sm-4
         .form-group.item-assignments{data: {id: pi.id}}
-          %label Reassign to...
-          = select_tag("", options_for_select(["", "Warehouse", "Staging", "Box", "Pallet", "Container"], ""), { class: "form-control", id: "item-assignment-#{pi.id}" })
+          %label Assign to...
+          = select_tag("", options_for_select(["Warehouse", "Staging", "Box", "Pallet", "Container"], parent_type), { class: "form-control", id: "item-assignment-#{pi.id}" })
       .col-xs-6.col-sm-4
-        .form-group.hidden{id: "box-assignment-form-#{pi.id}"}
+        .form-group{id: "box-assignment-form-#{pi.id}", class: (!@box && "hidden")}
           = f.label :box_id, "Box Name"
-          = f.select :box_id, options_from_collection_for_select(@boxes, :id, :name), { include_blank: "None" }, { class: "form-control", id: "box-assignment-input-#{pi.id}" }
-        .form-group.hidden{id: "pallet-assignment-form-#{pi.id}"}
+          = f.select :box_id, options_from_collection_for_select(@boxes, :id, :name, 5122), {}, { class: "form-control", id: "box-assignment-input-#{pi.id}"}
+        .form-group{id: "pallet-assignment-form-#{pi.id}", class: (!@pallet && "hidden")}
           = f.label :pallet_id, "Pallet Name"
-          = f.select :pallet_id, options_from_collection_for_select(@pallets, :id, :name), { include_blank: "None" }, { class: "form-control", id: "pallet-assignment-input-#{pi.id}" }
-        .form-group.hidden{id: "container-assignment-form-#{pi.id}"}
+          = f.select :pallet_id, options_for_select(@pallets, [@pallet&.name, @pallet&.id]), {}, { class: "form-control", id: "pallet-assignment-input-#{pi.id}"}
+        .form-group{id: "container-assignment-form-#{pi.id}", class: (!@container && "hidden")}
           = f.label :container_id, "Container Name"
-          = f.select :container_id, options_from_collection_for_select(@containers, :id, :name), { include_blank: "None" }, { class: "form-control", id: "container-assignment-input-#{pi.id}" }
+          = f.select :container_id, options_for_select(@containers, [@container&.name, @container&.id]), {}, { class: "form-control", id: "container-assignment-input-#{pi.id}"}
       .col-xs-12
         .pull-left.padding-top-small
           %label Generate ID?

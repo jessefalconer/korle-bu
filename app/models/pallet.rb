@@ -26,6 +26,7 @@ class Pallet < ApplicationRecord
   scope :staged, -> { where(container_id: nil, status: STAGED) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }
   scope :warehoused, -> { where(container_id: nil, status: WAREHOUSED) }
+  scope :reassignable, -> { where(status: [WAREHOUSED, STAGED, IN_PROGRESS])}
 
   delegate :shipment, to: :container, allow_nil: true
 

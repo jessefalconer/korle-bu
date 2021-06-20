@@ -11,7 +11,7 @@ import "../packs/errors";
 import "../packs/bootstrap";
 import "../packs/search";
 import "../packs/quick_filter";
-import "../packs/staging";
+import "../packs/item_assignment";
 
 $(function () {
   var uls = $('.sidebar-nav > ul > *').clone();

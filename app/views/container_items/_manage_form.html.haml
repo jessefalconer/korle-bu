@@ -5,4 +5,4 @@
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name or ID...", assoc: "manage-items"}
   - @container.container_items.each do |pi|
     = form_for pi, url: container_container_item_path(@container, pi) do |f|
-      = render "packed_items/manage_form_card", f: f, pi: pi, path: container_container_item_path(@container, pi)
+      = render "packed_items/manage_form_card", f: f, pi: pi, path: container_container_item_path(@container, pi), parent_type: "Container"

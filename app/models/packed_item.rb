@@ -36,8 +36,9 @@ class PackedItem < ApplicationRecord
 
   delegate :generated_name, to: :item
 
+  before_validation { sanitize_location }
+
   before_save do
-    sanitize_status
     set_shipment
     recalculate_remaining_items
   end
@@ -84,8 +85,16 @@ class PackedItem < ApplicationRecord
     self.shipment = box&.shipment || pallet&.shipment || container&.shipment
   end
 
-  def sanitize_status
-    self.status = PACKED if !will_not_assign?
+  def sanitize_location
+    status_changing = will_save_change_to_status?(to: "Warehoused") || will_save_change_to_status?(to: "Staging")
+    assigning_box = will_save_change_to_box_id?(from: nil)
+    assigning_pallet = will_save_change_to_pallet_id?(from: nil)
+    assigning_container = will_save_change_to_container_id?(from: nil)
+
+    self.status = PACKED unless status_changing
+    self.box = nil if status_changing || assigning_pallet || assigning_container
+    self.pallet = nil if status_changing || assigning_box || assigning_container
+    self.container = nil if status_changing || assigning_pallet || assigning_pallet
   end
 
   def recalculate_remaining_items
