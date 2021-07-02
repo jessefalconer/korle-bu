@@ -1,0 +1,63 @@
+%h4.text-muted Quick Add
+%hr
+.main-content
+  %ul.nav.nav-tabs.quick-add
+    - if @staged_items.any?
+      %li
+        %a{data: {toggle: "tab"}, href: "#staged-items"}
+          Staged
+          %i.fa.fa-stethoscope
+    - if @staged_boxes.any?
+      %li
+        %a{data: {toggle: "tab"}, href: "#staged-boxes"}
+          Staged
+          %i.fa.fa-box-open
+    - if @staged_pallets.any?
+      %li
+        %a{data: {toggle: "tab"}, href: "#staged-pallets"}
+          Staged
+          %i.fa.fa-pallet
+    - if @warehoused_items.any?
+      %li
+        %a{data: {toggle: "tab"}, href: "#warehoused-items"}
+          Warehoused
+          %i.fa.fa-stethoscope
+    - if @warehoused_boxes.any?
+      %li
+        %a{data: {toggle: "tab"}, href: "#warehoused-boxes"}
+          Warehoused
+          %i.fa.fa-box-open
+    - if @warehoused_pallets.any?
+      %li
+        %a{data: {toggle: "tab"}, href: "#warehoused-pallets"}
+          Warehoused
+          %i.fa.fa-pallet
+
+  .row
+    .col-xs-12
+      .tab-content.quick-add
+        %br
+        - if @staged_items.any?
+          #staged-items.tab-pane
+            %h5 Select staged items to reassign.
+            = render "packed_items/mass_add_table", items: @staged_items
+        - if @staged_boxes.any?
+          #staged-boxes.tab-pane
+            %h5 Select staged boxes to reassign.
+            = render "boxes/table", boxes: @staged_boxes
+        - if @staged_pallets.any?
+          #staged-pallets.tab-pane
+            %h5 Select staged pallets to reassign.
+            = render "pallets/table", pallets: @staged_pallets
+        - if @warehoused_items.any?
+          #warehoused-items.tab-pane
+            %h5 Select warehoused items to reassign.
+            = render "packed_items/mass_add_table", items: @warehoused_items
+        - if @warehoused_boxes.any?
+          #warehoused-boxes.tab-pane
+            %h5 Select warehoused boxes to reassign.
+            = render "boxes/table", boxes: @warehoused_boxes
+        - if @warehoused_pallets.any?
+          #warehoused-pallets.tab-pane
+            %h5 Select warehoused pallets to reassign.
+            = render "pallets/table", pallets: @warehoused_pallets

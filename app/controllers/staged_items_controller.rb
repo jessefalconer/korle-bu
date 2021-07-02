@@ -30,11 +30,11 @@ class StagedItemsController < ApplicationController
   def index
     @packed_items = PackedItem.staged.order(:created_at).reverse_order.page params[:page]
 
-    if @packed_items.present?
-      @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
-      @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
-      @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
-    end
+    return if @packed_items.blank?
+
+    @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
   end
 
   def add_with_item

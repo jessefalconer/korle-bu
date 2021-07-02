@@ -6,6 +6,12 @@
         = link_to "Home", index_path
       %li.active Staged Items
 
+    - if @packed_items.any?
+      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+        %span.mass-action-count Mass Action
+        %i.fa.fa-angle-double-right
+      = render partial: "layouts/mass_action_modal", locals: {name: "staged items", redirect: staged_items_path, record: nil }
+
   .main-content
     %ul.nav.nav-tabs
       - if can? :manage, PackedItem

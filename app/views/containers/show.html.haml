@@ -18,7 +18,7 @@
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action
         %i.fa.fa-angle-double-right
-      = render partial: "layouts/mass_action_modal", locals: {name: @container.name, redirect: container_path(@container)}
+      = render partial: "layouts/mass_action_modal", locals: {name: @container.name, redirect: container_path(@container), record: @container}
 
   .main-content
     %ul.nav.nav-tabs
@@ -49,7 +49,7 @@
                 %h5{class: "status-#{@container.status.parameterize}"}= @container.status
               .col-xs-6.col-sm-4.col-md-6
                 %h6.text-muted Weight (kg)
-                %h5= @container.weight || "N/A"
+                %h5= @container.weight.to_f.round(4) || "N/A"
               .col-xs-6.col-sm-4.col-md-6
                 %h6.text-muted Created By
                 %h5= @container.user.name
@@ -191,6 +191,5 @@
             #container_items.collapse.panel-body
               %h5.text-center No packed items in this container.
 
-  - if (can? :manage, PackedItem) && (@staged_items.any? || @warehoused_items.any?)
-    = form_for @container, url: container_mass_reassign_path(@container) do |f|
-      = render "packed_items/mass_reassign_form", f: f
+  - if (can? :manage, PackedItem)
+    = render "layouts/mass_action_add"

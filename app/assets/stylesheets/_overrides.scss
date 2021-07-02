@@ -151,6 +151,7 @@ footer {
     vertical-align: middle;
     margin: 0 0 0 5px;
   }
+
   &.selected {
     border-right: 1px solid #3c763d;
     border-left: 1px solid #3c763d;
@@ -320,8 +321,10 @@ button:disabled {
   pointer-events: all !important;
 }
 
-input.mass-action-table {
-  margin: 13.25px 0 0 0;
+.link-rows {
+  input.mass-action-table {
+    margin: 13.25px 0 0 0;
+  }
 }
 
 tr {
@@ -335,4 +338,9 @@ tr {
   padding-left: 15px;
   padding-right: 15px;
   padding-bottom: 15px;
+}
+
+.mass-action-warning {
+  i {display: inline-block;}
+  h5 {display: inline-block;}
 }

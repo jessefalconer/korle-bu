@@ -10,7 +10,7 @@
     .row
       .col-xs-12
         - if @container_items.none? && @pallet_items.none? && @box_items.none? && @staged_items.none?
-          %h3.text-center No item activity to display.
+          %h4.text-center No item activity to display.
         - else
           - if @staged_items.any?
             .panel.panel-default

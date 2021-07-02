@@ -27,13 +27,18 @@ class ContainersController < ApplicationController
   end
 
   def show
-    if @container.pallets.any? || @container.boxes.any? || @container.container_items.any?
-      @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
-      @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
-      @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
-    end
     @staged_items = PackedItem.staged
+    @staged_boxes = Box.staged
+    @staged_pallets = Pallet.staged
     @warehoused_items = PackedItem.warehoused
+    @warehoused_boxes = Box.warehoused
+    @warehoused_pallets = Pallet.warehoused
+
+    return unless @container.pallets.any? || @container.boxes.any? || @container.container_items.any?
+
+    @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
   end
 
   def update

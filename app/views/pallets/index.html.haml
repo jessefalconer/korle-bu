@@ -16,41 +16,12 @@
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action
         %i.fa.fa-angle-double-right
-      = render partial: "layouts/mass_action_modal", locals: {name: "pallets", redirect: pallets_path(display: params[:display])}
+      = render partial: "layouts/mass_action_modal", locals: {name: "pallets", redirect: pallets_path(display: params[:display]), record: nil }
 
   .main-content
     - if @pallets.any?
-      %table.table.table-striped.table-hover.link-rows
-        %thead
-          %tr
-            %th Custom ID
-            %th Name
-            %th Status
-            %th.hidden-xs Receiver
-            %th.hidden-xs Created At
-            %th
-        %tbody
-          - @pallets.each do |pallet|
-            %tr
-              %td
-                = link_to pallet_path(pallet) do
-                  %p= pallet.custom_uid
-              %td
-                = link_to pallet_path(pallet) do
-                  %p= pallet.name
-              %td
-                = link_to pallet_path(pallet) do
-                  %p{class: "status-#{pallet.status.parameterize}"}= pallet.status
-              %td.hidden-xs
-                = link_to pallet_path(pallet) do
-                  %p= pallet.shipment&.receiving_warehouse&.name
-              %td.hidden-xs
-                = link_to pallet_path(pallet) do
-                  %p= pallet.created_at.strftime("%Y-%m-%d")
-              %td
-                = check_box_tag "pallet_ids[]", pallet.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-pallet-#{pallet.id}"
-
+      = render "table"
       = paginate @pallets, window: 2
 
     - else
-      %h5.text-center No #{params[:display].present? ? params[:display] + " " : "" }pallets.
+      %h4.text-center No #{params[:display].present? ? params[:display] + " " : "" }pallets.

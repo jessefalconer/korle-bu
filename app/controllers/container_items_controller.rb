@@ -2,7 +2,7 @@
 
 class ContainerItemsController < ApplicationController
   before_action :set_container
-  before_action :set_container_item, except: %i[create index add_with_item mass_reassign]
+  before_action :set_container_item, except: %i[create index add_with_item]
 
   def create
     container_item = @container.container_items.build(container_item_params)
@@ -29,11 +29,11 @@ class ContainerItemsController < ApplicationController
   end
 
   def index
-    if @container.container_items.any?
-      @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
-      @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
-      @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
-    end
+    return unless @container.container_items.any?
+
+    @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
   end
 
   def add_with_item
@@ -49,15 +49,6 @@ class ContainerItemsController < ApplicationController
     end
 
     redirect_to container_container_items_path(@container), flash: message
-  end
-
-  def mass_reassign
-    if params[:packed_item_ids].nil?
-      redirect_to container_path(@container), flash: { error: "No items where selected." }
-    else
-      PackedItem.where(id: params[:packed_item_ids]).update(container_id: @container.id)
-      redirect_to container_path(@container), flash: { success: "Items reassigned." }
-    end
   end
 
   def destroy

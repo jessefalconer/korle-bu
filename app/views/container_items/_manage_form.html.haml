@@ -1,5 +1,5 @@
 - if @container.container_items.none?
-  %h5.text-center No containerized items. Use the tabs to search or create a new item.
+  %h4.text-center No containerized items. Use the tabs to search or create a new item.
 - else
   %h5 Update or remove existing items packed in this container.
   %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}

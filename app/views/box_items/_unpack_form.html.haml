@@ -1,5 +1,5 @@
 - if @box.box_items.with_inventory.none?
-  %h5.text-center No items to unpack.
+  %h4.text-center No items to unpack.
 - else
   %h5 Unpack and remove items from this box. Items completely unpacked with no remaining quantity and weight will not be shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "unpack-items"}

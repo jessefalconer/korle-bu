@@ -8,7 +8,7 @@
       %th Expiry Date
       %th
   %tbody
-    - objects.each do |item|
+    - items.each do |item|
       %tr
         %td
           %p= item.generated_name
@@ -21,4 +21,4 @@
         %td
           %p= item.expiry_date&.strftime("%Y-%m-%d")
         %td
-          = check_box_tag "packed_item_ids[]", item.id, false, {id: item.id}
+          = check_box_tag "packed_item_ids[]", item.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-packed-item-#{item.id}"
