@@ -49,7 +49,7 @@ namespace :legacy_data do
 
     # Boxes and Pallets receive a logical order of naming, custom IDs and standardized statuses
     Box.all.order(:created_at).each_with_index do |box, index|
-      box.update_columns(user_id: user_id, name: "BOX-#{index + 1}", custom_uid: index + 1, status: box.status.titleize)
+      box.update_columns(user_id: user_id, name: "BOX-#{index + 1}", custom_uid: index + 1, status: STATUS_TRANSLATIONS[box.status&.to_sym] || "In Progress")
     end
     Pallet.all.order(:created_at).each_with_index do |pallet, index|
       pallet.update_columns(user_id: user_id, name: "PALLET-#{index + 1}", custom_uid: index + 1, status: "In Progress")
@@ -59,7 +59,7 @@ namespace :legacy_data do
     Container.all.order(:created_at).each_with_index do |container, index|
       shipping = Warehouse.find_by(name: "Main Warehouse")
       receiving = Warehouse.find_by(name: container.destination) || Warehouse.find_by(name: "Main Warehouse")
-      status = STATUS_TRANSLATIONS[container.status&.to_sym] || "Not Started"
+      status = STATUS_TRANSLATIONS[container.status&.to_sym] || "In Progress"
 
       ship = Shipment.create(user_id: user_id, name: "SHIPMENT-#{index + 1}", custom_uid: index + 1,
                               status: status, shipping_warehouse_id: shipping.id, receiving_warehouse_id: receiving.id,

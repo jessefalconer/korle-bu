@@ -34,7 +34,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Data for Name: big_items; Type: TABLE DATA; Schema: public; Owner: deploy
+-- Data for Name: big_items; Type: TABLE DATA; Schema: public; Owner: jesse.falconer
 --
 
 COPY public."big_items" (id, description, weight, container_id, notes, "created_at", "updated_at", destination, category) FROM stdin;
@@ -246,14 +246,14 @@ COPY public."big_items" (id, description, weight, container_id, notes, "created_
 
 
 --
--- Name: big_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+-- Name: big_items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jesse.falconer
 --
 
 SELECT pg_catalog.setval('public."big_items_id_seq"', 276, true);
 
 
 --
--- Data for Name: boxes; Type: TABLE DATA; Schema: public; Owner: deploy
+-- Data for Name: boxes; Type: TABLE DATA; Schema: public; Owner: jesse.falconer
 --
 
 COPY public."boxes" (id, weight, status, pallet_id, container_id, notes, "created_at", "updated_at", number) FROM stdin;
@@ -5345,13 +5345,13 @@ COPY public."boxes" (id, weight, status, pallet_id, container_id, notes, "create
 
 
 --
--- Name: boxes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+-- Name: boxes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jesse.falconer
 --
 
 SELECT pg_catalog.setval('public."boxes_id_seq"', 5115, true);
 
 --
--- Data for Name: containers; Type: TABLE DATA; Schema: public; Owner: deploy
+-- Data for Name: containers; Type: TABLE DATA; Schema: public; Owner: jesse.falconer
 --
 
 COPY public."containers" (id, status, destination, notes, "created_at", "updated_at") FROM stdin;
@@ -5373,14 +5373,14 @@ COPY public."containers" (id, status, destination, notes, "created_at", "updated
 
 
 --
--- Name: containers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+-- Name: containers_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jesse.falconer
 --
 
 SELECT pg_catalog.setval('public."containers_id_seq"', 15, true);
 
 
 --
--- Data for Name: item_boxes; Type: TABLE DATA; Schema: public; Owner: deploy
+-- Data for Name: item_boxes; Type: TABLE DATA; Schema: public; Owner: jesse.falconer
 --
 
 COPY public."item_boxes" (id, box_id, item_id, quantity, "created_at", "updated_at", item_expire) FROM stdin;
@@ -11592,14 +11592,14 @@ COPY public."item_boxes" (id, box_id, item_id, quantity, "created_at", "updated_
 
 
 --
--- Name: item_boxes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+-- Name: item_boxes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jesse.falconer
 --
 
 SELECT pg_catalog.setval('public."item_boxes_id_seq"', 6350, true);
 
 
 --
--- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: deploy
+-- Data for Name: items; Type: TABLE DATA; Schema: public; Owner: jesse.falconer
 --
 
 COPY public."items" (id, object, "created_at", "updated_at", category) FROM stdin;
@@ -15184,14 +15184,14 @@ COPY public."items" (id, object, "created_at", "updated_at", category) FROM stdi
 
 
 --
--- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+-- Name: items_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jesse.falconer
 --
 
 SELECT pg_catalog.setval('public."items_id_seq"', 3578, true);
 
 
 --
--- Data for Name: pallets; Type: TABLE DATA; Schema: public; Owner: deploy
+-- Data for Name: pallets; Type: TABLE DATA; Schema: public; Owner: jesse.falconer
 --
 
 COPY public."pallets" (id, location, status, notes, "created_at", "updated_at", description) FROM stdin;
@@ -15240,7 +15240,7 @@ COPY public."pallets" (id, location, status, notes, "created_at", "updated_at", 
 
 
 --
--- Name: pallets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: deploy
+-- Name: pallets_id_seq; Type: SEQUENCE SET; Schema: public; Owner: jesse.falconer
 --
 
 SELECT pg_catalog.setval('public."pallets_id_seq"', 41, true);
@@ -15248,12 +15248,12 @@ SELECT pg_catalog.setval('public."pallets_id_seq"', 41, true);
 
 
 --
--- Name: SCHEMA public; Type: ACL; Schema: -; Owner: deploy
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: jesse.falconer
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM deploy;
-GRANT ALL ON SCHEMA public TO deploy;
+REVOKE ALL ON SCHEMA public FROM "jesse.falconer";
+GRANT ALL ON SCHEMA public TO "jesse.falconer";
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 

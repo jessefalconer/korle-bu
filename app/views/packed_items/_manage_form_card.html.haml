@@ -12,6 +12,7 @@
         %span.label.label-primary #{pi.weight}kg
       %span.label.label-success= pi.quantity
       %i.fa.fa-ellipsis-v
+      = check_box_tag "packed_item_ids[]", pi.id, false, class: "mass-action", form: "mass_action", id: "mass-action-packed-item-#{pi.id}"
   .col-xs-12.manage-item-form.hidden
     .row
       .col-xs-6.col-sm-4
@@ -30,20 +31,6 @@
         .form-group
           = f.label :expires
           = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "YYYY-MM-DD"
-      .col-xs-6.col-sm-4
-        .form-group.item-assignments{data: {id: pi.id}}
-          %label Reassign to...
-          = select_tag("", options_for_select(["", "Warehouse", "Staging", "Box", "Pallet", "Container"], ""), { class: "form-control", id: "item-assignment-#{pi.id}" })
-      .col-xs-6.col-sm-4
-        .form-group.hidden{id: "box-assignment-form-#{pi.id}"}
-          = f.label :box_id, "Box Name"
-          = f.select :box_id, options_from_collection_for_select(@boxes, :id, :name), { include_blank: "None" }, { class: "form-control", id: "box-assignment-input-#{pi.id}" }
-        .form-group.hidden{id: "pallet-assignment-form-#{pi.id}"}
-          = f.label :pallet_id, "Pallet Name"
-          = f.select :pallet_id, options_from_collection_for_select(@pallets, :id, :name), { include_blank: "None" }, { class: "form-control", id: "pallet-assignment-input-#{pi.id}" }
-        .form-group.hidden{id: "container-assignment-form-#{pi.id}"}
-          = f.label :container_id, "Container Name"
-          = f.select :container_id, options_from_collection_for_select(@containers, :id, :name), { include_blank: "None" }, { class: "form-control", id: "container-assignment-input-#{pi.id}" }
       .col-xs-12
         .pull-left.padding-top-small
           %label Generate ID?

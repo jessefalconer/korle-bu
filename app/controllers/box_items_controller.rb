@@ -29,9 +29,9 @@ class BoxItemsController < ApplicationController
   end
 
   def index
-    @boxes = Box.in_progress.order(:id).reverse_order
-    @pallets = Pallet.in_progress.order(:id).reverse_order
-    @containers = Container.in_progress.order(:id).reverse_order
+    @boxes = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @pallets = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+    @containers = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
   end
 
   def add_with_item
@@ -66,7 +66,7 @@ class BoxItemsController < ApplicationController
   private
 
   def box_item_params
-    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :box_id, :pallet_id, :container_id, :show_id).merge(user: current_user)
+    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :box_id, :pallet_id, :container_id, :show_id, :status).merge(user: current_user)
   end
 
   def item_params

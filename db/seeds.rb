@@ -1,42 +1,54 @@
 # Uncomment these for development seeding and prior to inserting SQL dump
 
-# User.create!(email: "jesse@email.com",
+# u = User.new(email: "jesse@email.com",
 #                   first_name: "Jesse",
 #                   last_name: "Falconer",
 #                   role: "Admin",
 #                   status: "Active",
-#                   password_digest: BCrypt::Password.create("123456")
+#                   password_digest: BCrypt::Password.create("123456"),
+#                   phone: "1234567"
 #                   )
-# User.create!(email: "aaron@email.com",
+# u.save(:validate => false)
+# u = User.new(email: "aaron@email.com",
 #                   first_name: "Aaron",
 #                   last_name: "Fedora",
 #                   role: "Admin",
-#                   password_digest: BCrypt::Password.create("123456")
+#                   password_digest: BCrypt::Password.create("123456"),
+#                   phone: "1234567"
 #                   )
-# User.create!(email: "blaise_pascal@email.com",
+# u.save(:validate => false)
+# u = User.new(email: "blaise_pascal@email.com",
 #                   first_name: "Blaise",
 #                   last_name: "Pascal",
 #                   role: "Shipping Manager",
-#                   password_digest: BCrypt::Password.create("123456")
+#                   password_digest: BCrypt::Password.create("123456"),
+#                   phone: "1234567"
 #                   )
-# User.create!(email: "leonhard_euler@email.com",
+# u.save(:validate => false)
+# u = User.new(email: "leonhard_euler@email.com",
 #                   first_name: "Leonhard",
 #                   last_name: "Euler",
 #                   role: "Receiving Manager",
-#                   password_digest: BCrypt::Password.create("123456")
+#                   password_digest: BCrypt::Password.create("123456"),
+#                   phone: "1234567"
 #                   )
-# User.create!(email: "isaac_newton@email.com",
+# u.save(:validate => false)
+# u = User.new(email: "isaac_newton@email.com",
 #                   first_name: "Isaac",
 #                   last_name: "Newton",
 #                   role: "Volunteer",
-#                   password_digest: BCrypt::Password.create("123456")
+#                   password_digest: BCrypt::Password.create("123456"),
+#                   phone: "1234567"
 #                   )
-# User.create!(email: "maxwell_planck@email.com",
+# u.save(:validate => false)
+# u = User.new(email: "maxwell_planck@email.com",
 #                   first_name: "Max",
 #                   last_name: "Planck",
 #                   role: "Volunteer",
-#                   password_digest: BCrypt::Password.create("123456")
+#                   password_digest: BCrypt::Password.create("123456"),
+#                   phone: "1234567"
 #                   )
+# u.save(:validate => false)
 
 # CATEGORIES = [
 #   "Hospital Pieces",

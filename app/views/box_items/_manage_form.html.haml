@@ -2,7 +2,13 @@
   %h5.text-center No boxed items. Use the tabs to search or create a new item.
 - else
   %h5 Update or remove existing items packed in this box.
+  %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+    %span.mass-action-count Mass Action
+    %i.fa.fa-angle-double-right
+  %br
+  %br
+  = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_box_items_path(@box)}
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name or ID...", assoc: "manage-items"}
   - @box.box_items.each do |pi|
     = form_for pi, url: box_box_item_path(@box, pi) do |f|
-      = render "packed_items/manage_form_card", f: f, pi: pi, path: box_box_item_path(@box, pi), staged: false
+      = render "packed_items/manage_form_card", f: f, pi: pi, path: box_box_item_path(@box, pi)

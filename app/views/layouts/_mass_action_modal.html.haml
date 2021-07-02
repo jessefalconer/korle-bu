@@ -1,0 +1,28 @@
+.modal.fade{id: "mass-action-modal"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h5#assignmentModalLabel.modal-title Mass Action for #{name}
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"}  ×
+      .modal-body#assignmentModalBody.margin-top
+        = form_with url: mass_action_path, id: "mass_action" do |f|
+          = f.hidden_field :redirect, value: redirect
+          = f.hidden_field :status, id: "status-flag"
+          .row
+            .col-xs-12
+              .form-group.item-assignments
+                %label Reassign to...
+                = select_tag("", options_for_select(["", "Warehouse", "Staging", "Box", "Pallet", "Container"], ""), { class: "form-control", id: "item-assignment" })
+            .col-xs-12
+              .form-group.hidden{id: "box-assignment-form"}
+                %label Box Name
+                = select_tag("box_id", options_for_select(@boxes), { class: "form-control", id: "box-assignment-input" })
+              .form-group.hidden{id: "pallet-assignment-form"}
+                %label Pallet Name
+                = select_tag("pallet_id", options_for_select(@pallets), { class: "form-control", id: "pallet-assignment-input" })
+              .form-group.hidden{id: "container-assignment-form"}
+                %label Container Name
+                = select_tag("container_id", options_for_select(@containers), { class: "form-control", id: "container-assignment-input" })
+            .col-xs-12
+              = submit_button_responsive("Update")

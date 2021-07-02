@@ -114,6 +114,9 @@ function initManageDrawerListeners() {
   if (document.querySelector(".manage-item-name") === null) { return; }
 
   $(".manage-item-name").on("click", e => {
+    // Do not toggle drawer if input selected
+    if (e.target.nodeName === "INPUT") return;
+
     const icon = $(e.currentTarget).find("i");
     const sibling = $(e.currentTarget).next();
 
