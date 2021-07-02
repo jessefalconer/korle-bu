@@ -28,10 +28,13 @@ class WarehousedItemsController < ApplicationController
   end
 
   def index
-    @boxes = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
-    @pallets = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
-    @containers = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
     @packed_items = PackedItem.warehoused.order(:created_at).reverse_order.page params[:page]
+
+    if @packed_items.present?
+      @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
+    end
   end
 
   def add_with_item

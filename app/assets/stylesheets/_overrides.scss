@@ -296,6 +296,8 @@ table.table-striped.link-rows tbody tr td {
 .inline-search-form {
   display: inline-block;
   padding-top: 7px;
+  margin-right: 5px;
+
   button,
   input { display: inline-block; }
 
@@ -316,4 +318,21 @@ em.show-id {
 button:disabled {
   cursor: not-allowed;
   pointer-events: all !important;
+}
+
+input.mass-action-table {
+  margin: 13.25px 0 0 0;
+}
+
+tr {
+  &.selected {
+    border-right: 1px solid #3c763d;
+    border-left: 1px solid #3c763d;
+  }
+}
+
+.mass-action-form {
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
 }

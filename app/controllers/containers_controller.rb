@@ -27,6 +27,11 @@ class ContainersController < ApplicationController
   end
 
   def show
+    if @container.pallets.any? || @container.boxes.any? || @container.container_items.any?
+      @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
+    end
     @staged_items = PackedItem.staged
     @warehoused_items = PackedItem.warehoused
   end

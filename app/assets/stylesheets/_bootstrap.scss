@@ -1336,10 +1336,17 @@ ol {
       &:nth-child(odd) {
         >td {
           background-color: #f9f9f9;
+          &.selected {  background-color: #dbe6db; }
         }
 
         >th {
           background-color: #f9f9f9;
+          &.selected {  background-color: #dbe6db; }
+        }
+      }
+      &:nth-child(even) {
+        >td {
+          &.selected {  background-color: #dbe6db; }
         }
       }
     }

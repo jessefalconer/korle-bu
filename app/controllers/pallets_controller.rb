@@ -24,9 +24,19 @@ class PalletsController < ApplicationController
     else
       Pallet.accessible_by(current_ability).order(:custom_uid).reverse_order.page params[:page]
     end
+    if @pallets.present?
+      @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
+    end
   end
 
   def show
+    if @pallet.boxes.any? || @pallet.pallet_items.any?
+      @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
+    end
     @staged_items = PackedItem.staged
     @warehoused_items = PackedItem.warehoused
   end

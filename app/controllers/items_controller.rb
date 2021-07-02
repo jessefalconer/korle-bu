@@ -93,9 +93,9 @@ class ItemsController < ApplicationController
       pallet_pallet_items_path(id)
     when "Container"
       container_container_items_path(id)
-    when "Staging"
+    when "Staged"
       staged_items_path
-    when "Warehouse"
+    when "Warehoused"
       warehoused_items_path
     end
   end

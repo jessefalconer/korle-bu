@@ -9,7 +9,7 @@
         = form_with url: mass_action_path, id: "mass_action" do |f|
           = f.hidden_field :redirect, value: redirect
           = f.hidden_field :status, id: "status-flag"
-          .row
+          .row.mass-action-form
             .col-xs-12
               .form-group.item-assignments
                 %label Reassign to...
@@ -17,12 +17,12 @@
             .col-xs-12
               .form-group.hidden{id: "box-assignment-form"}
                 %label Box Name
-                = select_tag("box_id", options_for_select(@boxes), { class: "form-control", id: "box-assignment-input" })
+                = select_tag("box_id", options_for_select(@box_options), { class: "form-control", id: "box-assignment-input" })
               .form-group.hidden{id: "pallet-assignment-form"}
                 %label Pallet Name
-                = select_tag("pallet_id", options_for_select(@pallets), { class: "form-control", id: "pallet-assignment-input" })
+                = select_tag("pallet_id", options_for_select(@pallet_options), { class: "form-control", id: "pallet-assignment-input" })
               .form-group.hidden{id: "container-assignment-form"}
                 %label Container Name
-                = select_tag("container_id", options_for_select(@containers), { class: "form-control", id: "container-assignment-input" })
+                = select_tag("container_id", options_for_select(@container_options), { class: "form-control", id: "container-assignment-input" })
             .col-xs-12
-              = submit_button_responsive("Update")
+              = submit_button_responsive("Update", "pull-right")

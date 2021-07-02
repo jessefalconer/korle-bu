@@ -1,6 +1,6 @@
 .content
   .header
-    %h1.page-title Boxes
+    %h1.page-title #{params[:display].present? ? params[:display].titleize + " " : "" }Boxes
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
@@ -11,6 +11,12 @@
     = form_for :box, url: find_box_path, html: {class: "inline-search-form" } do |f|
       = submit_button("Go To", nil, "fa-search")
       = f.number_field :custom_uid, {placeholder: "Custom ID"}
+
+    - if @boxes.any?
+      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+        %span.mass-action-count Mass Action
+        %i.fa.fa-angle-double-right
+      = render partial: "layouts/mass_action_modal", locals: {name: "boxes", redirect: boxes_path(display: params[:display])}
 
   .main-content
     - if @boxes.any?
@@ -24,6 +30,7 @@
             %th Status
             %th.hidden-xs Receiver
             %th.hidden-xs Created At
+            %th
         %tbody
           - @boxes.each do |box|
             %tr
@@ -42,6 +49,8 @@
               %td.hidden-xs
                 = link_to box_path(box) do
                   %p= box.created_at.strftime("%Y-%m-%d")
+              %td
+                = check_box_tag "box_ids[]", box.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{box.id}"
 
       = paginate @boxes, window: 2
 

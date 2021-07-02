@@ -14,6 +14,7 @@ function updateCheckCount() {
 
 function initMassActions() {
   const checkboxes = document.querySelectorAll(".mass-action");
+  if (!checkboxes) return;
 
   checkboxes.forEach(checkbox => {
     checkbox.addEventListener("change", e => {
@@ -24,7 +25,24 @@ function initMassActions() {
   })
 }
 
+function initMassActionsTable() {
+  const checkboxes = document.querySelectorAll(".mass-action-table");
+  if (!checkboxes) return;
+
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener("change", e => {
+      tdEls = e.target.parentNode.parentNode.children
+      for (let tdEl of tdEls) {
+        tdEl.classList.toggle("selected");
+      };
+
+      e.target.closest("tr").classList.toggle("selected");
+      updateCheckCount();
+    });
+  })
+}
+
 $(() => {
-  if (!document.querySelectorAll(".mass-action")) return;
   initMassActions();
+  initMassActionsTable();
 });

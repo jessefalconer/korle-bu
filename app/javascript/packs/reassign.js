@@ -1,4 +1,8 @@
 function initAssignmentListeners() {
+  $(`#box-assignment-input option:selected,
+      #pallet-assignment-input option:selected,
+      #container-assignment-input option:selected`).prop("disabled", true);
+
   $(document).on("change", `#item-assignment`, () => {
     const selected = $(`#item-assignment option:selected`).text();
 
@@ -15,7 +19,8 @@ function initAssignmentListeners() {
       $(`#${selected.toLowerCase()}-assignment-form`).removeClass("hidden").hide().fadeIn();
       $(`#${selected.toLowerCase()}-assignment-input option:selected`).prop("disabled", false);
     } else if (selected === "Staging" || selected === "Warehouse") {
-      $("#status-flag").val(selected);
+      // Ugly way to match validated statuses yuck
+      $("#status-flag").val(selected === "Staging" ? "Staged" : "Warehoused")
     } else {
       $("#status-flag").val(null);
     }

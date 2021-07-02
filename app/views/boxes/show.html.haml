@@ -9,6 +9,12 @@
     %h5 Add to this Box:
     = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
 
+    - if @box.box_items.any?
+      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+        %span.mass-action-count Mass Action
+        %i.fa.fa-angle-double-right
+      = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box)}
+
   .main-content
     %ul.nav.nav-tabs
       %li.active
@@ -94,6 +100,7 @@
                     %th Name
                     %th Expires
                     %th Quantity
+                    %th
                 %tbody#filter-box-items-table
                   - @box.box_items.order(:updated_at).reverse_order.each do |bi|
                     %tr.filter-row
@@ -106,6 +113,8 @@
                       %td
                         = link_to box_box_items_path(@box) do
                           %p= bi.quantity
+                      %td
+                        = check_box_tag "packed_item_ids[]", bi.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-packed-item-#{bi.id}"
               .close-collapse{data: {toggle: "collapse"}, href: "#box_items"}
                 %span Close
           - else

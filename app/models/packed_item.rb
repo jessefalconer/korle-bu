@@ -2,9 +2,11 @@
 
 class PackedItem < ApplicationRecord
   STATUSES = [
-    PACKED = "Packed",
-    WAREHOUSE = "Warehouse",
-    STAGING = "Staging"
+    WAREHOUSED = "Warehoused",
+    STAGED = "Staged",
+    IN_PROGRESS = "In Progress",
+    COMPLETE = "Complete",
+    RECEIVED = "Received"
   ].freeze
 
   belongs_to :box, optional: true, inverse_of: :box_items
@@ -20,8 +22,8 @@ class PackedItem < ApplicationRecord
 
   scope :with_inventory, -> { left_joins(:unpacking_events).where("remaining_quantity > ?", 0).uniq }
   scope :with_events, -> { joins(:unpacking_events).uniq }
-  scope :staged, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: STAGING) }
-  scope :warehoused, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: WAREHOUSE) }
+  scope :staged, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: STAGED) }
+  scope :warehoused, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: WAREHOUSED) }
 
   accepts_nested_attributes_for :unpacking_events, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
@@ -37,7 +39,7 @@ class PackedItem < ApplicationRecord
   delegate :generated_name, to: :item
 
   before_save do
-    sanitize_status
+    set_with_parent_status
     set_shipment
     recalculate_remaining_items
   end
@@ -78,14 +80,18 @@ class PackedItem < ApplicationRecord
     status
   end
 
+  def parent
+    box || pallet || container
+  end
+
   private
 
   def set_shipment
     self.shipment = box&.shipment || pallet&.shipment || container&.shipment
   end
 
-  def sanitize_status
-    self.status = PACKED if !will_not_assign?
+  def set_with_parent_status
+    self.status = parent&.status unless will_not_assign?
   end
 
   def recalculate_remaining_items

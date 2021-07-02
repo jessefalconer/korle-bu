@@ -1,6 +1,6 @@
 .content
   .header
-    %h1.page-title Pallets
+    %h1.page-title #{params[:display].present? ? params[:display].titleize + " " : "" }Pallets
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
@@ -12,6 +12,12 @@
       = submit_button("Go To", nil, "fa-search")
       = f.number_field :custom_uid, {placeholder: "Custom ID"}
 
+    - if @pallets.any?
+      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+        %span.mass-action-count Mass Action
+        %i.fa.fa-angle-double-right
+      = render partial: "layouts/mass_action_modal", locals: {name: "pallets", redirect: pallets_path(display: params[:display])}
+
   .main-content
     - if @pallets.any?
       %table.table.table-striped.table-hover.link-rows
@@ -22,6 +28,7 @@
             %th Status
             %th.hidden-xs Receiver
             %th.hidden-xs Created At
+            %th
         %tbody
           - @pallets.each do |pallet|
             %tr
@@ -40,6 +47,8 @@
               %td.hidden-xs
                 = link_to pallet_path(pallet) do
                   %p= pallet.created_at.strftime("%Y-%m-%d")
+              %td
+                = check_box_tag "pallet_ids[]", pallet.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-pallet-#{pallet.id}"
 
       = paginate @pallets, window: 2
 

@@ -29,9 +29,11 @@ class ContainerItemsController < ApplicationController
   end
 
   def index
-    @boxes = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
-    @pallets = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
-    @containers = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
+    if @container.container_items.any?
+      @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+      @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
+    end
   end
 
   def add_with_item
