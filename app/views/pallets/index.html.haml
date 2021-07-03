@@ -1,10 +1,11 @@
+- title = "#{params[:display].present? ? params[:display] + " " : "" }pallets"
 .content
   .header
-    %h1.page-title #{params[:display].present? ? params[:display].titleize + " " : "" }Pallets
+    %h1.page-title= title.titleize
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li.active #{params[:display].present? ? params[:display].titleize + " " : "" }Pallets
+      %li.active= title.titleize
     - if can? :create, Pallet
       = add_button(new_pallet_path, "Pallet", "fa-pallet")
 
@@ -16,7 +17,7 @@
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action
         %i.fa.fa-angle-double-right
-      = render partial: "layouts/mass_action_modal", locals: {name: "pallets", redirect: pallets_path(display: params[:display]), record: nil }
+      = render partial: "layouts/mass_action_modal", locals: {name: title, redirect: pallets_path(display: params[:display]), record: nil }
 
   .main-content
     - if @pallets.any?
@@ -24,4 +25,4 @@
       = paginate @pallets, window: 2
 
     - else
-      %h4.text-center No #{params[:display].present? ? params[:display] + " " : "" }pallets.
+      %h4.text-center No #{title}.

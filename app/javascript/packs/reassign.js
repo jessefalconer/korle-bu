@@ -14,7 +14,10 @@ function initAssignmentListeners() {
   $(document).on("change", `#item-assignment`, () => {
     const selected = $(`#item-assignment option:selected`).text();
 
-    $(`#box-assignment-form,
+    $(`#current-location-message,
+        #warehouse-message,
+        #staging-message,
+        #box-assignment-form,
         #pallet-assignment-form,
         #container-assignment-form`).addClass("hidden");
 
@@ -28,10 +31,12 @@ function initAssignmentListeners() {
       $(`#${selected.toLowerCase()}-assignment-form`).removeClass("hidden").hide().fadeIn();
       $(`#${selected.toLowerCase()}-assignment-input option:selected`).prop("disabled", false);
     } else if (selected === "Staging" || selected === "Warehouse") {
+      $(`#${selected.toLowerCase()}-message`).removeClass("hidden").hide().fadeIn();
       // Ugly way to match validated statuses, yuck
       $("#status-flag").val(selected === "Staging" ? "Staged" : "Warehoused")
       $("#current-location").val(false);
     } else if (selected === "Current Location") {
+      $("#current-location-message").removeClass("hidden").hide().fadeIn();
       $("#status-flag").val(null);
       $("#current-location").val(true);
     } else {

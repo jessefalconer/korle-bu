@@ -22,22 +22,40 @@
                 %label Reassign to...
                 = select_tag("", options_for_select(["Current Location", "Warehouse", "Staging", "Box", "Pallet", "Container"], ""), { class: "form-control", id: "item-assignment" })
             .col-xs-12
+              .form-group{id: "current-location-message"}
+                - if record.nil?
+                  .mass-action-warning
+                    %i.fas.fa-exclamation-triangle.text-warning
+                    %h5.text-warning
+                      Selected records will not be updated.
+              .form-group.hidden{id: "warehouse-message"}
+                - if name.include? "warehoused"
+                  .mass-action-warning
+                    %i.fas.fa-exclamation-triangle.text-warning
+                    %h5.text-warning
+                      Records already warehoused.
+              .form-group.hidden{id: "staging-message"}
+                - if name.include? "staged"
+                  .mass-action-warning
+                    %i.fas.fa-exclamation-triangle.text-warning
+                    %h5.text-warning
+                      Records already staged.
               .form-group.hidden{id: "box-assignment-form"}
                 %label Box Name
                 = select_tag("box_id", options_for_select(@box_options), { class: "form-control", id: "box-assignment-input" })
-                - if name == "boxes"
+                - if name.downcase.include?("pallets") || name.downcase.include?("boxes")
                   .mass-action-warning
                     %i.fas.fa-exclamation-triangle.text-warning
                     %h5.text-warning
-                      Selected boxes will not be updated.
+                      Any selected boxes or pallets will not be updated.
               .form-group.hidden{id: "pallet-assignment-form"}
                 %label Pallet Name
                 = select_tag("pallet_id", options_for_select(@pallet_options), { class: "form-control", id: "pallet-assignment-input" })
-                - if name == "pallets"
+                - if name.downcase.include?("pallets")
                   .mass-action-warning
                     %i.fas.fa-exclamation-triangle.text-warning
                     %h5.text-warning
-                      Selected pallets will not be updated.
+                      Any selected pallets will not be updated.
               .form-group.hidden{id: "container-assignment-form"}
                 %label Container Name
                 = select_tag("container_id", options_for_select(@container_options), { class: "form-control", id: "container-assignment-input" })
