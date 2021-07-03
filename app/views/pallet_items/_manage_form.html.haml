@@ -7,7 +7,7 @@
     %i.fa.fa-angle-double-right
   %br
   %br
-  = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_pallet_items_path(@pallet)}
+  = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_pallet_items_path(@pallet), record: nil}
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name or ID...", assoc: "manage-items"}
   - @pallet.pallet_items.each do |pi|
     = form_for pi, url: pallet_pallet_item_path(@pallet, pi) do |f|

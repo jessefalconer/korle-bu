@@ -7,7 +7,7 @@
     %i.fa.fa-angle-double-right
   %br
   %br
-  = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_box_items_path(@box)}
+  = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_box_items_path(@box), record: nil}
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name or ID...", assoc: "manage-items"}
   - @box.box_items.each do |pi|
     = form_for pi, url: box_box_item_path(@box, pi) do |f|

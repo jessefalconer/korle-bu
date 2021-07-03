@@ -1,5 +1,8 @@
 function updateCheckCount() {
-  var checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
+  var checkedCountRow = document.querySelectorAll("input.mass-action[type='checkbox']:checked").length;
+  var checkedCountTable = document.querySelectorAll("input.mass-action-table[type='checkbox']:checked").length;
+  var checkedCount = checkedCountRow + checkedCountTable
+
   const button = document.querySelector(".mass-action-count");
   var text = "";
   if (checkedCount === 0) {
