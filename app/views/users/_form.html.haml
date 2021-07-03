@@ -36,6 +36,25 @@
       = f.text_area :notes, disabled: current_user.id != @user.id, class: "form-control", style: "height: 475px;"
 
   .col-xs-12
+    %h5 Award someone an achievement for their work ethic or stupidity. Every page refresh randomly selects an achievement to display on the home page. All fields must be filled out to be valid. Achievement Value / Achievement Maximum Value determines the bar length.
+  .col-xs-12.col-sm-6
+    .form-group
+      %label Achiever
+      = f.select(:achiever_name, options_for_select(User.pluck(:first_name), @user.achiever_name), { include_blank: "None" }, { class: "form-control" })
+    .form-group
+      %label Achievement Title
+      = f.text_field :achievement_title, class: "form-control"
+    .form-group
+      %label Achievement Title
+      = f.text_field :achievement_description, class: "form-control"
+  .col-xs-12.col-sm-6
+    .form-group
+      %label Achievement Value
+      = f.number_field :achievement_value, class: "form-control", min: 1
+    .form-group
+      %label Achievement Maximum Value
+      = f.number_field :achievement_max_value, class: "form-control", min: 1
+  .col-xs-12
     .btn-toolbar.list-toolbar
       - if current_user != @user && !@user.created_records? && @user.persisted?
         = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed.")

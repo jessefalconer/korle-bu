@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_02_190657) do
+ActiveRecord::Schema.define(version: 2021_07_03_030348) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 2021_05_02_190657) do
 
   create_table "containers", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress", null: false
+    t.string "status", default: "In Progress"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -182,7 +182,7 @@ ActiveRecord::Schema.define(version: 2021_05_02_190657) do
 
   create_table "pallets", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress", null: false
+    t.string "status", default: "In Progress"
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -240,6 +240,11 @@ ActiveRecord::Schema.define(version: 2021_05_02_190657) do
     t.string "role", default: "Volunteer", null: false
     t.bigint "warehouse_id"
     t.boolean "masquerader", default: false, null: false
+    t.string "achiever_name"
+    t.string "achievement_title"
+    t.string "achievement_description"
+    t.integer "achievement_value"
+    t.integer "achievement_max_value"
     t.index ["warehouse_id"], name: "index_users_on_warehouse_id"
   end
 

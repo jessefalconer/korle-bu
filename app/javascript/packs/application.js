@@ -13,6 +13,7 @@ import "../packs/search";
 import "../packs/quick_filter";
 import "../packs/reassign";
 import "../packs/mass_actions";
+import "chartkick/chart.js"
 
 $(function () {
   var uls = $('.sidebar-nav > ul > *').clone();

@@ -17,6 +17,7 @@ class User < ApplicationRecord
   has_many :box_items, through: :boxes
   has_many :packed_items
   has_many :warehouses
+  has_many :items
 
   validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true, on: %i[create update]
   validates :phone, format: { with: /\A(?:\+?\d{1,3}\s*-?)?\(?(?:\d{3})?\)?[- ]?\d{3}[- ]?\d{4}\z/ }

@@ -31,6 +31,23 @@ class SessionsController < ApplicationController
   end
 
   def index
+    @random_achievement = User.where.not(achiever_name: nil, achievement_title: nil, achievement_description: nil, achievement_value: nil, achievement_max_value: nil).sample
+
+    @king_items = User.joins(:items).group("users.id").where("items.created_at >= ?", 30.days.ago).order("count(items.id) desc").limit(1).first || User.first
+    @king_items_count = @king_items.items.where("items.created_at >= ?", 30.days.ago).count
+    @items_total = Item.where("items.created_at >= ?", 30.days.ago).count
+
+    @king_packed = User.joins(:packed_items).group("users.id").where("packed_items.created_at >= ?", 30.days.ago).order("count(packed_items.id) desc").limit(1).first || User.first
+    @king_packed_count = @king_packed.packed_items.where("packed_items.created_at >= ?", 30.days.ago).count
+    @packed_total = PackedItem.where("packed_items.created_at >= ?", 30.days.ago).count
+
+    @king_verified = User.joins(:items).group("users.id").where("items.created_at >= ? AND items.verified = ?", 30.days.ago, true).order("count(items.id) desc").limit(1).first || User.first
+    @king_verified_count = @king_verified.items.where("items.created_at >= ? AND items.verified = ?", 30.days.ago, true).count
+    @verified_total = Item.where("items.created_at >= ? AND items.verified = ?", 30.days.ago, true).count
+
+    @king_uncategorized = User.joins(:items).group("users.id").where("items.created_at >= ? AND items.category IS NULL", 30.days.ago).order("count(items.id) desc").limit(1).first || User.first
+    @king_uncategorized_count = @king_uncategorized.items.where("items.created_at >= ? AND items.category IS NULL", 30.days.ago).count
+    @uncategorized_total = Item.where("items.created_at >= ? AND items.category IS NULL", 30.days.ago).count
   end
 
   def my_activity

@@ -67,7 +67,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :last_name, :first_name, :phone, :role, :status, :notes, :warehouse_id)
+    params.require(:user).permit(:email, :password, :password_confirmation, :last_name, :first_name, :phone, :role, :status, :notes, :warehouse_id, :achiever_name, :achievement_title, :achievement_description, :achievement_value, :achievement_max_value)
   end
 
   def existing_session
