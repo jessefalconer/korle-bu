@@ -128,7 +128,7 @@
             = check_box_tag :destroy_photo, disabled: "disabled", class: "form-control"
             %label Delete Photo
 
-  .row
+  .row.select-fields
     .col-xs-12.col-sm-6
       .form-group
         = f.label :category
@@ -138,7 +138,7 @@
         = f.label :unit_weight, "Unit Weight (kg)"
         = f.number_field :unit_weight, step: :any, class: "form-control"
 
-  .row
+  .row.select-fields
     .col-xs-6
       .form-group
         = f.label :flagged, "Flag for Review"

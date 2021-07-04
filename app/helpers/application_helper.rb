@@ -58,14 +58,12 @@ module ApplicationHelper
     end
   end
 
-  # @todos re-enable when swapping reconcile items is implemented
-  # def swap_button(new_id, old_id, merge_ids, classes = "")
-  #   merge_ids = merge_ids.reject { |n| n == new_id} << old_id
-  #   tag.a(id: new_id, class: "btn btn-warning #{classes} swap-button", data: {merge_items: merge_ids}) do
-  #     tag.i("", class: "fa fa-exchange-alt fa-rotate-90") +
-  #       tag.span(" Swap", class: "main-text")
-  #   end
-  # end
+  def swap_button(classes = "")
+    button_tag(type: "submit", class: "btn btn-warning btn-xs #{classes} swap-button") do
+      tag.i("", class: "fa fa-exchange-alt") +
+        tag.span(" Swap", class: "main-text")
+    end
+  end
 
   def add_button(path, text, icon)
     link_to(path, class: "btn btn-primary responsive-button") do

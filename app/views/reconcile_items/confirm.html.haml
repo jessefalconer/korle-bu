@@ -33,89 +33,96 @@
       .col-lg-3.col-sm-4.col-xs-6
         %h5.text-muted Category
         %h4{style: "color: #{!@item.category.present? ? "#ff4d4d" : "#02a556"}"}= @item.category&.name || "N/A"
-    .row.text-center
 
-    = form_tag(execute_reconcile_path(@item)) do
-      .row
-        .col-xs-12
-          %h4 Merge Items
-          %p Items below will be merged into the target item above.
-        .col-xs-12
-          %table.table.table-striped.table-hover
-            %thead
+    .row
+      .col-xs-12
+        %h4 Merge Items
+        %p Items below will be merged into the target item above.
+      .col-xs-12
+        %table.table.table-striped.table-hover
+          %thead
+            %tr
+              %th Name
+              %th.hidden-xs Category
+              %th.hidden-xs Verified
+              %th.hidden-xs Flagged
+              %th Instances
+              %th
+          %tbody
+            - @merge_items.each do |item|
               %tr
-                %th Name
-                %th.hidden-xs Category
-                %th.hidden-xs Verified
-                %th.hidden-xs Flagged
-                %th Instances
-            %tbody
-              - @merge_items.each do |item|
-                %tr
-                  %td
-                    %p
-                      = item.generated_name
-                      = hidden_field_tag "reconcile_ids[]", item.id
-                  %td.hidden-xs
-                    %p
-                      = item.category&.name || "N/A"
-                  %td.hidden-xs
-                    %p{class: !item.verified ? "text-danger" : "text-success"}
-                      = item.verified&.to_s.capitalize
-                  %td.hidden-xs
-                    %p{class: item.flagged ? "text-danger" : "text-success"}
-                      = item.flagged&.to_s.capitalize
-                  %td
-                    = link_to item_instances_path(item) do
-                      %p.instances= item.packed_items.count
+                %td
+                  %p
+                    = item.generated_name
+                    = hidden_field_tag "confirmed_reconcile_ids[]", item.id, form: "execute_form"
+                %td.hidden-xs
+                  %p
+                    = item.category&.name || "N/A"
+                %td.hidden-xs
+                  %p{class: !item.verified ? "text-danger" : "text-success"}
+                    = item.verified&.to_s.capitalize
+                %td.hidden-xs
+                  %p{class: item.flagged ? "text-danger" : "text-success"}
+                    = item.flagged&.to_s.capitalize
+                %td
+                  = link_to item_instances_path(item) do
+                    %p.instances= item.packed_items.count
+                %td
+                  = form_with url: reconcile_confirm_path(item), id: "swap_form_#{item.id}" do |f|
+                    - @merge_items.each do |form_item|
+                      - unless form_item == item
+                        = hidden_field_tag "reconcile_ids[]", form_item.id, form: "swap_form_#{item.id}"
+                    = hidden_field_tag "reconcile_ids[]", @item.id, form: "swap_form_#{item.id}"
+                    = swap_button
 
-      %br
-      .row
-        .col-xs-12
-          .danger-zone
-            %h3.title Danger Zone
-            %p.body
-              %strong Merging items together is an irreversible action.
-              This will replace all instances of the merge items on
-              containers, pallets and boxes with the target item. Quantities,
-              expiration dates and other information will be preserved.
+    %br
+    .row
+      .col-xs-12
+        .danger-zone
+          %h3.title Danger Zone
+          %p.body
+            %strong Merging items together is an irreversible action.
+            This will replace all instances of the merge items on
+            containers, pallets and boxes with the target item. Quantities,
+            expiration dates and other information will be preserved.
 
-            - target_used = @item.packed_items.any?
-            %p.body This checklist is only a suggestion of review areas:
-            %ul.fa-ul
+          - target_used = @item.packed_items.any?
+          %p.body This checklist is only a suggestion of review areas:
+          %ul.fa-ul
 
-              %li{class: (target_used && "no-warn")}
-                %span.fa-li
-                  %i.fas{class: target_used ? "fa-check" : "fa-exclamation-triangle"}
-                Target item is
-                -unless target_used
-                  %em not
-                currently in use
+            %li{class: (target_used && "no-warn")}
+              %span.fa-li
+                %i.fas{class: target_used ? "fa-check" : "fa-exclamation-triangle"}
+              Target item is
+              -unless target_used
+                %em not
+              currently in use
 
-              %li{class: (@item.verified && "no-warn")}
-                %span.fa-li
-                  %i.fas{class: @item.verified ? "fa-check" : "fa-exclamation-triangle"}
-                Target item is
-                - if !@item.verified
-                  %em not
-                verified
+            %li{class: (@item.verified && "no-warn")}
+              %span.fa-li
+                %i.fas{class: @item.verified ? "fa-check" : "fa-exclamation-triangle"}
+              Target item is
+              - if !@item.verified
+                %em not
+              verified
 
-              %li{class: (@item.category && "no-warn")}
-                %span.fa-li
-                  %i.fas{class: @item.category ? "fa-check" : "fa-exclamation-triangle"}
-                Target item is
-                - if !@item.category
-                  %em not
-                categorized
+            %li{class: (@item.category && "no-warn")}
+              %span.fa-li
+                %i.fas{class: @item.category ? "fa-check" : "fa-exclamation-triangle"}
+              Target item is
+              - if !@item.category
+                %em not
+              categorized
 
-              %li{class: (!@item.flagged && "no-warn")}
-                %span.fa-li
-                  %i.fas{class: !@item.flagged ? "fa-check" : "fa-exclamation-triangle"}
-                Target item is
-                - if !@item.flagged
-                  %em not
-                flagged for review
+            %li{class: (!@item.flagged && "no-warn")}
+              %span.fa-li
+                %i.fas{class: !@item.flagged ? "fa-check" : "fa-exclamation-triangle"}
+              Target item is
+              - if !@item.flagged
+                %em not
+              flagged for review
 
+          = form_with url: execute_reconcile_path(@item), id: "execute_form" do
             .form-group
               = check_box_tag :delete_item, true, false
               %label Delete Merge Items after Reconcile
@@ -124,5 +131,4 @@
               .form-group
                 = check_box_tag :verify_item, true, true
                 %label Verify Target Item
-
             = submit_button_warning("Merge", "pull-right")

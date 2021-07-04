@@ -123,16 +123,22 @@ footer {
   .button { display: inline-block; }
 }
 
-.modal-body,
 .new_item,
 .edit_item {
-  padding: 0;
+  padding: 15px;
+  .form-group { padding: 0 15px; }
+}
+
+.modal-body {
+  padding: 15px 0 0 0;
+
+  .new_item,
+  .edit_item { padding: 0; }
 
   .collapsing .row.form-row,
   .collapse .row.form-row { padding: 5px 15px 0 15px; }
+  .row.select-fields { padding: 0 15px; }
 }
-
-.modal-body { padding-top: 15px; }
 
 .new_packed_item,
 .edit_container,

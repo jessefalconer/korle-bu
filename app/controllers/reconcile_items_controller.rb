@@ -23,12 +23,12 @@ class ReconcileItemsController < ApplicationController
     if params[:reconcile_ids].nil?
       redirect_to reconcile_start_path(@item), flash: { error: "No items where selected." }
     else
-      @merge_items = Item.where(id: params[:reconcile_ids])
+      @merge_items = Item.where(id: params[:reconcile_ids]).where.not(id: @item.id)
     end
   end
 
   def execute
-    merge_items = Item.where(id: params[:reconcile_ids])
+    merge_items = Item.where(id: params[:confirmed_reconcile_ids])
     Item.execute_merge(@item, merge_items, delete: params[:delete_item], verify: params[:verify_item])
 
     redirect_to reconcile_unverified_path
