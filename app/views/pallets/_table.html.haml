@@ -5,6 +5,7 @@
       %th Custom ID
       %th Name
       %th Status
+      %th.hidden-sm.hidden-xs Boxes
       %th.hidden-xs Receiver
       %th.hidden-xs Created At
       %th.mass-action-cell
@@ -20,6 +21,9 @@
         %td
           = link_to pallet_path(pallet) do
             %p{class: "status-#{pallet.status.parameterize}"}= pallet.status
+        %td.hidden-sm.hidden-xs
+          = link_to pallet_path(pallet) do
+            %p{class: (pallet.boxes.count.zero? ? "text-warning" : "text-success")}= pallet.boxes.count
         %td.hidden-xs
           = link_to pallet_path(pallet) do
             %p= pallet.shipment&.receiving_warehouse&.name
