@@ -166,5 +166,21 @@
             #container_boxes.collapse.panel-body
               %h5.text-center No boxes assigned to containers.
 
+        .panel.panel-default
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#packed-items"}
+            %i.fa.fa-stethoscope
+            Packed Items in this Shipment
+            %span.label{class: @shipment.packed_items.any? ? "label-success" : "label-warning"}= @shipment.packed_items.size
+
+          - if @shipment.packed_items.any?
+            #packed-items.collapse
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "packed-items"}
+              = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.packed_items}
+              .close-collapse{data: {toggle: "collapse"}, href: "#packed-items"}
+                %span Close
+          - else
+            #packed-items.collapse.panel-body
+              %h5.text-center No packed items in this container.
+
   - if (can? :manage, PackedItem) && (@staged_items.any? || @staged_boxes.any? || @staged_pallets.any? || @warehoused_items.any? || @warehoused_boxes.any? || @warehoused_pallets.any?)
     = render "layouts/mass_action_add", display: %i[items boxes pallets]

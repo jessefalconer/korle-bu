@@ -7,6 +7,7 @@
       %th
   %tbody#filter-packed-items-table
     - packed_items.order(:updated_at).reverse_order.each do |pi|
+      - path = present(pi).path
       %tr.filter-row
         %td
           = link_to path do
@@ -17,5 +18,5 @@
         %td
           = link_to path do
             %p= pi.quantity
-        %td
+        %td.mass-action-cell
           = check_box_tag "packed_item_ids[]", pi.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-packed-item-#{pi.id}"
