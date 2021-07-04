@@ -11,6 +11,7 @@
         - if @items.any?
           %h3 Uncategorized Items (#{Item.uncategorized.count})
           %p These items are uncategorized. Click on the item's name to begin categorizing.
+          = render partial: "items/search_form", locals: { path: "/uncategorized_item_search" }
           %table.table.table-striped.table-hover.link-rows
             %thead
               %tr
@@ -18,27 +19,8 @@
                 %th Verified
                 %th.hidden-xs Flagged
                 %th Instances
-                %th.hidden-xs Created At
-            %tbody
-              - @items.each do |item|
-                %tr
-                  %td
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      = item.generated_name
-                  %td
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.verified ? "text-success" : "text-danger"}
-                      = item.verified.to_s.capitalize
-                  %td.hidden-xs
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.flagged ? "text-danger" : "text-success"}
-                      = item.flagged&.to_s.capitalize
-                  %td
-                    = link_to item_instances_path(item) do
-                      %p.instances= item.packed_items.count
-                  %td.hidden-xs
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      = item.created_at.strftime("%Y-%m-%d")
-
-                = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_uncategorized_path"}
+            %tbody#search-results
+              = render "uncategorized_table"
 
           = paginate @items
 

@@ -11,6 +11,7 @@
         - if @items.any?
           %h3 Unverified Items (#{Item.unverified.count})
           %p These items are unverified. Click on the item's row to start.
+          = render partial: "items/search_form", locals: { path: "/unverified_item_search" }
           %table.table.table-striped.table-hover.link-rows
             %thead
               %tr
@@ -18,23 +19,8 @@
                 %th.hidden-xs Category
                 %th.hidden-xs Flagged
                 %th Instances
-            %tbody
-              - @items.each do |item|
-                %tr
-                  %td
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      = item.generated_name
-                  %td.hidden-xs
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-                      = item.category&.name || "N/A"
-                  %td.hidden-xs
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.flagged ? "text-danger" : "text-success"}
-                      = item.flagged&.to_s.capitalize
-                  %td
-                    = link_to item_instances_path(item) do
-                      %p.instances= item.packed_items.count
-
-                = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_unverified_path"}
+            %tbody#search-results
+              = render "unverified_table"
 
           = paginate @items
 

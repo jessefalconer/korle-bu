@@ -1,0 +1,16 @@
+- @items.each do |item|
+  %tr
+    %td
+      %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+        = item.generated_name
+    %td
+      %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.verified ? "text-success" : "text-danger"}
+        = item.verified.to_s.capitalize
+    %td.hidden-xs
+      %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.flagged ? "text-danger" : "text-success"}
+        = item.flagged&.to_s.capitalize
+    %td
+      = link_to item_instances_path(item) do
+        %p.instances= item.packed_items.count
+
+  = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_uncategorized_path"}

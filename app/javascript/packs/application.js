@@ -9,7 +9,8 @@ require("channels")
 
 import "../packs/errors";
 import "../packs/bootstrap";
-import "../packs/search";
+import "../packs/manage_item_search";
+import "../packs/item_search";
 import "../packs/quick_filter";
 import "../packs/reassign";
 import "../packs/mass_actions";

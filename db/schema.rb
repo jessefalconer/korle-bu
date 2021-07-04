@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 2021_07_03_030348) do
 
   create_table "containers", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress"
+    t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"
@@ -182,7 +182,7 @@ ActiveRecord::Schema.define(version: 2021_07_03_030348) do
 
   create_table "pallets", force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "status", default: "In Progress"
+    t.string "status", default: "In Progress", null: false
     t.string "notes", limit: 255
     t.integer "custom_uid"
     t.bigint "user_id"

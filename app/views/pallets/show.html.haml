@@ -12,11 +12,10 @@
       = add_button(new_box_path(pallet_id: @pallet.id), "Box", "fa-box-open")
     = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
 
-    - if @pallet.boxes.any? || @pallet.pallet_items.any?
-      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
-        %span.mass-action-count Mass Action
-        %i.fa.fa-angle-double-right
-      = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_path(@pallet), record: @pallet}
+    %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+      %span.mass-action-count Mass Action
+      %i.fa.fa-angle-double-right
+    = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_path(@pallet), record: @pallet}
 
   .main-content
     %ul.nav.nav-tabs
@@ -158,5 +157,5 @@
             #pallet_items.collapse.panel-body
               %h5.text-center No packed items on this pallet.
 
-  - if (can? :manage, PackedItem)
-    = render "layouts/mass_action_add"
+  - if (can? :manage, PackedItem) && (@staged_items.any? || @staged_boxes.any? || @warehoused_items.any? || @warehoused_boxes.any?)
+    = render "layouts/mass_action_add", display: %i[items boxes]

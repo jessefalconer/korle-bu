@@ -30,7 +30,19 @@ class ItemsController < ApplicationController
   def index_search
     @items = Item.search_by_generated_name(params[:search])
 
-    render json: render_to_string(partial: "results_index", layout: false).to_json
+    render json: render_to_string(partial: "table", layout: false).to_json
+  end
+
+  def unverified_search
+    @items = Item.unverified.search_by_generated_name(params[:search])
+
+    render json: render_to_string(partial: "reconcile_items/unverified_table", layout: false).to_json
+  end
+
+  def uncategorized_search
+    @items = Item.uncategorized.search_by_generated_name(params[:search])
+
+    render json: render_to_string(partial: "reconcile_items/uncategorized_table", layout: false).to_json
   end
 
   def reconcile_search
