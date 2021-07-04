@@ -1,0 +1,21 @@
+%table.table.table-striped.link-rows
+  %thead
+    %tr
+      %th Custom ID
+      %th Name
+      %th Status
+      %th
+  %tbody#filter-pallets-table
+    - pallets.order(:custom_uid).reverse_order.each do |pallet|
+      %tr.filter-row
+        %td
+          = link_to pallet_path(pallet) do
+            %p= pallet.custom_uid
+        %td
+          = link_to pallet_path(pallet) do
+            %p= pallet.name
+        %td
+          = link_to pallet_path(pallet) do
+            %p{class: "status-#{pallet.status.parameterize}"}= pallet.status
+        %td
+          = check_box_tag "pallet_ids[]", pallet.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-pallet-#{pallet.id}"

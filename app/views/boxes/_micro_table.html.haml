@@ -1,0 +1,21 @@
+%table.table.table-striped.link-rows
+  %thead
+    %tr
+      %th Custom ID
+      %th Name
+      %th Status
+      %th
+  %tbody{id: table_id}
+    - boxes.order(:custom_uid).reverse_order.each do |box|
+      %tr.filter-row
+        %td
+          = link_to box_path(box) do
+            %p= box.custom_uid
+        %td
+          = link_to box_path(box) do
+            %p= box.name
+        %td
+          = link_to box_path(box) do
+            %p{class: "status-#{box.status.parameterize}"}= box.status
+        %td
+          = check_box_tag "box_ids[]", box.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{box.id}"

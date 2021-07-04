@@ -11,6 +11,11 @@
     - if can? :create, Container
       = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
 
+    %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+      %span.mass-action-count Mass Action
+      %i.fa.fa-angle-double-right
+    = render partial: "layouts/mass_action_modal", locals: {name: @shipment.name, redirect: shipment_path(@shipment), record: nil}
+
   .main-content
     %ul.nav.nav-tabs
       %li.active
@@ -122,24 +127,7 @@
           - if @shipment.pallets.any?
             #pallets.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallets"}
-              %table.table.table-striped.link-rows
-                %thead
-                  %tr
-                    %th Custom ID
-                    %th Name
-                    %th Status
-                %tbody#filter-pallets-table
-                  - @shipment.pallets.order(:custom_uid).reverse_order.each do |pallet|
-                    %tr.filter-row
-                      %td
-                        = link_to pallet_path(pallet) do
-                          %p= pallet.custom_uid
-                      %td
-                        = link_to pallet_path(pallet) do
-                          %p= pallet.name
-                      %td
-                        = link_to pallet_path(pallet) do
-                          %p{class: "status-#{pallet.status.parameterize}"}= pallet.status
+              = render partial: "pallets/micro_table", locals: {pallets: @shipment.pallets}
               .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
                 %span Close
           - else
@@ -155,24 +143,7 @@
           - if @shipment.pallet_boxes.any?
             #pallet_boxes.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallet-boxes"}
-              %table.table.table-striped.link-rows
-                %thead
-                  %tr
-                    %th Custom ID
-                    %th Name
-                    %th Status
-                %tbody#filter-pallet-boxes-table
-                  - @shipment.pallet_boxes.order(:custom_uid).reverse_order.each do |box|
-                    %tr.filter-row
-                      %td
-                        = link_to box_path(box) do
-                          %p= box.custom_uid
-                      %td
-                        = link_to box_path(box) do
-                          %p= box.name
-                      %td
-                        = link_to box_path(box) do
-                          %p{class: "status-#{box.status.parameterize}"}= box.status
+              = render partial: "boxes/micro_table", locals: {boxes: @shipment.pallet_boxes, table_id: "filter-pallet-boxes-table"}
               .close-collapse{data: {toggle: "collapse"}, href: "#pallet_boxes"}
                 %span Close
           - else
@@ -188,26 +159,12 @@
           - if @shipment.container_boxes.any?
             #container_boxes.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "container-boxes"}
-              %table.table.table-striped.link-rows
-                %thead
-                  %tr
-                    %th Custom ID
-                    %th Name
-                    %th Status
-                %tbody#filter-container-boxes-table
-                  - @shipment.container_boxes.order(:custom_uid).reverse_order.each do |box|
-                    %tr.filter-row
-                      %td
-                        = link_to box_path(box) do
-                          %p= box.custom_uid
-                      %td
-                        = link_to box_path(box) do
-                          %p= box.name
-                      %td
-                        = link_to box_path(box) do
-                          %p{class: "status-#{box.status.parameterize}"}= box.status
+              = render partial: "boxes/micro_table", locals: {boxes: @shipment.container_boxes, table_id: "filter-container-boxes-table"}
               .close-collapse{data: {toggle: "collapse"}, href: "#container_boxes"}
                 %span Close
           - else
             #container_boxes.collapse.panel-body
               %h5.text-center No boxes assigned to containers.
+
+  - if (can? :manage, PackedItem) && (@staged_items.any? || @staged_boxes.any? || @staged_pallets.any? || @warehoused_items.any? || @warehoused_boxes.any? || @warehoused_pallets.any?)
+    = render "layouts/mass_action_add", display: %i[items boxes pallets]

@@ -24,7 +24,17 @@ class ShipmentsController < ApplicationController
 
   def show
     respond_to do |format|
-      format.html
+      format.html do
+        @staged_items = PackedItem.staged
+        @staged_boxes = Box.staged
+        @staged_pallets = Pallet.staged
+        @warehoused_items = PackedItem.warehoused
+        @warehoused_boxes = Box.warehoused
+        @warehoused_pallets = Pallet.warehoused
+        @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
+        @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
+        @container_options = Container.order(:id).reverse_order.pluck(:name, :id)
+      end
       format.csv { send_data @shipment.to_csv, filename: "shipment-#{@shipment.id}-#{Time.zone.today}.csv" }
     end
   end

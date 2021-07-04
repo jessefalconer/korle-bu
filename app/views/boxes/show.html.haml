@@ -85,39 +85,19 @@
                       = box.pallet_location
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#packed-items"}
             %i.fa.fa-stethoscope
             Items in this Box
             %span.label{class: @box.box_items.any? ? "label-success" : "label-warning"}= @box.box_items.size
 
           - if @box.box_items.any?
-            #box_items.collapse
-              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "box-items"}
-              %table.table.table-striped.link-rows
-                %thead
-                  %tr
-                    %th Name
-                    %th Expires
-                    %th Quantity
-                    %th
-                %tbody#filter-box-items-table
-                  - @box.box_items.order(:updated_at).reverse_order.each do |bi|
-                    %tr.filter-row
-                      %td
-                        = link_to box_box_items_path(@box) do
-                          %p= bi.generated_name
-                      %td
-                        = link_to box_box_items_path(@box) do
-                          %p= bi.expiry_date&.strftime("%Y-%m-%d")
-                      %td
-                        = link_to box_box_items_path(@box) do
-                          %p= bi.quantity
-                      %td
-                        = check_box_tag "packed_item_ids[]", bi.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-packed-item-#{bi.id}"
-              .close-collapse{data: {toggle: "collapse"}, href: "#box_items"}
+            #packed-items.collapse
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "packed-items"}
+              = render partial: "packed_items/micro_table", locals: {packed_items: @box.box_items, path: box_box_items_path(@box)}
+              .close-collapse{data: {toggle: "collapse"}, href: "#packed-items"}
                 %span Close
           - else
-            #box_items.collapse.panel-body
+            #packed-items.collapse.panel-body
               %h5.text-center No packed items in this box.
 
   - if (can? :manage, PackedItem) && (@staged_items.any? || @warehoused_items.any?)

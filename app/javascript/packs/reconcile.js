@@ -29,8 +29,8 @@ function updateCheckCount() {
   }
 }
 
-function initCheckBoxListeners() {
-  if (!document.querySelectorAll(".submit-count")) return;
+function initReconcileCheckBoxListeners() {
+  if (!document.querySelectorAll(".submit-count")[0]) return;
   const checkboxes = document.querySelectorAll("input[type=checkbox]");
   if (!checkboxes) return;
 
@@ -75,5 +75,5 @@ function initReconcileSearchListeners() {
 
 $(() => {
   initReconcileSearchListeners();
-  initCheckBoxListeners();
+  initReconcileCheckBoxListeners();
 });

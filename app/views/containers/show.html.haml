@@ -88,28 +88,7 @@
           - if @container.pallets.any?
             #pallets.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallets"}
-
-              %table.table.table-striped.link-rows
-                %thead
-                  %tr
-                    %th Custom ID
-                    %th Name
-                    %th Status
-                    %th
-                %tbody#filter-pallets-table
-                  - @container.pallets.order(:custom_uid).reverse_order.each do |pallet|
-                    %tr.filter-row
-                      %td
-                        = link_to pallet_path(pallet) do
-                          %p= pallet.custom_uid
-                      %td
-                        = link_to pallet_path(pallet) do
-                          %p= pallet.name
-                      %td
-                        = link_to pallet_path(pallet) do
-                          %p{class: "status-#{pallet.status.parameterize}"}= pallet.status
-                      %td
-                        = check_box_tag "pallet_ids[]", pallet.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-pallet-#{pallet.id}"
+              = render partial: "pallets/micro_table", locals: {pallets: @container.pallets}
               .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
                 %span Close
           - else
@@ -125,28 +104,7 @@
           - if @container.boxes.any?
             #boxes.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "boxes"}
-
-              %table.table.table-striped.link-rows
-                %thead
-                  %tr
-                    %th Custom ID
-                    %th Name
-                    %th Status
-                    %th
-                %tbody#filter-boxes-table
-                  - @container.boxes.order(:custom_uid).reverse_order.each do |box|
-                    %tr.filter-row
-                      %td
-                        = link_to box_path(box) do
-                          %p= box.custom_uid
-                      %td
-                        = link_to box_path(box) do
-                          %p= box.name
-                      %td
-                        = link_to box_path(box) do
-                          %p{class: "status-#{box.status.parameterize}"}= box.status
-                      %td
-                        = check_box_tag "box_ids[]", box.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{box.id}"
+              = render partial: "boxes/micro_table", locals: {boxes: @container.boxes, table_id: "filter-boxes-table"}
               .close-collapse{data: {toggle: "collapse"}, href: "#boxes"}
                 %span Close
           - else
@@ -154,40 +112,19 @@
               %h5.text-center No boxes in this container.
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#packed-items"}
             %i.fa.fa-stethoscope
             Packed Items in this Container
             %span.label{class: @container.container_items.any? ? "label-success" : "label-warning"}= @container.container_items.size
 
           - if @container.container_items.any?
-            #container_items.collapse
-              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "container-items"}
-
-              %table.table.table-striped.link-rows
-                %thead
-                  %tr
-                    %th Name
-                    %th Expires
-                    %th Quantity
-                    %th
-                %tbody#filter-container-items-table
-                  - @container.container_items.order(:updated_at).reverse_order.each do |ci|
-                    %tr.filter-row
-                      %td
-                        = link_to container_container_items_path(@container) do
-                          %p= ci.generated_name
-                      %td
-                        = link_to container_container_items_path(@container) do
-                          %p= ci.expiry_date&.strftime("%Y-%m-%d")
-                      %td
-                        = link_to container_container_items_path(@container) do
-                          %p= ci.quantity
-                      %td
-                        = check_box_tag "packed_item_ids[]", ci.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-packed-item-#{ci.id}"
-              .close-collapse{data: {toggle: "collapse"}, href: "#container_items"}
+            #packed-items.collapse
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "packed-items"}
+              = render partial: "packed_items/micro_table", locals: {packed_items: @container.container_items, path: container_container_items_path(@container)}
+              .close-collapse{data: {toggle: "collapse"}, href: "#packed-items"}
                 %span Close
           - else
-            #container_items.collapse.panel-body
+            #packed-items.collapse.panel-body
               %h5.text-center No packed items in this container.
 
   - if (can? :manage, PackedItem) && (@staged_items.any? || @staged_boxes.any? || @staged_pallets.any? || @warehoused_items.any? || @warehoused_boxes.any? || @warehoused_pallets.any?)
