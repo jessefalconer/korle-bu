@@ -50,10 +50,10 @@ class Container < ApplicationRecord
   end
 
   def cascade_packed_items_location
-    container_items.where.not(shipment_id: shipment_id).find_each { |ci| ci.update(shipment_id: shipment_id) }
-    pallet_items.where.not(shipment_id: shipment_id).find_each { |pi| pi.update(shipment_id: shipment_id) }
-    pallet_box_items.where.not(shipment_id: shipment_id).find_each { |pbi| pbi.update(shipment_id: shipment_id) }
-    box_items.where.not(shipment_id: shipment_id).find_each { |bi| bi.update(shipment_id: shipment_id) }
+    container_items.each(&:save!)
+    pallet_items.each(&:save!)
+    pallet_box_items.each(&:save!)
+    box_items.each(&:save!)
   end
 
   def set_defaults

@@ -76,8 +76,8 @@ class Pallet < ApplicationRecord
   end
 
   def cascade_packed_items_location
-    pallet_items.where.not(shipment_id: container&.shipment_id).find_each { |pi| pi.update(shipment_id: container&.shipment_id) }
-    box_items.where.not(shipment_id: container&.shipment_id).find_each { |bi| bi.update(shipment_id: container&.shipment_id) }
+    pallet_items.each(&:save!)
+    box_items.each(&:save!)
   end
 
   def set_defaults

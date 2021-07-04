@@ -74,7 +74,7 @@ class Box < ApplicationRecord
   end
 
   def cascade_packed_items_location
-    box_items.where.not(shipment_id: shipment&.id).find_each { |bi| bi.update(shipment_id: shipment&.id) }
+    box_items.each(&:save!)
   end
 
   def set_defaults

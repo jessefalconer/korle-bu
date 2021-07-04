@@ -104,7 +104,7 @@
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#packed-items"}
             %i.fa.fa-stethoscope
-            Packed Items on this Pallet
+            Packed Items Directly on this Pallet
             %span.label{class: @pallet.pallet_items.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
 
           - if @pallet.pallet_items.any?

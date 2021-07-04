@@ -169,7 +169,7 @@
         .panel.panel-default
           %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#packed-items"}
             %i.fa.fa-stethoscope
-            Packed Items in this Shipment
+            All Packed Items in this Shipment
             %span.label{class: @shipment.packed_items.any? ? "label-success" : "label-warning"}= @shipment.packed_items.size
 
           - if @shipment.packed_items.any?

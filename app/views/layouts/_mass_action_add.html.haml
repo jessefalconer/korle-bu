@@ -43,7 +43,7 @@
             = render "packed_items/mass_add_table", items: @staged_items
         - if display.include?(:boxes) && @staged_boxes.any?
           #staged-boxes.tab-pane
-            %h5 Select staged boxes to reassign.
+            %h5 Select staged boxes to reassign. Boxes assigned to staged pallets are also listed here.
             = render "boxes/table", boxes: @staged_boxes
         - if display.include?(:pallets) && @staged_pallets.any?
           #staged-pallets.tab-pane
@@ -55,7 +55,7 @@
             = render "packed_items/mass_add_table", items: @warehoused_items
         - if display.include?(:boxes) && @warehoused_boxes.any?
           #warehoused-boxes.tab-pane
-            %h5 Select warehoused boxes to reassign.
+            %h5 Select warehoused boxes to reassign. Boxes assigned to warehoused pallets are also listed here.
             = render "boxes/table", boxes: @warehoused_boxes
         - if display.include?(:pallets) && @warehoused_pallets.any?
           #warehoused-pallets.tab-pane
