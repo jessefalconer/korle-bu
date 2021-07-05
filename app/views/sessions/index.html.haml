@@ -72,37 +72,66 @@
           .col-xs-12
             %h5.text-muted
               Let There Be Data
-              %i.fa.fa-crown
+              %i.fa.fa-crown.text-warning
               %em Most Items Created
-            = bar_chart({@king_items.first_name => @king_items_count}, max: @items_total, height: "70px", colors: ["#007096"])
+            = bar_chart({@king_items.first_name => @king_items_count}, max: @items_total, height: "65px", colors: ["#007096"])
           .col-xs-12
             %h5.text-muted
               Industrial-Medical Complex
-              %i.fa.fa-crown
+              %i.fa.fa-crown.text-warning
               %em Most Packed Items
-            = bar_chart({@king_packed.first_name => @king_packed_count}, max: @packed_total, height: "70px", colors: ["#3c763d"])
+            = bar_chart({@king_packed.first_name => @king_packed_count}, max: @packed_total, height: "65px", colors: ["#3c763d"])
           .col-xs-12
             %h5.text-muted
               I Don't Work Here, Lady
-              %i.fa.fa-crown
+              %i.fa.fa-crown.text-warning
               %em Most Uncategorized Items
-            = bar_chart({@king_uncategorized.first_name => @king_uncategorized_count}, max: @uncategorized_total, height: "70px", colors: ["#31708f"])
+            = bar_chart({@king_uncategorized.first_name => @king_uncategorized_count}, max: @uncategorized_total, height: "65px", colors: ["#31708f"])
           .col-xs-12
             %h5.text-muted
               Wikipedia Contributor
-              %i.fa.fa-crown
+              %i.fa.fa-crown.text-warning
               %em Most Verified Items
-            = bar_chart({@king_verified.first_name => @king_verified_count}, max: @verified_total, height: "70px", colors: ["#8a6d3b"])
+            = bar_chart({@king_verified.first_name => @king_verified_count}, max: @verified_total, height: "65px", colors: ["#8a6d3b"])
           - unless @random_achievement.nil?
             .col-xs-12
               %h5.text-muted
-                = @random_achievement.achievement_title.titleize
-                %i.fa.fa-crown
+                = "#{@random_achievement.achievement_title.titleize}*"
+                %i.fa.fa-crown.text-warning
                 %em= @random_achievement.achievement_description.titleize
-              = bar_chart({@random_achievement.achiever_name => @random_achievement.achievement_value}, max: @random_achievement.achievement_max_value, height: "70px", colors: ["#a94442"])
-              %h6.pull-right
-                = link_to(user_path(current_user)) do
-                  Award someone an achievement in your settings.
+              = bar_chart({@random_achievement.achiever_name => @random_achievement.achievement_value}, max: @random_achievement.achievement_max_value, height: "65px", colors: ["#a94442"])
+          .col-xs-12
+            %h6.pull-right
+              = link_to(user_path(current_user)) do
+                *Award someone an achievement in your settings.
+
+          .col-xs-4
+            %h5.text-muted.text-center Do You Even Lift?
+            %h4.text-center
+              = @heaviest_item.user.first_name
+              %i.fa.fa-crown.text-warning
+            %h5.text-center #{@heaviest_item.weight}kg
+            %h5.text-center= @heaviest_item.generated_name
+            %h5.text-muted.text-center
+              %em Heaviest Packed Item
+          .col-xs-4
+            %h5.text-muted.text-center Bulk Discount
+            %h4.text-center
+              = @quantity_item.user.first_name
+              %i.fa.fa-crown.text-warning
+            %h5.text-center= @quantity_item.quantity
+            %h5.text-center= @quantity_item.generated_name
+            %h5.text-muted.text-center
+              %em Greatest Single Packed Quantity
+          .col-xs-4
+            %h5.text-muted.text-center Most Valuable #{current_user.role}
+            %h4.text-center
+              = "#{current_user.first_name} (You!)"
+              %i.fa.fa-crown.text-warning
+            %h5.text-center &#166;
+            %h5.text-center &#166;
+            %h5.text-muted.text-center
+              %em Thanks For Helping!
     .panel.panel-default
       %a.panel-heading{data: {toggle: "collapse"}, href: "#user-stats"} My Stats (All-time)
       #user-stats.panel-collapse.panel-body.collapse.in

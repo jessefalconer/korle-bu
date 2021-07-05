@@ -48,6 +48,9 @@ class SessionsController < ApplicationController
     @king_uncategorized = User.joins(:items).group("users.id").where("items.created_at >= ? AND items.category IS NULL", 30.days.ago).order("count(items.id) desc").limit(1).first || User.first
     @king_uncategorized_count = @king_uncategorized.items.where("items.created_at >= ? AND items.category IS NULL", 30.days.ago).count
     @uncategorized_total = Item.where("items.created_at >= ? AND items.category IS NULL", 30.days.ago).count
+
+    @heaviest_item = PackedItem.where("packed_items.created_at >= ?", 30.days.ago).order("packed_items.weight desc NULLS LAST").limit(1).first
+    @quantity_item = PackedItem.where("packed_items.created_at >= ?", 30.days.ago).order("packed_items.quantity desc").limit(1).first
   end
 
   def my_activity
