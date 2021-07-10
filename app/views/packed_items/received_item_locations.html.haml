@@ -56,25 +56,22 @@
             %tbody
               %thead
                 %tr
-                  %th.hidden-xs Quantity
-                  %th Name
-                  %th.hidden-xs
-                  %th Pallet
-                  %th Date
+                  %th.hidden-xs Shipped Quantity
+                  %th Remaining Quantity
+                  %th Pallet Info
+                  %th Unpack
               - @pallet_items.each do |item|
                 %tr
                   %td.hidden-xs
                     %p= item.quantity
                   %td
-                    = link_to item_path(item.item_id) do
-                      = item.generated_name
-                  %td.hidden-xs.text-center
-                    %i.fa.fa-arrow-right
+                    %p= item.remaining_quantity
                   %td
                     = link_to pallet_path(item.pallet) do
                       = item.pallet.name
                   %td
-                    %p= item.created_at.strftime("%Y-%m-%d")
+                    = link_to pallet_pallet_items_path(item.pallet) do
+                      Items
 
     - if @container_items.any?
       .panel.panel-default
@@ -87,22 +84,19 @@
             %tbody
               %thead
                 %tr
-                  %th.hidden-xs Quantity
-                  %th Name
-                  %th.hidden-xs
-                  %th Container
-                  %th Date
+                  %th.hidden-xs Shipped Quantity
+                  %th Remaining Quantity
+                  %th Container Info
+                  %th Unpack
               - @container_items.each do |item|
                 %tr
                   %td.hidden-xs
                     %p= item.quantity
                   %td
-                    = link_to item_path(item.item_id) do
-                      = item.generated_name
-                  %td.hidden-xs.text-center
-                    %i.fa.fa-arrow-right
+                    %p= item.remaining_quantity
                   %td
                     = link_to container_path(item.container) do
                       = item.container.name
                   %td
-                    %p= item.created_at.strftime("%Y-%m-%d")
+                    = link_to container_container_items_path(item.container) do
+                      Items
