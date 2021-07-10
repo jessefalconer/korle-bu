@@ -37,6 +37,7 @@ class ReconcileItemsController < ApplicationController
   def item_instances
     items = @item.packed_items
     @staged_items = items.staged.order(:created_at).reverse_order
+    @warehoused_items = items.warehoused.order(:created_at).reverse_order
     @box_items = items.where.not(box_id: nil).order(:created_at).reverse_order
     @pallet_items = items.where.not(pallet_id: nil).order(:created_at).reverse_order
     @container_items = items.where.not(container_id: nil).order(:created_at).reverse_order
