@@ -126,7 +126,7 @@
                       %td.hidden-xs.text-center
                         %i.fa.fa-arrow-right
                       %td
-                        = link_to packed_items_path do
+                        = link_to staged_items_path do
                           Staging Area
                       %td
                         %p= item.created_at.strftime("%Y-%m-%d")
@@ -157,7 +157,7 @@
                       %td.hidden-xs.text-center
                         %i.fa.fa-arrow-right
                       %td
-                        = link_to packed_items_path do
+                        = link_to warehoused_items_path do
                           Warehouse Area
                       %td
                         %p= item.created_at.strftime("%Y-%m-%d")

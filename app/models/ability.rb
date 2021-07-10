@@ -34,14 +34,17 @@ class Ability
       can :reconcile, Item
     when "Receiving Manager"
       can :cru, User, id: user.id
-      can :read, Hospital, warehouse: user.warehouse
+      can :read, Item
+      can :read, Category
+      can :cr, Hospital, warehouse: user.warehouse
       can :read, Shipment, receiving_warehouse: user.warehouse, status: Shipment::RECEIVED
       can :read, Container, shipment: { receiving_warehouse_id: user.warehouse_id }, status: Container::RECEIVED
       can :read, Pallet, shipment: { receiving_warehouse_id: user.warehouse_id }, status: Pallet::RECEIVED
       can :read, Box, container: { shipment: { receiving_warehouse_id: user.warehouse_id } }, status: Box::RECEIVED
       can :read, Box, pallet: { container: { shipment: { receiving_warehouse_id: user.warehouse_id } } }, status: Box::RECEIVED
       can :manage, UnpackingEvent
-      cannot :manage, PackedItem
+      can :read, PackedItem, shipment: { receiving_warehouse_id: user.warehouse_id }
+      cannot :cud, PackedItem
       cannot :manage, Item
     when "Admin"
       can :manage, :all

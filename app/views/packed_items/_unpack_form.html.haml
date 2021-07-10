@@ -1,0 +1,9 @@
+- if @items.with_inventory.none?
+  %h4.text-center No items to unpack.
+- else
+  %h5 Unpack and remove items. Items completely unpacked with no remaining quantity and weight will not be shown here.
+  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "unpack-items"}
+  - @items.with_inventory.each do |pi|
+    - path = present(pi).unpack_path
+    = form_for :unpacking_event, url: path do |f|
+      = render "packed_items/unpack_form_card", f: f, pi: pi

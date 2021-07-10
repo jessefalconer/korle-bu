@@ -2,6 +2,7 @@
   %h4.text-center No items to unpack.
 - else
   %h5 Unpack and remove items from this pallet. Items completely unpacked with no remaining quantity and weight will not be shown here.
+  = render partial: "layouts/add_hospital_modal", locals: {redirect: pallet_pallet_items_path(@pallet)}
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "unpack-items"}
   - @pallet.pallet_items.with_inventory.each do |pi|
     = form_for :unpacking_event, url: pallet_pallet_item_pallet_unpacking_events_path(@pallet, pi) do |f|

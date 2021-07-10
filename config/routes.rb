@@ -31,6 +31,11 @@ Rails.application.routes.draw do
   post "find_box", to: "boxes#find"
   post "find_pallet", to: "pallets#find"
   post "mass_action", to: "mass_actions#mass_action"
+  get "all_received_items", to: "packed_items#all_received_items"
+  get "received_categories", to: "packed_items#received_categories"
+  get "received_categories/:id/received_category_items", to: "packed_items#received_category_items", as: :received_category_items
+  get "received_category_items/:id/received_item_locations", to: "packed_items#received_item_locations", as: :received_item_locations
+  get "received_categories/uncategorized", to: "packed_items#received_uncategorized_items", as: :received_uncategorized_items
 
   resources :exports, only: :create
   resources :categories

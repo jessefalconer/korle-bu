@@ -13,7 +13,7 @@
       = submit_button("Go To", nil, "fa-search")
       = f.number_field :custom_uid, {placeholder: "Custom ID"}
 
-    - if @boxes.any?
+    - if @boxes.any? && can?(:create, Box)
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action
         %i.fa.fa-angle-double-right

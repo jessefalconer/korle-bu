@@ -219,6 +219,22 @@
               = link_to warehoused_items_path do
                 %span.fa.fa-stethoscope
                 &nbsp;Items
+      - else
+        %li
+          %a.nav-header.collapsed{data: {target: ".all-items-menu", toggle: "collapse"}, href: "#"}
+            %i.fa.fa-fw.fa-stethoscope
+            Unpack Items
+            %i.fa.fa-collapse
+        %li
+          %ul.all-items-menu.nav.nav-list.collapse
+            %li
+              = link_to all_received_items_path do
+                %span.fa.fa-th-list
+                List All
+            %li
+              = link_to received_categories_path do
+                %span.fa.fa-file-medical
+                Browse by Category
 
       %li
         = link_to my_activity_path, class: "nav-header" do

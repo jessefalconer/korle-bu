@@ -8,7 +8,8 @@
       %th.hidden-sm.hidden-xs Palletized?
       %th.hidden-xs Receiver
       %th.hidden-xs Created At
-      %th.mass-action-cell
+      - if can?(:create, Box)
+        %th.mass-action-cell
   %tbody
     - @boxes.each do |box|
       %tr
@@ -30,5 +31,6 @@
         %td.hidden-xs
           = link_to box_path(box) do
             %p= box.created_at.strftime("%Y-%m-%d")
-        %td.mass-action-cell
-          = check_box_tag "box_ids[]", box.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{box.id}"
+        - if can?(:create, Box)
+          %td.mass-action-cell
+            = check_box_tag "box_ids[]", box.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{box.id}"

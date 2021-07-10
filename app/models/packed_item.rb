@@ -36,7 +36,7 @@ class PackedItem < ApplicationRecord
 
   paginates_per 25
 
-  delegate :generated_name, to: :item
+  delegate :generated_name, :category, to: :item
 
   before_save do
     set_with_parent_status

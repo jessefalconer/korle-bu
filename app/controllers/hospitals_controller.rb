@@ -12,9 +12,11 @@ class HospitalsController < ApplicationController
     hospital = Hospital.new(hospital_params.merge(user: current_user))
 
     if hospital.save
-      redirect_to hospital_path(hospital), flash: { success: "Hospital created." }
+      path = params[:redirect].presence || hospital_path(hospital)
+      redirect_to path, flash: { success: "Hospital created." }
     else
-      redirect_to hospitals_path, flash: { error: "Failed to create new hospital: #{hospital.errors.full_messages.to_sentence}" }
+      path = params[:redirect].presence || hospitals_path
+      redirect_to path, flash: { error: "Failed to create new hospital: #{hospital.errors.full_messages.to_sentence}" }
     end
   end
 

@@ -12,10 +12,11 @@
       = add_button(new_box_path(pallet_id: @pallet.id), "Box", "fa-box-open")
     = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
 
-    %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
-      %span.mass-action-count Mass Action
-      %i.fa.fa-angle-double-right
-    = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_path(@pallet), record: @pallet}
+    - if can?(:create, Pallet)
+      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+        %span.mass-action-count Mass Action
+        %i.fa.fa-angle-double-right
+      = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_path(@pallet), record: @pallet}
 
   .main-content
     %ul.nav.nav-tabs

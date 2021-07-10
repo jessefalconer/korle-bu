@@ -1,0 +1,108 @@
+.content
+  .header
+    %h1.page-title Locations of #{@item.generated_name}
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li
+        = link_to "Items by Category", received_categories_path
+      %li
+        - if @item.category
+          = link_to @item.category.name, received_category_items_path(@item.category)
+        - else
+          = link_to "Uncategorized", received_uncategorized_items_path
+      %li.active= @item.generated_name
+
+  .main-content
+    %h5 Showing all possible locations of #{@item.generated_name} with remaining inventory.
+    %h6
+      = link_to "View additional information on this item.", item_path(@item)
+    - if @box_items.any?
+      .panel.panel-default
+        %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
+          %i.fa.fa-stethoscope
+          Boxed Items
+          %span.label.label-info= @box_items.size
+        .collapse{id: "box_items"}
+          %table.table.table-striped
+            %tbody
+              %thead
+                %tr
+                  %th.hidden-xs Shipped Quantity
+                  %th Remaining Quantity
+                  %th Box Info
+                  %th Unpack
+              - @box_items.each do |item|
+                %tr
+                  %td.hidden-xs
+                    %p= item.quantity
+                  %td
+                    %p= item.remaining_quantity
+                  %td
+                    = link_to box_path(item.box) do
+                      = item.box.name
+                  %td
+                    = link_to box_box_items_path(item.box) do
+                      Items
+
+    - if @pallet_items.any?
+      .panel.panel-default
+        %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
+          %i.fa.fa-stethoscope
+          Palletized Items
+          %span.label.label-info= @pallet_items.size
+        .collapse{id: "pallet_items"}
+          %table.table.table-striped
+            %tbody
+              %thead
+                %tr
+                  %th.hidden-xs Quantity
+                  %th Name
+                  %th.hidden-xs
+                  %th Pallet
+                  %th Date
+              - @pallet_items.each do |item|
+                %tr
+                  %td.hidden-xs
+                    %p= item.quantity
+                  %td
+                    = link_to item_path(item.item_id) do
+                      = item.generated_name
+                  %td.hidden-xs.text-center
+                    %i.fa.fa-arrow-right
+                  %td
+                    = link_to pallet_path(item.pallet) do
+                      = item.pallet.name
+                  %td
+                    %p= item.created_at.strftime("%Y-%m-%d")
+
+    - if @container_items.any?
+      .panel.panel-default
+        %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+          %i.fa.fa-stethoscope
+          Containerized Items
+          %span.label.label-info= @container_items.size
+        .collapse{id: "container_items"}
+          %table.table.table-striped
+            %tbody
+              %thead
+                %tr
+                  %th.hidden-xs Quantity
+                  %th Name
+                  %th.hidden-xs
+                  %th Container
+                  %th Date
+              - @container_items.each do |item|
+                %tr
+                  %td.hidden-xs
+                    %p= item.quantity
+                  %td
+                    = link_to item_path(item.item_id) do
+                      = item.generated_name
+                  %td.hidden-xs.text-center
+                    %i.fa.fa-arrow-right
+                  %td
+                    = link_to container_path(item.container) do
+                      = item.container.name
+                  %td
+                    %p= item.created_at.strftime("%Y-%m-%d")

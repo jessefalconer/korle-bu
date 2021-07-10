@@ -9,10 +9,11 @@
     %h5 Add to this Box:
     = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
 
-    %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
-      %span.mass-action-count Mass Action
-      %i.fa.fa-angle-double-right
-    = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box), record: @box}
+    - if can?(:create, Box)
+      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+        %span.mass-action-count Mass Action
+        %i.fa.fa-angle-double-right
+      = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box), record: @box}
 
   .main-content
     %ul.nav.nav-tabs

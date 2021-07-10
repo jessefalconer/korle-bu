@@ -11,4 +11,15 @@ class PackedItemPresenter < BasePresenter
       container_container_items_path(parent)
     end
   end
+
+  def unpack_path
+    case parent.class.name
+    when "Box"
+      box_box_item_box_unpacking_events_path(parent, self)
+    when "Pallet"
+      pallet_pallet_item_pallet_unpacking_events_path(parent, self)
+    when "Container"
+      container_container_item_container_unpacking_events_path(parent, self)
+    end
+  end
 end

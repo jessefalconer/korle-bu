@@ -1,3 +1,5 @@
+- @hospital ||= Hospital.new
+- redirect ||= nil
 = form_for @hospital do |f|
   .col-xs-12.col-sm-4
     .form-group
@@ -29,12 +31,19 @@
       = f.text_field :phone, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
+      = hidden_field_tag :redirect, redirect
       %label Warehouse Assignment
-      = f.select :warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @hospital.warehouse_id), { include_blank: "Unassigned" }, { class: "form-control", id: "container-assignment" }
+      - if current_user.receiving_manager?
+        = f.select :warehouse_id, options_for_select({current_user.warehouse.name => current_user.warehouse_id}), {}, { class: "form-control", id: "container-assignment"}
+      - else
+        = f.select :warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @hospital.warehouse_id), { include_blank: "Unassigned" }, { class: "form-control", id: "container-assignment" }
   .col-xs-12.col-sm-4
     .form-group
       = f.label :status
-      = f.select(:status, options_for_select(Hospital::STATUSES, @hospital.status), {}, { class: "form-control" })
+      - if current_user.receiving_manager?
+        = f.select(:status, options_for_select([Hospital::ACTIVE], Hospital::ACTIVE), {}, { class: "form-control" })
+      - else
+        = f.select(:status, options_for_select(Hospital::STATUSES, @hospital.status), {}, { class: "form-control" })
   .col-xs-12.col-sm-8
     .form-group
       = f.label :description

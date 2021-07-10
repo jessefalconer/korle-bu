@@ -11,10 +11,11 @@
     - if can? :create, Container
       = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
 
-    %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
-      %span.mass-action-count Mass Action
-      %i.fa.fa-angle-double-right
-    = render partial: "layouts/mass_action_modal", locals: {name: @shipment.name, redirect: shipment_path(@shipment), record: nil}
+    - if can?(:create, Pallet)
+      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+        %span.mass-action-count Mass Action
+        %i.fa.fa-angle-double-right
+      = render partial: "layouts/mass_action_modal", locals: {name: @shipment.name, redirect: shipment_path(@shipment), record: nil}
 
   .main-content
     %ul.nav.nav-tabs

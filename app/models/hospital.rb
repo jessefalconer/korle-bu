@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 class Hospital < ApplicationRecord
-  STATUSES = %w[Active Deactivated].freeze
+  STATUSES = [
+    ACTIVE = "Active",
+    DEACTIVATED = "Deactivated"
+  ].freeze
 
   belongs_to :user, optional: false
   belongs_to :warehouse, optional: false
@@ -11,6 +14,7 @@ class Hospital < ApplicationRecord
   has_many :packed_items, through: :unpacking_events
 
   validates :status, inclusion: { in: STATUSES }
+  validates :name, uniqueness: true
 
   paginates_per 25
 

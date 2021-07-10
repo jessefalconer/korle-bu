@@ -1,0 +1,46 @@
+.content
+  .header
+    %h1.page-title Items by Category
+    %ul.breadcrumb
+      %li
+        = link_to "Home", index_path
+      %li.active Items by Category
+
+  .main-content
+    %h5 Select a category to narrow down your search.
+    %table.table.table-striped.table-hover.link-rows
+      %thead
+        %tr
+          %th Name
+          %th Description
+          %th Items
+          %th Remaining
+      %tbody
+        - @packed_items.each do |(category, items)|
+          %tr
+            %td
+              = link_to received_category_items_path(category) do
+                %p= category&.name
+            %td
+              = link_to received_category_items_path(category) do
+                %p= category.description
+            %td
+              = link_to received_category_items_path(category) do
+                %p= items.group_by(&:item).count
+            %td
+              = link_to received_category_items_path(category) do
+                %p= items.sum(&:remaining_quantity)
+        - if @uncategorized_items.any?
+          %tr
+            %td
+              = link_to received_uncategorized_items_path do
+                %p.text-danger Uncategorized
+            %td
+              = link_to received_uncategorized_items_path do
+                %p.text-danger N/A
+            %td
+              = link_to received_uncategorized_items_path do
+                %p= @uncategorized_items.group_by(&:item).count
+            %td
+              = link_to received_uncategorized_items_path do
+                %p= @uncategorized_items.sum(&:remaining_quantity)

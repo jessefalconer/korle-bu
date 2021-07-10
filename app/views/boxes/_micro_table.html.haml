@@ -4,7 +4,8 @@
       %th Custom ID
       %th Name
       %th Status
-      %th
+      - if can?(:create, Box)
+        %th
   %tbody{id: table_id}
     - boxes.order(:custom_uid).reverse_order.each do |box|
       %tr.filter-row
@@ -17,5 +18,6 @@
         %td
           = link_to box_path(box) do
             %p{class: "status-#{box.status.parameterize}"}= box.status
-        %td.mass-action-cell
-          = check_box_tag "box_ids[]", box.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{box.id}"
+        - if can?(:create, Box)
+          %td.mass-action-cell
+            = check_box_tag "box_ids[]", box.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{box.id}"
