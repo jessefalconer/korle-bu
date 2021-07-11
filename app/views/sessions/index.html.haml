@@ -7,7 +7,7 @@
           Home
       %li.active Dashboard
   .main-content
-    - unless current_user.volunteer?
+    - unless current_user.receiving_manager?
       .panel.panel-default
         %a.panel-heading{data: {toggle: "collapse"}, href: "#page-stats"} Global Stats (30 Days)
         #page-stats.panel-collapse.panel-body.collapse.in
@@ -65,96 +65,121 @@
                 #{sprintf("%0.02f", pallet_count/Pallet.count.to_f*100)}%
                 %i.fa.fa-level-up-alt
 
-    .panel.panel-default
-      %a.panel-heading{data: {toggle: "collapse"}, href: "#leaderboard-stats"} Leaderboard (30 Days)
-      #leaderboard-stats.panel-collapse.panel-body.collapse.in
-        .row
-          .col-xs-12
-            %h5.text-muted
-              Let There Be Data
-              %i.fa.fa-crown.text-warning
-              %em Most Items Created
-            = bar_chart({@king_items.first_name => @king_items_count}, max: @items_total, height: "65px", colors: ["#007096"])
-          .col-xs-12
-            %h5.text-muted
-              Industrial-Medical Complex
-              %i.fa.fa-crown.text-warning
-              %em Most Packed Items
-            = bar_chart({@king_packed.first_name => @king_packed_count}, max: @packed_total, height: "65px", colors: ["#3c763d"])
-          .col-xs-12
-            %h5.text-muted
-              I Don't Work Here, Lady
-              %i.fa.fa-crown.text-warning
-              %em Most Uncategorized Items
-            = bar_chart({@king_uncategorized.first_name => @king_uncategorized_count}, max: @uncategorized_total, height: "65px", colors: ["#31708f"])
-          .col-xs-12
-            %h5.text-muted
-              Wikipedia Contributor
-              %i.fa.fa-crown.text-warning
-              %em Most Verified Items
-            = bar_chart({@king_verified.first_name => @king_verified_count}, max: @verified_total, height: "65px", colors: ["#8a6d3b"])
-          - unless @random_achievement.nil?
+      .panel.panel-default
+        %a.panel-heading{data: {toggle: "collapse"}, href: "#leaderboard-stats"} Leaderboard (30 Days)
+        #leaderboard-stats.panel-collapse.panel-body.collapse.in
+          .row
             .col-xs-12
               %h5.text-muted
-                = "#{@random_achievement.achievement_title.titleize}*"
+                Let There Be Data
                 %i.fa.fa-crown.text-warning
-                %em= @random_achievement.achievement_description.titleize
-              = bar_chart({@random_achievement.achiever_name => @random_achievement.achievement_value}, max: @random_achievement.achievement_max_value, height: "65px", colors: ["#a94442"])
-          .col-xs-12
-            %h6.pull-right
-              = link_to(user_path(current_user)) do
-                *Award someone an achievement in your settings.
+                %em Most Items Created
+              = bar_chart({@king_items.first_name => @king_items_count}, max: @items_total, height: "65px", colors: ["#007096"])
+            .col-xs-12
+              %h5.text-muted
+                Industrial-Medical Complex
+                %i.fa.fa-crown.text-warning
+                %em Most Packed Items
+              = bar_chart({@king_packed.first_name => @king_packed_count}, max: @packed_total, height: "65px", colors: ["#3c763d"])
+            .col-xs-12
+              %h5.text-muted
+                I Don't Work Here, Lady
+                %i.fa.fa-crown.text-warning
+                %em Most Uncategorized Items
+              = bar_chart({@king_uncategorized.first_name => @king_uncategorized_count}, max: @uncategorized_total, height: "65px", colors: ["#31708f"])
+            .col-xs-12
+              %h5.text-muted
+                Wikipedia Contributor
+                %i.fa.fa-crown.text-warning
+                %em Most Verified Items
+              = bar_chart({@king_verified.first_name => @king_verified_count}, max: @verified_total, height: "65px", colors: ["#8a6d3b"])
+            - unless @random_achievement.nil?
+              .col-xs-12
+                %h5.text-muted
+                  = "#{@random_achievement.achievement_title.titleize}*"
+                  %i.fa.fa-crown.text-warning
+                  %em= @random_achievement.achievement_description.titleize
+                = bar_chart({@random_achievement.achiever_name => @random_achievement.achievement_value}, max: @random_achievement.achievement_max_value, height: "65px", colors: ["#a94442"])
+            .col-xs-12
+              %h6.pull-right
+                = link_to(user_path(current_user)) do
+                  *Award someone an achievement in your settings.
 
-          .col-xs-4
-            %h5.text-muted.text-center Do You Even Lift?
-            %h4.text-center
-              = @heaviest_item.user.first_name
-              %i.fa.fa-crown.text-warning
-            %h5.text-center #{@heaviest_item.weight}kg
-            %h5.text-center= @heaviest_item.generated_name
-            %h5.text-muted.text-center
-              %em Heaviest Packed Item
-          .col-xs-4
-            %h5.text-muted.text-center Bulk Discount
-            %h4.text-center
-              = @quantity_item.user.first_name
-              %i.fa.fa-crown.text-warning
-            %h5.text-center= @quantity_item.quantity
-            %h5.text-center= @quantity_item.generated_name
-            %h5.text-muted.text-center
-              %em Greatest Single Packed Quantity
-          .col-xs-4
-            %h5.text-muted.text-center Most Valuable #{current_user.role}
-            %h4.text-center
-              = "#{current_user.first_name} (You!)"
-              %i.fa.fa-crown.text-warning
-            %h5.text-center &#166;
-            %h5.text-center &#166;
-            %h5.text-muted.text-center
-              %em Thanks For Helping!
-    .panel.panel-default
-      %a.panel-heading{data: {toggle: "collapse"}, href: "#user-stats"} My Stats (All-time)
-      #user-stats.panel-collapse.panel-body.collapse.in
-        .row
-          - if current_user.admin? || current_user.shipping_manager?
+            .col-xs-4
+              %h5.text-muted.text-center Do You Even Lift?
+              %h4.text-center
+                = @heaviest_item.user.first_name
+                %i.fa.fa-crown.text-warning
+              %h5.text-center #{@heaviest_item.weight}kg
+              %h5.text-center= @heaviest_item.generated_name
+              %h5.text-muted.text-center
+                %em Heaviest Packed Item
+            .col-xs-4
+              %h5.text-muted.text-center Bulk Discount
+              %h4.text-center
+                = @quantity_item.user.first_name
+                %i.fa.fa-crown.text-warning
+              %h5.text-center= @quantity_item.quantity
+              %h5.text-center= @quantity_item.generated_name
+              %h5.text-muted.text-center
+                %em Greatest Single Packed Quantity
+            .col-xs-4
+              %h5.text-muted.text-center Most Valuable #{current_user.role}
+              %h4.text-center
+                = "#{current_user.first_name} (You!)"
+                %i.fa.fa-crown.text-warning
+              %h5.text-center &#166;
+              %h5.text-center &#166;
+              %h5.text-muted.text-center
+                %em Thanks For Helping!
+
+    - unless current_user.receiving_manager?
+      .panel.panel-default
+        %a.panel-heading{data: {toggle: "collapse"}, href: "#user-stats"} My Stats (All-time)
+        #user-stats.panel-collapse.panel-body.collapse.in
+          .row
             .col-md-2.col-sm-6.col-xs-6
               %h3.text-center= current_user.containers.count
               %h5.text-muted.text-center Containers Created
             .col-md-2.col-sm-6.col-xs-6
               %h3.text-center= current_user.container_items.count
               %h5.text-muted.text-center Containerized Items
-          .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= current_user.pallets.count
-            %h5.text-muted.text-center Pallets Created
-          .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= current_user.pallet_items.count
-            %h5.text-muted.text-center Palletized Items
-          .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= current_user.boxes.count
-            %h5.text-muted.text-center Boxes Created
-          .col-md-2.col-sm-6.col-xs-6
-            %h3.text-center= current_user.box_items.count
-            %h5.text-muted.text-center Boxed Items
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= current_user.pallets.count
+              %h5.text-muted.text-center Pallets Created
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= current_user.pallet_items.count
+              %h5.text-muted.text-center Palletized Items
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= current_user.boxes.count
+              %h5.text-muted.text-center Boxes Created
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= current_user.box_items.count
+              %h5.text-muted.text-center Boxed Items
+
+    - else
+      .panel.panel-default
+        %a.panel-heading{data: {toggle: "collapse"}, href: "#available-stats"} Available Items
+        #available-stats.panel-collapse.panel-body.collapse.in
+          .row
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= @packed_items.count
+              %h5.text-muted.text-center Total Inventory
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= @packed_items.with_inventory.count
+              %h5.text-muted.text-center Items (Unique)
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= @packed_items.pluck(:quantity).inject {|sum, quantity| sum + quantity }.to_i
+              %h5.text-muted.text-center Items (Quantity)
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= @packed_items.sum(:quantity) - @packed_items.sum(:remaining_quantity)
+              %h5.text-muted.text-center Unpacked Items
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center #{@packed_items.pluck(:weight).compact.inject {|sum, quantity| sum + quantity }.to_f.round(4)}kg
+              %h5.text-muted.text-center Weight
+            .col-md-2.col-sm-6.col-xs-6
+              %h3.text-center= @packed_items.pluck(:expiry_date).compact.min&.strftime("%Y-%m-%d") || "N/A"
+              %h5.text-muted.text-center Earliest Expiry
 
     - if current_user.admin?
       .panel.panel-default

@@ -3,7 +3,7 @@
 class Item < ApplicationRecord
   include PgSearch::Model
 
-  paginates_per 25
+  paginates_per 35
 
   pg_search_scope :search_by_generated_name,
                   against: :generated_name,

@@ -34,7 +34,7 @@ class PackedItem < ApplicationRecord
     validates :pallet, if: ->(packed_item) { packed_item.pallet.present? && packed_item.status.blank? }
   end
 
-  paginates_per 25
+  paginates_per 35
 
   delegate :generated_name, :category, to: :item
 

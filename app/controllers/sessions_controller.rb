@@ -51,6 +51,10 @@ class SessionsController < ApplicationController
 
     @heaviest_item = PackedItem.where("packed_items.created_at >= ?", 30.days.ago).order("packed_items.weight desc NULLS LAST").limit(1).first
     @quantity_item = PackedItem.where("packed_items.created_at >= ?", 30.days.ago).order("packed_items.quantity desc").limit(1).first
+
+    if current_user.receiving_manager?
+      @packed_items = PackedItem.accessible_by(current_ability)
+    end
   end
 
   def my_activity

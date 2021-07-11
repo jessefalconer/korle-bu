@@ -6,9 +6,6 @@
     %td.hidden-xs
       %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
         = item.category&.name || "N/A"
-    %td.hidden-xs
-      %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.flagged ? "text-danger" : "text-success"}
-        = item.flagged&.to_s.capitalize
     %td
       = link_to item_instances_path(item) do
         %p.instances= item.packed_items.count
