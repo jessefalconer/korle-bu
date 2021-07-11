@@ -5,12 +5,11 @@
         = link_to "Home", index_path
       %li.active= @shipment.name
 
-    %h5 Add to this Shipment:
     - if can? :read, Shipment
       = link_index_button(shipments_path, "fa-ship")
     - if can? :create, Container
       = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
-
+    = render partial: "layouts/jump_to_modal"
     - if can?(:create, Pallet)
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action

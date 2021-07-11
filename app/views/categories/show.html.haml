@@ -7,6 +7,7 @@
       %li
         = link_to "Categories", categories_path
       %li.active= @category.name
+    = render partial: "layouts/jump_to_modal"
   .main-content
     %ul.nav.nav-tabs
       %li.active

@@ -4,11 +4,9 @@
       %li
         = link_to "Home", index_path
       = present(@box).breadcrumbs
-
     = link_index_button(boxes_path, "fa-box-open")
-    %h5 Add to this Box:
     = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
-
+    = render partial: "layouts/jump_to_modal"
     - if can?(:create, Box)
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action

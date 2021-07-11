@@ -7,7 +7,7 @@
       %li
         = link_to "Items by Category", received_categories_path
       %li.active= @category&.name || "Uncategorized"
-
+    = render partial: "layouts/jump_to_modal"
   .main-content
     %h5 Select an item to view its possible locations.
     %table.table.table-striped.table-hover.link-rows

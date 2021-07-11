@@ -1,6 +1,6 @@
 .input-group.search.span12.padding-bottom-small
   .input-group
-    = text_field_tag :search, params[:search], placeholder: "Enter search term...", class: "form-control", id: "search-params"
+    = text_field_tag :search, params[:search] || params[:search_string], placeholder: "Enter search term...", class: "form-control", id: "search-params"
     %span.input-group-btn.span12#index-search-submit{data: {path: path}}
       %a.btn.btn-primary.responsive-button
         %span Search

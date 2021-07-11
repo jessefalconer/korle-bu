@@ -8,11 +8,7 @@
       %li.active= title.titleize
     - if can? :create, Box
       = add_button(new_box_path, "Box", "fa-box-open")
-
-    = form_for :box, url: find_box_path, html: {class: "inline-search-form" } do |f|
-      = submit_button("Go To", nil, "fa-search")
-      = f.number_field :custom_uid, {placeholder: "Custom ID"}
-
+    = render partial: "layouts/jump_to_modal"
     - if @boxes.any? && can?(:create, Box)
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action

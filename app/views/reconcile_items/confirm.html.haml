@@ -9,6 +9,7 @@
       %li
         = link_to "Reconciling: #{@item.generated_name}", reconcile_start_path(@item)
       %li.active Confirm Merge
+    = render partial: "layouts/jump_to_modal"
   .main-content
     .row
       .col-xs-12

@@ -6,6 +6,7 @@
         = link_to "Home", index_path
       %li.active Items
     = add_button(new_item_path, "Item", "fa-stethoscope")
+    = render partial: "layouts/jump_to_modal"
   .main-content
     = render partial: "search_form", locals: { path: "/index_item_search" }
     %table.table.table-striped.table-hover.link-rows

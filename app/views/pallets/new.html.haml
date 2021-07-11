@@ -5,6 +5,7 @@
       %li
         = link_to "Home", index_path
       = present(@pallet).breadcrumbs
+    = render partial: "layouts/jump_to_modal"
   .main-content
     .row
       .col-md-4

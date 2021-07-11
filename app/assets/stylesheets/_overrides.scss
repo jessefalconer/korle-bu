@@ -314,6 +314,12 @@ table.table-striped.link-rows tbody tr td {
     width: 100px;
     text-align: center;
   }
+
+  &.text-field {
+    input {
+      width: 168px;
+    }
+  }
 }
 
 em.show-id {
@@ -353,4 +359,9 @@ tr {
 .mass-action-warning {
   i {display: inline-block;}
   h5 {display: inline-block;}
+}
+
+.jump-to-body {
+  text-align: center;
+  padding: 0 15px 15px 15px;
 }

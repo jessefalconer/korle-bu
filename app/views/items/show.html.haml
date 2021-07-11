@@ -9,6 +9,7 @@
       %li.active= @item.generated_name
     - if can? :reconcile, Item
       = link_button("Start Reconcile", reconcile_start_path(@item))
+    = render partial: "layouts/jump_to_modal"
   .main-content
     %ul.nav.nav-tabs
       %li.active

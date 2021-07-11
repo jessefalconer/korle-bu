@@ -4,14 +4,11 @@
       %li
         = link_to "Home", index_path
       = present(@pallet).breadcrumbs
-
     = link_index_button(pallets_path, "fa-pallet")
-
-    %h5 Add to this Pallet:
     - if can? :create, Box
       = add_button(new_box_path(pallet_id: @pallet.id), "Box", "fa-box-open")
     = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
-
+    = render partial: "layouts/jump_to_modal"
     - if can?(:create, Pallet)
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action

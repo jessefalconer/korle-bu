@@ -5,7 +5,7 @@
       %li
         = link_to "Home", index_path
       %li.active Staged Items
-
+    = render partial: "layouts/jump_to_modal"
     - if @packed_items.any?
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action

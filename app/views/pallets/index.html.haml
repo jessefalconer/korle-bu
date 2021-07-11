@@ -8,11 +8,7 @@
       %li.active= title.titleize
     - if can? :create, Pallet
       = add_button(new_pallet_path, "Pallet", "fa-pallet")
-
-    = form_for :pallet, url: find_pallet_path, html: {class: "inline-search-form" } do |f|
-      = submit_button("Go To", nil, "fa-search")
-      = f.number_field :custom_uid, {placeholder: "Custom ID"}
-
+    = render partial: "layouts/jump_to_modal"
     - if @pallets.any? && can?(:create, Pallet)
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action

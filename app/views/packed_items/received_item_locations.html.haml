@@ -12,7 +12,7 @@
         - else
           = link_to "Uncategorized", received_uncategorized_items_path
       %li.active= @item.generated_name
-
+    = render partial: "layouts/jump_to_modal"
   .main-content
     %h5 Showing all possible locations of #{@item.generated_name} with remaining inventory.
     %h6

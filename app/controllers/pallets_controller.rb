@@ -58,9 +58,10 @@ class PalletsController < ApplicationController
   def find
     pallet = Pallet.accessible_by(current_ability).find_by(custom_uid: pallet_params[:custom_uid])
     if pallet
-      redirect_to pallet_path(pallet)
+      path = params[:button] == "info" ? pallet_path(pallet) : pallet_pallet_items_path(pallet)
+      redirect_to path
     else
-      redirect_to pallets_path, flash: { error: "Pallet with custom ID #{pallet_params[:custom_uid]} not found." }
+      redirect_to params[:redirect], flash: { error: "Pallet with custom ID #{pallet_params[:custom_uid]} not found." }
     end
   end
 

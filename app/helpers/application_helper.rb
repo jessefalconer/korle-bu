@@ -51,6 +51,18 @@ module ApplicationHelper
     end
   end
 
+  def submit_button_value(icons = [], value = "")
+    if value.blank?
+      button_tag(type: "submit", class: "btn btn-primary") do
+        safe_join(icons.map { |icon| tag.i("", class: "fa #{icon}") + tag.span(" ") })
+      end
+    else
+      button_tag(type: "submit", class: "btn btn-primary", value: value) do
+        safe_join(icons.map { |icon| tag.i("", class: "fa #{icon}") + tag.span(" ") })
+      end
+    end
+  end
+
   def submit_button_warning(text, classes = "")
     button_tag(type: "submit", class: "btn btn-danger responsive-button #{classes}") do
       tag.i("", class: "fa fa-compress-alt") +

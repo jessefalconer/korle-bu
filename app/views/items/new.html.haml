@@ -7,6 +7,7 @@
       %li
         = link_to "Items", items_path
       %li.active New Item
+    = render partial: "layouts/jump_to_modal"
   .main-content
     .row
       = render partial: "form", locals: {submit_path: "item"}

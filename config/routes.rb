@@ -30,6 +30,7 @@ Rails.application.routes.draw do
   get "reconcile/:id/item_instances", to: "reconcile_items#item_instances", as: :item_instances
   post "find_box", to: "boxes#find"
   post "find_pallet", to: "pallets#find"
+  post "find_container", to: "containers#find"
   post "mass_action", to: "mass_actions#mass_action"
   get "all_received_items", to: "packed_items#all_received_items"
   get "received_categories", to: "packed_items#received_categories"

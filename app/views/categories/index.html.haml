@@ -6,6 +6,7 @@
         = link_to "Home", index_path
       %li.active Categories
     = add_button(new_category_path, "Category", "fa-file-medical")
+    = render partial: "layouts/jump_to_modal"
   .main-content
     %table.table.table-striped.table-hover.link-rows
       %thead

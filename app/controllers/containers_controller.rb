@@ -51,6 +51,16 @@ class ContainersController < ApplicationController
     redirect_to containers_path, flash: { success: "Container deleted." }
   end
 
+  def find
+    container = Container.accessible_by(current_ability).find_by(custom_uid: container_params[:custom_uid])
+    if container
+      path = params[:button] == "info" ? container_path(container) : container_container_items_path(container)
+      redirect_to path
+    else
+      redirect_to params[:redirect], flash: { error: "Container with custom ID #{container_params[:custom_uid]} not found." }
+    end
+  end
+
   private
 
   def container_params

@@ -7,13 +7,12 @@
 
     - if can? :read, Container
       = link_index_button(containers_path, "fa-truck")
-    %h5 Add to this Container:
     - if can? :create, Pallet
       = add_button(new_pallet_path(container_id: @container.id), "Pallet", "fa-pallet")
     - if can? :create, Box
       = add_button(new_box_path(container_id: @container.id), "Box", "fa-box-open")
     = manage_button(container_container_items_path(@container), "Items", "fa-stethoscope")
-
+    = render partial: "layouts/jump_to_modal"
     - if can? :create, Box
       %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
         %span.mass-action-count Mass Action

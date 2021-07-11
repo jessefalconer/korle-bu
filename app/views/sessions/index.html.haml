@@ -6,6 +6,7 @@
         = link_to index_path do
           Home
       %li.active Dashboard
+    = render partial: "layouts/jump_to_modal"
   .main-content
     - unless current_user.receiving_manager?
       .panel.panel-default

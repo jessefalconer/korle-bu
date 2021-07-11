@@ -7,6 +7,7 @@
       %li
         = link_to "Hospitals", hospitals_path
       %li.active= @hospital.name
+    = render partial: "layouts/jump_to_modal"
   .main-content
     %ul.nav.nav-tabs
       %li.active
