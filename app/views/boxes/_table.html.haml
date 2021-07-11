@@ -1,4 +1,4 @@
-- @boxes ||= boxes
+- boxes ||= @boxes
 %table.table.table-striped.table-hover.link-rows
   %thead
     %tr
@@ -11,7 +11,7 @@
       - if can?(:create, Box)
         %th.mass-action-cell
   %tbody
-    - @boxes.each do |box|
+    - boxes.each do |box|
       %tr
         %td
           = link_to box_path(box) do
