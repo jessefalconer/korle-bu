@@ -21,7 +21,7 @@
 
   .main-content
     - if @boxes.any?
-      - if params[:display].present?
+      - if params[:display] == "warehoused" || params[:display] == "staged"
         %h5 Showing all #{params[:display]} boxes and any boxes on #{params[:display]} pallets.
       = render "table"
       = paginate @boxes, window: 2
