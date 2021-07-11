@@ -8,9 +8,14 @@
   .main-content
     .row
       .col-xs-12
+        - percentage = (Item.categorized.count.to_f/Item.count.to_f*100).round(2)
+        - color = Item.uncategorized.count.zero? ? "#3c763d" : "#007096"
+        - color = percentage < 50 ? "#8a6d3b" : color
+        %h5.text-center #{Item.categorized.count}/#{Item.count} (#{percentage}%) Categorized
+        = bar_chart({"" => Item.categorized.count}, max: Item.count, height: "65px", colors: [color])
+        %h5.text-center #{Item.uncategorized.count} Remaining
+      .col-xs-12
         - if @items.any?
-          %h3 Uncategorized Items (#{Item.uncategorized.count})
-          %p These items are uncategorized. Click on the item's name to begin categorizing.
           = render partial: "items/search_form", locals: { path: "/uncategorized_item_search" }
           %table.table.table-striped.table-hover.link-rows
             %thead
@@ -25,4 +30,4 @@
           = paginate @items
 
         - else
-          %h4.text-center No items to categorize.
+          %h4.text-center All caught up! &#127881;

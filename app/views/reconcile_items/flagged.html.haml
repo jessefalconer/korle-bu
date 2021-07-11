@@ -8,9 +8,14 @@
   .main-content
     .row
       .col-xs-12
+        - percentage = (Item.not_flagged.count.to_f/Item.count.to_f*100).round(2)
+        - color = Item.flagged.count.zero? ? "#3c763d" : "#007096"
+        - color = percentage < 50 ? "#8a6d3b" : color
+        %h5.text-center #{Item.not_flagged.count}/#{Item.count} (#{percentage}%) Resolved
+        = bar_chart({"" => Item.not_flagged.count}, max: Item.count, height: "65px", colors: [color])
+        %h5.text-center #{Item.flagged.count} Remaining
+      .col-xs-12
         - if @items.any?
-          %h3 Flagged Items (#{Item.flagged.count})
-          %p These items were voluntarily flagged for admin inspection. Click on the item's name to begin verifying.
           %table.table.table-striped.table-hover.link-rows
             %thead
               %tr
@@ -39,4 +44,4 @@
           = paginate @items
 
         - else
-          %h4.text-center No items to verify.
+          %h4.text-center All caught up! &#127881;

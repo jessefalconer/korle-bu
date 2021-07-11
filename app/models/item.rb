@@ -24,8 +24,11 @@ class Item < ApplicationRecord
   has_one_attached :photo
 
   scope :unverified, -> { where(verified: false) }
+  scope :verified, -> { where(verified: true) }
   scope :uncategorized, -> { where(category: nil) }
+  scope :categorized, -> { where.not(category: nil) }
   scope :flagged, -> { where(flagged: true) }
+  scope :not_flagged, -> { where(flagged: false) }
 
   validates :generated_name, uniqueness: true
 
