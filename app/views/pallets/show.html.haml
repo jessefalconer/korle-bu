@@ -103,13 +103,13 @@
               %h5.text-center No boxes on this pallet.
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#packed-items"}
+          %a.panel-heading.collapsed{class: (@pallet.pallet_items.count > 5 && "collapsed"), data: {toggle: "collapse"}, href: "#packed-items"}
             %i.fa.fa-stethoscope
             Packed Items Directly on this Pallet
             %span.label{class: @pallet.pallet_items.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
 
           - if @pallet.pallet_items.any?
-            #packed-items.collapse
+            #packed-items.collapse{class: (@pallet.pallet_items.count < 6 && "in")}
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "packed-items"}
               = render partial: "packed_items/micro_table", locals: {packed_items: @pallet.pallet_items}
               .close-collapse{data: {toggle: "collapse"}, href: "#packed-items"}
