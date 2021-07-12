@@ -115,6 +115,8 @@ function initPackingSearchListeners() {
       params = $("#search-params").val();
       if ( params !== "" && params.length >= minimumChars ) {
           typingTimer = setTimeout(typingComplete, searchDelayInterval);
+      } else if ( params === "" ) {
+        $("#search-results").empty();
       }
   });
 
