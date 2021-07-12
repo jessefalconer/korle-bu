@@ -11,7 +11,7 @@
     = form_for :packed_item, url: form_path, method: :post do |f|
       .row.inline-add-item
         .col-xs-12.results-item-name{data: {unit_weight: item[2], item_id: item[0]}}
-          %p= item[1]
+          %p.results-item-name-value= item[1]
           %i.fa.fa-ellipsis-v
         .col-xs-12.results-item-form.hidden
           .row

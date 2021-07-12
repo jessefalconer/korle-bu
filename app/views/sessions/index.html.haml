@@ -226,7 +226,7 @@
                     = link_to item_path(item) do
                       %p.title= item.generated_name
                     %p.info= item.category&.name
-                  %td
+                  %td.hidden-xs
                     %p= item.created_at.strftime("%Y-%m-%d")
                     = link_to user_path(item.user) do
                       = item.user.name

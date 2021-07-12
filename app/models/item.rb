@@ -30,7 +30,7 @@ class Item < ApplicationRecord
   scope :flagged, -> { where(flagged: true) }
   scope :not_flagged, -> { where(flagged: false) }
 
-  validates :generated_name, uniqueness: true
+  validates :generated_name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   STANDARD_SIZES = %w[XXXS XXS XS Small Medium Large XL XXL XXXL].freeze
   INFANT_SIZES = %w[Infant Newborn Preemie Infant\ Size\ 1 Infant\ Size\ 2 Infant\ Size\ 2.5

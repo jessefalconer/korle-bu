@@ -1,8 +1,10 @@
+- comparison_item ||= params[:search_string] || ""
+- placeholder_item = Item.new(generated_name: comparison_item)
 - @items.each do |item|
   %tr
     %td
       = link_to item_path(item) do
-        %p= item.generated_name
+        %p= present(placeholder_item).match(item.generated_name)
     %td.hidden-xs
       = link_to item_path(item) do
         %p= item.category&.name

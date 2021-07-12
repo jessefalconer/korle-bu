@@ -1,8 +1,10 @@
+- comparison_item ||= ""
+- placeholder_item = Item.new(generated_name: comparison_item)
 - @items.each do |item|
   %tr
     %td
       %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
-        = item.generated_name
+        = present(placeholder_item).match(item.generated_name)
     %td
       %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.verified ? "text-success" : "text-danger"}
         = item.verified.to_s.capitalize

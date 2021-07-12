@@ -3,6 +3,7 @@
     .col-xs-12
       %h5.text-center No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
 - else
+  - placeholder_item = Item.new(generated_name: comparison_item)
   %table.table.table-striped.table-hover
     %thead
       %tr
@@ -17,7 +18,7 @@
         %tr
           %td
             %p
-              = item.generated_name
+              = present(placeholder_item).match(item.generated_name)
           %td.hidden-xs
             %p
               = item.category&.name || "N/A"

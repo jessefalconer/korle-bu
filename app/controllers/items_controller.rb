@@ -32,19 +32,19 @@ class ItemsController < ApplicationController
   def index_search
     @items = Item.search_by_generated_name(params[:search])
 
-    render json: render_to_string(partial: "table", layout: false).to_json
+    render json: render_to_string(partial: "table", layout: false, locals: { comparison_item: params[:search] }).to_json
   end
 
   def unverified_search
     @items = Item.unverified.search_by_generated_name(params[:search])
 
-    render json: render_to_string(partial: "reconcile_items/unverified_table", layout: false).to_json
+    render json: render_to_string(partial: "reconcile_items/unverified_table", layout: false, locals: { comparison_item: params[:search] }).to_json
   end
 
   def uncategorized_search
     @items = Item.uncategorized.search_by_generated_name(params[:search])
 
-    render json: render_to_string(partial: "reconcile_items/uncategorized_table", layout: false).to_json
+    render json: render_to_string(partial: "reconcile_items/uncategorized_table", layout: false, locals: { comparison_item: params[:search] }).to_json
   end
 
   def reconcile_search
@@ -53,11 +53,11 @@ class ItemsController < ApplicationController
     @search_results_items = Item.search_by_generated_name(params[:search]).where.not(id: excluded_ids)
     @item = Item.find(params[:compare_id])
 
-    render json: render_to_string(partial: "results_reconcile", layout: false, locals: { comparison_record_id: params[:compare_id] }).to_json
+    render json: render_to_string(partial: "results_reconcile", layout: false, locals: { comparison_item: params[:search] }).to_json
   end
 
   def search_form
-    @search_results_items = Item.search_by_generated_name(params[:search]).pluck(:id, :generated_name, :unit_weight)
+    @search_results_items = Item.search_by_generated_name(params[:search]).limit(25).pluck(:id, :generated_name, :unit_weight)
     form_path = generate_form_url(params[:model], params[:id])
 
     render json: render_to_string(partial: "results_form", layout: false, locals: { form_path: form_path, status: params[:status] }).to_json

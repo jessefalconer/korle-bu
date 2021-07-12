@@ -15,7 +15,7 @@ function packingSearch(params) {
             $(".datepickers").datepicker({
               dateFormat: "yy-mm-dd"
             });
-            initResultsDrawerListeners();
+            initResultsDrawerListeners(params);
         },
         error: function () { alert("Search could not be completed."); }
     });
@@ -53,7 +53,20 @@ function initEstimateButton(el) {
   })
 }
 
-function initResultsDrawerListeners() {
+function initResultsDrawerListeners(params) {
+  const resultsEls = document.querySelectorAll(".results-item-name-value")
+  const paramsCompare = params.split(" ");
+
+  resultsEls.forEach(el => {
+    for (const word of paramsCompare) {
+      if (word.length === 1) break;
+      const elText = el.innerHTML.toLowerCase()
+      if (elText.indexOf(word.toLowerCase()) >= 0) {
+        el.innerHTML = elText.replace(word, `<strong>${word}</strong>`)
+      }
+    }
+  })
+
   $(".results-item-name").on("click", e => {
     const icon = $(e.currentTarget).find("i");
     const sibling = $(e.currentTarget).next();

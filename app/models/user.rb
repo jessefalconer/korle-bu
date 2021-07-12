@@ -19,7 +19,7 @@ class User < ApplicationRecord
   has_many :warehouses
   has_many :items
 
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true, on: %i[create update]
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true, on: %i[create update]  # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :phone, format: { with: /\A(?:\+?\d{1,3}\s*-?)?\(?(?:\d{3})?\)?[- ]?\d{3}[- ]?\d{4}\z/ }
   validates :first_name, :last_name, presence: true, on: %i[create update]
   validates :status, inclusion: { in: STATUSES }, on: %i[create update]

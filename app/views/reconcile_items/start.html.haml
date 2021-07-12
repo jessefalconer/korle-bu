@@ -52,7 +52,7 @@
                       %tr
                         %td
                           %p
-                            = item.generated_name
+                            = present(@item).match(item.generated_name)
                         %td.hidden-xs
                           %p
                             = item.category&.name || "N/A"

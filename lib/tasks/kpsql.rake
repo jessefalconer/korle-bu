@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Naming/HeredocDelimiterNaming
 task kpsql: :environment do
   db_name = "#{File.basename(Rails.root)}_#{Rails.env}"
   sh = <<~EOF
@@ -12,3 +13,4 @@ task kpsql: :environment do
   EOF
   puts `#{sh}`
 end
+# rubocop:enable Naming/HeredocDelimiterNaming

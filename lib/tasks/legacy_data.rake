@@ -6,6 +6,7 @@ STATUS_TRANSLATIONS = {
   "packing": "In Progress"
 }.freeze
 # hp and ms-or are rewritten, check with Sean to the extent
+# rubocop:disable Lint/DuplicateHashKey
 CATEGORY_TRANSLATIONS = {
   "hp": "Hospital Pieces",
   "he":  "Hospital Equipment",
@@ -30,6 +31,7 @@ CATEGORY_TRANSLATIONS = {
   "pws":  "Pediatrics",
   "bb":  "Bags Blankets"
 }.freeze
+# rubocop:enable Lint/DuplicateHashKey
 SIZE_MAPPINGS = {
   "L": "Large",
   "S": "Small",
@@ -40,7 +42,7 @@ SIZE_MAPPINGS = {
 # • Legacy SQL dump should not alter and drop tables, only insert
 # • legacy table and column names are a mix of snake and camel case, fix directly in file
 # • hard reset schema if you get the pg relation error
-
+# rubocop:disable Rails/SkipsModelValidations
 namespace :legacy_data do
   task migrate: :environment do
     user_id = User.first.id
@@ -148,3 +150,4 @@ namespace :legacy_data do
     end
   end
 end
+# rubocop:enable Rails/SkipsModelValidations

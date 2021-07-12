@@ -31,7 +31,7 @@ class Pallet < ApplicationRecord
   delegate :shipment, to: :container, allow_nil: true
 
   validates :name, :custom_uid, :user, presence: true
-  validates :custom_uid, :name, uniqueness: true
+  validates :custom_uid, :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :status, inclusion: { in: STATUSES }
 
   paginates_per 35
