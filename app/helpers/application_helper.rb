@@ -14,6 +14,13 @@ module ApplicationHelper
     end
   end
 
+  def link_refresh_button(text, icon)
+    link_to(items_path, class: "btn btn-primary") do
+      tag.span("#{text} ") +
+      tag.i("", class: "fa #{icon}")
+    end
+  end
+
   def link_index_button(path, icon)
     link_to(path, class: "btn btn-primary hidden-sm hidden-md hidden-lg") do
       tag.i("", class: "fa fa-th-list") +

@@ -6,6 +6,7 @@
         = link_to "Home", index_path
       = present(@box).breadcrumbs_item
     = render partial: "layouts/jump_to_modal"
+    = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_box_items_path(@box), record: nil}
   .main-content
     %ul.nav.nav-tabs
       - if can? :manage, PackedItem

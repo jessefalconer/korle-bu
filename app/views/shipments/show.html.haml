@@ -11,9 +11,6 @@
       = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
     = render partial: "layouts/jump_to_modal"
     - if can?(:create, Pallet)
-      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
-        %span.mass-action-count Mass Action
-        %i.fa.fa-angle-double-right
       = render partial: "layouts/mass_action_modal", locals: {name: @shipment.name, redirect: shipment_path(@shipment), record: nil}
 
   .main-content

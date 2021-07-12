@@ -10,9 +10,6 @@
       = add_button(new_box_path, "Box", "fa-box-open")
     = render partial: "layouts/jump_to_modal"
     - if @boxes.any? && can?(:create, Box)
-      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
-        %span.mass-action-count Mass Action
-        %i.fa.fa-angle-double-right
       = render partial: "layouts/mass_action_modal", locals: {name: title, redirect: boxes_path(display: params[:display]), record: nil}
 
   .main-content

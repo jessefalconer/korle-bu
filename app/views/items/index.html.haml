@@ -7,15 +7,19 @@
       %li.active Items
     = add_button(new_item_path, "Item", "fa-stethoscope")
     = render partial: "layouts/jump_to_modal"
+    = link_refresh_button("Clear Results", "fa-sync")
   .main-content
     = render partial: "search_form", locals: { path: "/index_item_search" }
-    %table.table.table-striped.table-hover.link-rows
-      %thead
-        %tr
-          %th Name
-          %th.hidden-xs Category
-          %th.hidden-xs Verified
-      %tbody#search-results
-        = render "table"
+    - if @items.any?
+      %table.table.table-striped.table-hover.link-rows
+        %thead
+          %tr
+            %th Name
+            %th.hidden-xs Category
+            %th.hidden-xs Verified
+        %tbody#search-results
+          = render "table"
+    - else
+      %h5.text-center No results found.
 
     = paginate @items, window: 2

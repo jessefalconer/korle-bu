@@ -10,9 +10,6 @@
       = add_button(new_pallet_path, "Pallet", "fa-pallet")
     = render partial: "layouts/jump_to_modal"
     - if @pallets.any? && can?(:create, Pallet)
-      %button.btn.btn-primary{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
-        %span.mass-action-count Mass Action
-        %i.fa.fa-angle-double-right
       = render partial: "layouts/mass_action_modal", locals: {name: title, redirect: pallets_path(display: params[:display]), record: nil }
 
   .main-content

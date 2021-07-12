@@ -6,6 +6,7 @@
         = link_to "Home", index_path
       = present(@pallet).breadcrumbs_item
     = render partial: "layouts/jump_to_modal"
+    = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_pallet_items_path(@pallet), record: nil}
   .main-content
     %ul.nav.nav-tabs
       - if can? :manage, PackedItem
