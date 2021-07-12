@@ -1,60 +1,48 @@
 .content
   .header
-    %h1.page-title Warehouses
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
       %li
         = link_to "Warehouses", warehouses_path
       %li.active= @warehouse.name
+    = render partial: "layouts/edit_modal"
     = render partial: "layouts/jump_to_modal"
   .main-content
-    %ul.nav.nav-tabs
-      %li.active
-        %a{data: {toggle: "tab"}, href: "#view"} View
-      %li
-        %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
-      #myTabContent.tab-content
-        #view.tab-pane.active.in
-          %br
-          .col-xs-12
-            %h5.text-muted Name
-            %h4= @warehouse.name
-            %hr
-          - if @warehouse.description.present?
-            .col-xs-12
-              %h6.text-muted Description
-              %h5= @warehouse.description
-          - unless @warehouse.full_address.blank?
-            .col-xs-12
-              %h6.text-muted Address
-              %h5= @warehouse.full_address
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Items In Progress
-            %h5= @warehouse.in_progress_packed_items.count
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Items Completed
-            %h5= @warehouse.complete_packed_items.count
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Items Received
-            %h5= @warehouse.received_packed_items.count
-          .col-lg-3.col-sm-4.col-xs-6
-            = link_to users_path(warehouse: @warehouse.id) do
-              %h6.text-muted
-                Users
-                %i.fa.fa-search
-              %h5= @warehouse.users.count
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Status
-            %h5{style: "color: #{@warehouse.active? ? "#02a556" : "#ff4d4d"}"}= @warehouse.status
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Created By
-            %h5= @warehouse.user.name
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Created At
-            %h5= @warehouse.created_at.strftime("%Y-%m-%d")
-
-        #edit.tab-pane.fade
-          %br
-          = render partial: "form"
+      .col-xs-12
+        %h5.text-muted Name
+        %h4= @warehouse.name
+        %hr
+      - if @warehouse.description.present?
+        .col-xs-12
+          %h6.text-muted Description
+          %h5= @warehouse.description
+      - unless @warehouse.full_address.blank?
+        .col-xs-12
+          %h6.text-muted Address
+          %h5= @warehouse.full_address
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Items In Progress
+        %h5= @warehouse.in_progress_packed_items.count
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Items Completed
+        %h5= @warehouse.complete_packed_items.count
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Items Received
+        %h5= @warehouse.received_packed_items.count
+      .col-lg-3.col-sm-4.col-xs-6
+        = link_to users_path(warehouse: @warehouse.id) do
+          %h6.text-muted
+            Users
+            %i.fa.fa-search
+          %h5= @warehouse.users.count
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Status
+        %h5{style: "color: #{@warehouse.active? ? "#02a556" : "#ff4d4d"}"}= @warehouse.status
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Created By
+        %h5= @warehouse.user.name
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Created At
+        %h5= @warehouse.created_at.strftime("%Y-%m-%d")

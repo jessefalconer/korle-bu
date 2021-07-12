@@ -4,7 +4,8 @@
       %li
         = link_to "Home", index_path
       = present(@pallet).breadcrumbs
-    = link_index_button(pallets_path, "fa-pallet")
+    - if can? :manage, Pallet
+      = render partial: "layouts/edit_modal"
     - if can? :create, Box
       = add_button(new_box_path(pallet_id: @pallet.id), "Box", "fa-box-open")
     = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
@@ -13,49 +14,36 @@
       = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_path(@pallet), record: @pallet}
 
   .main-content
-    %ul.nav.nav-tabs
-      %li.active
-        %a{data: {toggle: "tab"}, href: "#view"} View
-      - if can? :manage, Pallet
-        %li
-          %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
       .col-md-5
-        %br
-        #myTabContent.tab-content
-          #view.tab-pane.active.in
-            .row
-              .col-xs-12
-                %h5.text-muted Name
-                %h4= @pallet.name
-                %hr
-              - if @pallet.notes.present?
-                .col-xs-12
-                  %h6.text-muted Notes
-                  %h5= @pallet.notes
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Custom ID
-                %h5= @pallet.custom_uid
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Status
-                %h5{class: "status-#{@pallet.status.parameterize}"}= @pallet.status
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Weight (kg)
-                %h5= @pallet.weight.to_f.round(4) || "N/A"
-              - if @pallet.category
-                .col-xs-6.col-sm-4.col-md-6
-                  %h6.text-muted Category
-                  %h5= @pallet.category.name
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Created By
-                %h5= @pallet.user.name
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Created At
-                %h5= @pallet.created_at.strftime("%Y-%m-%d")
-
-          - if can? :manage, Pallet
-            #edit.tab-pane.fade
-              = render partial: "form"
+        .row
+          .col-xs-12
+            %h5.text-muted Name
+            %h4= @pallet.name
+            %hr
+          - if @pallet.notes.present?
+            .col-xs-12
+              %h6.text-muted Notes
+              %h5= @pallet.notes
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Custom ID
+            %h5= @pallet.custom_uid
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Status
+            %h5{class: "status-#{@pallet.status.parameterize}"}= @pallet.status
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Weight (kg)
+            %h5= @pallet.weight.to_f.round(4) || "N/A"
+          - if @pallet.category
+            .col-xs-6.col-sm-4.col-md-6
+              %h6.text-muted Category
+              %h5= @pallet.category.name
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Created By
+            %h5= @pallet.user.name
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Created At
+            %h5= @pallet.created_at.strftime("%Y-%m-%d")
 
       .col-md-7
         %br

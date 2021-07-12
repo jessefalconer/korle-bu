@@ -1,61 +1,48 @@
 .content
   .header
-    %h1.page-title Items
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
       %li
         = link_to "Items", items_path
       %li.active= @item.generated_name
+    - if can? :manage, Item
+      = render partial: "layouts/edit_modal"
     - if can? :reconcile, Item
       = link_button("Start Reconcile", reconcile_start_path(@item))
     = render partial: "layouts/jump_to_modal"
   .main-content
-    %ul.nav.nav-tabs
-      %li.active
-        %a{data: {toggle: "tab"}, href: "#view"} View
-      - if can? :manage, Item
-        %li
-          %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
-      #myTabContent.tab-content
-        #view.tab-pane.active.in
-          %br
-          .col-xs-12
-            %h5.text-muted Name
-            %h4= @item.generated_name
-            %hr
-          - if @item.notes.present?
-            .col-xs-12
-              %h6.text-muted Notes
-              %h5= @item.notes
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Category
-            %h5{style: "color: #{@item.category.present? ? "#02a556" : "#ff4d4d"}"}= @item.category&.name || "N/A"
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Verified
-            %h5{style: "color: #{@item.verified ? "#02a556" : "#ff4d4d"}"}= @item.verified.to_s.capitalize
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Flagged
-            %h5{style: "color: #{@item.flagged ? "#ff4d4d" : "#02a556"}"}= @item.flagged.to_s.capitalize
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Created By
-            %h5= @item.user.name
-          .col-lg-3.col-sm-4.col-xs-6
-            %h6.text-muted Created At
-            %h5= @item.created_at.strftime("%Y-%m-%d")
-          .col-lg-3.col-sm-4.col-xs-6
-            = link_to item_instances_path(@item) do
-              %h6.text-muted
-                Instances
-                %i.fa.fa-search
-              %h5= @item.packed_items.count
-          - if @item.photo.attached?
-            .col-xs-12
-              %h6.text-muted Attached Photo
-              %img{src: url_for(@item.photo), style: "width: 100%;"}
-
-        - if can? :manage, Item
-          #edit.tab-pane.fade
-            %br
-            = render partial: "form", locals: {submit_path: "item"}
+      .col-xs-12
+        %h5.text-muted Name
+        %h4= @item.generated_name
+        %hr
+      - if @item.notes.present?
+        .col-xs-12
+          %h6.text-muted Notes
+          %h5= @item.notes
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Category
+        %h5{style: "color: #{@item.category.present? ? "#02a556" : "#ff4d4d"}"}= @item.category&.name || "N/A"
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Verified
+        %h5{style: "color: #{@item.verified ? "#02a556" : "#ff4d4d"}"}= @item.verified.to_s.capitalize
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Flagged
+        %h5{style: "color: #{@item.flagged ? "#ff4d4d" : "#02a556"}"}= @item.flagged.to_s.capitalize
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Created By
+        %h5= @item.user.name
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Created At
+        %h5= @item.created_at.strftime("%Y-%m-%d")
+      .col-lg-3.col-sm-4.col-xs-6
+        = link_to item_instances_path(@item) do
+          %h6.text-muted
+            Instances
+            %i.fa.fa-search
+          %h5= @item.packed_items.count
+      - if @item.photo.attached?
+        .col-xs-12
+          %h6.text-muted Attached Photo
+          %img{src: url_for(@item.photo), style: "width: 100%;"}

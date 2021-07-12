@@ -3181,7 +3181,9 @@ select[multiple].input-group-sm {
   }
 
   >.active {
-    color: #999;
+    color: rgb(27, 27, 27);
+    letter-spacing: 0.35px;
+    font-weight: bolder;
   }
 }
 

@@ -4,7 +4,8 @@
       %li
         = link_to "Home", index_path
       = present(@container).breadcrumbs
-
+    - if can? :manage, Container
+      = render partial: "layouts/edit_modal"
     - if can? :read, Container
       = link_index_button(containers_path, "fa-truck")
     - if can? :create, Pallet
@@ -17,45 +18,32 @@
       = render partial: "layouts/mass_action_modal", locals: {name: @container.name, redirect: container_path(@container), record: @container}
 
   .main-content
-    %ul.nav.nav-tabs
-      %li.active
-        %a{data: {toggle: "tab"}, href: "#view"} View
-      - if can? :manage, Container
-        %li
-          %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
       .col-md-5
-        %br
-        #myTabContent.tab-content
-          #view.tab-pane.active.in
-            .row
-              .col-xs-12
-                %h5.text-muted Name
-                %h4= @container.name
-                %hr
-              - if @container.notes.present?
-                .col-xs-12
-                  %h6.text-muted Notes
-                  %h5= @container.notes
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Custom ID
-                %h5= @container.custom_uid
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Status
-                %h5{class: "status-#{@container.status.parameterize}"}= @container.status
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Weight (kg)
-                %h5= @container.weight.to_f.round(4) || "N/A"
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Created By
-                %h5= @container.user.name
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Created At
-                %h5= @container.created_at.strftime("%Y-%m-%d")
-
-          - if can? :manage, Container
-            #edit.tab-pane.fade
-              = render partial: "form"
+        .row
+          .col-xs-12
+            %h5.text-muted Name
+            %h4= @container.name
+            %hr
+          - if @container.notes.present?
+            .col-xs-12
+              %h6.text-muted Notes
+              %h5= @container.notes
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Custom ID
+            %h5= @container.custom_uid
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Status
+            %h5{class: "status-#{@container.status.parameterize}"}= @container.status
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Weight (kg)
+            %h5= @container.weight.to_f.round(4) || "N/A"
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Created By
+            %h5= @container.user.name
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Created At
+            %h5= @container.created_at.strftime("%Y-%m-%d")
 
       .col-md-7
         %br

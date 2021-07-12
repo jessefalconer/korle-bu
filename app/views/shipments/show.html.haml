@@ -4,82 +4,66 @@
       %li
         = link_to "Home", index_path
       %li.active= @shipment.name
-
+    - if can? :manage, Shipment
+      = render partial: "layouts/edit_modal"
     - if can? :read, Shipment
       = link_index_button(shipments_path, "fa-ship")
     - if can? :create, Container
       = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
     = render partial: "layouts/jump_to_modal"
+    - if can? :manage, Shipment
+      = render "layouts/export_modal"
     - if can?(:create, Pallet)
       = render partial: "layouts/mass_action_modal", locals: {name: @shipment.name, redirect: shipment_path(@shipment), record: nil}
 
   .main-content
-    %ul.nav.nav-tabs
-      %li.active
-        %a{data: {toggle: "tab"}, href: "#view"} View
-      - if can? :manage, Shipment
-        %li
-          %a{data: {toggle: "tab"}, href: "#edit"} Edit
-      %li
-        %a{data: {toggle: "tab"}, href: "#export"} Export
-
     .row
       .col-md-5
-        %br
-        #myTabContent.tab-content
-          #view.tab-pane.active.in
-            .row
-              .col-xs-12
-                %h5.text-muted Name
-                %h4= @shipment.name
-                %hr
-              - if @shipment.notes.present?
-                .col-xs-12
-                  %h6.text-muted Notes
-                  %h5= @shipment.notes
-              .col-xs-12
-                %h6.text-muted Receiving Warehouse
-                %h5= @shipment.receiving_warehouse&.name || "N/A"
-              .col-xs-12
-                %h6.text-muted Shipping Warehouse
-                %h5= @shipment.shipping_warehouse&.name || "N/A"
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Custom ID
-                %h5= @shipment.custom_uid
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Status
-                %h5{class: "status-#{@shipment.status.parameterize}"}= @shipment.status
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Items (Unique)
-                %h5= @shipment.packed_items.distinct.count(:item_id)
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Items (Instances)
-                %h5= @shipment.packed_items.count
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Items (Quantity)
-                %h5= @shipment.packed_items.pluck(:quantity).inject {|sum, quantity| sum + quantity }.to_i
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Items (Est. Weight)
-                %h5 #{@shipment.packed_items.pluck(:weight).compact.inject {|sum, quantity| sum + quantity }.to_f.round(4)}kg
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Earliest Expiry
-                %h5= @shipment.packed_items.pluck(:expiry_date).compact.min&.strftime("%Y-%m-%d") || "N/A"
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Latest Expiry
-                %h5= @shipment.packed_items.pluck(:expiry_date).compact.max&.strftime("%Y-%m-%d") || "N/A"
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Created By
-                %h5= @shipment.user.name
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Created At
-                %h5= @shipment.created_at.strftime("%Y-%m-%d")
-
-          - if can? :manage, Shipment
-            #edit.tab-pane.fade
-              = render partial: "form"
-
-          #export.tab-pane.fade
-            = render partial: "export"
+        .row
+          .col-xs-12
+            %h5.text-muted Name
+            %h4= @shipment.name
+            %hr
+          - if @shipment.notes.present?
+            .col-xs-12
+              %h6.text-muted Notes
+              %h5= @shipment.notes
+          .col-xs-12
+            %h6.text-muted Receiving Warehouse
+            %h5= @shipment.receiving_warehouse&.name || "N/A"
+          .col-xs-12
+            %h6.text-muted Shipping Warehouse
+            %h5= @shipment.shipping_warehouse&.name || "N/A"
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Custom ID
+            %h5= @shipment.custom_uid
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Status
+            %h5{class: "status-#{@shipment.status.parameterize}"}= @shipment.status
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Items (Unique)
+            %h5= @shipment.packed_items.distinct.count(:item_id)
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Items (Instances)
+            %h5= @shipment.packed_items.count
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Items (Quantity)
+            %h5= @shipment.packed_items.pluck(:quantity).inject {|sum, quantity| sum + quantity }.to_i
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Items (Est. Weight)
+            %h5 #{@shipment.packed_items.pluck(:weight).compact.inject {|sum, quantity| sum + quantity }.to_f.round(4)}kg
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Earliest Expiry
+            %h5= @shipment.packed_items.pluck(:expiry_date).compact.min&.strftime("%Y-%m-%d") || "N/A"
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Latest Expiry
+            %h5= @shipment.packed_items.pluck(:expiry_date).compact.max&.strftime("%Y-%m-%d") || "N/A"
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Created By
+            %h5= @shipment.user.name
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Created At
+            %h5= @shipment.created_at.strftime("%Y-%m-%d")
 
       .col-md-7
         %br

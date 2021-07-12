@@ -1,0 +1,24 @@
+%button.btn.btn-primary{data: {target: "#export-modal", toggle: "modal"}}
+  %span Export
+  %i.fa.fa-file-export
+.modal.fade{id: "export-modal"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h5#assignmentModalLabel.modal-title Export #{@shipment.name}
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"}  ×
+      .modal-body#assignmentModalBody.margin-top
+        .row.edit-modal-body
+          .col-xs-12
+            = form_for Export.new("Shipment", @shipment.id), url: exports_path do |f|
+              %h4 Select a grouping strategy.
+              .form-group
+                %label By Item Category
+                = f.radio_button :group_by, "category", checked: true
+              .form-group
+                %label By Item
+                = f.radio_button :group_by, "item"
+              = f.hidden_field :klass, value: "Shipment"
+              = f.hidden_field :id, value: @shipment.id
+              = submit_export

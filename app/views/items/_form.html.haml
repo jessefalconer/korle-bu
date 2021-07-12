@@ -1,4 +1,5 @@
 - item ||= @item
+- submit_path ||= "item"
 = form_for item do |f|
   .panel.panel-default
     %a.panel-heading{data: {toggle: "collapse"}, href: "#general-#{item.id}"}

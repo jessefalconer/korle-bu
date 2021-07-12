@@ -1,11 +1,10 @@
 .content
   .header
-    %h1.page-title Item Activity for #{@item.generated_name}
     %ul.breadcrumb
       %li
         = link_to index_path do
           Home
-      %li.active Item Activity
+      %li.active Item Activity for #{@item.generated_name}
     = render partial: "layouts/jump_to_modal"
   .main-content
     .row

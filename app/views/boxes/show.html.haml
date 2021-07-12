@@ -4,53 +4,40 @@
       %li
         = link_to "Home", index_path
       = present(@box).breadcrumbs
-    = link_index_button(boxes_path, "fa-box-open")
+    - if can? :manage, Box
+      = render partial: "layouts/edit_modal"
     = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
     = render partial: "layouts/jump_to_modal"
     - if can?(:create, Box)
       = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box), record: @box}
 
   .main-content
-    %ul.nav.nav-tabs
-      %li.active
-        %a{data: {toggle: "tab"}, href: "#view"} View
-
-      - if can? :manage, Box
-        %li
-          %a{data: {toggle: "tab"}, href: "#edit"} Edit
     .row
       .col-md-5
-        %br
-        .tab-content
-          #view.tab-pane.active.in
-            .row
-              .col-xs-12
-                %h5.text-muted Name
-                %h4= @box.name
-                %hr
-              - if @box.notes.present?
-                .col-xs-12
-                  %h5.text-muted Notes
-                  %h4= @box.notes
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Custom ID
-                %h5= @box.custom_uid
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Status
-                %h5{class: "status-#{@box.status.parameterize}"}= @box.status
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Weight (kg)
-                %h5= @box.weight.to_f.round(4) || "N/A"
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Created By
-                %h5= @box.user.name
-              .col-xs-6.col-sm-4.col-md-6
-                %h6.text-muted Created At
-                %h5= @box.created_at.strftime("%Y-%m-%d")
-
-          - if can? :manage, Box
-            #edit.tab-pane.fade
-              = render partial: "form"
+        .row
+          .col-xs-12
+            %h5.text-muted Name
+            %h4= @box.name
+            %hr
+          - if @box.notes.present?
+            .col-xs-12
+              %h5.text-muted Notes
+              %h4= @box.notes
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Custom ID
+            %h5= @box.custom_uid
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Status
+            %h5{class: "status-#{@box.status.parameterize}"}= @box.status
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Weight (kg)
+            %h5= @box.weight.to_f.round(4) || "N/A"
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Created By
+            %h5= @box.user.name
+          .col-xs-6.col-sm-4.col-md-6
+            %h6.text-muted Created At
+            %h5= @box.created_at.strftime("%Y-%m-%d")
 
       .col-md-7
         %br
