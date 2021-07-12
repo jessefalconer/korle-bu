@@ -3,6 +3,7 @@
 - @items.each do |item|
   %tr
     %td
+      = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_unverified_path"}
       %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
         = present(placeholder_item).match(item.generated_name)
     %td.hidden-xs
@@ -11,5 +12,3 @@
     %td
       = link_to item_instances_path(item) do
         %p.instances= item.packed_items.count
-
-  = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_unverified_path"}
