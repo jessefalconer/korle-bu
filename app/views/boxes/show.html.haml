@@ -8,7 +8,7 @@
       = render partial: "layouts/edit_modal"
     = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
     = render partial: "layouts/jump_to_modal"
-    - if can?(:create, Box)
+    - if can? :create, Box
       = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box), record: @box}
 
   .main-content

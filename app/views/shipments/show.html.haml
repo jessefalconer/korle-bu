@@ -11,7 +11,7 @@
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, Shipment
       = render "layouts/export_modal"
-    - if can?(:create, Pallet)
+    - if can? :create, Pallet
       = render partial: "layouts/mass_action_modal", locals: {name: @shipment.name, redirect: shipment_path(@shipment), record: nil}
 
   .main-content

@@ -29,8 +29,6 @@ class BoxItemsController < ApplicationController
   end
 
   def index
-    return unless @box.box_items.any?
-
     @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
     @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
     @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)

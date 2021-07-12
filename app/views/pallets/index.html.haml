@@ -8,7 +8,7 @@
     - if can? :create, Pallet
       = add_button(new_pallet_path, "Pallet", "fa-pallet")
     = render partial: "layouts/jump_to_modal"
-    - if @pallets.any? && can?(:create, Pallet)
+    - if can? :create, Pallet
       = render partial: "layouts/mass_action_modal", locals: {name: title, redirect: pallets_path(display: params[:display]), record: nil }
 
   .main-content
