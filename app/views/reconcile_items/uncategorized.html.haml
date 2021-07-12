@@ -5,6 +5,7 @@
         = link_to "Home", index_path
       %li.active Reconcile - Uncategorized
     = render partial: "layouts/jump_to_modal"
+    = link_refresh_button(reconcile_uncategorized_path, "Clear Results", "fa-sync")
   .main-content
     .row
       .col-xs-12

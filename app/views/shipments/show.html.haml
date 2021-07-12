@@ -6,8 +6,6 @@
       %li.active= @shipment.name
     - if can? :manage, Shipment
       = render partial: "layouts/edit_modal"
-    - if can? :read, Shipment
-      = link_index_button(shipments_path, "fa-ship")
     - if can? :create, Container
       = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
     = render partial: "layouts/jump_to_modal"

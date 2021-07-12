@@ -666,6 +666,18 @@ readers do not read off random characters that represent icons */
   }
 }
 
+.fa-bolt {
+  &:before {
+    content: "\f0e7";
+  }
+}
+
+.fa-clone {
+  &:before {
+    content: "\f24d";
+  }
+}
+
 .sr-only {
   border: 0;
   clip: rect(0, 0, 0, 0);

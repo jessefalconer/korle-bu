@@ -6,10 +6,10 @@ function updateCheckCount() {
   const button = document.querySelector(".mass-action-count");
   var text = "";
   if (checkedCount === 0) {
-    text = "Mass Action";
+    text = "";
     button.closest("button").disabled = true;
   } else {
-    text = `Mass Action (${checkedCount})`;
+    text = `(${checkedCount})`;
     button.closest("button").disabled = false;
   }
   button.textContent = text;
