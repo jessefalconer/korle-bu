@@ -8,6 +8,6 @@ class ItemPresenter < BasePresenter
       str.gsub!(/#{substr}/i, tag.strong(substr))
     end
 
-    sanitize(str)
+    sanitize(str.titleize)
   end
 end

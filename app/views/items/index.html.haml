@@ -4,8 +4,8 @@
       %li
         = link_to "Home", index_path
       %li.active Items
-    = add_button(new_item_path, "Item", "fa-stethoscope")
     = render partial: "layouts/jump_to_modal"
+    = add_button(new_item_path, "Item", "fa-stethoscope")
     = link_refresh_button(items_path, "Clear Results", "fa-sync")
   .main-content
     = render partial: "search_form", locals: { path: "/index_item_search" }

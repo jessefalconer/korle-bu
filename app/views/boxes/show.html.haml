@@ -4,11 +4,11 @@
       %li
         = link_to "Home", index_path
       = present(@box).breadcrumbs
+    = render partial: "layouts/jump_to_modal"
     - if can? :manage, Box
       = render partial: "layouts/edit_modal"
-    = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
-    = render partial: "layouts/jump_to_modal"
-    - if can? :create, Box
+    - if can? :manage, PackedItem
+      = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
       = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box), record: @box}
 
   .main-content

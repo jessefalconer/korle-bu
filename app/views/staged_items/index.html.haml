@@ -5,7 +5,8 @@
         = link_to "Home", index_path
       %li.active Staged Items
     = render partial: "layouts/jump_to_modal"
-    = render partial: "layouts/mass_action_modal", locals: {name: "staged items", redirect: staged_items_path, record: nil }
+    - if can? :manage, PackedItem
+      = render partial: "layouts/mass_action_modal", locals: {name: "staged items", redirect: staged_items_path, record: nil }
 
   .main-content
     %ul.nav.nav-tabs

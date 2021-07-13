@@ -6,10 +6,10 @@
       %li
         = link_to "Users", users_path
       %li.active= @user.name
+    = render partial: "layouts/jump_to_modal"
     = render partial: "layouts/edit_modal"
     - if current_user == @user || current_user.admin?
       = render partial: "layouts/change_password_modal"
-    = render partial: "layouts/jump_to_modal"
 
   .main-content
     .row

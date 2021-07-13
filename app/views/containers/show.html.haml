@@ -4,15 +4,11 @@
       %li
         = link_to "Home", index_path
       = present(@container).breadcrumbs
+    = render partial: "layouts/jump_to_modal"
     - if can? :manage, Container
       = render partial: "layouts/edit_modal"
-    - if can? :create, Pallet
-      = add_button(new_pallet_path(container_id: @container.id), "Pallet", "fa-pallet")
-    - if can? :create, Box
-      = add_button(new_box_path(container_id: @container.id), "Box", "fa-box-open")
-    = manage_button(container_container_items_path(@container), "Items", "fa-stethoscope")
-    = render partial: "layouts/jump_to_modal"
-    - if can? :create, Box
+    - if can? :manage, PackedItem
+      = manage_button(container_container_items_path(@container), "Items", "fa-stethoscope")
       = render partial: "layouts/mass_action_modal", locals: {name: @container.name, redirect: container_path(@container), record: @container}
 
   .main-content

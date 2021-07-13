@@ -6,11 +6,11 @@
       %li
         = link_to "Items", items_path
       %li.active= @item.generated_name
+    = render partial: "layouts/jump_to_modal"
     - if can? :manage, Item
       = render partial: "layouts/edit_modal"
     - if can? :reconcile, Item
       = link_button("Start Reconcile", reconcile_start_path(@item))
-    = render partial: "layouts/jump_to_modal"
   .main-content
     .row
       .col-xs-12

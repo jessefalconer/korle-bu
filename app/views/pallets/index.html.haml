@@ -5,10 +5,10 @@
       %li
         = link_to "Home", index_path
       %li.active= title.titleize
-    - if can? :create, Pallet
-      = add_button(new_pallet_path, "Pallet", "fa-pallet")
     = render partial: "layouts/jump_to_modal"
     - if can? :create, Pallet
+      = add_button(new_pallet_path, "Pallet", "fa-pallet")
+    - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: title, redirect: pallets_path(display: params[:display]), record: nil }
 
   .main-content

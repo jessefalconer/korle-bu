@@ -25,17 +25,14 @@
               = f.number_field :custom_uid, {placeholder: "Custom ID"}
               = submit_button_value(["fa-pallet", "fa-arrow-right"], "info")
               = submit_button_value(["fa-pallet", "fa-stethoscope", "fa-arrow-right"], "items")
-          .col-xs-12
-            = form_for :container, url: find_container_path, html: {class: "inline-search-form" } do |f|
-              = hidden_field_tag :redirect, request.fullpath
-              = f.number_field :custom_uid, {placeholder: "Custom ID"}
-              = submit_button_value(["fa-truck", "fa-arrow-right"], "info")
-              = submit_button_value(["fa-truck", "fa-stethoscope", "fa-arrow-right"], "items")
-          - if current_user.admin? || current_user.shipping_manager?
+          - unless current_user.receiving_manager?
             .col-xs-12
               = form_with url: items_path, method: :get, html: {class: "inline-search-form text-field" } do |f|
                 = f.text_field :search_string, {placeholder: "Item Search"}
                 = submit_button_value(["fa-search", "fa-stethoscope", "fa-arrow-right"], "")
+            .col-xs-12.padding-top
+              - path = container_path(Container.order(:created_at).last)
+              = link_button("Latest Container", path)
             .col-xs-12.padding-top
               - path = shipment_path(Shipment.order(:created_at).last)
               = link_button("Latest Shipment", path)

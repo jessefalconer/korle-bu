@@ -4,8 +4,6 @@
       %li
         = link_to "Home", index_path
       %li.active Shipments
-    - if can? :manage, Shipment
-      = add_button(new_shipment_path, "Shipment", "fa-ship")
     = render partial: "layouts/jump_to_modal"
   .main-content
     %table.table.table-striped.table-hover.link-rows

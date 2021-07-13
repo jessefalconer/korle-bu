@@ -4,8 +4,8 @@
       %li
         = link_to "Home", index_path
       %li.active Users
-    = add_button(new_user_path, "User", "fa-user")
     = render partial: "layouts/jump_to_modal"
+    = add_button(new_user_path, "User", "fa-user")
   .main-content
     %table.table.table-striped.table-hover.link-rows
       %thead

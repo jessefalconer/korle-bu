@@ -4,14 +4,11 @@
       %li
         = link_to "Home", index_path
       %li.active= @shipment.name
-    - if can? :manage, Shipment
-      = render partial: "layouts/edit_modal"
-    - if can? :create, Container
-      = add_button(new_container_path(shipment_id: @shipment.id), "Container", "fa-truck")
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, Shipment
+      = render partial: "layouts/edit_modal"
       = render "layouts/export_modal"
-    - if can? :create, Pallet
+    - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: @shipment.name, redirect: shipment_path(@shipment), record: nil}
 
   .main-content

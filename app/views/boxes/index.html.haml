@@ -5,10 +5,10 @@
       %li
         = link_to "Home", index_path
       %li.active= title.titleize
-    - if can? :create, Box
-      = add_button(new_box_path, "Box", "fa-box-open")
     = render partial: "layouts/jump_to_modal"
     - if can? :create, Box
+      = add_button(new_box_path, "Box", "fa-box-open")
+    - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: title, redirect: boxes_path(display: params[:display]), record: nil}
 
   .main-content

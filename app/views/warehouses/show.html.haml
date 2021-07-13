@@ -6,8 +6,8 @@
       %li
         = link_to "Warehouses", warehouses_path
       %li.active= @warehouse.name
-    = render partial: "layouts/edit_modal"
     = render partial: "layouts/jump_to_modal"
+    = render partial: "layouts/edit_modal"
   .main-content
     .row
       .col-xs-12
