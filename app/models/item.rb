@@ -34,7 +34,7 @@ class Item < ApplicationRecord
 
   validates :generated_name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
 
-  STANDARD_SIZES = %w[Assorted XXXS XXS XS Small Medium Large XL XXL XXXL].freeze
+  STANDARD_SIZES = %w[Assorted\ Sizes XXXS XXS XS Small Medium Large XL XXL XXXL].freeze
   INFANT_SIZES = %w[Infant Newborn Preemie Infant\ Size\ 1 Infant\ Size\ 2 Infant\ Size\ 2.5
                     Infant\ Size\ 3 Infant\ Size\ 3.5 Infant\ Size\ 4 Infant\ Size\ 4.5 Infant\ Size\ 5 Infant\ Size\ 6 Infant\ Size\ 7] +
                  STANDARD_SIZES.map { |s| "Infant #{s}" }.freeze
