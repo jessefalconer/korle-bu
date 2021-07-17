@@ -5,9 +5,9 @@ class ItemPresenter < BasePresenter
     arr = generated_name.split(" ")
     str = compare_item
     arr.each do |substr|
-      str.gsub!(/#{substr}/i, tag.strong(substr))
+      str.gsub!(/#{substr}/i, tag.strong(substr.capitalize))
     end
 
-    sanitize(str.titleize)
+    sanitize(str)
   end
 end

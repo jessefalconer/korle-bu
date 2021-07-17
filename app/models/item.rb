@@ -10,8 +10,10 @@ class Item < ApplicationRecord
                   using: {
                     tsearch: {
                       prefix: true,
-                      any_word: true
-                    }
+                      any_word: true,
+                      dictionary: "english",
+                    },
+                    trigram: {}
                   },
                   ranked_by: ":trigram"
 
