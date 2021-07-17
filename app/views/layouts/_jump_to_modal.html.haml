@@ -12,7 +12,7 @@
       .modal-body#assignmentModalBody.margin-top
         .row.jump-to-body
           .col-xs-12
-            %h5 Enter the custom ID of the resource, jump to its info or item page. You can also quick search for an item or jump to the latest shipment.
+            %h5 Enter the custom ID of the resource, jump to its info or item page. You can also quick search for an item or jump to the latest container or shipment.
           .col-xs-12
             = form_for :box, url: find_box_path, html: {class: "inline-search-form" } do |f|
               = hidden_field_tag :redirect, request.fullpath
