@@ -114,7 +114,7 @@
                 %h5.text-center #{@heaviest_item.weight}kg
                 %h5.text-center= @heaviest_item.generated_name
               - else
-               %h4.text-center
+                %h4.text-center
                   No One (Yet!)
                   %i.fa.fa-crown.text-warning
                 %h5.text-center 0kg
@@ -123,11 +123,18 @@
                 %em Heaviest Packed Item
             .col-xs-4
               %h5.text-muted.text-center Bulk Discount
-              %h4.text-center
-                = @quantity_item.user.first_name
-                %i.fa.fa-crown.text-warning
-              %h5.text-center= @quantity_item.quantity
-              %h5.text-center= @quantity_item.generated_name
+              - if @quantity_item
+                %h4.text-center
+                  = @quantity_item.user.first_name
+                  %i.fa.fa-crown.text-warning
+                %h5.text-center= @quantity_item.quantity
+                %h5.text-center= @quantity_item.generated_name
+              - else
+                %h4.text-center
+                  No One (Yet!)
+                  %i.fa.fa-crown.text-warning
+                %h5.text-center 0
+                %h5.text-center N/A
               %h5.text-muted.text-center
                 %em Greatest Single Packed Quantity
             .col-xs-4
