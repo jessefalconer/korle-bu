@@ -227,7 +227,7 @@
               = link_to warehoused_items_path do
                 %span.fa.fa-stethoscope
                 &nbsp;Items
-      - else
+      - if current_user.receiving_manager? || current_user.masquerader
         %li
           %a.nav-header.collapsed{data: {target: ".all-items-menu", toggle: "collapse"}, href: "#"}
             %i.fa.fa-fw.fa-stethoscope

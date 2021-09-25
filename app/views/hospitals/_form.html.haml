@@ -15,16 +15,24 @@
       = f.text_field :city, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
-      = f.label :province
+      %label District/Region/County/State/Province
       = f.text_field :province, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
-      = f.label :postal_code
+      %label ZIP/Postal Code
       = f.text_field :postal_code, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
       = f.label :country
       = f.text_field :country, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
+      %label GPS Latitude (North/South)
+      = f.text_field :latitude, class: "form-control"
+  .col-xs-12.col-sm-4
+    .form-group
+      %label GPS Longitude (East/West)
+      = f.text_field :longitude, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
       = f.label :phone
