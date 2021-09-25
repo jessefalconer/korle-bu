@@ -3,7 +3,7 @@
     %p= item.generated_name
     .drawer-info
       - if packed_items.size > 4
-        %span #{packed_items.size} Locations Found
+        %span #{packed_items.map(&:location_name).uniq.pop(3).join(", ")} and #{packed_items.size - 3} others
       - else
         %span= packed_items.map(&:location_name).uniq.join(", ")
       %span.label.label-info= packed_items.sum(&:remaining_quantity)
