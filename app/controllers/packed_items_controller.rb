@@ -4,7 +4,7 @@ class PackedItemsController < ApplicationController
   # @todo refactor these to use accessible_by(current_ability)
   def all_received_items
     @items = PackedItem.left_joins(:item, :shipment)
-                               .where("items.category_id IS NOT NULL AND packed_items.remaining_quantity > 0 AND shipments.receiving_warehouse_id = ? AND shipments.status = ?", current_user.warehouse_id, Shipment::RECEIVED).order("items.generated_name")
+                               .where("items.category_id IS NOT NULL AND packed_items.remaining_quantity > 0 AND shipments.receiving_warehouse_id = ? AND shipments.status = ?", current_user.warehouse_id, Shipment::RECEIVED).order("items.generated_name").page params[:page]
   end
 
   def received_categories

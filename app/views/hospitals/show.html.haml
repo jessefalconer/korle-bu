@@ -24,7 +24,19 @@
           %h5= @hospital.full_address
       .col-lg-3.col-sm-4.col-xs-6
         %h6.text-muted Phone
-        %h5= @hospital.phone
+        %h5= @hospital.phone.presence || "N/A"
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted GPS Latitude
+        %h5= @hospital.latitude.presence || "N/A"
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted GPS Longitude
+        %h5= @hospital.longitude.presence || "N/A"
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Point of Contact Name
+        %h5= @hospital.point_of_contact_name.presence || "N/A"
+      .col-lg-3.col-sm-4.col-xs-6
+        %h6.text-muted Point of Contact Phone
+        %h5= @hospital.point_of_contact_phone.presence || "N/A"
       .col-lg-3.col-sm-4.col-xs-6
         %h6.text-muted Status
         %h5{style: "color: #{@hospital.active? ? "#02a556" : "#ff4d4d"}"}= @hospital.status

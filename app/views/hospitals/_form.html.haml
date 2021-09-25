@@ -1,10 +1,16 @@
 - @hospital ||= Hospital.new
 - redirect ||= nil
 = form_for @hospital do |f|
-  .col-xs-12.col-sm-4
+  %h5.text-center Hospital/Clinic
+  %hr
+  .col-xs-12.col-sm-6
     .form-group
       = f.label :name
       = f.text_field :name, class: "form-control"
+  .col-xs-12.col-sm-6
+    .form-group
+      = f.label :phone
+      = f.text_field :phone, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
       = f.label :street
@@ -15,7 +21,7 @@
       = f.text_field :city, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
-      %label District/Region/County/State/Province
+      %label District/Region/County
       = f.text_field :province, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
@@ -35,10 +41,6 @@
       = f.text_field :longitude, class: "form-control"
   .col-xs-12.col-sm-4
     .form-group
-      = f.label :phone
-      = f.text_field :phone, class: "form-control"
-  .col-xs-12.col-sm-4
-    .form-group
       = hidden_field_tag :redirect, redirect
       %label Warehouse Assignment
       - if current_user.receiving_manager?
@@ -52,10 +54,21 @@
         = f.select(:status, options_for_select([Hospital::ACTIVE], Hospital::ACTIVE), {}, { class: "form-control" })
       - else
         = f.select(:status, options_for_select(Hospital::STATUSES, @hospital.status), {}, { class: "form-control" })
-  .col-xs-12.col-sm-8
+  .col-xs-12.col-sm-8.col-md-12
     .form-group
       = f.label :description
       = f.text_field :description, class: "form-control"
+  .col-xs-12
+    %h5.text-center Point of Contact
+    %hr
+  .col-xs-12.col-sm-6
+    .form-group
+      %label Name
+      = f.text_field :point_of_contact_name, class: "form-control"
+  .col-xs-12.col-sm-6
+    .form-group
+      %label Phone
+      = f.text_field :point_of_contact_phone, class: "form-control"
   .col-xs-12
     .btn-toolbar.list-toolbar
       - unless @hospital.new_record? || @hospital.associations?
