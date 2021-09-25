@@ -41,7 +41,7 @@ class PackedItem < ApplicationRecord
   before_save do
     set_with_parent_status
     set_shipment
-    recalculate_remaining_items
+    recalculate_remaining_quantity
   end
 
   def self.by_item
@@ -94,8 +94,7 @@ class PackedItem < ApplicationRecord
     self.status = parent&.status unless will_not_assign?
   end
 
-  def recalculate_remaining_items
+  def recalculate_remaining_quantity
     self.remaining_quantity = quantity.to_i - unpacking_events.sum(:quantity)
-    self.remaining_weight = weight.to_i - unpacking_events.sum(:weight)
   end
 end

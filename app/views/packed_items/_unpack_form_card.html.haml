@@ -10,15 +10,11 @@
       %i.fa.fa-ellipsis-v
   .col-xs-12.manage-item-form.hidden
     .row
-      .col-xs-6.col-lg-3
+      .col-xs-12.col-md-6
         .form-group
           = f.label :quantity
           = f.number_field :quantity, value: pi.remaining_quantity, class: "form-control", min: 1, max: pi.remaining_quantity
-      .col-xs-6.col-lg-3
-        .form-group
-          = f.label "Weight (kg)"
-          = f.number_field :weight, step: :any, value: pi.remaining_weight, class: "form-control"
-      .col-xs-12.col-lg-6
+      .col-xs-12.col-md-6
         .form-group
           = f.label "Hospital/Clinic"
           = f.select :hospital_id, options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: "None" }, { class: "form-control", id: "hospital-assignment" }
