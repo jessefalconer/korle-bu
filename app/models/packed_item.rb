@@ -73,9 +73,7 @@ class PackedItem < ApplicationRecord
   end
 
   def location_name
-    return box.name if box
-    return pallet.name if pallet
-    return container.name if container
+    return parent.name if parent
 
     status
   end

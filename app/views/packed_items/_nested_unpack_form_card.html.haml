@@ -1,0 +1,38 @@
+.row.inline-add-item
+  .col-xs-12.manage-item-name
+    %p= item.generated_name
+    .drawer-info
+      %span= packed_items.map(&:location_name).uniq.join(", ")
+      %span.label.label-info= packed_items.sum(&:remaining_quantity)
+      %i.fa.fa-ellipsis-v
+  .col-xs-12.manage-item-form.hidden
+    - packed_items.each do |pi|
+      = form_for :unpacking_event, url: present(pi).unpack_path do |f|
+        .row
+          .col-xs-2
+            = link_to present(pi).path do
+              %h5= pi.location_name
+            - if pi.show_id
+              %p
+                %em.show-id ID: ##{pi.id}
+          .col-xs-10
+            .row
+              .col-xs-12.col-md-6
+                .form-group
+                  %label Unpacking Quantity
+                  = f.number_field :quantity, value: pi.remaining_quantity, class: "form-control", min: 1, max: pi.remaining_quantity, id: "quantity-#{pi.id}"
+              .col-xs-12.col-md-6
+                .form-group
+                  %label Hospital/Clinic
+                  = f.select :hospital_id, options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: "None" }, { class: "form-control", id: "hospital-assignment-#{pi.id}" }
+              .col-xs-10.col-sm-9.col-lg-10
+                .form-group
+                  = f.label "Notes"
+                  = f.text_field :notes, class: "form-control", placeholder: "Explanation", id: "explanation-#{pi.id}"
+              .col-xs-2.col-sm-3.col-lg-2
+                .form-group
+                  %label &nbsp;
+                  .btn-toolbar.list-toolbar
+                    = submit_button_responsive("Unpack", "pull-right")
+    %h6.pull-right
+      %a{data: {target: "#add-hospital-modal", toggle: "modal"}, href: ""} Don't see your clinic or hospital? Add one.

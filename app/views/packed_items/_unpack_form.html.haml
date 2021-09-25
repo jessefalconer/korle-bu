@@ -3,10 +3,7 @@
 - else
   %h5 Unpack and remove items. Items completely unpacked with no remaining quantity will not be shown here.
   = render partial: "layouts/add_hospital_modal", locals: {redirect: request.original_url}
-  = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "unpack-items"}
-  - @items.with_inventory.each do |pi|
-    - path = present(pi).unpack_path
-    = form_for :unpacking_event, url: path do |f|
-      = render "packed_items/unpack_form_card", f: f, pi: pi
+  - @items.each do |(item, packed_items)|
+    = render "packed_items/nested_unpack_form_card", item: item, packed_items: packed_items
 
   = paginate @items, window: 2

@@ -6,26 +6,4 @@
       %li.active Received Items — Master List
     = render partial: "layouts/jump_to_modal"
   .main-content
-    %ul.nav.nav-tabs
-      %li.active
-        %a{data: {toggle: "tab"}, href: "#unpack-items"}
-          Unpack
-          %span.label.label-info= @items.with_inventory.count
-      %li
-        %a{data: {toggle: "tab"}, href: "#history-items"}
-          History
-          %span.label.label-default= @items.with_events.count
-      %li
-        %a{data: {toggle: "tab"}, href: "#manage-items"}
-          Inventory
-          %span.label.label-success= @items.count
-    .row
-      .col-xs-12
-        %br
-        .tab-content
-          #unpack-items.tab-pane.active.in
-            = render "unpack_form"
-          #history-items.tab-pane.fade
-            = render "unpack_form"
-          #manage-items.tab-pane.fade
-            = render "unpack_form"
+    = render "unpack_form"
