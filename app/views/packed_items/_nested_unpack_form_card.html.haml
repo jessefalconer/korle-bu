@@ -2,7 +2,10 @@
   .col-xs-12.manage-item-name
     %p= item.generated_name
     .drawer-info
-      %span= packed_items.map(&:location_name).uniq.join(", ")
+      - if packed_items.size > 4
+        %span #{packed_items.size} Locations Found
+      - else
+        %span= packed_items.map(&:location_name).uniq.join(", ")
       %span.label.label-info= packed_items.sum(&:remaining_quantity)
       %i.fa.fa-ellipsis-v
   .col-xs-12.manage-item-form.hidden
