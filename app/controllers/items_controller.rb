@@ -63,6 +63,16 @@ class ItemsController < ApplicationController
     render json: render_to_string(partial: "results_form", layout: false, locals: { form_path: form_path, status: params[:status] }).to_json
   end
 
+  def packed_search
+    search_results_item_ids = Item.search_by_generated_name(params[:search]).limit(25).pluck(:id)
+    @items = PackedItem.left_joins(:item, :shipment)
+                               .where("items.category_id IS NOT NULL AND packed_items.remaining_quantity > 0 AND shipments.receiving_warehouse_id = ? AND shipments.status = ? AND packed_items.item_id IN (?)", current_user.warehouse_id, Shipment::RECEIVED, search_results_item_ids)
+                               .group_by(&:item)
+                               .sort_by { |item, _items| item.generated_name }
+
+    render json: render_to_string(partial: "packed_items/nested_unpack_form_card", layout: false, locals: {items: @items}).to_json
+  end
+
   def show
   end
 

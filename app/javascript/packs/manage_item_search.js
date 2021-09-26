@@ -89,7 +89,7 @@ function initResultsDrawerListeners(params) {
   })
 }
 
-function initManageDrawerListeners() {
+export function initManageDrawerListeners() {
   if (document.querySelector(".manage-item-name") === null) { return; }
 
   $(".manage-item-name").on("click", e => {
