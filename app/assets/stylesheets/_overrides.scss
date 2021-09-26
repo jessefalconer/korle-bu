@@ -18,11 +18,9 @@ h2.page {
 }
 
 .footer-block {
-  @media (min-width: 376px) {
     position: fixed;
     bottom: 0;
     width: 100%;
-  }
 
   .footer-links {
     border-top: 10px solid #7A7A7A;
