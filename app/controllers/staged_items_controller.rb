@@ -36,7 +36,7 @@ class StagedItemsController < ApplicationController
 
   def add_with_item
     item = Item.new(item_params)
-    packed_item = item.packed_items.build(packed_item_params.merge(status: PackedItem::STAGING))
+    packed_item = item.packed_items.build(packed_item_params.merge(status: PackedItem::STAGED))
     if item.save && packed_item.save
       id_sentence = packed_item.show_id ? "ID: ##{packed_item.id}." : ""
       message = { success: "Item created. #{packed_item.quantity} #{item.generated_name.pluralize} added. #{id_sentence}" }

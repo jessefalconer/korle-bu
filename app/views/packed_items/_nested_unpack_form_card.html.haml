@@ -4,9 +4,9 @@
       %p= item.generated_name
       .drawer-info
         - if packed_items.size > 4
-          %span #{packed_items.map(&:location_name).uniq.pop(3).join(", ")} and #{packed_items.size - 3} others
+          %span.hidden-xs.hidden-sm #{packed_items.map(&:location_name).uniq.pop(3).join(", ")} and #{packed_items.size - 3} others
         - else
-          %span= packed_items.map(&:location_name).uniq.join(", ")
+          %span.hidden-xs.hidden-sm= packed_items.map(&:location_name).uniq.join(", ")
         %span.label.label-info= packed_items.sum(&:remaining_quantity)
         %i.fa.fa-ellipsis-v
     .col-xs-12.manage-item-form.hidden
