@@ -249,6 +249,28 @@
                     = link_to item_instances_path(item) do
                       %p= item.packed_items.count
 
+      .panel.panel-default
+        %a.panel-heading{data: {toggle: "collapse"}, href: "#unpacked-items"}
+          Recently Unpacked Items
+          %span.label.label-info Total: #{UnpackingEvent.count}
+        #unpacked-items.collapse.in
+          %table.table.list
+            %tbody
+              - UnpackingEvent.order(:created_at).reverse.first(10).each do |event|
+                %tr
+                  %td
+                    = link_to item_path(event.item) do
+                      %p.title= event.generated_name
+                    %p.info Sent to: #{event.hospital.name}
+                  %td.hidden-xs
+                    %p= event.created_at.strftime("%Y-%m-%d")
+                    = link_to user_path(event.user) do
+                      = event.user.name
+                  %td
+                    %p Quantity:
+                    = link_to present(event.packed_item).path do
+                      %p= event.quantity
+
     .panel.panel-default
       %a.panel-heading{data: {toggle: "collapse"}, href: "#notes"} Personal Notes
       #notes.panel-body.collapse.in
