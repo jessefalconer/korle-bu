@@ -151,7 +151,7 @@
           - if @shipment.packed_items.any?
             #packed-items.collapse
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "packed-items"}
-              = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.packed_items}
+              = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.packed_items, assoc: "packed-items"}
               .close-collapse{data: {toggle: "collapse"}, href: "#packed-items"}
                 %span Close
           - else

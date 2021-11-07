@@ -6,7 +6,7 @@
       %th Quantity
       - if can?(:manage, PackedItem)
         %th
-  %tbody#filter-packed-items-table
+  %tbody{id: "filter-#{assoc}-table"}
     - packed_items.order(:updated_at).reverse_order.each do |pi|
       - path = present(pi).path
       %tr.filter-row
@@ -15,7 +15,7 @@
             %p= pi.generated_name
         %td
           = link_to path do
-            %p= pi.expiry_date&.strftime("%Y-%m-%d")
+            %p= pi.expiry_date&.strftime("%Y-%m-%d") || "N/A"
         %td
           = link_to path do
             %p= pi.quantity

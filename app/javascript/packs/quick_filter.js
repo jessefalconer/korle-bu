@@ -33,7 +33,7 @@ function filterTable(table, assoc) {
 }
 
 $(() => {
-  const types = ["pallets", "boxes", "pallet-boxes", "container-boxes", "packed-items", "manage-items", "unpack-items", "history-items"]
+  const types = ["pallets", "boxes", "pallet-boxes", "container-boxes", "packed-items", "manage-items", "unpack-items", "history-items", "boxed-items"]
 
   Reflect.apply(Array, undefined, types).forEach(assoc => {
     var table  = document.getElementById(`filter-${assoc}-table`);

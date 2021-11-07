@@ -21,5 +21,5 @@
         %h4= pi.weight || "N/A"
       - if pi.expiry_date
         .col-xs-6.col-sm-4.col-lg-3
-          %h5.text-muted Expiry Date
-          %h4= pi.expiry_date.strftime("%Y-%m-%d")
+          %h5.text-muted Expires
+          %h4= pi.expiry_date.strftime("%Y-%m-%d") || "N/A"

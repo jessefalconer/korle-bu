@@ -5,7 +5,7 @@
       %th.hidden-xs ID
       %th.hidden-xs Quantity
       %th.hidden-xs Weight
-      %th Expiry Date
+      %th Expires
       %th.mass-action-cell
   %tbody
     - items.each do |item|
@@ -17,8 +17,8 @@
         %td.hidden-xs
           %p= item.quantity
         %td.hidden-xs
-          %p= item.weight.to_f.zero? ? "" : "#{item.weight}kg"
+          %p= item.weight.to_f.zero? ? "N/A" : "#{item.weight}kg"
         %td
-          %p= item.expiry_date&.strftime("%Y-%m-%d")
+          %p= item.expiry_date&.strftime("%Y-%m-%d") || "N/A"
         %td.mass-action-cell
           = check_box_tag "packed_item_ids[]", item.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-packed-item-#{item.id}"
