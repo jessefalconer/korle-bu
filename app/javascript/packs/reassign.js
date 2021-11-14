@@ -2,8 +2,8 @@ function initAssignmentListeners() {
   const quickNav = document.querySelector("ul.nav.nav-tabs.quick-add")
 
   if (quickNav != null) {
-    quickNav.firstElementChild.classList.add("active")
-    document.querySelector(".tab-content.quick-add").children[1].classList.add("active", "in")
+    quickNav.firstElementChild.classList.add("active");
+    document.querySelector(".tab-content.quick-add").children[1].classList.add("active", "in");
   }
 
 
@@ -33,7 +33,7 @@ function initAssignmentListeners() {
     } else if (selected === "Staging" || selected === "Warehouse") {
       $(`#${selected.toLowerCase()}-message`).removeClass("hidden").hide().fadeIn();
       // Ugly way to match validated statuses, yuck
-      $("#status-flag").val(selected === "Staging" ? "Staged" : "Warehoused")
+      $("#status-flag").val(selected === "Staging" ? "Staged" : "Warehoused");
       $("#current-location").val(false);
     } else if (selected === "Current Location") {
       $("#current-location-message").removeClass("hidden").hide().fadeIn();

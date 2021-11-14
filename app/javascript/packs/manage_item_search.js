@@ -21,48 +21,16 @@ function packingSearch(params) {
     });
 }
 
-function initEstimateButton(el) {
-  const id = $(el).data("item-id");
-  const unitWeight = parseInt($(el).data("unit-weight"));
-
-  $(`#estimate-item-${id}`).on("click", () => {
-    var inputWeight = parseInt($(`#weight-${id}`).val());
-    var inputQuantity = parseInt($(`#quantity-${id}`).val());
-    var results = [];
-
-    if (unitWeight === 0) {
-      results.push("Error: this item has an unknown unit weight. Weigh the individual item and update its information.");
-    } else {
-      if ( isNaN(inputWeight) || inputWeight === 0 ) {
-        results.push("Input a non-zero weight value to get a quantity estimate.");
-      } else {
-        let qVal = Math.ceil(inputWeight/unitWeight);
-        results.push(`Quantity estimated to be ${qVal} based on input weight.`);
-      }
-      if ( isNaN(inputQuantity) || inputQuantity === 0 ) {
-        results.push("Input a non-zero quantity value to get a weight estimate.");
-      } else {
-        let wVal = Math.ceil(inputQuantity*unitWeight);
-        results.push(`Weight estimated to be ${wVal} kilograms based on input quantity.`);
-      }
-      results.push(`<br>Unit weight is currently set at ${unitWeight} kilograms.<br>Your inputs have not been changed.`)
-    }
-
-    $("#estimateModalBody").html(results.join("<br>"))
-    $("#estimateModal").modal();
-  })
-}
-
 function initResultsDrawerListeners(params) {
-  const resultsEls = document.querySelectorAll(".results-item-name-value")
+  const resultsEls = document.querySelectorAll(".results-item-name-value");
   const paramsCompare = params.split(" ");
 
   resultsEls.forEach(el => {
     for (const word of paramsCompare) {
       if (word.length === 1) break;
-      const elText = el.innerHTML.toLowerCase()
+      const elText = el.innerHTML.toLowerCase();
       if (elText.indexOf(word.toLowerCase()) >= 0) {
-        el.innerHTML = elText.replace(word, `<strong>${word}</strong>`)
+        el.innerHTML = elText.replace(word, `<strong>${word}</strong>`);
       }
     }
   })
@@ -84,8 +52,6 @@ function initResultsDrawerListeners(params) {
         $(e.currentTarget).removeClass("open");
       });
     }
-
-    initEstimateButton(e.currentTarget);
   })
 }
 

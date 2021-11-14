@@ -1,6 +1,6 @@
 function reconcileSearch(params) {
     const compareId = $("#compare-id").val();
-    const similarIds = $("#compare-id").data("similar-ids")
+    const similarIds = $("#compare-id").data("similar-ids");
     $.ajax({
         url: "/reconcile_item_search",
         type: "get",
@@ -20,12 +20,12 @@ function reconcileSearch(params) {
 
 function updateCheckCount() {
   var checkedCount = document.querySelectorAll('input[type="checkbox"]:checked').length;
-  const buttons = document.querySelectorAll(".submit-count")
+  const buttons = document.querySelectorAll(".submit-count");
 
   for (var i = 0; i < buttons.length; i++) {
-      const textValue = buttons[i].classList.contains("mass-reassign") ? "Reassign" : "Confirm Reconcile"
-      var text = checkedCount === 0 ? `\t ${textValue}` : `\t${textValue} (${checkedCount})`
-      buttons[i].getElementsByTagName("span")[0].textContent = text
+      const textValue = buttons[i].classList.contains("mass-reassign") ? "Reassign" : "Confirm Reconcile";
+      var text = checkedCount === 0 ? `\t ${textValue}` : `\t${textValue} (${checkedCount})`;
+      buttons[i].getElementsByTagName("span")[0].textContent = text;
   }
 }
 
