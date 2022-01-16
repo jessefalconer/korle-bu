@@ -12,6 +12,7 @@ class PackedItem < ApplicationRecord
   belongs_to :box, optional: true, inverse_of: :box_items
   belongs_to :container, optional: true, inverse_of: :container_items
   belongs_to :item, optional: false
+  belongs_to :item_variant, optional: true
   belongs_to :pallet, optional: true, inverse_of: :pallet_items
   belongs_to :shipment, optional: true, inverse_of: :packed_items
   belongs_to :user, optional: false

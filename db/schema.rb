@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_25_210451) do
+ActiveRecord::Schema.define(version: 2022_01_16_204440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -35,18 +35,6 @@ ActiveRecord::Schema.define(version: 2021_09_25_210451) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "big_items", force: :cascade do |t|
-    t.integer "weight"
-    t.string "description"
-    t.string "destination"
-    t.string "category"
-    t.text "notes"
-    t.bigint "container_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["container_id"], name: "index_big_items_on_container_id"
   end
 
   create_table "boxes", force: :cascade do |t|
@@ -112,49 +100,26 @@ ActiveRecord::Schema.define(version: 2021_09_25_210451) do
     t.index ["warehouse_id"], name: "index_hospitals_on_warehouse_id"
   end
 
-  create_table "item_boxes", force: :cascade do |t|
-    t.integer "quantity", default: 0, null: false
-    t.integer "weight"
-    t.datetime "item_expire"
-    t.bigint "box_id"
+  create_table "item_variants", force: :cascade do |t|
+    t.string "name", limit: 255
+    t.boolean "verified", default: false, null: false
     t.bigint "item_id"
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["box_id"], name: "index_item_boxes_on_box_id"
-    t.index ["item_id"], name: "index_item_boxes_on_item_id"
+    t.index ["item_id"], name: "index_item_variants_on_item_id"
+    t.index ["user_id"], name: "index_item_variants_on_user_id"
   end
 
   create_table "items", force: :cascade do |t|
-    t.string "object", limit: 255
-    t.string "brand", limit: 255
-    t.string "standardized_size", limit: 255
-    t.float "numerical_size_1"
-    t.string "numerical_units_1", limit: 255
-    t.string "numerical_description_1", limit: 255
-    t.float "numerical_size_2"
-    t.string "numerical_units_2", limit: 255
-    t.string "numerical_description_2", limit: 255
     t.string "generated_name"
-    t.string "generated_name_with_keywords"
     t.string "notes", limit: 255
-    t.string "keywords", limit: 255
     t.boolean "verified", default: false, null: false
     t.boolean "flagged", default: false, null: false
     t.bigint "user_id"
     t.bigint "category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "category"
-    t.float "unit_weight", default: 0.0, null: false
-    t.float "area_1"
-    t.float "area_2"
-    t.string "area_units", limit: 255
-    t.string "area_description", limit: 255
-    t.float "range_1"
-    t.float "range_2"
-    t.string "range_units", limit: 255
-    t.string "range_description", limit: 255
-    t.string "legacy_name", limit: 255
     t.index ["category_id"], name: "index_items_on_category_id"
     t.index ["generated_name"], name: "index_items_on_generated_name", opclass: :gin_trgm_ops, using: :gin
     t.index ["user_id"], name: "index_items_on_user_id"
@@ -175,9 +140,11 @@ ActiveRecord::Schema.define(version: 2021_09_25_210451) do
     t.integer "remaining_quantity", default: 0, null: false
     t.boolean "show_id", default: false, null: false
     t.string "status"
+    t.bigint "item_variant_id"
     t.index ["box_id"], name: "index_packed_items_on_box_id"
     t.index ["container_id"], name: "index_packed_items_on_container_id"
     t.index ["item_id"], name: "index_packed_items_on_item_id"
+    t.index ["item_variant_id"], name: "index_packed_items_on_item_variant_id"
     t.index ["pallet_id"], name: "index_packed_items_on_pallet_id"
     t.index ["shipment_id"], name: "index_packed_items_on_shipment_id"
     t.index ["user_id"], name: "index_packed_items_on_user_id"

@@ -10,104 +10,8 @@
       .row.form-row
         .col-xs-12
           .form-group
-            = f.label :object, "Base Name*"
-            = f.text_field :object, class: "form-control", placeholder: "Eg: syringe, acetaminophen, heart monitor"
-        .col-xs-12
-          .form-group
-            = f.label :brand, "Brand/Model"
-            = f.text_field :brand, class: "form-control"
-        .col-xs-12
-          .form-group
-            = f.label :standardized_size, "Size"
-            = f.select(:standardized_size, grouped_options_for_select(Item::GROUPED_SIZES, item.standardized_size), { include_blank: "" }, { class: "form-control" })
-
-  .panel.panel-default
-    %a.panel-heading{data: {toggle: "collapse"}, href: "#measurement1-#{item.id}"}
-      %i.fa.fa-flask
-      &nbsp;General Measurement
-      %i.fa.fa-edit.pull-right
-    .collapse{class: (item.numerical_1_phrase.present? && "in" ), id: "measurement1-#{item.id}"}
-      .row.form-row
-        .col-xs-6
-          .form-group
-            = f.label :numerical_size_1, "Value"
-            = f.number_field :numerical_size_1, min: 0, step: "any", class: "form-control"
-        .col-xs-6
-          .form-group
-            = f.label :numerical_units_1, "Units"
-            = f.select(:numerical_units_1, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.numerical_units_1), { include_blank: "" }, { class: "form-control" })
-        .col-xs-12
-          .form-group
-            = f.label :numerical_description_1, "Description"
-            = f.text_field :numerical_description_1, class: "form-control", placeholder: "eg: needle, tube, pill"
-
-  .panel.panel-default
-    %a.panel-heading{data: {toggle: "collapse"}, href: "#area-#{item.id}"}
-      %i.fa.fa-ruler-combined
-      &nbsp;Area
-      %i.fa.fa-edit.pull-right
-    .collapse{class: (item.area_phrase.present? && "in" ), id: "area-#{item.id}"}
-      .row.form-row
-        .col-xs-6
-          .form-group
-            = f.label :area_1, "Length"
-            = f.number_field :area_1, min: 0, step: "any", class: "form-control"
-        .col-xs-6
-          .form-group
-            = f.label :area_2, "Width"
-            = f.number_field :area_2, min: 0, step: "any", class: "form-control"
-        .col-xs-6
-          .form-group
-            = f.label :area_units, "Units"
-            = f.select(:area_units, options_for_select(Item::LENGTHS, item.area_units), { include_blank: "" }, { class: "form-control" })
-        .col-xs-6
-          .form-group
-            = f.label :area_description, "Description"
-            = f.text_field :area_description, class: "form-control", placeholder: "Eg: bandage, gauze, foil"
-
-  .panel.panel-default
-    %a.panel-heading{data: {toggle: "collapse"}, href: "#range-#{item.id}"}
-      %i.fa.fa-arrows-alt-h
-      Range
-      %i.fa.fa-edit.pull-right
-    .collapse{class: (item.area_phrase.present? && "in" ), id: "range-#{item.id}"}
-      .row.form-row
-        .col-xs-6
-          .form-group
-            = f.label :range_1, "Minimum"
-            = f.number_field :range_1, min: 0, step: "any", class: "form-control"
-        .col-xs-6
-          .form-group
-            = f.label :range_2, "Maximum"
-            = f.number_field :range_2, min: 0, step: "any", class: "form-control"
-        .col-xs-6
-          .form-group
-            = f.label :range_units, "Units"
-            = f.select(:range_units, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.range_units), { include_blank: "" }, { class: "form-control" })
-        .col-xs-6
-          .form-group
-            = f.label :range_description, "Description"
-            = f.text_field :range_description, class: "form-control", placeholder: "Eg: 1-5ml Syringes"
-
-  .panel.panel-default
-    %a.panel-heading{data: {toggle: "collapse"}, href: "#measurement2-#{item.id}"}
-      %i.fa.fa-flask
-      &nbsp;Extra Measurement
-      %i.fa.fa-edit.pull-right
-    .collapse{class: (item.numerical_2_phrase.present? && "in" ), id: "measurement2-#{item.id}"}
-      .row.form-row
-        .col-xs-6
-          .form-group
-            = f.label :numerical_size_2, "Value"
-            = f.number_field :numerical_size_2, min: 0, step: "any", class: "form-control"
-        .col-xs-6
-          .form-group
-            = f.label :numerical_units_2, "Units"
-            = f.select(:numerical_units_2, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.numerical_units_2), { include_blank: "" }, { class: "form-control" })
-        .col-xs-12
-          .form-group
-            = f.label :numerical_description_2, "Description"
-            = f.text_field :numerical_description_2, class: "form-control", placeholder: "Eg: vial, canister, blade"
+            = f.label :generated_name, "Base Name*"
+            = f.text_field :generated_name, class: "form-control", placeholder: "Eg: syringe, acetaminophen, heart monitor"
 
   .panel.panel-default
     %a.panel-heading{data: {toggle: "collapse"}, href: "#photos-#{item.id}"}
@@ -130,14 +34,10 @@
             %label Delete Photo
 
   .row.select-fields
-    .col-xs-12.col-sm-6
+    .col-xs-12
       .form-group
         = f.label :category
         = f.select(:category_id, options_from_collection_for_select(Category.order(:name), :id, :name, item.category_id), { include_blank: "" }, { class: "form-control" })
-    .col-xs-12.col-sm-6
-      .form-group
-        = f.label :unit_weight, "Unit Weight (kg)"
-        = f.number_field :unit_weight, step: :any, class: "form-control"
 
   .row.select-fields
     .col-xs-6
