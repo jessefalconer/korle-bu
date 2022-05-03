@@ -20,6 +20,7 @@ class Shipment < ApplicationRecord
   has_many :pallet_box_items, through: :pallet_boxes, source: :box_items
   has_many :container_box_items, through: :container_boxes, source: :box_items
   has_many :packed_items
+  has_many :box_items, -> { where(container_id: nil) }, class_name: "PackedItem"
 
   validates :name, :custom_uid, :user, presence: true
   validates :custom_uid, :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex

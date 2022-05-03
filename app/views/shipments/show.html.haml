@@ -95,6 +95,23 @@
               %h5.text-center No containers in this shipment.
 
         .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#container-items"}
+            %i.fa.fa-truck
+            %i.fa.fa-stethoscope
+            Containerized Items
+            %span.label{class: @shipment.container_items.any? ? "label-success" : "label-warning"}= @shipment.container_items.size
+
+          - if @shipment.container_items.any?
+            #container-items.collapse
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "containerized-items"}
+              = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.container_items, assoc: "containerized-items"}
+              .close-collapse{data: {toggle: "collapse"}, href: "#container-items"}
+                %span Close
+          - else
+            #container-items.collapse.panel-body
+              %h5.text-center No packed items in any containers.
+
+        .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
             %i.fa.fa-pallet
             Pallets Assigned to Containers
@@ -109,6 +126,23 @@
           - else
             #pallets.collapse.panel-body
               %h5.text-center No pallets assigned to containers.
+
+        .panel.panel-default
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#pallet-items"}
+            %i.fa.fa-pallet
+            %i.fa.fa-stethoscope
+            Palletized Items
+            %span.label{class: @shipment.pallet_items.any? ? "label-success" : "label-warning"}= @shipment.pallet_items.size
+
+          - if @shipment.pallet_items.any?
+            #pallet-items.collapse
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "palletized-items"}
+              = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.pallet_items, assoc: "palletized-items"}
+              .close-collapse{data: {toggle: "collapse"}, href: "#pallet-items"}
+                %span Close
+          - else
+            #pallet-items.collapse.panel-body
+              %h5.text-center No packed items in any pallets.
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallet_boxes"}
@@ -143,20 +177,21 @@
               %h5.text-center No boxes assigned to containers.
 
         .panel.panel-default
-          %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#packed-items"}
+          %a.panel-heading{data: {toggle: "collapse"}, href: "#box-items"}
+            %i.fa.fa-box-open
             %i.fa.fa-stethoscope
-            All Packed Items in this Shipment
-            %span.label{class: @shipment.packed_items.any? ? "label-success" : "label-warning"}= @shipment.packed_items.size
+            Boxed Items
+            %span.label{class: @shipment.box_items.any? ? "label-success" : "label-warning"}= @shipment.box_items.size
 
-          - if @shipment.packed_items.any?
-            #packed-items.collapse
-              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "packed-items"}
-              = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.packed_items, assoc: "packed-items"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#packed-items"}
+          - if @shipment.box_items.any?
+            #box-items.collapse
+              = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "boxed-items"}
+              = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.box_items, assoc: "boxed-items"}
+              .close-collapse{data: {toggle: "collapse"}, href: "#box-items"}
                 %span Close
           - else
-            #packed-items.collapse.panel-body
-              %h5.text-center No packed items in this container.
+            #box-items.collapse.panel-body
+              %h5.text-center No packed items in any boxes.
 
   - if (can? :manage, PackedItem) && (@staged_items.any? || @staged_boxes.any? || @staged_pallets.any? || @warehoused_items.any? || @warehoused_boxes.any? || @warehoused_pallets.any?)
     = render "layouts/mass_action_add", display: %i[items boxes pallets]
