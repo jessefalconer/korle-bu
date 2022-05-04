@@ -14,7 +14,7 @@ class Hospital < ApplicationRecord
   has_many :packed_items, through: :unpacking_events
 
   validates :status, inclusion: { in: STATUSES }
-  validates :name, uniqueness: true  # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :name, uniqueness: true, presence: true  # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   paginates_per 25
 

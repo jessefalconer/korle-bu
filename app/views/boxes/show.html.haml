@@ -10,6 +10,8 @@
     - if can? :manage, PackedItem
       = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
       = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box), record: @box}
+    - if current_user.admin? || current_user.receiving_manager?
+      = render partial: "layouts/unpack_all_modal"
 
   .main-content
     .row
