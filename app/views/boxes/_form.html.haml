@@ -10,7 +10,7 @@
     = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(Box::STATUSES, @box.status), {}, { class: "form-control" }
+    = f.select :status, options_for_select(current_user.selectable_statuses(Box), @box.status), {}, { class: "form-control" }
   .form-group
     %label Weight (kg)
     = f.number_field :weight, min: 0, step: :any, class: "form-control"

@@ -6,7 +6,8 @@ class PackedItem < ApplicationRecord
     STAGED = "Staged",
     IN_PROGRESS = "In Progress",
     COMPLETE = "Complete",
-    RECEIVED = "Received"
+    RECEIVED = "Received",
+    ARCHIVED = "Archived"
   ].freeze
 
   belongs_to :box, optional: true, inverse_of: :box_items

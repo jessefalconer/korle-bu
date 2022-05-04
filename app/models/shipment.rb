@@ -4,7 +4,8 @@ class Shipment < ApplicationRecord
   STATUSES = [
     IN_PROGRESS = "In Progress",
     COMPLETE = "Complete",
-    RECEIVED = "Received"
+    RECEIVED = "Received",
+    ARCHIVED = "Archived"
   ].freeze
 
   belongs_to :user, optional: false
@@ -48,7 +49,7 @@ class Shipment < ApplicationRecord
   end
 
   def cascadable?
-    status == "Complete" || status == "Received"
+    status == COMPLETE || status == RECEIVED || status == ARCHIVED
   end
 
   private

@@ -4,7 +4,8 @@ class Container < ApplicationRecord
   STATUSES = [
     IN_PROGRESS = "In Progress",
     COMPLETE = "Complete",
-    RECEIVED = "Received"
+    RECEIVED = "Received",
+    ARCHIVED = "Archived"
   ].freeze
 
   belongs_to :user, optional: false
@@ -38,7 +39,7 @@ class Container < ApplicationRecord
   after_initialize :set_defaults, if: :new_record?
 
   def cascadable?
-    status == "Complete" || status == "Received"
+    status == COMPLETE || status == RECEIVED || status == ARCHIVED
   end
 
   private
@@ -47,6 +48,7 @@ class Container < ApplicationRecord
   def cascade_statuses
     boxes.where.not(status: status).find_each { |b| b.update(status: status) }
     pallets.where.not(status: status).find_each { |p| p.update(status: status) }
+    container_items.where.not(status: status).find_each { |ci| ci.update(status: status) }
   end
 
   def cascade_packed_items_location

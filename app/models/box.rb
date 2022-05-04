@@ -6,7 +6,8 @@ class Box < ApplicationRecord
     STAGED = "Staged",
     IN_PROGRESS = "In Progress",
     COMPLETE = "Complete",
-    RECEIVED = "Received"
+    RECEIVED = "Received",
+    ARCHIVED = "Archived"
   ].freeze
 
   belongs_to :user, optional: false
@@ -48,6 +49,11 @@ class Box < ApplicationRecord
 
   after_save do
     cascade_packed_items_location if saved_change_to_container_id || saved_change_to_pallet_id
+    cascade_statuses if saved_change_to_status && cascadable?
+  end
+
+  def cascadable?
+    status == COMPLETE || status == RECEIVED || status == ARCHIVED
   end
 
   def shipment
@@ -73,8 +79,13 @@ class Box < ApplicationRecord
     self.pallet_id = nil
   end
 
+  # TODO: Move these to a service
   def cascade_packed_items_location
     box_items.each(&:save!)
+  end
+
+  def cascade_statuses
+    box_items.where.not(status: status).find_each { |bi| bi.update(status: status) }
   end
 
   def set_defaults

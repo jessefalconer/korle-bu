@@ -6,7 +6,8 @@ class Pallet < ApplicationRecord
     STAGED = "Staged",
     IN_PROGRESS = "In Progress",
     COMPLETE = "Complete",
-    RECEIVED = "Received"
+    RECEIVED = "Received",
+    ARCHIVED = "Archived"
   ].freeze
 
   belongs_to :user, optional: false
@@ -49,7 +50,7 @@ class Pallet < ApplicationRecord
   end
 
   def cascadable?
-    status == COMPLETE || status == RECEIVED
+    status == COMPLETE || status == RECEIVED || status == ARCHIVED
   end
 
   def orphanable_status?
@@ -73,6 +74,7 @@ class Pallet < ApplicationRecord
   # TODO: Move these to a service
   def cascade_statuses
     boxes.where.not(status: status).find_each { |p| p.update(status: status) }
+    pallet_items.where.not(status: status).find_each { |pi| pi.update(status: status) }
   end
 
   def cascade_packed_items_location

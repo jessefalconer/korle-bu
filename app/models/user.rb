@@ -52,6 +52,12 @@ class User < ApplicationRecord
     status == "Active"
   end
 
+  def selectable_statuses(klass)
+    return klass::STATUSES if admin?
+
+    klass::STATUSES - [klass::ARCHIVED]
+  end
+
   def created_records?
     reflections = User.reflections.select do |_association_name, reflection|
       reflection.macro == :has_many

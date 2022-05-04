@@ -7,7 +7,7 @@
     = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(Shipment::STATUSES, @shipment.status), {}, { class: "form-control", id: "status" }
+    = f.select :status, options_for_select(current_user.selectable_statuses(Shipment), @shipment.status), {}, { class: "form-control", id: "status" }
   .form-group
     = f.label :shipping_warehouse_id
     = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), { include_blank: "" }, { class: "form-control" }
