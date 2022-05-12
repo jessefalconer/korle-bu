@@ -7,8 +7,9 @@
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, Container
       = render partial: "layouts/edit_modal"
-    - if can? :manage, PackedItem
+    - if can? :read, PackedItem
       = manage_button(container_container_items_path(@container), "Items", "fa-stethoscope")
+    - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: @container.name, redirect: container_path(@container), record: @container}
 
   .main-content

@@ -8,8 +8,9 @@
     - if can? :manage, Pallet
       = render partial: "layouts/edit_modal"
     - if can? :manage, PackedItem
-      = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
       = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_path(@pallet), record: @pallet}
+    - if can? :read, PackedItem
+      = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
 
   .main-content
     .row

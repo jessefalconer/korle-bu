@@ -7,8 +7,9 @@
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, Box
       = render partial: "layouts/edit_modal"
-    - if can? :manage, PackedItem
+    - if can?(:read, PackedItem) || can?(:unpack_all, Box)
       = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
+    - if can?(:manage, PackedItem)
       = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box), record: @box}
     - if current_user.admin? || current_user.receiving_manager?
       = render partial: "layouts/unpack_all_modal"
