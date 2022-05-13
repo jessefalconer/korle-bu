@@ -43,6 +43,7 @@ class Ability
       can :find, Pallet, shipment: { receiving_warehouse_id: user.warehouse_id }, status: Pallet::RECEIVED
       can :read, Box, container: { shipment: { receiving_warehouse_id: user.warehouse_id } }, status: Box::RECEIVED
       can :unpack_all, Box, container: { shipment: { receiving_warehouse_id: user.warehouse_id } }, status: Box::RECEIVED
+      can :unpack_all, Box, pallet: { container: { shipment: { receiving_warehouse_id: user.warehouse_id } } }, status: Box::RECEIVED
       can :find, Box, container: { shipment: { receiving_warehouse_id: user.warehouse_id } }, status: Box::RECEIVED
       can :read, Box, pallet: { container: { shipment: { receiving_warehouse_id: user.warehouse_id } } }, status: Box::RECEIVED
       can :manage, UnpackingEvent
