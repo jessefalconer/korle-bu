@@ -21,7 +21,7 @@ class HospitalsController < ApplicationController
   end
 
   def index
-    @hospitals = Hospital.all.page params[:page]
+    @hospitals = Hospital.accessible_by(current_ability).page params[:page]
   end
 
   def show

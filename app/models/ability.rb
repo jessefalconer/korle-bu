@@ -36,7 +36,7 @@ class Ability
       can :cru, User, id: user.id
       can :read, Item
       can :read, Category
-      can :cr, Hospital, warehouse: user.warehouse
+      can :manage, Hospital, warehouse: user.warehouse
       can :read, Shipment, receiving_warehouse: user.warehouse, status: Shipment::RECEIVED
       can :read, Container, shipment: { receiving_warehouse_id: user.warehouse_id }, status: Container::RECEIVED
       can :read, Pallet, shipment: { receiving_warehouse_id: user.warehouse_id }, status: Pallet::RECEIVED

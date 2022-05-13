@@ -50,7 +50,7 @@
           %i.fa.fa-fw.fa-home
           Dashboard
 
-      - if current_user.admin? || current_user.shipping_manager?
+      - unless current_user.volunteer?
         %li
           %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
             %i.fa.fa-fw.fa-tachometer-alt
