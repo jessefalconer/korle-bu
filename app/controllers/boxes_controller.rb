@@ -71,7 +71,7 @@ class BoxesController < ApplicationController
             notes: params[:notes],
             user: current_user,
             quantity: bi.remaining_quantity
-            )
+          )
       end
 
       message = { success: "#{@box.box_items.count} item(s) unpacked." }
