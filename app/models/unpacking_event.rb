@@ -7,6 +7,8 @@ class UnpackingEvent < ApplicationRecord
 
   delegate :generated_name, :item, to: :packed_item
 
+  paginates_per 25
+
   after_commit do
     packed_item.save!
   end

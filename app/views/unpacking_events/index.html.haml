@@ -3,7 +3,7 @@
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li.active Unpacking History
+      %li.active Unpacking History for #{current_user.warehouse.name}
     = render partial: "layouts/jump_to_modal"
   .main-content
     - if @events.any?

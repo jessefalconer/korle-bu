@@ -25,6 +25,11 @@ class HospitalsController < ApplicationController
   end
 
   def show
+    @unpacking_vents = @hospital
+      .unpacking_events
+      .order(:created_at)
+      .reverse_order
+      .accessible_by(current_ability).page params[:page]
   end
 
   def update
@@ -43,7 +48,12 @@ class HospitalsController < ApplicationController
   private
 
   def hospital_params
-    params.require(:hospital).permit(:name, :status, :notes, :user_id, :street, :city, :province, :postal_code, :country, :phone, :warehouse_id, :longitude, :latitude, :point_of_contact_name, :point_of_contact_phone)
+    params.require(:hospital)
+      .permit(
+        :name, :status, :notes, :user_id, :street, :city, :province,
+        :postal_code, :country, :phone, :warehouse_id, :longitude,
+        :latitude, :point_of_contact_name, :point_of_contact_phone
+      )
   end
 
   def set_hospital
