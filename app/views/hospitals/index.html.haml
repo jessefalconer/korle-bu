@@ -3,9 +3,9 @@
     %ul.breadcrumb
       %li
         = link_to "Home", index_path
-      %li.active Hospitals
+      %li.active Hospitals, Facilities & Clinics
     = render partial: "layouts/jump_to_modal"
-    = add_button(new_hospital_path, "Hospital", "fa-hospital")
+    = add_button(new_hospital_path, "Hospital/Facility/Clinic", "fa-hospital")
   .main-content
     %table.table.table-striped.table-hover.link-rows
       %thead

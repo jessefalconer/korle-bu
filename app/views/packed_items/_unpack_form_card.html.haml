@@ -16,7 +16,7 @@
           = f.number_field :quantity, value: pi.remaining_quantity, class: "form-control", min: 1, max: pi.remaining_quantity, id: "quantity-#{pi.id}"
       .col-xs-12.col-md-6
         .form-group
-          %label Hospital/Clinic
+          %label Hospital/Facility/Clinic
           = f.select :hospital_id, options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: "None" }, { class: "form-control", id: "hospital-assignment-#{pi.id}" }
         %h6
           %a{data: {target: "#add-hospital-modal", toggle: "modal"}, href: ""} Don't see your clinic or hospital? Add one.

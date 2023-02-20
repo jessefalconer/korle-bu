@@ -1,7 +1,7 @@
 - @hospital ||= Hospital.new
 - redirect ||= nil
 = form_for @hospital do |f|
-  %h5.text-center Hospital/Clinic
+  %h5.text-center Hospital/Facility/Clinic
   %hr
   .col-xs-12.col-sm-6
     .form-group
@@ -71,6 +71,12 @@
       = f.text_field :point_of_contact_phone, class: "form-control"
   .col-xs-12
     .btn-toolbar.list-toolbar
-      - unless @hospital.new_record? || @hospital.associations?
-        = delete_button(hospital_path(@hospital), "Are you sure you want to delete #{@hospital.name}? This cannot be reversed")
+      - unless @hospital.new_record?
+        - if @hospital.unpacking_events.any?
+          .mass-action-warning.padding-left-small
+            %h5.text-warning
+              %i.fas.fa-exclamation-triangle
+              This Hospital/Facility/Clinic has unpacked items associated with it and cannot be deleted. Remove them first.
+        - else
+          = delete_button(hospital_path(@hospital), "Are you sure you want to delete #{@hospital.name}? This cannot be reversed")
       = submit_button_responsive("Save")

@@ -13,7 +13,7 @@ class HospitalsController < ApplicationController
 
     if hospital.save
       path = params[:redirect].presence || hospital_path(hospital)
-      redirect_to path, flash: { success: "Hospital created." }
+      redirect_to path, flash: { success: "Hospital, Facility or Clinic created." }
     else
       path = params[:redirect].presence || hospitals_path
       redirect_to path, flash: { error: "Failed to create new hospital: #{hospital.errors.full_messages.to_sentence}" }
@@ -29,7 +29,7 @@ class HospitalsController < ApplicationController
 
   def update
     if @hospital.update(hospital_params)
-      redirect_to hospital_path(@hospital), flash: { success: "Hospital updated." }
+      redirect_to hospital_path(@hospital), flash: { success: "Hospital, Facility or Clinic updated." }
     else
       redirect_to hospital_path(@hospital), flash: { error: "Failed to update hospital: #{@hospital.errors.full_messages.to_sentence}" }
     end
@@ -37,7 +37,7 @@ class HospitalsController < ApplicationController
 
   def destroy
     @hospital.destroy
-    redirect_to hospitals_path, flash: { success: "Hospital deleted." }
+    redirect_to hospitals_path, flash: { success: "Hospital, Facility or Clinic deleted." }
   end
 
   private

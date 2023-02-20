@@ -7,6 +7,7 @@ class UnpackingEventsController < ApplicationController
     @events = UnpackingEvent.joins(:hospital)
                             .where("hospitals.warehouse_id = ?", current_user.warehouse_id)
                             .order(:created_at)
+                            .reverse_order
                             .page params[:page]
   end
 

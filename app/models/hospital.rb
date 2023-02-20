@@ -25,14 +25,4 @@ class Hospital < ApplicationRecord
   def full_address
     [street, postal_code, city, province, country].reject(&:blank?).join(", ")
   end
-
-  def associations?
-    reflections = Hospital.reflections.select do |_association_name, reflection|
-      reflection.macro == :has_many
-    end
-
-    reflections.keys.map do |assoc|
-      send(assoc).any?
-    end.any?(true)
-  end
 end
