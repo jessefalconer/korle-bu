@@ -18,10 +18,10 @@ class HospitalExport
     collection = @hospital.unpacking_events.where(created_at: @start_date..@end_date).order(:created_at)
 
     CSV.generate(headers: true) do |csv|
-      csv << %w[Item Category Quantity]
+      csv << %w[Item Category Quantity User]
 
       collection.each do |event|
-        csv << [event.item, event.item.category, event.quantity]
+        csv << [event.generated_name, event.category.name, event.quantity, event.user.name]
       end
     end
   end

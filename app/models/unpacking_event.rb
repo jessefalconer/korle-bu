@@ -5,7 +5,7 @@ class UnpackingEvent < ApplicationRecord
   belongs_to :user, optional: false
   belongs_to :hospital, optional: false
 
-  delegate :generated_name, :item, to: :packed_item
+  delegate :generated_name, :item, :category, to: :packed_item
 
   paginates_per 25
 
