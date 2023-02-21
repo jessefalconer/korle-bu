@@ -53,7 +53,7 @@
     - if @unpacking_events.any?
       .row
         .col-xs-12
-          %h5 Unpacked Items
+          %h5 Unpacked Items (#{@hospital.unpacking_events.count}/#{@unpacking_events.count})
       %table.table.table-striped.table-hover.link-rows
         %thead
           %tr
