@@ -11,14 +11,13 @@
       .modal-body#assignmentModalBody.margin-top
         .row.edit-modal-body
           .col-xs-12
-            = form_for Export.new("Shipment", @shipment.id), url: exports_path do |f|
-              %h4 Select a grouping strategy.
+            = form_for ShipmentExport.new(@shipment.id), url: shipment_exports_path do |f|
+              %h5 Select a grouping strategy:
               .form-group
                 %label By Item Category
                 = f.radio_button :group_by, "category", checked: true
               .form-group
                 %label By Item
                 = f.radio_button :group_by, "item"
-              = f.hidden_field :klass, value: "Shipment"
               = f.hidden_field :id, value: @shipment.id
               = submit_export

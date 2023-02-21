@@ -39,7 +39,8 @@ Rails.application.routes.draw do
   get "received_categories/uncategorized", to: "packed_items#received_uncategorized_items", as: :received_uncategorized_items
 
   resources :unpacking_events, only: :index
-  resources :exports, only: :create
+  resources :hospital_exports, only: :create
+  resources :shipment_exports, only: :create
   resources :categories
   resources :items
   resources :users do

@@ -25,7 +25,7 @@ class HospitalsController < ApplicationController
   end
 
   def show
-    @unpacking_vents = @hospital
+    @unpacking_events = @hospital
       .unpacking_events
       .order(:created_at)
       .reverse_order

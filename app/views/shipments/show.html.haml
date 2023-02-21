@@ -7,7 +7,7 @@
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, Shipment
       = render partial: "layouts/edit_modal"
-      = render "layouts/export_modal"
+      = render "layouts/export_shipment_modal"
     - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: @shipment.name, redirect: shipment_path(@shipment), record: nil}
 

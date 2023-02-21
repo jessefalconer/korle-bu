@@ -8,6 +8,8 @@
       %li.active= @hospital.name
     = render partial: "layouts/jump_to_modal"
     = render partial: "layouts/edit_modal"
+    - if can?(:manage, Shipment) && @unpacking_events.any?
+      = render "layouts/export_hospital_modal"
   .main-content
     .row
       .col-xs-12
@@ -48,10 +50,10 @@
         %h5= @hospital.created_at.strftime("%Y-%m-%d")
 
     %hr
-    - if @unpacking_vents.any?
+    - if @unpacking_events.any?
       .row
         .col-xs-12
-          %h5 Unpacked Items
+          %h5 Unpacked Items (#{@unpacking_events.count})
       %table.table.table-striped.table-hover.link-rows
         %thead
           %tr
@@ -61,7 +63,7 @@
             %th.hidden-xs User
             %th Date
         %tbody
-          - @unpacking_vents.each do |event|
+          - @unpacking_events.each do |event|
             %tr
               %td
                 = link_to present(event.packed_item).path do
@@ -82,4 +84,4 @@
     - else
       %h5.text-center No unpacking history at #{@hospital.name} yet.
 
-    = paginate @unpacking_vents, window: 2
+    = paginate @unpacking_events, window: 2
