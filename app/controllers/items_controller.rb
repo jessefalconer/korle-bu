@@ -72,7 +72,7 @@ class ItemsController < ApplicationController
                                 shipments.receiving_warehouse_id = ? AND
                                 shipments.status = ? AND
                                 packed_items.item_id IN (?)",
-                                PackedItem::ARCHIVED, current_user.warehouse_id, Shipment::RECEIVED, search_results_item_ids)
+                                      PackedItem::ARCHIVED, current_user.warehouse_id, Shipment::RECEIVED, search_results_item_ids)
                                .group_by(&:item)
                                .sort_by { |item, _items| item.generated_name }
 

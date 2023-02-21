@@ -63,7 +63,9 @@ class BoxesController < ApplicationController
 
   def unpack_all
     # Definitely move this to a service :/
-    unless params[:hospital_id].blank?
+    if params[:hospital_id].blank?
+      message = { error: "Please select a hospital/clinic." }
+    else
       @box.box_items.each do |bi|
         bi.unpacking_events
           .create(
@@ -75,11 +77,9 @@ class BoxesController < ApplicationController
       end
 
       message = { success: "#{@box.box_items.count} item(s) unpacked." }
-    else
-      message = { error: "Please select a hospital/clinic." }
     end
 
-    redirect_back fallback_location: request.referrer, flash: message
+    redirect_back fallback_location: request.referer, flash: message
   end
 
   private

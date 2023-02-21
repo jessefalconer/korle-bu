@@ -7,8 +7,8 @@ class HospitalExport
   attr_accessor :start_date, :end_date
 
   def initialize(id, options = {})
-    options["start_date"] ||= Date.today
-    options["end_date"] ||= Date.today
+    options["start_date"] ||= Time.zone.today
+    options["end_date"] ||= Time.zone.today
     @hospital = Hospital.find(id)
     @start_date = options["start_date"].to_datetime.beginning_of_day
     @end_date = options["end_date"].to_datetime.end_of_day

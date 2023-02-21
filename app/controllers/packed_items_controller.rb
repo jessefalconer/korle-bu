@@ -11,7 +11,7 @@ class PackedItemsController < ApplicationController
                         packed_items.status <> ? AND
                         shipments.receiving_warehouse_id = ? AND
                         shipments.status = ?",
-                        PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
+                              PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
                        .group_by(&:item)
                        .sort_by { |item, _items| item.generated_name }
 
@@ -25,7 +25,7 @@ class PackedItemsController < ApplicationController
                                 packed_items.status <> ? AND
                                 shipments.receiving_warehouse_id = ? AND
                                 shipments.status = ?",
-                                PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
+                                      PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
                                .group_by(&:category)
                                .sort_by { |category, _items| category.name }
 
@@ -35,7 +35,7 @@ class PackedItemsController < ApplicationController
                                       packed_items.status <> ? AND
                                       shipments.receiving_warehouse_id = ? AND
                                       shipments.status = ?",
-                                      PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
+                                            PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
   end
 
   def received_category_items
@@ -46,7 +46,7 @@ class PackedItemsController < ApplicationController
                                 packed_items.status <> ? AND
                                 shipments.receiving_warehouse_id = ? AND
                                 shipments.status = ?",
-                                params[:id], PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
+                                      params[:id], PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
                                .order("items.generated_name")
                                .page params[:page]
   end
@@ -58,7 +58,7 @@ class PackedItemsController < ApplicationController
                                 packed_items.status <> ? AND
                                 shipments.receiving_warehouse_id = ? AND
                                 shipments.status = ?",
-                                PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
+                                      PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
                                .order("items.generated_name")
                                .page params[:page]
 
@@ -75,7 +75,7 @@ class PackedItemsController < ApplicationController
                             packed_items.status <> ? AND
                             shipments.receiving_warehouse_id = ? AND
                             shipments.status = ?",
-                            params[:id], PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
+                                  params[:id], PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
 
     @pallet_items = PackedItem.left_joins(:item, :shipment)
                               .where("packed_items.pallet_id IS NOT NULL AND
@@ -83,7 +83,7 @@ class PackedItemsController < ApplicationController
                                 packed_items.remaining_quantity > 0 AND
                                 packed_items.status <> ? AND
                                 shipments.receiving_warehouse_id = ? AND shipments.status = ?",
-                                params[:id], PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
+                                     params[:id], PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
     @container_items = PackedItem.left_joins(:item, :shipment)
                                  .where("packed_items.container_id IS NOT NULL AND
                                   packed_items.item_id = ? AND
@@ -91,7 +91,7 @@ class PackedItemsController < ApplicationController
                                   packed_items.status <> ? AND
                                   shipments.receiving_warehouse_id = ? AND
                                   shipments.status = ?",
-                                  params[:id],  PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
+                                        params[:id], PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
   end
 
   private
