@@ -64,7 +64,7 @@ class BoxesController < ApplicationController
   def unpack_all
     # Definitely move this to a service :/
     if params[:hospital_id].blank?
-      message = { error: "Please select a hospital/clinic." }
+      message = { error: "Please select a hospital/facility/clinic." }
     else
       @box.box_items.each do |bi|
         bi.unpacking_events

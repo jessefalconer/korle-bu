@@ -12,7 +12,7 @@
     - if can?(:manage, PackedItem)
       = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box), record: @box}
     - if current_user.admin? || current_user.receiving_manager?
-      = render partial: "layouts/unpack_all_modal"
+      = render partial: "layouts/boxes_unpack_all_modal"
 
   .main-content
     .row

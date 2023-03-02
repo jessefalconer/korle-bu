@@ -56,6 +56,7 @@ Rails.application.routes.draw do
   resources :warehoused_items
   post "warehoused_item_add_with_item", to: "warehoused_items#add_with_item"
   post "boxes/:id/unpack_all", to: "boxes#unpack_all", as: "boxes_unpack_all"
+  post "pallets/:id/unpack_all", to: "pallets#unpack_all", as: "pallets_unpack_all"
 
   concern :boxable_items do
     resources :boxes do
