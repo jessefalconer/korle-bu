@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   get "received_categories/:id/received_category_items", to: "packed_items#received_category_items", as: :received_category_items
   get "received_category_items/:id/received_item_locations", to: "packed_items#received_item_locations", as: :received_item_locations
   get "received_categories/uncategorized", to: "packed_items#received_uncategorized_items", as: :received_uncategorized_items
+  post "received_categories/unpack_selected", to: "packed_items#unpack_selected"
 
   resources :unpacking_events, only: :index
   resources :hospital_exports, only: :create

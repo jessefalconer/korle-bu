@@ -1,0 +1,27 @@
+= render partial: "layouts/add_hospital_modal", locals: {redirect: request.referrer}
+%button.btn.btn-primary.responsive-button{data: {target: "#unpack-all", toggle: "modal"}, disabled: true}
+  %i.fa.fa-truck-loading
+  %span.main-text Unpack All
+  %span.mass-action-count
+.modal.fade{id: "unpack-all"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h5#unpackModalLabel.modal-title Unpack all selected items.
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"}  ×
+      .modal-body#unpackModalBody.margin-top
+        .row.mass-action-form
+          .col-xs-12
+            %h5 Send item(s) to the selected hospital/clinic:
+
+          = form_with url: received_categories_unpack_selected_path, method: :post, id: "mass_action" do |f|
+            .col-xs-12
+              %label Hopsital/Clinic
+              = select_tag("hospital_id", options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: true, class: "form-control" })
+              %label Notes
+              = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"
+              %h6
+                %a{data: {target: "#add-hospital-modal", toggle: "modal"}, href: "", "data-dismiss" => "modal"} Don't see your hospital/facility/clinic? Add one.
+            .col-xs-12
+              = submit_button_responsive("Update", "pull-right")

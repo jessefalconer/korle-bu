@@ -94,6 +94,27 @@ class PackedItemsController < ApplicationController
                                         params[:id], PackedItem::ARCHIVED, @warehouse_id, Shipment::RECEIVED)
   end
 
+  def unpack_selected
+    # Definitely move this to a service :/
+    if params[:hospital_id].blank?
+      message = { error: "Please select a hospital/facility/clinic." }
+    else
+      PackedItem.where(id: params[:item_ids]).find_each do |pi|
+        pi.unpacking_events
+          .create(
+            hospital_id: params[:hospital_id],
+            notes: params[:notes],
+            user: current_user,
+            quantity: pi.remaining_quantity
+          )
+      end
+
+      message = { success: "#{params[:item_ids].count} item(s) unpacked." }
+    end
+
+    redirect_back fallback_location: request.referer, flash: message
+  end
+
   private
 
   def set_warehouse_id

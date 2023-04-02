@@ -12,6 +12,8 @@
           = link_to "Uncategorized", received_uncategorized_items_path
       %li.active= @item.generated_name
     = render partial: "layouts/jump_to_modal"
+    - if can? :manage, UnpackingEvent
+      = render partial: "layouts/mass_action_unpack_modal"
   .main-content
     %h5 Showing all possible locations of #{@item.generated_name} with remaining inventory.
     %h6
@@ -24,13 +26,14 @@
           %span.label.label-info= @box_items.size
         .collapse{id: "box_items"}
           %table.table.table-striped
+            %thead
+              %tr
+                %th.hidden-xs Shipped Quantity
+                %th Remaining Quantity
+                %th Box Info
+                %th Items
+                %th.mass-action-cell
             %tbody
-              %thead
-                %tr
-                  %th.hidden-xs Shipped Quantity
-                  %th Remaining Quantity
-                  %th Box Info
-                  %th Unpack
               - @box_items.each do |item|
                 %tr
                   %td.hidden-xs
@@ -42,7 +45,9 @@
                       = item.box.name
                   %td
                     = link_to box_box_items_path(item.box) do
-                      Items
+                      View
+                  %td.mass-action-cell
+                    = check_box_tag "item_ids[]", item.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{item.id}"
 
     - if @pallet_items.any?
       .panel.panel-default
@@ -52,13 +57,14 @@
           %span.label.label-info= @pallet_items.size
         .collapse{id: "pallet_items"}
           %table.table.table-striped
+            %thead
+              %tr
+                %th.hidden-xs Shipped Quantity
+                %th Remaining Quantity
+                %th Pallet Info
+                %th Items
+                %th.mass-action-cell
             %tbody
-              %thead
-                %tr
-                  %th.hidden-xs Shipped Quantity
-                  %th Remaining Quantity
-                  %th Pallet Info
-                  %th Unpack
               - @pallet_items.each do |item|
                 %tr
                   %td.hidden-xs
@@ -70,7 +76,9 @@
                       = item.pallet.name
                   %td
                     = link_to pallet_pallet_items_path(item.pallet) do
-                      Items
+                      View
+                  %td.mass-action-cell
+                    = check_box_tag "item_ids[]", item.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{item.id}"
 
     - if @container_items.any?
       .panel.panel-default
@@ -80,13 +88,14 @@
           %span.label.label-info= @container_items.size
         .collapse{id: "container_items"}
           %table.table.table-striped
+            %thead
+              %tr
+                %th.hidden-xs Shipped Quantity
+                %th Remaining Quantity
+                %th Container Info
+                %th Items
+                %th.mass-action-cell
             %tbody
-              %thead
-                %tr
-                  %th.hidden-xs Shipped Quantity
-                  %th Remaining Quantity
-                  %th Container Info
-                  %th Unpack
               - @container_items.each do |item|
                 %tr
                   %td.hidden-xs
@@ -98,4 +107,6 @@
                       = item.container.name
                   %td
                     = link_to container_container_items_path(item.container) do
-                      Items
+                      View
+                  %td.mass-action-cell
+                    = check_box_tag "item_ids[]", item.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{item.id}"
