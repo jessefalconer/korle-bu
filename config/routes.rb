@@ -61,6 +61,7 @@ Rails.application.routes.draw do
 
   concern :boxable_items do
     resources :boxes do
+      get "duplicate", to: "boxes#duplicate"
       post "add_with_item", to: "box_items#add_with_item"
       resources :box_items, except: %i[show edit new] do
         resources :box_unpacking_events, only: %i[create destroy]

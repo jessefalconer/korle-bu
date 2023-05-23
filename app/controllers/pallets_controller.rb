@@ -65,7 +65,9 @@ class PalletsController < ApplicationController
 
   def unpack_all
     # Definitely move this to a service :/
-    unless params[:hospital_id].blank?
+    if params[:hospital_id].blank?
+      message = { error: "Please select a hospital/facility/clinic." }
+    else
       @pallet.pallet_items.each do |pi|
         pi.unpacking_events
           .create(
@@ -73,15 +75,13 @@ class PalletsController < ApplicationController
             notes: params[:notes],
             user: current_user,
             quantity: pi.remaining_quantity
-            )
+          )
       end
 
       message = { success: "#{@pallet.pallet_items.count} item(s) unpacked." }
-    else
-      message = { error: "Please select a hospital/facility/clinic." }
     end
 
-    redirect_back fallback_location: request.referrer, flash: message
+    redirect_back fallback_location: request.referer, flash: message
   end
 
   private

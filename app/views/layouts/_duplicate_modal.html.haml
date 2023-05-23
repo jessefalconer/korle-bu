@@ -1,0 +1,33 @@
+%button.btn.btn-primary.responsive-button{data: {target: "#duplicate-modal", toggle: "modal"}}
+  %i.fa.fa-eye-dropper
+  %span.main-text Duplicate
+  %span.mass-action-count
+.modal.fade{id: "duplicate-modal"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %h5#assignmentModalLabel.modal-title Duplicate #{@box.name}
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"}  ×
+      .modal-body#assignmentModalBody.margin-top
+        = form_for @box, url: box_duplicate_path(@box), method: :get do |f|
+          .row.mass-action-form
+            .col-xs-12
+              %h5
+                Newly duplicated box names will continue to be unique. Packed items are always duplicated.
+            .col-xs-12
+              %h5
+                Count
+              .form-group
+                = number_field_tag :duplication_count, 1, { min: 1 }
+            .col-xs-12
+              %h5
+                Strategy
+              .form-group
+                = radio_button_tag :strategy, "deep", true
+                %label Everything
+              .form-group
+                = radio_button_tag :strategy, "shallow", false, { disabled: @box.pallet.nil? && @box.container.nil? }
+                %label Without Pallet and/or Container Assignments
+            .col-xs-12
+              = submit_button_responsive("Duplicate", "pull-right")
