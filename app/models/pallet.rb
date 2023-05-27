@@ -49,8 +49,14 @@ class Pallet < ApplicationRecord
     cascade_packed_items_location if saved_change_to_container_id
   end
 
+  STATUSES.each do |stat|
+    define_method("#{stat.parameterize(separator: "_")}?") do
+      status == stat
+    end
+  end
+
   def cascadable?
-    status == COMPLETE || status == RECEIVED || status == ARCHIVED
+    complete? || received? || archived?
   end
 
   def orphanable_status?
@@ -58,7 +64,7 @@ class Pallet < ApplicationRecord
   end
 
   def adopting_by_parent?
-    will_save_change_to_container_id?(from: nil) && (status == STAGED || status == WAREHOUSED) && !will_save_change_to_status?
+    will_save_change_to_container_id?(from: nil) && (staged? || warehoused?) && !will_save_change_to_status?
   end
 
   private

@@ -11,6 +11,10 @@
           %span{"aria-hidden" => "true"}  ×
       .modal-body#unpackModalBody.margin-top
         .row.mass-action-form
+          - unless @box.received?
+            .col-xs-12
+              %i.fas.fa-exclamation-triangle.text-warning
+              This box has not been received. Check its status.
           .col-xs-12
             %h5 Send #{@box.box_items.count} item(s) to the selected hospital/clinic:
 

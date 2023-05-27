@@ -52,8 +52,14 @@ class Box < ApplicationRecord
     cascade_statuses if saved_change_to_status && cascadable?
   end
 
+  STATUSES.each do |stat|
+    define_method("#{stat.parameterize(separator: "_")}?") do
+      status == stat
+    end
+  end
+
   def cascadable?
-    status == COMPLETE || status == RECEIVED || status == ARCHIVED
+    complete? || received? || archived?
   end
 
   def shipment
@@ -65,7 +71,7 @@ class Box < ApplicationRecord
   end
 
   def adopting_by_parent?
-    (will_save_change_to_container_id?(from: nil) || will_save_change_to_pallet_id?(from: nil)) && (status == STAGED || status == WAREHOUSED) && !will_save_change_to_status?
+    (will_save_change_to_container_id?(from: nil) || will_save_change_to_pallet_id?(from: nil)) && (staged? || warehoused?) && !will_save_change_to_status?
   end
 
   private

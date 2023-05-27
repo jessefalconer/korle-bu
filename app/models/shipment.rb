@@ -35,6 +35,12 @@ class Shipment < ApplicationRecord
 
   after_initialize :set_defaults, if: :new_record?
 
+  STATUSES.each do |stat|
+    define_method("#{stat.parameterize(separator: "_")}?") do
+      status == stat
+    end
+  end
+
   def current_location
     case status
     when "In Progress"
@@ -49,7 +55,7 @@ class Shipment < ApplicationRecord
   end
 
   def cascadable?
-    status == COMPLETE || status == RECEIVED || status == ARCHIVED
+    complete? || received? || archived?
   end
 
   private

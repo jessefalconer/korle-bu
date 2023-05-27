@@ -88,25 +88,28 @@ class BoxesController < ApplicationController
     pallet_id = box.pallet_id if deep_clone
     container_id = box.container_id if deep_clone
 
-    params[:duplication_count].to_i.times do
-      new_box = Box.create(
-        status: box.status,
-        weight: box.weight,
-        user_id: box.user_id,
-        pallet_id: pallet_id,
-        container_id: container_id
-      )
-      box.box_items.each do |bi|
-        new_box.box_items.create(
-          quantity: bi.quantity,
-          expiry_date: bi.expiry_date,
-          shipment_id: (bi.shipment_id if deep_clone),
-          item_id: bi.item_id,
-          user_id: bi.user_id,
-          remaining_quantity: bi.remaining_quantity,
-          show_id: bi.show_id,
-          status: bi.status
+    ActiveRecord::Base.transaction do
+      params[:duplication_count].to_i.times do
+        new_box = Box.create(
+          status: box.status,
+          weight: box.weight,
+          user_id: box.user_id,
+          notes: box.notes,
+          pallet_id: pallet_id,
+          container_id: container_id
         )
+        box.box_items.each do |bi|
+          new_box.box_items.create(
+            quantity: bi.quantity,
+            expiry_date: bi.expiry_date,
+            shipment_id: (bi.shipment_id if deep_clone),
+            item_id: bi.item_id,
+            user_id: bi.user_id,
+            remaining_quantity: bi.remaining_quantity,
+            show_id: bi.show_id,
+            status: bi.status
+          )
+        end
       end
     end
 

@@ -32,20 +32,10 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def volunteer?
-    role == "Volunteer"
-  end
-
-  def shipping_manager?
-    role == "Shipping Manager"
-  end
-
-  def admin?
-    role == "Admin"
-  end
-
-  def receiving_manager?
-    role == "Receiving Manager"
+  ROLES.each do |user_role|
+    define_method("#{user_role.parameterize(separator: "_")}?") do
+      role == user_role
+    end
   end
 
   def active?

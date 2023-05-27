@@ -14,20 +14,20 @@
           .row.mass-action-form
             .col-xs-12
               %h5
-                Newly duplicated box names will continue to be unique. Packed items are always duplicated.
+                Newly duplicated box names will continue to be unique.
             .col-xs-12
               %h5
-                Count
+                Duplication Count
               .form-group
                 = number_field_tag :duplication_count, 1, { min: 1 }
             .col-xs-12
               %h5
-                Strategy
+                Duplication Strategy
               .form-group
                 = radio_button_tag :strategy, "deep", true
                 %label Everything
               .form-group
                 = radio_button_tag :strategy, "shallow", false, { disabled: @box.pallet.nil? && @box.container.nil? }
-                %label Without Pallet and/or Container Assignments
+                %label Everything Except Pallet and/or Container Assignments
             .col-xs-12
               = submit_button_responsive("Duplicate", "pull-right")
