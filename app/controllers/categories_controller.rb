@@ -14,7 +14,8 @@ class CategoriesController < ApplicationController
     if category.save
       redirect_to category_path(category), flash: { success: "Category created." }
     else
-      redirect_to categories_path, flash: { error: "Failed to create new category: #{category.errors.full_messages.to_sentence}" }
+      redirect_to categories_path,
+                  flash: { error: "Failed to create new category: #{category.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -29,7 +30,8 @@ class CategoriesController < ApplicationController
     if @category.update(category_params)
       redirect_to category_path(@category), flash: { success: "Category updated." }
     else
-      redirect_to category_path(@category), flash: { error: "Failed to update category: #{@category.errors.full_messages.to_sentence}" }
+      redirect_to category_path(@category),
+                  flash: { error: "Failed to update category: #{@category.errors.full_messages.to_sentence}" }
     end
   end
 

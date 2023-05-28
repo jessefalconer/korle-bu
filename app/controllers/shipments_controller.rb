@@ -14,12 +14,16 @@ class ShipmentsController < ApplicationController
     if shipment.save
       redirect_to shipment_path(shipment), flash: { success: "Shipment created." }
     else
-      redirect_to shipments_path, flash: { error: "Failed to create new shipment: #{shipment.errors.full_messages.to_sentence}" }
+      redirect_to shipments_path,
+        flash: { error: "Failed to create new shipment: #{shipment.errors.full_messages.to_sentence}" }
     end
   end
 
   def index
-    @shipments = Shipment.accessible_by(current_ability).order(:custom_uid).reverse_order.page params[:page]
+    @shipments = Shipment.accessible_by(current_ability)
+      .order(:custom_uid)
+      .reverse_order
+      .page params[:page]
   end
 
   def show
@@ -31,11 +35,24 @@ class ShipmentsController < ApplicationController
         @warehoused_items = PackedItem.warehoused
         @warehoused_boxes = Box.warehoused
         @warehoused_pallets = Pallet.warehoused
-        @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
-        @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
-        @container_options = Container.order(:id).reverse_order.pluck(:name, :id)
+        @box_options = Box.reassignable
+          .order(:id)
+          .reverse_order
+          .pluck(:name, :id)
+        @pallet_options = Pallet.reassignable
+          .order(:id)
+          .reverse_order
+          .pluck(:name, :id)
+        @container_options = Container.order(:id)
+          .reverse_order
+          .pluck(:name, :id)
       end
-      format.csv { send_data @shipment.to_csv, filename: "shipment-#{@shipment.id}-#{Time.zone.today}.csv" }
+      format.csv {
+        send_data(
+          @shipment.to_csv,
+          filename: "shipment-#{@shipment.id}-#{Time.zone.today}.csv"
+        )
+      }
     end
   end
 
@@ -43,7 +60,8 @@ class ShipmentsController < ApplicationController
     if @shipment.update(shipment_params)
       redirect_to shipment_path(@shipment), flash: { success: "Shipment updated." }
     else
-      redirect_to shipment_path(@shipment), flash: { error: "Failed to update shipment: #{@shipment.errors.full_messages.to_sentence}" }
+      redirect_to shipment_path(@shipment),
+        flash: { error: "Failed to update shipment: #{@shipment.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -55,7 +73,11 @@ class ShipmentsController < ApplicationController
   private
 
   def shipment_params
-    params.require(:shipment).permit(:name, :status, :notes, :custom_uid, :receiving_warehouse_id, :shipping_warehouse_id)
+    params.require(:shipment)
+      .permit(
+        :name, :status, :notes, :custom_uid,
+        :receiving_warehouse_id, :shipping_warehouse_id
+      )
   end
 
   def set_shipment

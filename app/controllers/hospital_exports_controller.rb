@@ -4,7 +4,10 @@ class HospitalExportsController < ApplicationController
   before_action :set_export, only: :create
 
   def create
-    send_data @export.to_csv, filename: "Hospital--#{Hospital.find(export_params[:id]).name}--#{Time.zone.today}.csv"
+    send_data(
+      @export.to_csv,
+      filename: "Hospital--#{Hospital.find(export_params[:id]).name}--#{Time.zone.today}.csv"
+    )
   end
 
   private

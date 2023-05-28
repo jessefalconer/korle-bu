@@ -4,7 +4,10 @@ class ShipmentExportsController < ApplicationController
   before_action :set_export, only: :create
 
   def create
-    send_data @export.to_csv, filename: "Shipment--#{export_params[:id]}-#{Time.zone.today}.csv"
+    send_data(
+      @export.to_csv,
+      filename: "Shipment--#{export_params[:id]}-#{Time.zone.today}.csv"
+    )
   end
 
   private

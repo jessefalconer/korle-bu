@@ -36,7 +36,8 @@ class ContainerItemsController < ApplicationController
 
   def add_with_item
     item = Item.new(item_params)
-    container_item = @container.container_items.build(container_item_params.merge(item: item))
+    container_item = @container.container_items
+      .build(container_item_params.merge(item: item))
 
     if item.save && container_item.save
       id_sentence = container_item.show_id ? "ID: ##{container_item.id}." : ""
@@ -57,16 +58,25 @@ class ContainerItemsController < ApplicationController
   private
 
   def container_item_params
-    params.require(:packed_item).permit(:expiry_date, :quantity, :item_id, :weight, :box_id, :pallet_id, :container_id, :show_id, :status).merge(user: current_user)
+    params.require(:packed_item)
+      .permit(
+        :expiry_date, :quantity, :item_id, :weight,
+        :box_id, :pallet_id, :container_id, :show_id, :status
+      )
+      .merge(user: current_user)
   end
 
   def item_params
     params.require(:item)
-          .permit(:brand, :object, :standardized_size,
-                  :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
-                  :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :unit_weight,
-                  :category_id, :notes, :verified, :photo, :flagged)
-          .merge(user: current_user)
+      .permit(
+        :brand, :object, :standardized_size,
+        :numerical_size_1, :numerical_units_1, :numerical_description_1,
+        :numerical_size_2, :numerical_units_2, :numerical_description_2,
+        :area_1, :area_2, :area_units, :area_description,
+        :range_1, :range_2, :range_units, :range_description, :unit_weight,
+        :category_id, :notes, :verified, :photo, :flagged
+      )
+      .merge(user: current_user)
   end
 
   def set_container_item

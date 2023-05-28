@@ -12,9 +12,11 @@ class WarehousesController < ApplicationController
     warehouse = Warehouse.new(warehouse_params.merge(user: current_user))
 
     if warehouse.save
-      redirect_to warehouse_path(warehouse), flash: { success: "Warehouse created." }
+      redirect_to warehouse_path(warehouse),
+                  flash: { success: "Warehouse created." }
     else
-      redirect_to warehouses_path, flash: { error: "Failed to create new warehouse: #{warehouse.errors.full_messages.to_sentence}" }
+      redirect_to warehouses_path,
+                  flash: { error: "Failed to create new warehouse: #{warehouse.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -27,9 +29,11 @@ class WarehousesController < ApplicationController
 
   def update
     if @warehouse.update(warehouse_params)
-      redirect_to warehouse_path(@warehouse), flash: { success: "Warehouse updated." }
+      redirect_to warehouse_path(@warehouse),
+                  flash: { success: "Warehouse updated." }
     else
-      redirect_to warehouse_path(@warehouse), flash: { error: "Failed to update warehouse: #{@warehouse.errors.full_messages.to_sentence}" }
+      redirect_to warehouse_path(@warehouse),
+                  flash: { error: "Failed to update warehouse: #{@warehouse.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -41,7 +45,10 @@ class WarehousesController < ApplicationController
   private
 
   def warehouse_params
-    params.require(:warehouse).permit(:name, :status, :notes, :user_id, :street, :city, :province, :postal_code, :country)
+    params.require(:warehouse).permit(
+      :name, :status, :notes, :user_id, :street, :city,
+      :province, :postal_code, :country
+    )
   end
 
   def set_warehouse

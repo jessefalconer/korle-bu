@@ -21,7 +21,8 @@ class UsersController < ApplicationController
   def create
     user = User.create(user_params)
     if user.errors.any?
-      redirect_to new_user_path, flash: { error: user.errors.full_messages.to_sentence }
+      redirect_to new_user_path,
+        flash: { error: user.errors.full_messages.to_sentence }
     else
       redirect_to users_path, flash: { success: "User created." }
     end
@@ -34,7 +35,8 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to user_path(@user), flash: { success: "User updated." }
     else
-      redirect_to user_path(@user), flash: { error: @user.errors.full_messages.to_sentence }
+      redirect_to user_path(@user),
+        flash: { error: @user.errors.full_messages.to_sentence }
     end
   end
 
@@ -42,7 +44,8 @@ class UsersController < ApplicationController
     if @user.update(user_params)
       redirect_to user_path(@user), flash: { success: "Password updated." }
     else
-      redirect_to user_path(@user), flash: { error: @user.errors.full_messages.to_sentence }
+      redirect_to user_path(@user),
+        flash: { error: @user.errors.full_messages.to_sentence }
     end
   end
 
@@ -58,16 +61,24 @@ class UsersController < ApplicationController
   def create_public_user
     @user = User.create(user_params)
     if @user.errors.any?
-      redirect_to signup_path, flash: { error: @user.errors.full_messages.to_sentence }
+      redirect_to signup_path,
+        flash: { error: @user.errors.full_messages.to_sentence }
     else
-      redirect_to login_path, flash: { success: "User created, waiting for administrator approval." }
+      redirect_to login_path,
+        flash: { success: "User created, waiting for administrator approval." }
     end
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :last_name, :first_name, :phone, :role, :status, :notes, :warehouse_id, :achiever_name, :achievement_title, :achievement_description, :achievement_value, :achievement_max_value)
+    params.require(:user)
+      .permit(
+        :email, :password, :password_confirmation, :last_name, :first_name,
+        :phone, :role, :status, :notes, :warehouse_id, :achiever_name,
+        :achievement_title, :achievement_description, :achievement_value,
+        :achievement_max_value
+      )
   end
 
   def existing_session

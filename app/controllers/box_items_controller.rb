@@ -29,9 +29,18 @@ class BoxItemsController < ApplicationController
   end
 
   def index
-    @box_options = Box.reassignable.order(:id).reverse_order.pluck(:name, :id)
-    @pallet_options = Pallet.reassignable.order(:id).reverse_order.pluck(:name, :id)
-    @container_options = Container.in_progress.order(:id).reverse_order.pluck(:name, :id)
+    @box_options = Box.reassignable
+      .order(:id)
+      .reverse_order
+      .pluck(:name, :id)
+    @pallet_options = Pallet.reassignable
+      .order(:id)
+      .reverse_order
+      .pluck(:name, :id)
+    @container_options = Container.in_progress
+      .order(:id)
+      .reverse_order
+      .pluck(:name, :id)
   end
 
   def add_with_item
@@ -62,11 +71,15 @@ class BoxItemsController < ApplicationController
 
   def item_params
     params.require(:item)
-          .permit(:brand, :object, :standardized_size,
-                  :numerical_size_1, :numerical_units_1, :numerical_description_1, :numerical_size_2, :numerical_units_2, :numerical_description_2,
-                  :area_1, :area_2, :area_units, :area_description, :range_1, :range_2, :range_units, :range_description, :unit_weight,
-                  :category_id, :notes, :verified, :photo, :flagged)
-          .merge(user: current_user)
+      .permit(
+        :brand, :object, :standardized_size,
+        :numerical_size_1, :numerical_units_1, :numerical_description_1,
+        :numerical_size_2, :numerical_units_2, :numerical_description_2,
+        :area_1, :area_2, :area_units, :area_description, :range_1,
+        :range_2, :range_units, :range_description, :unit_weight,
+        :category_id, :notes, :verified, :photo, :flagged
+      )
+      .merge(user: current_user)
   end
 
   def set_box_item

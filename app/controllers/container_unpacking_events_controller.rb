@@ -5,12 +5,15 @@ class ContainerUnpackingEventsController < ApplicationController
   before_action :set_unpacking_event, only: :destroy
 
   def create
-    event = @packed_item.unpacking_events.create(unpacking_event_params.merge(user: current_user))
+    event = @packed_item.unpacking_events
+      .create(unpacking_event_params.merge(user: current_user))
 
     if event.save
-      redirect_to container_container_items_path(@packed_item.container), flash: { success: "Unpacking logged." }
+      redirect_to container_container_items_path(@packed_item.container),
+                  flash: { success: "Unpacking logged." }
     else
-      redirect_to container_container_items_path(@packed_item.container), flash: { error: "Unpacking failed: #{event.errors.full_messages.to_sentence}" }
+      redirect_to container_container_items_path(@packed_item.container),
+                  flash: { error: "Unpacking failed: #{event.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -22,7 +25,8 @@ class ContainerUnpackingEventsController < ApplicationController
   private
 
   def unpacking_event_params
-    params.require(:unpacking_event).permit(:quantity, :weight, :notes, :container_item_id, :hospital_id)
+    params.require(:unpacking_event)
+      .permit(:quantity, :weight, :notes, :container_item_id, :hospital_id)
   end
 
   def set_unpacking_event
