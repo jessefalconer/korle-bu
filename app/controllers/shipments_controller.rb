@@ -81,6 +81,8 @@ class ShipmentsController < ApplicationController
   end
 
   def set_shipment
-    @shipment = Shipment.find(params[:id])
+    @shipment = Shipment.find(params[:id]).includes(
+      :containers, :container_items, :pallets, :pallet_items, :pallet_boxes,
+      :container_boxes, :box_items)
   end
 end
