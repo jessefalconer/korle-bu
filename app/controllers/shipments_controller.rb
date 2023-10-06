@@ -29,12 +29,12 @@ class ShipmentsController < ApplicationController
   def show
     respond_to do |format|
       format.html do
-        @staged_items = PackedItem.staged
-        @staged_boxes = Box.staged
-        @staged_pallets = Pallet.staged
-        @warehoused_items = PackedItem.warehoused
-        @warehoused_boxes = Box.warehoused
-        @warehoused_pallets = Pallet.warehoused
+        @staged_items = PackedItem.staged.load
+        @staged_boxes = Box.staged.load
+        @staged_pallets = Pallet.staged.load
+        @warehoused_items = PackedItem.warehoused.load
+        @warehoused_boxes = Box.warehoused.load
+        @warehoused_pallets = Pallet.warehoused.load
         @box_options = Box.reassignable
           .order(:id)
           .reverse_order
@@ -81,8 +81,6 @@ class ShipmentsController < ApplicationController
   end
 
   def set_shipment
-    @shipment = Shipment.find(params[:id]).includes(
-      :containers, :container_items, :pallets, :pallet_items, :pallet_boxes,
-      :container_boxes, :box_items)
+    @shipment = Shipment.find(params[:id])
   end
 end
