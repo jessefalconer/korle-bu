@@ -358,7 +358,7 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   byebug
   cancancan
-  capistrano (~> 3.11)
+  capistrano (~> 3.19.1)
   capistrano-bundler (~> 2.0)
   capistrano-passenger (~> 0.2.0)
   capistrano-rails (~> 1.4)
