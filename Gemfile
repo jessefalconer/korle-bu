@@ -10,7 +10,7 @@ gem "capistrano", "~> 3.11"
 gem "capistrano-passenger", "~> 0.2.0"
 gem "capistrano-rails", "~> 1.4"
 gem "capistrano-rbenv", "~> 2.1", ">= 2.1.4"
-gem 'capistrano-bundler', "~> 2.0"
+gem "capistrano-bundler", "~> 2.0"
 gem "chartkick"
 gem "groupdate"
 gem "haml", "~> 5.1.2"
@@ -46,7 +46,8 @@ gem "bootsnap", ">= 1.4.2", require: false
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
-  gem "factory_bot_rails"
+  gem "factory_bot_rails", "< 6.1"
+  gem "bullet"
   gem "rspec-rails", "~> 4.0.2"
 end
 
@@ -55,6 +56,7 @@ group :development do
   gem "listen", "~> 3.2"
   gem "rails-erd"
   gem "rubocop"
+  gem "rack-mini-profiler", "2.3.1", require: false
   gem "web-console", ">= 3.3.0"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
