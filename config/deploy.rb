@@ -45,6 +45,7 @@ set :bundle_binstubs, -> { shared_path.join('bin') }
 # set :ssh_options, verify_host_key: :secure
 
 before "deploy:assets:precompile", "deploy:yarn_install"
+before "deploy:updated", "deploy:update_rubygems"
 before "deploy:updated", "deploy:bundle_install"
 
 namespace :deploy do
@@ -54,6 +55,13 @@ namespace :deploy do
       within release_path do
         execute("cd #{release_path} && yarn install")
       end
+    end
+  end
+
+  desc 'Update rubygems'
+  task :update_rubygems do
+    on roles(:app) do
+      execute :gem, "update --system"
     end
   end
 
