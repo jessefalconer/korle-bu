@@ -24,7 +24,11 @@ install_plugin Capistrano::SCM::Git
 
 set :rbenv_type, :user
 set :rbenv_ruby, "2.6.5"
+# Set bundle jobs to reduce memory usage
 set :bundle_jobs, 2
+
+# Set environment variable for bundle jobs
+set :default_env, { 'BUNDLE_JOBS' => '2' }
 
 # Include tasks from other gems included in your Gemfile
 #
