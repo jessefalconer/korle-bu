@@ -24,6 +24,7 @@ install_plugin Capistrano::SCM::Git
 
 set :rbenv_type, :user
 set :rbenv_ruby, "2.6.5"
+set :bundle_jobs, 2
 
 # Include tasks from other gems included in your Gemfile
 #
