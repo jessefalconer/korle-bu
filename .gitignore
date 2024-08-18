@@ -36,3 +36,5 @@ yarn-debug.log*
 .yarn-integrity
 .ruby-version
 .DS_Store
+latest_pg_production_dump.sql
+spam_ignored_paths.txt

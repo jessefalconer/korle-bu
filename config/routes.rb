@@ -95,4 +95,6 @@ Rails.application.routes.draw do
   resources :shipments do
     concerns :containable_items
   end
+
+  match '*unmatched', to: redirect('/404'), via: :all
 end

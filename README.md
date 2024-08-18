@@ -2,12 +2,12 @@ Korle-Bu is a non-profit organization shipping medical supplies and equipment to
 
 ## Getting Started & Tech
   Backend: Ruby on Rails. We suggest using RVM or rbenv to install version `2.6.5p114`. You can check your current version of ruby with `ruby -v`. More information on ruby: https://www.ruby-lang.org/en/documentation/installation/
-  
+
   Database: PostgreSQL, use  `brew` or visit https://www.postgresql.org/ and install version `10.5`
-  
+
   Templating, Style & More: HAML, SCSS, RSpec
-  
-  Some gems we use: 
+
+  Some gems we use:
   * `aws-sdk` for S3 storage
   * `capistrano` for deployment
   * `factory-bot` for testing
@@ -19,8 +19,16 @@ Korle-Bu is a non-profit organization shipping medical supplies and equipment to
 * Install dependencies with `bundle install`
 * Create the database with `rails db:create`
 * Run any pending migrations with `rails db:migrate`
+* Mass insert the SQL dump into pg with `psql kbnf_development < latest_pg_production_dump.sql.sql`
+  * In the supplied .sql file, replace `deploy` with your db user name if `ERROR:  role "deploy" does not exist` is returned
+  * Clean up the priveleges and roles:
+    `CREATE ROLE "<my db user name>";
+      GRANT ALL PRIVILEGES ON DATABASE kbnf_development TO "<my db user name>";
+      REVOKE ALL ON SCHEMA public FROM PUBLIC;
+      REVOKE ALL ON SCHEMA public FROM "<my db user name>";
+      GRANT ALL ON SCHEMA public TO "<my db user name>";
+      GRANT ALL ON SCHEMA public TO PUBLIC;`
 * Seed users with `rails db:seed`
-* Mass insert the SQL dump into pg with `psql kbnf_developemnt < korlebu-feb10.sql`
 * Run the appropriate rake tasks (`rake --tasks` to view a list)
 * Start the server with `rails s`
 
