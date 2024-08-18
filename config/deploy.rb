@@ -44,7 +44,8 @@ set :bundle_binstubs, -> { shared_path.join('bin') }
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
-before "deploy:assets:precompile", "deploy:yarn_install", "bundle:install"
+before "deploy:assets:precompile", "deploy:yarn_install"
+before "deploy:updated", "deploy:bundle_install"
 
 namespace :deploy do
   desc 'Run rake yarn:install'
@@ -52,6 +53,15 @@ namespace :deploy do
     on roles(:web) do
       within release_path do
         execute("cd #{release_path} && yarn install")
+      end
+    end
+  end
+
+  desc 'Run bundle install'
+  task :bundle_install do
+    on roles(:app) do
+      within release_path do
+        execute :bundle, "install --deployment --binstubs=#{shared_path.join('bin')}"
       end
     end
   end
