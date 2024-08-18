@@ -37,6 +37,13 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bund
 # Only keep the last 5 releases to save disk space
 set :keep_releases, 5
 
+# Ensure bundler is installed and used
+set :bundle_flags, '--deployment'
+set :bundle_binstubs, -> { shared_path.join('bin') }
+
+# Run bundle install
+before 'deploy:compile_assets', 'bundler:install'
+
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
