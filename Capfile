@@ -6,10 +6,12 @@ require "capistrano/setup"
 # Include default deployment tasks
 require "capistrano/deploy"
 
+require "capistrano/scm/git"
 require "capistrano/rails"
-require "capistrano/passenger"
 require "capistrano/rbenv"
-require 'capistrano/bundler'
+require "capistrano/bundler"
+require "capistrano/yarn"
+require "capistrano/passenger"
 
 # Load the SCM plugin appropriate to your project:
 #
@@ -19,7 +21,6 @@ require 'capistrano/bundler'
 # require "capistrano/scm/svn"
 # install_plugin Capistrano::SCM::Svn
 # or
-require "capistrano/scm/git"
 install_plugin Capistrano::SCM::Git
 
 set :rbenv_type, :user
