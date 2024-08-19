@@ -23,14 +23,14 @@ class ItemsController < ApplicationController
 
   def index
     @items = if params[:category]
-      Item.where(category_id: params[:category])
+      Item.includes(:category).where(category_id: params[:category])
         .order(:generated_name)
         .page params[:page]
     elsif params[:search_string]
-      Item.search_by_generated_name(params[:search_string])
+      Item.includes(:category).search_by_generated_name(params[:search_string])
         .page params[:page]
     else
-      Item.all.order(:generated_name).page params[:page]
+      Item.includes(:category).all.order(:generated_name).page params[:page]
     end
   end
 
