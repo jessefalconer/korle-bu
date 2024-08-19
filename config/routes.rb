@@ -97,5 +97,5 @@ Rails.application.routes.draw do
     concerns :containable_items
   end
 
-  match '*unmatched', to: redirect('/404'), via: :all
+  # match '*unmatched', to: redirect('/404'), via: :all
 end
