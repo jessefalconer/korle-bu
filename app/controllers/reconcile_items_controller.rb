@@ -47,7 +47,7 @@ class ReconcileItemsController < ApplicationController
     @warehoused_items = items.warehoused
       .order(created_at: :desc)
     @box_items = items.where.not(box_id: nil)
-      .order(created_at: :desc)r
+      .order(created_at: :desc)
     @pallet_items = items.where.not(pallet_id: nil)
       .order(created_at: :desc)
     @container_items = items.where.not(container_id: nil)
