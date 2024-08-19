@@ -30,7 +30,7 @@
   .sidebar-nav
     %ul
       %li.hidden-sm.hidden-md.hidden-lg
-        %a.nav-header.collapsed{data: {target: ".user-menu", toggle: "collapse"}, href: "#"}
+        %a.nav-header.collapsed{data: {target: ".user-menu", toggle: "collapse"}}
           %i.fa.fa-fw.fa-user
           =current_user.first_name
           %i.fa.fa-collapse
@@ -52,7 +52,7 @@
 
       - unless current_user.volunteer?
         %li
-          %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}, href: "#"}
+          %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}}
             %i.fa.fa-fw.fa-tachometer-alt
             Admin
             %i.fa.fa-collapse
@@ -87,7 +87,7 @@
 
       - if can? :manage, Item
         %li
-          %a.nav-header.collapsed{data: {target: ".reconcile-menu", toggle: "collapse"}, href: "#"}
+          %a.nav-header.collapsed{data: {target: ".reconcile-menu", toggle: "collapse"}}
             %i.fa.fa-fw.fa-compress-alt
             Reconciliation
             %i.fa.fa-collapse
@@ -108,7 +108,7 @@
 
       - if can? :read, Shipment
         %li
-          %a.nav-header.collapsed{data: {target: ".shipments-menu", toggle: "collapse"}, href: "#"}
+          %a.nav-header.collapsed{data: {target: ".shipments-menu", toggle: "collapse"}}
             %i.fa.fa-fw.fa-ship
             Shipments
             %i.fa.fa-collapse
@@ -126,7 +126,7 @@
 
       - if can? :read, Container
         %li
-          %a.nav-header.collapsed{data: {target: ".containers-menu", toggle: "collapse"}, href: "#"}
+          %a.nav-header.collapsed{data: {target: ".containers-menu", toggle: "collapse"}}
             %i.fa.fa-fw.fa-truck
             Containers
             %i.fa.fa-collapse
@@ -143,7 +143,7 @@
                   New
 
       %li
-        %a.nav-header.collapsed{data: {target: ".pallets-menu", toggle: "collapse"}, href: "#"}
+        %a.nav-header.collapsed{data: {target: ".pallets-menu", toggle: "collapse"}}
           %i.fa.fa-fw.fa-pallet
           Pallets
           %i.fa.fa-collapse
@@ -164,7 +164,7 @@
                 New
 
       %li
-        %a.nav-header.collapsed{data: {target: ".box-menu", toggle: "collapse"}, href: "#"}
+        %a.nav-header.collapsed{data: {target: ".box-menu", toggle: "collapse"}}
           %i.fa.fa-fw.fa-box-open
           Boxes
           %i.fa.fa-collapse
@@ -186,7 +186,7 @@
 
       - unless current_user.receiving_manager?
         %li
-          %a.nav-header.collapsed{data: {target: ".staging-menu", toggle: "collapse"}, href: "#"}
+          %a.nav-header.collapsed{data: {target: ".staging-menu", toggle: "collapse"}}
             %i.fa.fa-fw.fa-truck-loading
             Staging Area
             %i.fa.fa-collapse
@@ -207,7 +207,7 @@
                 %span.fa.fa-stethoscope
                 &nbsp;Items
         %li
-          %a.nav-header.collapsed{data: {target: ".warehouse-menu", toggle: "collapse"}, href: "#"}
+          %a.nav-header.collapsed{data: {target: ".warehouse-menu", toggle: "collapse"}}
             %i.fa.fa-fw.fa-clipboard-list
             Warehouse Area
             %i.fa.fa-collapse
@@ -229,7 +229,7 @@
                 &nbsp;Items
       - if current_user.receiving_manager? || current_user.masquerader
         %li
-          %a.nav-header.collapsed{data: {target: ".all-items-menu", toggle: "collapse"}, href: "#"}
+          %a.nav-header.collapsed{data: {target: ".all-items-menu", toggle: "collapse"}}
             %i.fa.fa-fw.fa-stethoscope
             Unpack Items
             %i.fa.fa-collapse
@@ -254,7 +254,7 @@
           My Activity
 
       %li
-        %a.nav-header.collapsed{data: {target: ".about-menu", toggle: "collapse"}, href: "#"}
+        %a.nav-header.collapsed{data: {target: ".about-menu", toggle: "collapse"}}
           %i.fa.fa-fw.fa-info
           About
           %i.fa.fa-collapse

@@ -82,6 +82,9 @@
                   %p= event.created_at.strftime("%Y-%m-%d")
 
     - else
-      %h5.text-center No unpacking history at #{@hospital.name} yet.
+      %h4.text-center
+        No unpacking history at #{@hospital.name}
+        %i.fa.fa-hospital
+        yet.
 
     = paginate @unpacking_events, window: 2

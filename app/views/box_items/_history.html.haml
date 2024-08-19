@@ -1,5 +1,8 @@
 - if @box.box_items.with_events.none?
-  %h4.text-center No history to display.
+  %h4.text-center
+    No history
+    %i.fa.fa-fw.fa-history
+    to display.
 - else
   %h5 Unpacking history for this box is shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "history-items"}

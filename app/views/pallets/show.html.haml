@@ -83,7 +83,11 @@
                 %span Close
           - else
             #boxes.collapse.panel-body
-              %h5.text-center No boxes on this pallet.
+              %h5.text-center
+                No boxes
+                %i.fa.fa-box-open
+                assigned to this pallet
+                %i.fa.fa-pallet
 
         .panel.panel-default
           %a.panel-heading.collapsed{class: (@pallet.pallet_items.count > 5 && "collapsed"), data: {toggle: "collapse"}, href: "#packed-items"}
@@ -99,7 +103,11 @@
                 %span Close
           - else
             #packed-items.collapse.panel-body
-              %h5.text-center No packed items on this pallet.
+              %h5.text-center
+                No packed items
+                %i.fa.fa-stethoscope
+                on this pallet
+                %i.fa.fa-pallet
 
         .panel.panel-default
           %a.panel-heading.collapsed{class: (@pallet.box_items.count > 5 && "collapsed"), data: {toggle: "collapse"}, href: "#boxed-items"}
@@ -115,7 +123,11 @@
                 %span Close
           - else
             #boxed-items.collapse.panel-body
-              %h5.text-center No packed items these boxes.
+              %h5.text-center
+                No packed items
+                %i.fa.fa-stethoscope
+                in any boxes
+                %i.fa.fa-box-open
 
   - if (can? :manage, PackedItem) && (@staged_items.any? || @staged_boxes.any? || @warehoused_items.any? || @warehoused_boxes.any?)
     = render "layouts/mass_action_add", display: %i[items boxes]

@@ -255,4 +255,7 @@
                         %p= item.created_at.strftime("%Y-%m-%d")
 
         - if @boxes.none? && @pallets.none? && @containers.none? && @box_items.none? && @pallet_items.none? && @container_items.none?
-          %h4.text-center No history.
+          %h4.text-center
+            No history
+            %i.fa.fa-fw.fa-history
+            to display.

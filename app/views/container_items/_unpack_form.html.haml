@@ -1,5 +1,8 @@
 - if @container.container_items.with_inventory.none?
-  %h4.text-center No items to unpack.
+  %h4.text-center
+    No items
+    %i.fa.fa-fw.fa-stethoscope
+    to unpack.
 - else
   %h5 Unpack and remove items from this container. Items completely unpacked with no remaining quantity will not be shown here.
   = render partial: "layouts/add_hospital_modal", locals: {redirect: container_container_items_path(@container)}

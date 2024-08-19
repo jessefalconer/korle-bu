@@ -85,7 +85,11 @@
                 %span Close
           - else
             #packed-items.collapse.panel-body
-              %h5.text-center No packed items in this box.
+              %h5.text-center
+                No packed items
+                %i.fa.fa-stethoscope
+                in this box
+                %i.fa.fa-box-open
 
   - if (can? :manage, PackedItem) && (@staged_items.any? || @warehoused_items.any?)
     = render "layouts/mass_action_add", display: %i[items]

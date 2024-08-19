@@ -19,6 +19,9 @@
         %tbody#search-results
           = render "table"
     - else
-      %h5.text-center No results found.
+      %h4.text-center
+        No results
+        %i.fa.fa-stethoscope
+        found.
 
     = paginate @items, window: 2

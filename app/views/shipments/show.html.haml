@@ -92,7 +92,12 @@
                 %span Close
           - else
             #containers.collapse.panel-body
-              %h5.text-center No containers in this shipment.
+              %h5.text-center
+                No containers
+                %i.fa.fa-fw.fa-truck
+                assigned to this shipment
+                %i.fa.fa-fw.fa-ship
+
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#container-items"}
@@ -109,7 +114,11 @@
                 %span Close
           - else
             #container-items.collapse.panel-body
-              %h5.text-center No packed items in any containers.
+              %h5.text-center
+                No packed items
+                %i.fa.fa-fw.fa-stethoscope
+                in any containers
+                %i.fa.fa-fw.fa-truck
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
@@ -125,7 +134,11 @@
                 %span Close
           - else
             #pallets.collapse.panel-body
-              %h5.text-center No pallets assigned to containers.
+              %h5.text-center
+                No pallets
+                %i.fa.fa-fw.fa-pallet
+                assigned to any containers
+                %i.fa.fa-fw.fa-truck
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallet-items"}
@@ -142,7 +155,11 @@
                 %span Close
           - else
             #pallet-items.collapse.panel-body
-              %h5.text-center No packed items in any pallets.
+              %h5.text-center
+                No packed items
+                %i.fa.fa-fw.fa-stethoscope
+                on any pallets
+                %i.fa.fa-fw.fa-pallet
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#pallet_boxes"}
@@ -158,7 +175,11 @@
                 %span Close
           - else
             #pallet_boxes.collapse.panel-body
-              %h5.text-center No boxes assigned to pallets.
+              %h5.text-center
+                No boxes
+                %i.fa.fa-fw.fa-box-open
+                assigned to any pallets
+                %i.fa.fa-fw.fa-pallet
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#container_boxes"}
@@ -174,7 +195,11 @@
                 %span Close
           - else
             #container_boxes.collapse.panel-body
-              %h5.text-center No boxes assigned to containers.
+              %h5.text-center
+                No boxes
+                %i.fa.fa-fw.fa-box-open
+                assigned to any containers
+                %i.fa.fa-fw.fa-truck
 
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#box-items"}
@@ -191,7 +216,11 @@
                 %span Close
           - else
             #box-items.collapse.panel-body
-              %h5.text-center No packed items in any boxes.
+              %h5.text-center
+                No packed items
+                %i.fa.fa-fw.fa-stethoscope
+                in any boxes
+                %i.fa.fa-fw.fa-box-open
 
   - if (can? :manage, PackedItem) && (@staged_items.any? || @staged_boxes.any? || @staged_pallets.any? || @warehoused_items.any? || @warehoused_boxes.any? || @warehoused_pallets.any?)
     = render "layouts/mass_action_add", display: %i[items boxes pallets]

@@ -28,4 +28,13 @@
       = paginate @pallets, window: 2
 
     - else
-      %h4.text-center No #{title}.
+      %h4.text-center
+        No #{params[:display]}
+        - if params[:display] == "warehoused"
+          %i.fa.fa-fw.fa-clipboard-list
+        - elsif params[:display] == "staged"
+          %i.fa.fa-fw.fa-truck-loading
+        pallets
+        - if params[:display].nil?
+          %i.fa.fa-fw.fa-pallet
+        to display.

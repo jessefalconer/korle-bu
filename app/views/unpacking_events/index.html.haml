@@ -40,7 +40,10 @@
                 = link_to present(event.packed_item).path do
                   %p= event.created_at.strftime("%Y-%m-%d")
 
-    - else
-      %h5.text-center No history yet.
+      = paginate @events, window: 2
 
-    = paginate @events, window: 2
+    - else
+      %h4.text-center
+        No history
+        %i.fa.fa-fw.fa-history
+        to display.
