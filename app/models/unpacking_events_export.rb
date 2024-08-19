@@ -7,7 +7,7 @@ class UnpackingEventsExport
   attr_accessor :group_by
 
   def initialize(start_date, end_date, hospital_id, sorting)
-    @start_date = start_date.presence || UnpackingEvent.first.created_at.strftime("%Y-%m-%d")
+    @start_date = start_date.presence || UnpackingEvent.minimum(:created_at).strftime("%Y-%m-%d")
     @end_date = end_date.presence || DateTime.now.strftime("%Y-%m-%d")
     @hospital_id = hospital_id
     @sorting = sorting

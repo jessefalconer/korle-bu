@@ -4,7 +4,7 @@ class UnpackingEventsExportsController < ApplicationController
   before_action :set_export, only: :create
 
   def create
-    start_date = export_params[:start_date].presence || UnpackingEvent.first.created_at.strftime("%Y-%m-%d")
+    start_date = export_params[:start_date].presence || UnpackingEvent.minimum(:created_at).strftime("%Y-%m-%d")
     end_date = export_params[:end_date].presence || DateTime.now.strftime("%Y-%m-%d")
     file_name = "Unpacking-Events-#{start_date}-to-#{end_date}"
     file_name += "-#{Hospital.find(export_params[:hospital_id]).name}" if export_params[:hospital_id].present?

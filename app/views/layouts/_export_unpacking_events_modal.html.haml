@@ -27,6 +27,5 @@
                 = f.radio_button :sorting, "asc"
               %h5 Optionally filter results by hospital/facility/clinic:
               .form-group
-                %label Hospital
                 = f.select :hospital_id, options_from_collection_for_select(Hospital.all.order(:name), :id, :name), { include_blank: "All" }, { class: "form-control" }
               = submit_export
