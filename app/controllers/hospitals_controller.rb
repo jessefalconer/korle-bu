@@ -28,8 +28,7 @@ class HospitalsController < ApplicationController
   def show
     @unpacking_events = @hospital
       .unpacking_events
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
       .accessible_by(current_ability).page params[:page]
   end
 

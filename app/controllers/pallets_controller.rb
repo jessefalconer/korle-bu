@@ -21,56 +21,46 @@ class PalletsController < ApplicationController
 
   def index
     @pallets = if params[:display]
-      Pallet.accessible_by(current_ability)
+      Pallet.includes(:boxes, shipment: :receiving_warehouse)
+        .accessible_by(current_ability)
         .send(params[:display])
-        .order(:custom_uid)
-        .reverse_order
+        .order(custom_uid: :desc)
         .page params[:page]
     else
-      Pallet.accessible_by(current_ability)
-        .order(:custom_uid)
-        .reverse_order
+      Pallet.includes(:boxes, shipment: :receiving_warehouse)
+        .accessible_by(current_ability)
+        .order(custom_uid: :desc)
         .page params[:page]
     end
 
     @box_options = Box.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @pallet_options = Pallet.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @container_options = Container.in_progress
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
   end
 
   def show
     @staged_items = PackedItem.staged
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
     @staged_boxes = Box.staged
-      .order(:custom_uid)
-      .reverse_order
+      .order(custom_uid: :desc)
     @warehoused_items = PackedItem.warehoused
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
     @warehoused_boxes = Box.warehoused
-      .order(:custom_uid)
-      .reverse_order
+      .order(custom_uid: :desc)
     @box_options = Box.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @pallet_options = Pallet.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @container_options = Container.in_progress
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
   end
 
@@ -133,6 +123,13 @@ class PalletsController < ApplicationController
   end
 
   def set_pallet
-    @pallet = Pallet.find(params[:id])
+    @pallet = Pallet.includes(
+      :pallet_items,
+      boxes: [
+        container: :shipment,
+        box_items: :item,
+        pallet: [container: :shipment]
+      ]
+    ).find(params[:id])
   end
 end

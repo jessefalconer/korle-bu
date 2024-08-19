@@ -18,56 +18,48 @@ class BoxesController < ApplicationController
       redirect_to box_path(box), flash: { success: "Box created." }
     else
       redirect_to boxes_path,
-                  flash: { error: "Failed to create new box: #{box.errors.full_messages.to_sentence}" }
+        flash: { error: "Failed to create new box: #{box.errors.full_messages.to_sentence}" }
     end
   end
 
   def index
     @boxes = if params[:display]
-      Box.accessible_by(current_ability)
+      Box.includes(:box_items, :pallet, :container, shipment: :receiving_warehouse)
+        .accessible_by(current_ability)
         .send(params[:display])
-        .order(:custom_uid)
-        .reverse_order
+        .order(custom_uid: :desc)
         .page params[:page]
     else
-      Box.accessible_by(current_ability)
-        .order(:custom_uid)
-        .reverse_order
+      Box.includes(:box_items, :pallet, :container, shipment: :receiving_warehouse)
+        .accessible_by(current_ability)
+        .order(custom_uid: :desc)
         .page params[:page]
     end
 
     @box_options = Box.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @pallet_options = Pallet.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @container_options = Container.in_progress
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
   end
 
   def show
     @staged_items = PackedItem.staged
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
     @warehoused_items = PackedItem.warehoused
-      .order(:created_at)
-      .reverse_order
+      .order(custom_uid: :desc)
     @box_options = Box.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @pallet_options = Pallet.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @container_options = Container.in_progress
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
   end
 
@@ -76,7 +68,7 @@ class BoxesController < ApplicationController
       redirect_to box_path(@box), flash: { success: "Box updated." }
     else
       redirect_to box_path(@box),
-                  flash: { error: "Failed to update box: #{@box.errors.full_messages.to_sentence}" }
+        flash: { error: "Failed to update box: #{@box.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -94,7 +86,7 @@ class BoxesController < ApplicationController
       redirect_to path
     else
       redirect_to params[:redirect],
-                  flash: { error: "Box with custom ID #{box_params[:custom_uid]} not found." }
+        flash: { error: "Box with custom ID #{box_params[:custom_uid]} not found." }
     end
   end
 
@@ -165,6 +157,6 @@ class BoxesController < ApplicationController
   end
 
   def set_box
-    @box = Box.find(params[:id])
+    @box = Box.includes(box_items: :item).find(params[:id])
   end
 end

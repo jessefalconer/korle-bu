@@ -7,7 +7,7 @@
       - if can?(:create, Box)
         %th
   %tbody{id: table_id}
-    - boxes.order(:custom_uid).reverse_order.each do |box|
+    - boxes.order(custom_uid: :desc).each do |box|
       %tr.filter-row
         %td
           = link_to box_path(box) do

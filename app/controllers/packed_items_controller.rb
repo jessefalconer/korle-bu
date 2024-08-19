@@ -5,7 +5,8 @@ class PackedItemsController < ApplicationController
   before_action :set_warehouse_id
 
   def all_received_items
-    @items = PackedItem.left_joins(:item, :shipment)
+    @items = PackedItem.includes(:item)
+      .left_joins(:item, :shipment)
       .where(
         "items.category_id IS NOT NULL AND
         packed_items.remaining_quantity > 0 AND
@@ -23,7 +24,8 @@ class PackedItemsController < ApplicationController
   end
 
   def received_categories
-    @packed_items = PackedItem.left_joins(:item, :shipment)
+    @packed_items = PackedItem.includes(:item).
+      left_joins(:item, :shipment)
       .where(
         "items.category_id IS NOT NULL AND
         packed_items.remaining_quantity > 0  AND
@@ -37,7 +39,8 @@ class PackedItemsController < ApplicationController
       .group_by(&:category)
       .sort_by { |category, _items| category.name }
 
-    @uncategorized_items = PackedItem.left_joins(:item, :shipment)
+    @uncategorized_items = PackedItem.includes(:item)
+      .left_joins(:item, :shipment)
       .where(
         "items.category_id IS NULL AND
         packed_items.remaining_quantity > 0 AND
@@ -52,7 +55,8 @@ class PackedItemsController < ApplicationController
 
   def received_category_items
     @category = Category.find(params[:id])
-    @packed_items = PackedItem.left_joins(:item, :shipment)
+    @packed_items = PackedItem.includes(:item)
+      .left_joins(:item, :shipment)
       .where(
         "items.category_id = ? AND
         packed_items.remaining_quantity > 0 AND
@@ -69,7 +73,8 @@ class PackedItemsController < ApplicationController
   end
 
   def received_uncategorized_items
-    @packed_items = PackedItem.left_joins(:item, :shipment)
+    @packed_items = PackedItem.includes(:item)
+      .left_joins(:item, :shipment)
       .where(
         "items.category_id IS NULL AND
         packed_items.remaining_quantity > 0 AND
@@ -89,7 +94,8 @@ class PackedItemsController < ApplicationController
   def received_item_locations
     @item = Item.find(params[:id])
 
-    @box_items = PackedItem.left_joins(:item, :shipment)
+    @box_items = PackedItem.includes(:item)
+      .left_joins(:item, :shipment)
       .where(
         "packed_items.box_id IS NOT NULL AND
         packed_items.item_id = ? AND
@@ -103,7 +109,8 @@ class PackedItemsController < ApplicationController
         Shipment::RECEIVED
       )
 
-    @pallet_items = PackedItem.left_joins(:item, :shipment)
+    @pallet_items = PackedItem.includes(:item)
+      .left_joins(:item, :shipment)
       .where(
         "packed_items.pallet_id IS NOT NULL AND
         packed_items.item_id = ? AND
@@ -115,7 +122,8 @@ class PackedItemsController < ApplicationController
         @warehouse_id,
         Shipment::RECEIVED
       )
-    @container_items = PackedItem.left_joins(:item, :shipment)
+    @container_items = PackedItem.includes(:item)
+      .left_joins(:item, :shipment)
       .where(
         "packed_items.container_id IS NOT NULL AND
         packed_items.item_id = ? AND

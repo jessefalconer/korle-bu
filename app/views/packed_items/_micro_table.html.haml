@@ -7,7 +7,7 @@
       - if can?(:manage, PackedItem)
         %th
   %tbody{id: "filter-#{assoc}-table"}
-    - packed_items.order(:updated_at).reverse_order.each do |pi|
+    - packed_items.order(updated_at: :desc).each do |pi|
       - path = present(pi).path
       %tr.filter-row
         %td

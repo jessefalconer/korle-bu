@@ -29,20 +29,16 @@ class StagedItemsController < ApplicationController
 
   def index
     @packed_items = PackedItem.staged
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
       .page params[:page]
     @box_options = Box.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @pallet_options = Pallet.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @container_options = Container.in_progress
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
   end
 

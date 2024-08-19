@@ -4,10 +4,9 @@ class UnpackingEventsController < ApplicationController
   before_action :set_warehouse_id
 
   def index
-    @events = UnpackingEvent.joins(:hospital)
+    @events = UnpackingEvent.includes(:hospital, packed_item: :item).joins(:hospital)
       .where("hospitals.warehouse_id = ?", current_user.warehouse_id)
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
       .page params[:page]
   end
 

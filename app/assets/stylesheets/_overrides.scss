@@ -331,6 +331,7 @@ button:disabled {
 }
 
 .link-rows {
+  td { overflow: hidden; }
   th.mass-action-cell,
   td.mass-action-cell {
     width: 40px;

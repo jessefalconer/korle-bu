@@ -43,20 +43,15 @@ class ReconcileItemsController < ApplicationController
   def item_instances
     items = @item.packed_items
     @staged_items = items.staged
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
     @warehoused_items = items.warehoused
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
     @box_items = items.where.not(box_id: nil)
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)r
     @pallet_items = items.where.not(pallet_id: nil)
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
     @container_items = items.where.not(container_id: nil)
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
   end
 
   private

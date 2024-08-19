@@ -100,36 +100,28 @@ class SessionsController < ApplicationController
   def my_activity
     @staged_items = PackedItem.staged
       .where("packed_items.created_at > ? AND user_id = ?", 30.days.ago, current_user.id)
-      .order(:updated_at)
-      .reverse_order
+      .order(updated_at: :desc)
     @warehoused_items = PackedItem.warehoused
       .where("packed_items.created_at > ? AND user_id = ?", 30.days.ago, current_user.id)
-      .order(:updated_at)
-      .reverse_order
+      .order(updated_at: :desc)
     @boxes = current_user.boxes
       .where("boxes.created_at > ?", 30.days.ago)
-      .order(:updated_at)
-      .reverse_order
+      .order(updated_at: :desc)
     @box_items = current_user.box_items
       .where("packed_items.created_at > ?", 30.days.ago)
-      .order(:updated_at)
-      .reverse_order
+      .order(updated_at: :desc)
     @pallets = current_user.pallets
       .where("pallets.created_at > ?", 30.days.ago)
-      .order(:updated_at)
-      .reverse_order
+      .order(updated_at: :desc)
     @pallet_items = current_user.pallet_items
       .where("packed_items.created_at > ?", 30.days.ago)
-      .order(:updated_at)
-      .reverse_order
+      .order(updated_at: :desc)
     @containers = current_user.containers
       .where("containers.created_at > ?", 30.days.ago)
-      .order(:updated_at)
-      .reverse_order
+      .order(updated_at: :desc)
     @container_items = current_user.container_items
       .where("packed_items.created_at > ?", 30.days.ago)
-      .order(:updated_at)
-      .reverse_order
+      .order(updated_at: :desc)
   end
 
   private

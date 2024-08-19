@@ -7,7 +7,7 @@
       - if can?(:create, Pallet)
         %th
   %tbody#filter-pallets-table
-    - pallets.order(:custom_uid).reverse_order.each do |pallet|
+    - pallets.order(custom_uid: :desc).each do |pallet|
       %tr.filter-row
         %td
           = link_to pallet_path(pallet) do

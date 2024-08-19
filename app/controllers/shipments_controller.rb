@@ -12,7 +12,8 @@ class ShipmentsController < ApplicationController
     shipment = Shipment.new(shipment_params.merge(user: current_user))
 
     if shipment.save
-      redirect_to shipment_path(shipment), flash: { success: "Shipment created." }
+      redirect_to shipment_path(shipment),
+        flash: { success: "Shipment created." }
     else
       redirect_to shipments_path,
         flash: { error: "Failed to create new shipment: #{shipment.errors.full_messages.to_sentence}" }
@@ -20,31 +21,28 @@ class ShipmentsController < ApplicationController
   end
 
   def index
-    @shipments = Shipment.accessible_by(current_ability)
-      .order(:custom_uid)
-      .reverse_order
+    @shipments = Shipment.includes(:receiving_warehouse, :shipping_warehouse)
+      .accessible_by(current_ability)
+      .order(custom_uid: :desc)
       .page params[:page]
   end
 
   def show
     respond_to do |format|
       format.html do
-        @staged_items = PackedItem.staged.load
-        @staged_boxes = Box.staged.load
-        @staged_pallets = Pallet.staged.load
-        @warehoused_items = PackedItem.warehoused.load
-        @warehoused_boxes = Box.warehoused.load
-        @warehoused_pallets = Pallet.warehoused.load
+        @staged_items = PackedItem.staged
+        @staged_boxes = Box.staged
+        @staged_pallets = Pallet.staged
+        @warehoused_items = PackedItem.warehoused
+        @warehoused_boxes = Box.warehoused
+        @warehoused_pallets = Pallet.warehoused
         @box_options = Box.reassignable
-          .order(:id)
-          .reverse_order
+          .order(id: :desc)
           .pluck(:name, :id)
         @pallet_options = Pallet.reassignable
-          .order(:id)
-          .reverse_order
+          .order(id: :desc)
           .pluck(:name, :id)
-        @container_options = Container.order(:id)
-          .reverse_order
+        @container_options = Container.order(id: :desc)
           .pluck(:name, :id)
       end
       format.csv {
@@ -58,7 +56,8 @@ class ShipmentsController < ApplicationController
 
   def update
     if @shipment.update(shipment_params)
-      redirect_to shipment_path(@shipment), flash: { success: "Shipment updated." }
+      redirect_to shipment_path(@shipment),
+        flash: { success: "Shipment updated." }
     else
       redirect_to shipment_path(@shipment),
         flash: { error: "Failed to update shipment: #{@shipment.errors.full_messages.to_sentence}" }
@@ -81,6 +80,12 @@ class ShipmentsController < ApplicationController
   end
 
   def set_shipment
-    @shipment = Shipment.find(params[:id])
+    @shipment = Shipment.includes(
+        containers: [
+          :container_items,
+          pallets: [pallet_items: :item, boxes: [box_items: :item]],
+          boxes: [box_items: :item]
+        ]
+      ).find(params[:id])
   end
 end

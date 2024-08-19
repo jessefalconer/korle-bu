@@ -15,7 +15,7 @@
           %span.label.label-default= ci.quantity - ci.remaining_quantity
           %i.fa.fa-ellipsis-v
       .col-xs-12.manage-item-form.hidden
-        - ci.unpacking_events.order(:created_at).reverse_order.each do |event|
+        - ci.unpacking_events.order(created_at: :desc).each do |event|
           .unpacking-entry
             .entry-info
               %p

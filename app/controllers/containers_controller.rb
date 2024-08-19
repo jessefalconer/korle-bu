@@ -12,69 +12,59 @@ class ContainersController < ApplicationController
     container = Container.new(container_params.merge(user: current_user))
 
     if container.save
-      redirect_to container_path(container),
-                  flash: { success: "Container created." }
+      redirect_to container_path(container), flash: { success: "Container created." }
     else
       redirect_to containers_path,
-                  flash: { error: "Failed to create new container: #{container.errors.full_messages.to_sentence}" }
+        flash: { error: "Failed to create new container: #{container.errors.full_messages.to_sentence}" }
     end
   end
 
   def index
     @containers = if params[:display]
-      Container.accessible_by(current_ability)
+      Container.includes(shipment: :receiving_warehouse)
+        .accessible_by(current_ability)
         .send(params[:display])
-        .order(:custom_uid)
-        .reverse_order
+        .order(custom_uid: :desc)
         .page params[:page]
     else
-      Container.accessible_by(current_ability)
-        .order(:custom_uid)
-        .reverse_order
+      Container.includes(shipment: :receiving_warehouse)
+        .accessible_by(current_ability)
+        .order(custom_uid: :desc)
         .page params[:page]
     end
   end
 
   def show
     @staged_items = PackedItem.staged
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
     @staged_boxes = Box.staged
-      .order(:custom_uid)
-      .reverse_order
+      .order(custom_uid: :desc)
     @staged_pallets = Pallet.staged
-      .order(:custom_uid)
-      .reverse_order
+      .order(custom_uid: :desc)
     @warehoused_items = PackedItem.warehoused
-      .order(:created_at)
-      .reverse_order
+      .order(created_at: :desc)
     @warehoused_boxes = Box.warehoused
-      .order(:custom_uid)
-      .reverse_order
+      .order(custom_uid: :desc)
     @warehoused_pallets = Pallet.warehoused
-      .order(:custom_uid)
-      .reverse_order
+      .order(custom_uid: :desc)
     @box_options = Box.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @pallet_options = Pallet.reassignable
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
     @container_options = Container.in_progress
-      .order(:id)
-      .reverse_order
+      .order(id: :desc)
       .pluck(:name, :id)
   end
 
   def update
     if @container.update(container_params)
       redirect_to container_path(@container),
-                  flash: { success: "Container updated." }
+        flash: { success: "Container updated." }
     else
       redirect_to container_path(@container),
-                  flash: { error: "Failed to update container: #{@container.errors.full_messages.to_sentence}" }
+        flash: { error: "Failed to update container: #{@container.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -91,6 +81,8 @@ class ContainersController < ApplicationController
   end
 
   def set_container
-    @container = Container.find(params[:id])
+    @container = Container.includes(
+      :boxes, :pallets, :shipment, container_items: :item
+    ).find(params[:id])
   end
 end
