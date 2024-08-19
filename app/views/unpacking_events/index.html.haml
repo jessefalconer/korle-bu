@@ -5,6 +5,8 @@
         = link_to "Home", index_path
       %li.active Unpacking History for #{current_user.warehouse.name}
     = render partial: "layouts/jump_to_modal"
+    - if can? :manage, Shipment
+      = render "layouts/export_unpacking_events_modal"
   .main-content
     - if @events.any?
       %table.table.table-striped.table-hover.link-rows

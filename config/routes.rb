@@ -42,6 +42,7 @@ Rails.application.routes.draw do
   resources :unpacking_events, only: :index
   resources :hospital_exports, only: :create
   resources :shipment_exports, only: :create
+  resources :unpacking_events_exports, only: :create
   resources :categories
   resources :items
   resources :users do

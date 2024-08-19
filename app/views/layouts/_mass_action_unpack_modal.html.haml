@@ -13,11 +13,11 @@
       .modal-body#unpackModalBody.margin-top
         .row.mass-action-form
           .col-xs-12
-            %h5 Send item(s) to the selected hospital/clinic:
+            %h5 Send item(s) to the selected hospital/facility/clinic:
 
           = form_with url: received_categories_unpack_selected_path, method: :post, id: "mass_action" do |f|
             .col-xs-12
-              %label Hopsital/Clinic
+              %label Hopsital/Facility/Clinic
               = select_tag("hospital_id", options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: true, class: "form-control" })
               %label Notes
               = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"

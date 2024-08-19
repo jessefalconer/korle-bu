@@ -16,11 +16,11 @@
               %i.fas.fa-exclamation-triangle.text-warning
               This pallet has not been received. Check its status.
           .col-xs-12
-            %h5 Send #{@pallet.pallet_items.count} item(s) to the selected hospital/clinic:
+            %h5 Send #{@pallet.pallet_items.count} item(s) to the selected hospital/facility/clinic:
 
           = form_for @pallet, url: pallets_unpack_all_path(@pallet), method: :post do |f|
             .col-xs-12
-              %label Hopsital/Clinic
+              %label Hopsital/Facility/Clinic
               = select_tag("hospital_id", options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: true, class: "form-control" })
               %label Notes
               = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"
