@@ -28,8 +28,7 @@
                   Notes:
                   %em= event.notes
             - if current_user.admin?
-              = delete_button(container_container_item_container_unpacking_event_path(@container, ci, event), "Are you sure you want to delete this unpacking entry?", "pull-right")
+              = delete_button(container_container_item_container_unpacking_event_path(@container, ci, event), "Are you sure you want to delete this unpacking entry?", "pull-right btn-xs)
         .unpacking-entry
           .entry-info
-            %p Current inventory remaining:
-          %h4.text-center= ci.remaining_quantity
+            %p Current inventory remaining: #{ci.remaining_quantity}

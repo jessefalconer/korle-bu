@@ -28,6 +28,7 @@ class PalletsController < ApplicationController
         .page params[:page]
     else
       Pallet.includes(:boxes, shipment: :receiving_warehouse)
+        .where.not(status: %w[Warehoused Staged])
         .accessible_by(current_ability)
         .order(custom_uid: :desc)
         .page params[:page]
@@ -97,6 +98,8 @@ class PalletsController < ApplicationController
       message = { error: "Please select a hospital/facility/clinic." }
     else
       @pallet.pallet_items.each do |pi|
+        next if pi.remaining_quantity.zero?
+
         pi.unpacking_events
           .create(
             hospital_id: params[:hospital_id],

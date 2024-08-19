@@ -251,7 +251,6 @@ input.list-quick-filter { border-radius: 4px 0 0 0; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  cursor: pointer;
 
   .entry-info { margin-right: 15px; }
   h4 { margin: 0 15px 10px 0;}
@@ -334,8 +333,11 @@ button:disabled {
   td { overflow: hidden; }
   th.mass-action-cell,
   td.mass-action-cell {
+    text-align: center;
     width: 40px;
+
     input.mass-action-table {
+      cursor: pointer;
       margin: 13.25px 0 0 0;
     }
   }
@@ -366,4 +368,35 @@ tr {
 
 .edit-modal-body {
   padding: 0 15px 15px 15px;
+}
+
+nav.pagination {
+  margin: 20px 0;
+  text-align: center;
+  font-size: 1.25em;
+
+  span:not(.gap) {
+    a {
+      border: 1px solid #007096;
+      border-radius: 3px;
+      padding: 5px 10px;
+      margin: 0 5px;
+
+      &:hover {
+        background: #007096;
+        color: #fff;
+        text-decoration: none;
+      }
+    }
+
+    &.current {
+      cursor: default;
+      border: 1px solid #007096;
+      border-radius: 3px;
+      padding: 5px 6px 5px 10px;
+      margin: 0 5px;
+      background: #007096;
+      color: #fff;
+    }
+  }
 }

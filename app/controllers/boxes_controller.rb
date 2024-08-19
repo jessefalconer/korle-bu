@@ -24,13 +24,22 @@ class BoxesController < ApplicationController
 
   def index
     @boxes = if params[:display]
-      Box.includes(:box_items, :pallet, :container, shipment: :receiving_warehouse)
+      Box.includes(
+          :box_items, :pallet, :container,
+          pallet: [shipment: :receiving_warehouse],
+          container: [shipment: :receiving_warehouse]
+        )
         .accessible_by(current_ability)
         .send(params[:display])
         .order(custom_uid: :desc)
         .page params[:page]
     else
-      Box.includes(:box_items, :pallet, :container, shipment: :receiving_warehouse)
+      Box.includes(
+          :box_items, :pallet, :container,
+          pallet: [shipment: :receiving_warehouse],
+          container: [shipment: :receiving_warehouse]
+        )
+        .where.not(status: %w[Warehoused Staged])
         .accessible_by(current_ability)
         .order(custom_uid: :desc)
         .page params[:page]
@@ -96,6 +105,8 @@ class BoxesController < ApplicationController
       message = { error: "Please select a hospital/facility/clinic." }
     else
       @box.box_items.each do |bi|
+        next if bi.remaining_quantity.zero?
+
         bi.unpacking_events
           .create(
             hospital_id: params[:hospital_id],

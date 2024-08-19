@@ -13,6 +13,17 @@
 
   .main-content
     - if @pallets.any?
+      - if params[:display] == "warehoused" || params[:display] == "staged"
+        %h5
+          Showing all <em>#{params[:display].titleize}</em> pallets.
+      - elsif params[:display] == "in_progress"
+        %h5 Showing all <em>In Progress</em> pallets.
+
+      - else
+        %h5
+          <em>Staged</em> and <em>Warehoused</em> pallets are not shown here
+          and can be found in their respective menus.
+
       = render "table"
       = paginate @pallets, window: 2
 
