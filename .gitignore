@@ -39,3 +39,4 @@ yarn-debug.log*
 .DS_Store
 latest_pg_production_dump.sql
 spam_ignored_paths.txt
+config/secrets.yml
