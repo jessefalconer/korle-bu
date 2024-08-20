@@ -43,6 +43,8 @@ gem "mimemagic", github: "mimemagicrb/mimemagic", ref: "01f92d86d15d85cfd0f20dab
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
 
+gem "net-scp"
+
 group :development, :test do
   # Call "byebug" anywhere in the code to stop execution and get a debugger console
   gem "byebug", platforms: %i[mri mingw x64_mingw]
@@ -52,6 +54,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "capistrano-secrets-yml", "~> 1.1.0"
   # Access an interactive console on exception pages or by calling "console" anywhere in the code.
   gem "listen", "~> 3.2"
   gem "rails-erd"

@@ -11,6 +11,7 @@ require "capistrano/rails"
 require "capistrano/rbenv"
 require "capistrano/bundler"
 require "capistrano/passenger"
+require "capistrano/secrets_yml"
 
 # Load the SCM plugin appropriate to your project:
 #
