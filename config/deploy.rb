@@ -38,8 +38,12 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bund
 set :keep_releases, 5
 
 # Ensure bundler is installed and used
-set :bundle_flags, '--deployment'
-set :bundle_binstubs, -> { shared_path.join('bin') }
+set :bundle_flags, "--deployment"
+set :bundle_binstubs, -> { shared_path.join("bin") }
+
+# fix me later
+# Set the RAILS_MASTER_KEY environment variable
+set :default_env, { "RAILS_MASTER_KEY" => "cd4aa13954fca97560287e3b8229e877e967ba3af180de0dca7530cbd972240ac5404a8ed95160d727ff1dfec131cf91ec8f2f8e0d6725f6485a24704f0a9550" }
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
@@ -47,7 +51,7 @@ set :bundle_binstubs, -> { shared_path.join('bin') }
 before "deploy:assets:precompile", "deploy:yarn_install"
 
 namespace :deploy do
-  desc 'Run rake yarn:install'
+  desc "Run rake yarn:install"
   task :yarn_install do
     on roles(:web) do
       within release_path do
