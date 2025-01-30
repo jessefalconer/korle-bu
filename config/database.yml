@@ -81,5 +81,5 @@ test:
 production:
   <<: *default
   database: kbnf_production
-  username: postgres
+  username: deploy
   password: <%= ENV['KBNF_DATABASE_PASSWORD'] %>
