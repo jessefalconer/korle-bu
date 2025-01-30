@@ -83,3 +83,4 @@ production:
   database: kbnf_production
   username: deploy
   password: <%= ENV['KBNF_DATABASE_PASSWORD'] %>
+  host: localhost
