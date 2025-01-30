@@ -84,3 +84,4 @@ production:
   username: deploy
   password: <%= ENV['KBNF_DATABASE_PASSWORD'] %>
   host: localhost
+  url: <%= ENV['DATABASE_URL'] %>
