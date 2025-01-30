@@ -141,11 +141,12 @@ class BoxesController < ApplicationController
         box.box_items.each do |bi|
           new_box.box_items.create(
             quantity: bi.quantity,
+            remaining_quantity: bi.remaining_quantity,
+            weight: bi.weight,
             expiry_date: bi.expiry_date,
             shipment_id: (bi.shipment_id if deep_clone),
             item_id: bi.item_id,
             user_id: bi.user_id,
-            remaining_quantity: bi.remaining_quantity,
             show_id: bi.show_id,
             status: bi.status
           )
