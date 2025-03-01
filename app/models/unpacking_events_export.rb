@@ -17,7 +17,7 @@ class UnpackingEventsExport
     CSV.generate(headers: true) do |csv|
       csv << %w[Item Item\ ID Quantity Origin Destination User Date]
       collection = UnpackingEvent.where(
-        "created_at >= ? AND created_at <= ?", @start_date, @end_date
+        "timestamp >= ? AND timestamp <= ?", @start_date, @end_date
       )
       collection = collection.where(hospital_id: @hospital_id) if @hospital_id.present?
 
@@ -34,7 +34,7 @@ class UnpackingEventsExport
         event.packed_item.location_name,
         event.hospital.name,
         event.user.name,
-        event.created_at.strftime("%Y-%m-%d")
+        event.timestamp.strftime("%Y-%m-%d")
       ]
     end
   end

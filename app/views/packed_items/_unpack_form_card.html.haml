@@ -10,16 +10,21 @@
       %i.fa.fa-ellipsis-v
   .col-xs-12.manage-item-form.hidden
     .row
-      .col-xs-12.col-md-6
+      .col-xs-12.col-md-4
         .form-group
           %label Unpacking Quantity
           = f.number_field :quantity, value: pi.remaining_quantity, class: "form-control", min: 1, max: pi.remaining_quantity, id: "quantity-#{pi.id}"
-      .col-xs-12.col-md-6
+      .col-xs-12.col-md-4
         .form-group
           %label Hospital/Facility/Clinic
           = f.select :hospital_id, options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: "None" }, { class: "form-control", id: "hospital-assignment-#{pi.id}" }
         %h6
           %a{data: {target: "#add-hospital-modal", toggle: "modal"}, href: ""} Don't see your hospital/facility/clinic? Add one.
+      .col-xs-12.col-md-4
+        .form-group
+          %label Unpacked On
+          - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
+          = f.text_field :timestamp, value: today, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
       .col-xs-10.col-sm-9.col-lg-10
         .form-group
           = f.label "Notes"

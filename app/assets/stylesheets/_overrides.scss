@@ -251,7 +251,32 @@ input.list-quick-filter { border-radius: 4px 0 0 0; }
   align-items: center;
   justify-content: space-between;
 
-  .entry-info { margin-right: 15px; }
+  &:hover {
+    background-color: #e8e7e7;
+  }
+
+  &:nth-child(even) {
+    background-color: #f9f9f9;
+
+    &:hover { background-color: #f0f0f0; }
+  }
+
+  &:last-child {
+    margin-bottom: 10px;
+
+    &:hover {
+      background-color: #fff
+    }
+  }
+
+  .entry-info {
+    margin-right: 15px;
+
+    p {
+      margin: 5px 0;
+    }
+  }
+
   h4 { margin: 0 15px 10px 0;}
 }
 

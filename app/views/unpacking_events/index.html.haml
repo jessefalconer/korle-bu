@@ -17,7 +17,8 @@
             %th Origin
             %th.hidden-xs Destination
             %th.hidden-xs User
-            %th Date
+            %th Unpacked On
+            %th.hidden-xs.hidden-sm Created At
         %tbody
           - @events.each do |event|
             %tr
@@ -37,6 +38,9 @@
                 = link_to present(event.packed_item).path do
                   %p= event.user.name
               %td
+                = link_to present(event.packed_item).path do
+                  %p= event.timestamp.strftime("%Y-%m-%d")
+              %td.hidden-xs.hidden-sm
                 = link_to present(event.packed_item).path do
                   %p= event.created_at.strftime("%Y-%m-%d")
 

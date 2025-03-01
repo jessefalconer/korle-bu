@@ -26,7 +26,7 @@ class ContainerUnpackingEventsController < ApplicationController
 
   def unpacking_event_params
     params.require(:unpacking_event)
-      .permit(:quantity, :weight, :notes, :container_item_id, :hospital_id)
+      .permit(:quantity, :weight, :notes, :container_item_id, :hospital_id, :timestamp)
   end
 
   def set_unpacking_event
