@@ -251,6 +251,25 @@ input.list-quick-filter { border-radius: 4px 0 0 0; }
   align-items: center;
   justify-content: space-between;
 
+  .action-container {
+    display: flex;
+    align-items: center;
+
+    form {
+      display: contents;
+
+      button {
+        margin-right: 10px;
+      }
+
+      input {
+        height: 24px;
+        width: 100px;
+        margin-right: 10px;
+      }
+    }
+  }
+
   &:hover {
     background-color: #e8e7e7;
   }

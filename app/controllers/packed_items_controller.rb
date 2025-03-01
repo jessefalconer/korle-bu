@@ -149,6 +149,7 @@ class PackedItemsController < ApplicationController
             hospital_id: params[:hospital_id],
             notes: params[:notes],
             user: current_user,
+            timestamp: params[:timestamp],
             quantity: pi.remaining_quantity
           )
       end
