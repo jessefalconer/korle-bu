@@ -21,7 +21,7 @@
               = select_tag("hospital_id", options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: true, class: "form-control" })
               %label Unpacked On
               - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
-              = f.text_field :timestamp, value: today, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
+              = text_field_tag :timestamp, today, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
               %label Notes
               = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"
               %h6
