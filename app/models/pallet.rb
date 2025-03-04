@@ -56,11 +56,11 @@ class Pallet < ApplicationRecord
   end
 
   def cascadable?
-    complete? || received? || archived? || saved_change_to_status?(from: ["Warehoused", "Staged"])
+    complete? || received? || archived? || saved_change_to_status?(from: [WAREHOUSED, STAGED])
   end
 
   def orphanable_status?
-    will_save_change_to_status?(to: ["Warehoused", "Staged"])
+    will_save_change_to_status?(to: [WAREHOUSED, STAGED])
   end
 
   def adopting_by_parent?

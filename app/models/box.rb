@@ -59,7 +59,7 @@ class Box < ApplicationRecord
   end
 
   def cascadable?
-    complete? || received? || archived?
+    complete? || received? || archived? || saved_change_to_status?(from: [WAREHOUSED, STAGED])
   end
 
   def shipment
@@ -67,7 +67,7 @@ class Box < ApplicationRecord
   end
 
   def orphanable_status?
-    will_save_change_to_status?(to: "Warehoused") || will_save_change_to_status?(to: "Staged")
+    will_save_change_to_status?(to: [WAREHOUSED, STAGED])
   end
 
   def adopting_by_parent?
