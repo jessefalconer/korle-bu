@@ -60,7 +60,7 @@ class BoxesController < ApplicationController
     @staged_items = PackedItem.staged
       .order(created_at: :desc)
     @warehoused_items = PackedItem.warehoused
-      .order(custom_uid: :desc)
+      .order(created_at: :desc)
     @box_options = Box.reassignable
       .order(id: :desc)
       .pluck(:name, :id)
