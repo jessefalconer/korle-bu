@@ -40,12 +40,12 @@ class Pallet < ApplicationRecord
   after_initialize :set_defaults, if: :new_record?
 
   before_save do
-    orphan_pallet if orphanable_status?
+    orphan_pallet if status_will_change_to_warehoused_or_staged?
     adopt_status if adopting_by_parent?
   end
 
   after_save do
-    cascade_statuses if saved_change_to_status && cascadable?
+    cascade_statuses if saved_change_to_status?
     cascade_packed_items_location if saved_change_to_container_id
   end
 
@@ -55,19 +55,15 @@ class Pallet < ApplicationRecord
     end
   end
 
-  def cascadable?
-    complete? || received? || archived? || saved_change_to_status?(from: [WAREHOUSED, STAGED])
-  end
-
-  def orphanable_status?
-    will_save_change_to_status?(to: [WAREHOUSED, STAGED])
-  end
-
   def adopting_by_parent?
-    will_save_change_to_container_id?(from: nil) && (staged? || warehoused?) && !will_save_change_to_status?
+    container_id_change_to_be_saved&.first.nil? && (staged? || warehoused?) && !will_save_change_to_status?
   end
 
   private
+
+  def status_will_change_to_warehoused_or_staged?
+    status_change_to_be_saved&.last.in?([WAREHOUSED, STAGED])
+  end
 
   def adopt_status
     self.status = container.status
@@ -79,7 +75,7 @@ class Pallet < ApplicationRecord
 
   # TODO: Move these to a service
   def cascade_statuses
-    boxes.where.not(status: status).find_each { |p| p.update(status: status) }
+    boxes.where.not(status: status).find_each { |box| box.update(status: status) }
     pallet_items.where.not(status: status).find_each { |pi| pi.update(status: status) }
   end
 

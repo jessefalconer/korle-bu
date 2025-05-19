@@ -43,13 +43,13 @@ class Box < ApplicationRecord
   end
 
   before_save do
-    orphan_box if orphanable_status?
+    orphan_box if status_will_change_to_warehoused_or_staged?
     adopt_status if adopting_by_parent?
   end
 
   after_save do
     cascade_packed_items_location if saved_change_to_container_id || saved_change_to_pallet_id
-    cascade_statuses if saved_change_to_status && cascadable?
+    cascade_statuses if saved_change_to_status?
   end
 
   STATUSES.each do |stat|
@@ -58,23 +58,29 @@ class Box < ApplicationRecord
     end
   end
 
-  def cascadable?
-    complete? || received? || archived? || saved_change_to_status?(from: [WAREHOUSED, STAGED])
+  def shipment
+    parent&.shipment
   end
 
-  def shipment
-    container&.shipment || pallet&.container&.shipment
+  def parent
+    container || pallet
   end
 
   def orphanable_status?
-    will_save_change_to_status?(to: [WAREHOUSED, STAGED])
+    status_will_change_to_warehoused_or_staged? && !parent&.status&.in?([ARCHIVED, WAREHOUSED, STAGED])
   end
 
   def adopting_by_parent?
-    (will_save_change_to_container_id?(from: nil) || will_save_change_to_pallet_id?(from: nil)) && (staged? || warehoused?) && !will_save_change_to_status?
+    (pallet_id_change_to_be_saved&.first.nil? && container_id_change_to_be_saved&.first.nil?) &&
+      (staged? || warehoused?) &&
+      !will_save_change_to_status?
   end
 
   private
+
+  def status_will_change_to_warehoused_or_staged?
+    status_change_to_be_saved&.last.in?([WAREHOUSED, STAGED])
+  end
 
   def adopt_status
     self.status = pallet&.status || container&.status
