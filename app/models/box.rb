@@ -72,8 +72,7 @@ class Box < ApplicationRecord
 
   def adopting_by_parent?
     (pallet_id_change_to_be_saved&.first.nil? && container_id_change_to_be_saved&.first.nil?) &&
-      (staged? || warehoused?) &&
-      !will_save_change_to_status?
+      (staged? || warehoused?) && !will_save_change_to_status?
   end
 
   private
@@ -83,7 +82,9 @@ class Box < ApplicationRecord
   end
 
   def adopt_status
-    self.status = pallet&.status || container&.status
+    return unless parent
+
+    self.status = parent.status
   end
 
   def orphan_box

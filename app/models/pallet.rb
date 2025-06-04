@@ -66,6 +66,8 @@ class Pallet < ApplicationRecord
   end
 
   def adopt_status
+    return unless container
+
     self.status = container.status
   end
 
