@@ -43,14 +43,8 @@ describe Box do
       subject.update(status: Box::RECEIVED)
       expect(box_item.reload.status).to eq(PackedItem::RECEIVED)
 
-      subject.update(status: Box::WAREHOUSED)
-      expect(box_item.reload.status).to eq(PackedItem::WAREHOUSED)
-
       subject.update(status: Box::ARCHIVED)
       expect(box_item.reload.status).to eq(PackedItem::ARCHIVED)
-
-      subject.update(status: Box::STAGED)
-      expect(box_item.reload.status).to eq(PackedItem::STAGED)
 
       subject.update(status: Box::IN_PROGRESS)
       expect(box_item.reload.status).to eq(PackedItem::IN_PROGRESS)
@@ -121,6 +115,16 @@ describe Box do
       it "does not adopt the status of its parent" do
         subject.update(pallet: nil, container: nil, status: Box::IN_PROGRESS)
         container.update(status: Container::COMPLETE)
+
+        subject.update(container: container)
+        expect(subject.status).to eq(Box::IN_PROGRESS)
+      end
+    end
+
+    context "when a box has no parent, but it had a status Warehoused or Staged" do
+      it "adopts the status of its parent" do
+        subject.update(pallet: nil, container: nil, status: Box::WAREHOUSED)
+        container.update(status: Container::IN_PROGRESS)
 
         subject.update(container: container)
         expect(subject.status).to eq(Box::IN_PROGRESS)

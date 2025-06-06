@@ -45,7 +45,7 @@ class Pallet < ApplicationRecord
   end
 
   after_save do
-    cascade_statuses if saved_change_to_status?
+    cascade_statuses if !status_changed_to_warehoused_or_staged?
     cascade_packed_items_location if saved_change_to_container_id
   end
 
@@ -63,6 +63,13 @@ class Pallet < ApplicationRecord
 
   def status_will_change_to_warehoused_or_staged?
     status_change_to_be_saved&.last.in?([WAREHOUSED, STAGED])
+  end
+
+  def status_changed_to_warehoused_or_staged?
+    return false unless saved_change_to_status?
+
+    from, to = saved_change_to_status
+    [WAREHOUSED, STAGED].include?(to) && ![WAREHOUSED, STAGED].include?(from)
   end
 
   def adopt_status

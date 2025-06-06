@@ -32,29 +32,33 @@ describe Pallet do
       subject.update(status: Pallet::COMPLETE)
       expect(box.reload.status).to eq(Box::COMPLETE)
     end
-  end
 
-  describe "#orphan_pallet" do
-    context "a pallet, with a box, has its status changed to 'Warehoused'" do
-      it "dissacociates the box from the pallet, and iself from the containe" do
-        expect(subject.boxes).to include(box)
-
-        subject.update(status: Pallet::WAREHOUSED)
-        expect(subject.boxes).not_to include(box)
-        expect(box.reload.status).to eq(Box::WAREHOUSED)
-        expect(subject.container).to be_nil
-      end
+    it "does not change the status of boxes when the pallet is 'Warehoused'" do
+      subject.update(status: Pallet::WAREHOUSED)
+      expect(box.reload.status).to eq(Box::IN_PROGRESS)
     end
 
-    context "a pallet, with a box, has its status changed to 'Staged'" do
-      it "dissacociates the box from the pallet, and iself from the container" do
-        expect(subject.boxes).to include(box)
+    it "does not change the status of boxes when the pallet is 'Staged'" do
+      subject.update(status: Pallet::STAGED)
+      expect(box.reload.status).to eq(Box::IN_PROGRESS)
+    end
+  end
 
-        subject.update(status: Pallet::STAGED)
-        expect(subject.boxes).not_to include(box)
-        expect(box.reload.status).to eq(Box::STAGED)
-        expect(subject.container).to be_nil
-      end
+  context "a pallet, with a box, has its status changed to 'Warehoused'" do
+    it "dissassociates itself from the container, but the boxes are unchanged" do
+      subject.update(status: Pallet::WAREHOUSED)
+      expect(subject.boxes).to include(box)
+      expect(box.reload.status).to eq(Box::IN_PROGRESS)
+      expect(subject.container).to be_nil
+    end
+  end
+
+  context "a pallet, with a box, has its status changed to 'Staged'" do
+    it "dissassociates itself from the container, but the boxes are unchanged"  do
+      subject.update(status: Pallet::STAGED)
+      expect(subject.boxes).to include(box)
+      expect(box.reload.status).to eq(Box::IN_PROGRESS)
+      expect(subject.container).to be_nil
     end
   end
 
@@ -66,6 +70,7 @@ describe Pallet do
         subject.update(container: container)
 
         expect(subject.status).to eq(Container::IN_PROGRESS)
+        expect(box.reload.status).to eq(Box::IN_PROGRESS)
       end
     end
 
@@ -76,6 +81,7 @@ describe Pallet do
         subject.update(container: container)
 
         expect(subject.status).to eq(Container::IN_PROGRESS)
+        expect(box.reload.status).to eq(Box::IN_PROGRESS)
       end
     end
   end
