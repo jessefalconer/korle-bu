@@ -96,17 +96,11 @@ class ItemsController < ApplicationController
     search_results_item_ids = Item.search_by_generated_name(params[:search])
       .limit(25)
       .pluck(:id)
-    @items = PackedItem.left_joins(:item, :shipment)
-      .where("items.category_id IS NOT NULL AND
-        packed_items.remaining_quantity > 0 AND
-        packed_items.status <> ? AND
-        shipments.receiving_warehouse_id = ? AND
-        shipments.status = ? AND
-        packed_items.item_id IN (?)",
-             PackedItem::ARCHIVED,
-             current_user.warehouse_id,
-             Shipment::RECEIVED,
-             search_results_item_ids)
+    @items = PackedItem.received_in(current_user.warehouse_id)
+      .where.not(items: { category_id: nil })
+      .where(item_id: search_results_item_ids)
+      .preload(item: [:category, { photo_attachment: :blob }])
+      .with_parents
       .group_by(&:item)
       .sort_by { |item, _items| item.generated_name }
 

@@ -84,15 +84,18 @@ class Pallet < ApplicationRecord
     self.container_id = nil
   end
 
-  # TODO: Move these to a service
+  # Boxes still update one by one, because Box has its own orphan/adopt callbacks.
+  # Packed items are synced in bulk.
   def cascade_statuses
     boxes.where.not(status: status).find_each { |box| box.update(status: status) }
-    pallet_items.where.not(status: status).find_each { |pi| pi.update(status: status) }
+    PackedItem.where(pallet_id: id).sync_with_parents!
+    pallet_items.reset
   end
 
   def cascade_packed_items_location
-    pallet_items.each(&:save!)
-    box_items.each(&:save!)
+    PackedItem.where(pallet_id: id).or(PackedItem.where(box_id: Box.where(pallet_id: id).select(:id))).sync_with_parents!
+    pallet_items.reset
+    box_items.reset
   end
 
   def set_defaults

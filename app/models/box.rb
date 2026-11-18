@@ -55,8 +55,9 @@ class Box < ApplicationRecord
   end
 
   after_save do
-    cascade_packed_items_location if saved_change_to_container_id || saved_change_to_pallet_id
-    cascade_statuses if saved_change_to_status?
+    if saved_change_to_container_id? || saved_change_to_pallet_id? || saved_change_to_status?
+      cascade_to_packed_items
+    end
   end
 
   STATUSES.each do |stat|
@@ -99,13 +100,11 @@ class Box < ApplicationRecord
     self.pallet_id = nil
   end
 
-  # TODO: Move these to a service
-  def cascade_packed_items_location
-    box_items.each(&:save!)
-  end
-
-  def cascade_statuses
-    box_items.where.not(status: status).find_each { |bi| bi.update(status: status) }
+  # Gives packed items this box's status and shipment in one query. Queries fresh rather
+  # than through the cached box_items association, which can be stale.
+  def cascade_to_packed_items
+    PackedItem.where(box_id: id).sync_with_parents!
+    box_items.reset
   end
 
   def set_defaults

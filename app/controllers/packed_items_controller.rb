@@ -5,86 +5,49 @@ class PackedItemsController < ApplicationController
   before_action :set_warehouse_id
 
   def all_received_items
-    @items = PackedItem.includes(:item)
-      .left_joins(:item, :shipment)
-      .where(
-        "items.category_id IS NOT NULL AND
-        packed_items.remaining_quantity > 0 AND
-        packed_items.status <> ? AND
-        shipments.receiving_warehouse_id = ? AND
-        shipments.status = ?",
-        PackedItem::ARCHIVED,
-        @warehouse_id,
-        Shipment::RECEIVED
-      )
-      .group_by(&:item)
-      .sort_by { |item, _items| item.generated_name }
+    received = PackedItem.received_in(@warehouse_id).where.not(items: { category_id: nil })
+    per_page = Kaminari.config.default_per_page
 
-    @items = Kaminari.paginate_array(@items).page(params[:page])
+    # Paginate distinct items in SQL, then load packed items only for this page.
+    items = Item.where(id: received.select(:item_id))
+      .preload(:category, photo_attachment: :blob)
+      .order(:generated_name, :id)
+      .page(params[:page]).per(per_page)
+    packed_by_item = received.where(item_id: items.map(&:id)).with_parents.group_by(&:item_id)
+    pairs = items.map { |item| [item, packed_by_item.fetch(item.id, [])] }
+
+    @items = Kaminari.paginate_array(pairs, total_count: items.total_count).page(params[:page]).per(per_page)
   end
 
   def received_categories
-    @packed_items = PackedItem.includes(:item).
-      left_joins(:item, :shipment)
-      .where(
-        "items.category_id IS NOT NULL AND
-        packed_items.remaining_quantity > 0  AND
-        packed_items.status <> ? AND
-        shipments.receiving_warehouse_id = ? AND
-        shipments.status = ?",
-        PackedItem::ARCHIVED,
-        @warehouse_id,
-        Shipment::RECEIVED
-      )
-      .group_by(&:category)
-      .sort_by { |category, _items| category.name }
+    received = PackedItem.received_in(@warehouse_id)
+    totals_sql = Arel.sql("COUNT(DISTINCT packed_items.item_id), SUM(packed_items.remaining_quantity)")
 
-    @uncategorized_items = PackedItem.includes(:item)
-      .left_joins(:item, :shipment)
-      .where(
-        "items.category_id IS NULL AND
-        packed_items.remaining_quantity > 0 AND
-        packed_items.status <> ? AND
-        shipments.receiving_warehouse_id = ? AND
-        shipments.status = ?",
-        PackedItem::ARCHIVED,
-        @warehouse_id,
-        Shipment::RECEIVED
-      )
+    totals_by_category = received.where.not(items: { category_id: nil })
+      .group("items.category_id")
+      .pluck(Arel.sql("items.category_id"), totals_sql)
+      .map { |category_id, item_count, remaining| [category_id, { item_count: item_count, remaining: remaining.to_i }] }
+      .to_h
+    @category_totals = Category.where(id: totals_by_category.keys).order(:name)
+      .map { |category| [category, totals_by_category[category.id]] }
+
+    item_count, remaining = received.where(items: { category_id: nil }).pick(totals_sql)
+    @uncategorized_totals = { item_count: item_count.to_i, remaining: remaining.to_i }
   end
 
   def received_category_items
     @category = Category.find(params[:id])
-    @packed_items = PackedItem.includes(:item)
-      .left_joins(:item, :shipment)
-      .where(
-        "items.category_id = ? AND
-        packed_items.remaining_quantity > 0 AND
-        packed_items.status <> ? AND
-        shipments.receiving_warehouse_id = ? AND
-        shipments.status = ?",
-        params[:id],
-        PackedItem::ARCHIVED,
-        @warehouse_id,
-        Shipment::RECEIVED
-      )
+    @packed_items = PackedItem.received_in(@warehouse_id)
+      .where(items: { category_id: params[:id] })
+      .preload(:item)
       .order("items.generated_name")
       .page params[:page]
   end
 
   def received_uncategorized_items
-    @packed_items = PackedItem.includes(:item)
-      .left_joins(:item, :shipment)
-      .where(
-        "items.category_id IS NULL AND
-        packed_items.remaining_quantity > 0 AND
-        packed_items.status <> ? AND
-        shipments.receiving_warehouse_id = ? AND
-        shipments.status = ?",
-        PackedItem::ARCHIVED,
-        @warehouse_id,
-        Shipment::RECEIVED
-      )
+    @packed_items = PackedItem.received_in(@warehouse_id)
+      .where(items: { category_id: nil })
+      .preload(:item)
       .order("items.generated_name")
       .page params[:page]
 
@@ -93,49 +56,11 @@ class PackedItemsController < ApplicationController
 
   def received_item_locations
     @item = Item.find(params[:id])
+    received = PackedItem.received_in(@warehouse_id).where(item_id: params[:id])
 
-    @box_items = PackedItem.includes(:item)
-      .left_joins(:item, :shipment)
-      .where(
-        "packed_items.box_id IS NOT NULL AND
-        packed_items.item_id = ? AND
-        packed_items.remaining_quantity > 0 AND
-        packed_items.status <> ? AND
-        shipments.receiving_warehouse_id = ? AND
-        shipments.status = ?",
-        params[:id],
-        PackedItem::ARCHIVED,
-        @warehouse_id,
-        Shipment::RECEIVED
-      )
-
-    @pallet_items = PackedItem.includes(:item)
-      .left_joins(:item, :shipment)
-      .where(
-        "packed_items.pallet_id IS NOT NULL AND
-        packed_items.item_id = ? AND
-        packed_items.remaining_quantity > 0 AND
-        packed_items.status <> ? AND
-        shipments.receiving_warehouse_id = ? AND shipments.status = ?",
-        params[:id],
-        PackedItem::ARCHIVED,
-        @warehouse_id,
-        Shipment::RECEIVED
-      )
-    @container_items = PackedItem.includes(:item)
-      .left_joins(:item, :shipment)
-      .where(
-        "packed_items.container_id IS NOT NULL AND
-        packed_items.item_id = ? AND
-        packed_items.remaining_quantity > 0 AND
-        packed_items.status <> ? AND
-        shipments.receiving_warehouse_id = ? AND
-        shipments.status = ?",
-        params[:id],
-        PackedItem::ARCHIVED,
-        @warehouse_id,
-        Shipment::RECEIVED
-      )
+    @box_items = received.where.not(box_id: nil).preload(:box)
+    @pallet_items = received.where.not(pallet_id: nil).preload(:pallet)
+    @container_items = received.where.not(container_id: nil).preload(:container)
   end
 
   def unpack_selected
