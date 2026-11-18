@@ -14,7 +14,7 @@
         %p Any combination of suggested and search items can be selected.
     = render partial: "item_card", locals: {item: @item}
 
-    - if @item.packed_items.count.zero?
+    - if @instance_counts.fetch(@item.id, 0).zero?
       .row
         .col-xs-12
           %p This item is not currently in use. You may wish to delete it.
@@ -26,7 +26,7 @@
         %li.active
           %a{data: {toggle: "tab"}, href: "#suggestions"}
             Suggestions
-            %span.label.label-success= @similar_items.count
+            %span.label.label-success= @similar_items.size
         %li
           %a{data: {toggle: "tab"}, href: "#search"}
             Search
@@ -64,7 +64,7 @@
                             = item.flagged&.to_s.capitalize
                         %td
                           = link_to item_instances_path(item) do
-                            %p.instances= item.packed_items.count
+                            %p.instances= @instance_counts.fetch(item.id, 0)
                         %td
                           = check_box_tag "reconcile_ids[]", item.id, false, {id: item.id}
               - else

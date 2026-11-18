@@ -65,8 +65,12 @@ class Item < ApplicationRecord
     self.generated_name = process_name.presence || "Unnamed Item"
   end
 
-  def self.find_similar_records(item)
-    Item.search_by_generated_name(item.generated_name).where.not(id: item.id)
+  SIMILAR_RECORDS_LIMIT = 50
+
+  # Closest matches first (ranked by trigram similarity). Capped because broad
+  # names match hundreds of items, and only the best few are useful.
+  def self.find_similar_records(item, limit: SIMILAR_RECORDS_LIMIT)
+    Item.search_by_generated_name(item.generated_name).where.not(id: item.id).limit(limit)
   end
 
   def self.execute_merge(item, merge_items, delete: false, verify: true)

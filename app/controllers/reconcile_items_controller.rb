@@ -16,7 +16,8 @@ class ReconcileItemsController < ApplicationController
   end
 
   def start
-    @similar_items = Item.find_similar_records(@item)
+    @similar_items = Item.find_similar_records(@item).includes(:category).to_a
+    @instance_counts = PackedItem.where(item_id: @similar_items.map(&:id) << @item.id).group(:item_id).count
   end
 
   def confirm
