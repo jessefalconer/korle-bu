@@ -1,16 +1,13 @@
 # frozen_string_literal: true
 
-# rubocop:disable Naming/HeredocDelimiterNaming
+desc "Terminate other connections to this environment's database (e.g. before db:drop or db:reset)"
 task kpsql: :environment do
-  db_name = "#{File.basename(Rails.root)}_#{Rails.env}"
-  sh = <<~EOF
-    ps xa \
-      | grep postgres: \
-      | grep #{db_name} \
-      | grep -v grep \
-      | awk '{print $1}' \
-      | xargs kill
-  EOF
-  puts `#{sh}`
+  conn = ActiveRecord::Base.connection
+  terminated = conn.select_values(<<~SQL).count(true)
+    SELECT pg_terminate_backend(pid)
+    FROM pg_stat_activity
+    WHERE datname = current_database() AND pid <> pg_backend_pid()
+  SQL
+
+  puts "Terminated #{terminated} connection(s) to #{conn.current_database}."
 end
-# rubocop:enable Naming/HeredocDelimiterNaming

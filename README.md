@@ -1,41 +1,83 @@
-Korle-Bu is a non-profit organization shipping medical supplies and equipment to developing nations. https://kbnf.org/
+Inventory and shipment tracking for [Korle-Bu Neuroscience Foundation](https://kbnf.org/), a non-profit shipping medical supplies and equipment to developing nations.
 
-## Getting Started & Tech
-  Backend: Ruby on Rails. We suggest using RVM or rbenv to install version `2.6.5p114`. You can check your current version of ruby with `ruby -v`. More information on ruby: https://www.ruby-lang.org/en/documentation/installation/
+## Tech
 
-  Database: PostgreSQL, use  `brew` or visit https://www.postgresql.org/ and install version `10.5`
+- **Rails 6.0** on **Ruby 2.6.5** (pinned in `.ruby-version`)
+- **PostgreSQL** (production runs 12)
+- **Webpacker** with **Node 16** (pinned in `.node-version`) and **Yarn 1** for JavaScript; Sprockets for SCSS
+- **HAML** views, Bootstrap 3, jQuery and jQuery UI
+- **RSpec** and FactoryBot for tests, **RuboCop** for linting
 
-  Templating, Style & More: HAML, SCSS, RSpec
+Notable gems: `cancancan` (permissions), `kaminari` (pagination), `pg_search` (search), `chartkick` and `groupdate` (dashboard charts), `aws-sdk-s3` (Active Storage on DigitalOcean Spaces), `capistrano` (deploys).
 
-  Some gems we use:
-  * `aws-sdk` for S3 storage
-  * `capistrano` for deployment
-  * `factory-bot` for testing
-  * `kaminar` for pagination
-  * `cancancan` for permissions
+## Setup
 
-### Setup Rails
-* Clone the repository: `git@github.com:jessefalconer/korle-bu.git` and `cd` into the directory
-* Install dependencies with `bundle install`
-* Create the database with `rails db:create`
-* Run any pending migrations with `rails db:migrate`
-* Mass insert the SQL dump into pg with `psql kbnf_development < latest_pg_production_dump.sql.sql`
-  * In the supplied .sql file, replace `deploy` with your db user name if `ERROR:  role "deploy" does not exist` is returned
-  * Clean up the priveleges and roles:
-    `CREATE ROLE "<my db user name>";
-      GRANT ALL PRIVILEGES ON DATABASE kbnf_development TO "<my db user name>";
-      REVOKE ALL ON SCHEMA public FROM PUBLIC;
-      REVOKE ALL ON SCHEMA public FROM "<my db user name>";
-      GRANT ALL ON SCHEMA public TO "<my db user name>";
-      GRANT ALL ON SCHEMA public TO PUBLIC;`
-* Seed users with `rails db:seed`
-* Run the appropriate rake tasks (`rake --tasks` to view a list)
-* Start the server with `rails s`
+Install the pinned Ruby and Node with a version manager, e.g. rbenv and nodenv (both on Homebrew). They read `.ruby-version` and `.node-version` automatically once initialized in your shell:
 
-### Rails Convenience
-* View http paths by running `rails routes` or visiting http://localhost:3000/rails/info/routes
-* To lint your code and see possible style "offences" or errors, run `rubocop`. To automatically correct them run `rubocop -a`
-* Run your tests with `rspec`
+```bash
+rbenv install
+nodenv install
+npm install -g yarn@1
+```
 
-### ERD as of May 2021
-[erd.pdf](https://github.com/jessefalconer/korle-bu/files/6436451/erd.pdf)
+Then install dependencies and set up the database:
+
+```bash
+bundle install
+yarn install
+bin/rails db:setup
+bin/rails server
+```
+
+`db:setup` creates the database, loads `db/schema.rb` and runs the seeds. Visit http://localhost:3000.
+
+### Seed data
+
+`bin/rails db:seed` replaces all app data in development with a snapshot of production (`db/seeds/snapshot`, one gzipped CSV per table, loaded in about 15 seconds). No production users are in the snapshot. Seeding creates placeholder users for every user the data references:
+
+- **Admin:** your email (`SEED_ADMIN_EMAIL`, or your `git config user.email` if that isn't set)
+- **Other roles:** `user<id>@example.com`, printed when seeding finishes
+- **Password for everyone:** `123456`
+
+All seeded users belong to the warehouse holding the most received stock, so the received and unpacking pages have data.
+
+To refresh the snapshot from a new production dump:
+
+```bash
+pg_dump --no-owner --no-acl --exclude-table-data=users -d <production_db> -f dump.sql   # on the server
+createdb kbnf_prod_scratch && psql -d kbnf_prod_scratch -f dump.sql                     # locally
+bin/rails seed_snapshot:export SOURCE_DB=kbnf_prod_scratch
+```
+
+The export blanks columns that hold details about real people (see `SCRUBBED_COLUMNS` in `lib/seed_snapshot.rb`). Add new ones there when the schema gains them.
+
+## Development
+
+- **Tests:** `bundle exec rspec`
+- **Lint:** `bundle exec rubocop` (`-a` to autocorrect)
+- **Routes:** `bin/rails routes`, or http://localhost:3000/rails/info/routes
+- **JavaScript** compiles on demand when a page requests it. `bin/webpack` builds it ahead of time.
+- **Database in use:** if `db:drop` or `db:reset` fails because other sessions are connected, run `bin/rails kpsql` to end them.
+
+### Troubleshooting (macOS)
+
+- **Commands hang under Spring:** set `DISABLE_SPRING=1`.
+- **Pack requests fail with `ECONNREFUSED localhost:3035`:** Ruby 2.6's socket check misreports closed ports on recent macOS, so Webpacker thinks the dev server is running. `config/initializers/webpacker_dev_server_check.rb` works around this in development; make sure you haven't removed it.
+
+## Deployment
+
+Deploys use Capistrano to a single server (see `config/deploy/production.rb`):
+
+```bash
+bundle exec cap production deploy
+```
+
+The deploy runs `yarn install` before precompiling assets. Production secrets are managed with `capistrano-secrets-yml`, and the database connection comes from `DATABASE_URL` and `KBNF_DATABASE_PASSWORD` on the server.
+
+## Legacy data
+
+`lib/tasks/legacy_data.rake` holds the one-time tasks that migrated the original schema (`big_items`, `item_boxes`) into the current model. They aren't part of normal setup.
+
+## ERD
+
+[erd.pdf](erd.pdf) was last generated in May 2021, so columns added since then are missing. Regenerate it with `bundle exec erd` (uses the `rails-erd` gem; needs Graphviz: `brew install graphviz`).
