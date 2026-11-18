@@ -28,6 +28,8 @@ class Pallet < ApplicationRecord
   scope :in_progress, -> { where(status: IN_PROGRESS) }
   scope :warehoused, -> { where(container_id: nil, status: WAREHOUSED) }
   scope :reassignable, -> { where(status: [WAREHOUSED, STAGED, IN_PROGRESS]) }
+  # Preloads everything the pallet tables and location presenters read, avoiding N+1 queries
+  scope :with_location, -> { preload(:boxes, container: { shipment: :receiving_warehouse }) }
 
   delegate :shipment, to: :container, allow_nil: true
 

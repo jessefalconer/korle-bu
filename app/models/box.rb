@@ -24,6 +24,13 @@ class Box < ApplicationRecord
   scope :in_progress, -> { where(status: IN_PROGRESS) }
   scope :warehoused, -> { left_outer_joins(:pallet).where("boxes.status = ? OR pallets.status = ?", WAREHOUSED, WAREHOUSED) }
   scope :reassignable, -> { where(status: [WAREHOUSED, STAGED, IN_PROGRESS]) }
+  # Preloads everything the box tables and location presenters read, avoiding N+1 queries
+  scope :with_location, lambda {
+    preload(
+      container: { shipment: :receiving_warehouse },
+      pallet: { container: { shipment: :receiving_warehouse } }
+    )
+  }
 
   validates :name, :custom_uid, :user, presence: true
   validates :custom_uid, :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex

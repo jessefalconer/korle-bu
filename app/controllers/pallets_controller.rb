@@ -21,13 +21,13 @@ class PalletsController < ApplicationController
 
   def index
     @pallets = if params[:display]
-      Pallet.includes(:boxes, shipment: :receiving_warehouse)
+      Pallet.with_location
         .accessible_by(current_ability)
         .send(params[:display])
         .order(custom_uid: :desc)
         .page params[:page]
     else
-      Pallet.includes(:boxes, shipment: :receiving_warehouse)
+      Pallet.with_location
         .where.not(status: %w[Warehoused Staged])
         .accessible_by(current_ability)
         .order(custom_uid: :desc)
@@ -47,12 +47,16 @@ class PalletsController < ApplicationController
 
   def show
     @staged_items = PackedItem.staged
+      .preload(:item)
       .order(created_at: :desc)
     @staged_boxes = Box.staged
+      .with_location
       .order(custom_uid: :desc)
     @warehoused_items = PackedItem.warehoused
+      .preload(:item)
       .order(created_at: :desc)
     @warehoused_boxes = Box.warehoused
+      .with_location
       .order(custom_uid: :desc)
     @box_options = Box.reassignable
       .order(id: :desc)
@@ -127,13 +131,10 @@ class PalletsController < ApplicationController
   end
 
   def set_pallet
-    @pallet = Pallet.includes(
-      :pallet_items,
-      boxes: [
-        container: :shipment,
-        box_items: :item,
-        pallet: [container: :shipment]
-      ]
+    @pallet = Pallet.preload(
+      :boxes, :category, :user,
+      pallet_items: :item, box_items: :item,
+      container: { shipment: :receiving_warehouse }
     ).find(params[:id])
   end
 end

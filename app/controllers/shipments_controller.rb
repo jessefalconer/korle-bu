@@ -30,12 +30,12 @@ class ShipmentsController < ApplicationController
   def show
     respond_to do |format|
       format.html do
-        @staged_items = PackedItem.staged
-        @staged_boxes = Box.staged
-        @staged_pallets = Pallet.staged
-        @warehoused_items = PackedItem.warehoused
-        @warehoused_boxes = Box.warehoused
-        @warehoused_pallets = Pallet.warehoused
+        @staged_items = PackedItem.staged.preload(:item)
+        @staged_boxes = Box.staged.with_location
+        @staged_pallets = Pallet.staged.with_location
+        @warehoused_items = PackedItem.warehoused.preload(:item)
+        @warehoused_boxes = Box.warehoused.with_location
+        @warehoused_pallets = Pallet.warehoused.with_location
         @box_options = Box.reassignable
           .order(id: :desc)
           .pluck(:name, :id)
@@ -80,12 +80,12 @@ class ShipmentsController < ApplicationController
   end
 
   def set_shipment
-    @shipment = Shipment.includes(
-        containers: [
-          :container_items,
-          pallets: [pallet_items: :item, boxes: [box_items: :item]],
-          boxes: [box_items: :item]
-        ]
+    # Preload exactly the associations the show page renders, so their any?/size/each
+    # calls don't each go back to the database.
+    @shipment = Shipment.preload(
+        :containers, :receiving_warehouse, :shipping_warehouse, :user,
+        :pallets, :pallet_boxes, :container_boxes,
+        container_items: :item, pallet_items: :item, box_items: :item
       ).find(params[:id])
   end
 end

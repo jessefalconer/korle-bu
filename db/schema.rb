@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2025_03_01_193208) do
+ActiveRecord::Schema.define(version: 2026_11_18_120000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
@@ -62,7 +62,10 @@ ActiveRecord::Schema.define(version: 2025_03_01_193208) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "number"
     t.index ["container_id"], name: "index_boxes_on_container_id"
+    t.index ["custom_uid"], name: "index_boxes_on_custom_uid"
+    t.index ["name"], name: "index_boxes_on_name"
     t.index ["pallet_id"], name: "index_boxes_on_pallet_id"
+    t.index ["status"], name: "index_boxes_on_status"
     t.index ["user_id"], name: "index_boxes_on_user_id"
   end
 
@@ -86,7 +89,10 @@ ActiveRecord::Schema.define(version: 2025_03_01_193208) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "destination"
     t.float "weight"
+    t.index ["custom_uid"], name: "index_containers_on_custom_uid"
+    t.index ["name"], name: "index_containers_on_name"
     t.index ["shipment_id"], name: "index_containers_on_shipment_id"
+    t.index ["status"], name: "index_containers_on_status"
     t.index ["user_id"], name: "index_containers_on_user_id"
   end
 
@@ -180,6 +186,7 @@ ActiveRecord::Schema.define(version: 2025_03_01_193208) do
     t.index ["item_id"], name: "index_packed_items_on_item_id"
     t.index ["pallet_id"], name: "index_packed_items_on_pallet_id"
     t.index ["shipment_id"], name: "index_packed_items_on_shipment_id"
+    t.index ["status"], name: "index_packed_items_on_status"
     t.index ["user_id"], name: "index_packed_items_on_user_id"
   end
 
@@ -198,6 +205,9 @@ ActiveRecord::Schema.define(version: 2025_03_01_193208) do
     t.float "weight"
     t.index ["category_id"], name: "index_pallets_on_category_id"
     t.index ["container_id"], name: "index_pallets_on_container_id"
+    t.index ["custom_uid"], name: "index_pallets_on_custom_uid"
+    t.index ["name"], name: "index_pallets_on_name"
+    t.index ["status"], name: "index_pallets_on_status"
     t.index ["user_id"], name: "index_pallets_on_user_id"
   end
 
@@ -211,6 +221,8 @@ ActiveRecord::Schema.define(version: 2025_03_01_193208) do
     t.bigint "shipping_warehouse_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["custom_uid"], name: "index_shipments_on_custom_uid"
+    t.index ["name"], name: "index_shipments_on_name"
     t.index ["receiving_warehouse_id"], name: "index_shipments_on_receiving_warehouse_id"
     t.index ["shipping_warehouse_id"], name: "index_shipments_on_shipping_warehouse_id"
     t.index ["user_id"], name: "index_shipments_on_user_id"

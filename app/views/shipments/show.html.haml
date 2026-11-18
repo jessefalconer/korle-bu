@@ -77,7 +77,7 @@
                     %th Name
                     %th Status
                 %tbody
-                  - @shipment.containers.order(custom_uid: :desc).each do |container|
+                  - sorted_desc(@shipment.containers, :custom_uid).each do |container|
                     %tr
                       %td
                         = link_to container_path(container) do

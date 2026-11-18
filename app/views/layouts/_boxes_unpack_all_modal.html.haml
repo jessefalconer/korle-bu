@@ -16,7 +16,7 @@
               %i.fas.fa-exclamation-triangle.text-warning
               This box has not been received. Check its status.
           .col-xs-12
-            %h5 Send #{@box.box_items.count} item(s) to the selected hospital/facility/clinic:
+            %h5 Send #{@box.box_items.size} item(s) to the selected hospital/facility/clinic:
 
           = form_for @box, url: boxes_unpack_all_path(@box), method: :post do |f|
             .col-xs-12
