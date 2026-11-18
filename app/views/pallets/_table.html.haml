@@ -24,7 +24,7 @@
             %p{class: "status-#{pallet.status.parameterize}"}= pallet.status
         %td.hidden-sm.hidden-xs
           = link_to pallet_path(pallet) do
-            %p{class: (pallet.boxes.count.zero? ? "text-warning" : "text-success")}= pallet.boxes.count
+            %p{class: (pallet.boxes.size.zero? ? "text-warning" : "text-success")}= pallet.boxes.size
         %td.hidden-xs
           = link_to pallet_path(pallet) do
             %p= pallet.shipment&.receiving_warehouse&.name

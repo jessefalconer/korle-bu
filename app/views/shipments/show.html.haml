@@ -35,24 +35,25 @@
           .col-xs-6.col-sm-4.col-md-6
             %h6.text-muted Status
             %h5{class: "status-#{@shipment.status.parameterize}"}= @shipment.status
+          - stats = @shipment.packed_item_stats
           .col-xs-6.col-sm-4.col-md-6
             %h6.text-muted Items (Unique)
-            %h5= @shipment.packed_items.distinct.count(:item_id)
+            %h5= stats[:unique_items]
           .col-xs-6.col-sm-4.col-md-6
             %h6.text-muted Items (Instances)
-            %h5= @shipment.packed_items.count
+            %h5= stats[:instances]
           .col-xs-6.col-sm-4.col-md-6
             %h6.text-muted Items (Quantity)
-            %h5= @shipment.packed_items.pluck(:quantity).inject {|sum, quantity| sum + quantity }.to_i
+            %h5= stats[:quantity]
           .col-xs-6.col-sm-4.col-md-6
             %h6.text-muted Items (Est. Weight)
-            %h5 #{@shipment.packed_items.pluck(:weight).compact.inject {|sum, quantity| sum + quantity }.to_f.round(4)}kg
+            %h5 #{stats[:weight]}kg
           .col-xs-6.col-sm-4.col-md-6
             %h6.text-muted Earliest Expiry
-            %h5= @shipment.packed_items.pluck(:expiry_date).compact.min&.strftime("%Y-%m-%d") || "N/A"
+            %h5= stats[:earliest_expiry]&.strftime("%Y-%m-%d") || "N/A"
           .col-xs-6.col-sm-4.col-md-6
             %h6.text-muted Latest Expiry
-            %h5= @shipment.packed_items.pluck(:expiry_date).compact.max&.strftime("%Y-%m-%d") || "N/A"
+            %h5= stats[:latest_expiry]&.strftime("%Y-%m-%d") || "N/A"
           .col-xs-6.col-sm-4.col-md-6
             %h6.text-muted Created By
             %h5= @shipment.user.name
@@ -77,7 +78,7 @@
                     %th Name
                     %th Status
                 %tbody
-                  - @shipment.containers.order(custom_uid: :desc).each do |container|
+                  - sorted_desc(@shipment.containers, :custom_uid).each do |container|
                     %tr
                       %td
                         = link_to container_path(container) do

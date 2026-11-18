@@ -90,13 +90,13 @@
                 %i.fa.fa-pallet
 
         .panel.panel-default
-          %a.panel-heading.collapsed{class: (@pallet.pallet_items.count > 5 && "collapsed"), data: {toggle: "collapse"}, href: "#packed-items"}
+          %a.panel-heading.collapsed{class: (@pallet.pallet_items.size > 5 && "collapsed"), data: {toggle: "collapse"}, href: "#packed-items"}
             %i.fa.fa-stethoscope
             Palletized Items
             %span.label{class: @pallet.pallet_items.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
 
           - if @pallet.pallet_items.any?
-            #packed-items.collapse{class: (@pallet.pallet_items.count < 6 && "in")}
+            #packed-items.collapse{class: (@pallet.pallet_items.size < 6 && "in")}
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "packed-items"}
               = render partial: "packed_items/micro_table", locals: {packed_items: @pallet.pallet_items, assoc: "packed-items"}
               .close-collapse{data: {toggle: "collapse"}, href: "#packed-items"}
@@ -110,13 +110,13 @@
                 %i.fa.fa-pallet
 
         .panel.panel-default
-          %a.panel-heading.collapsed{class: (@pallet.box_items.count > 5 && "collapsed"), data: {toggle: "collapse"}, href: "#boxed-items"}
+          %a.panel-heading.collapsed{class: (@pallet.box_items.size > 5 && "collapsed"), data: {toggle: "collapse"}, href: "#boxed-items"}
             %i.fa.fa-stethoscope
             Packed Items in Boxes
             %span.label{class: @pallet.box_items.any? ? "label-success" : "label-warning"}= @pallet.box_items.size
 
           - if @pallet.box_items.any?
-            #boxed-items.collapse{class: (@pallet.box_items.count < 6 && "in")}
+            #boxed-items.collapse{class: (@pallet.box_items.size < 6 && "in")}
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "boxed-items"}
               = render partial: "packed_items/micro_table", locals: {packed_items: @pallet.box_items, assoc: "boxed-items"}
               .close-collapse{data: {toggle: "collapse"}, href: "#boxed-items"}

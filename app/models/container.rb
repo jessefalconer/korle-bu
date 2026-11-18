@@ -50,18 +50,24 @@ class Container < ApplicationRecord
 
   private
 
-  # TODO: Move these to a service
+  # Boxes and pallets still update one by one, because they have their own callbacks.
+  # Packed items are synced in bulk.
   def cascade_statuses
     boxes.where.not(status: status).find_each { |b| b.update(status: status) }
     pallets.where.not(status: status).find_each { |p| p.update(status: status) }
-    container_items.where.not(status: status).find_each { |ci| ci.update(status: status) }
+    PackedItem.where(container_id: id).sync_with_parents!
+    container_items.reset
   end
 
   def cascade_packed_items_location
-    container_items.each(&:save!)
-    pallet_items.each(&:save!)
-    pallet_box_items.each(&:save!)
-    box_items.each(&:save!)
+    pallet_ids = Pallet.where(container_id: id).select(:id)
+    box_ids = Box.where(container_id: id).or(Box.where(pallet_id: pallet_ids)).select(:id)
+
+    PackedItem.where(container_id: id)
+      .or(PackedItem.where(pallet_id: pallet_ids))
+      .or(PackedItem.where(box_id: box_ids))
+      .sync_with_parents!
+    [container_items, pallet_items, pallet_box_items, box_items].each(&:reset)
   end
 
   def set_defaults

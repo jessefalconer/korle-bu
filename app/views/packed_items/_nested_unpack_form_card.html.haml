@@ -39,7 +39,7 @@
                 .col-xs-12.col-md-4
                   .form-group
                     %label Hospital/Facility/Clinic
-                    = f.select :hospital_id, options_from_collection_for_select(Hospital.accessible_by(current_ability).order(:name), :id, :name), { include_blank: "None" }, { class: "form-control", id: "hospital-assignment-#{pi.id}" }
+                    = f.select :hospital_id, hospital_options, { include_blank: "None" }, { class: "form-control", id: "hospital-assignment-#{pi.id}" }
                 .col-xs-12.col-md-4
                   .form-group
                     %label Unpacked On

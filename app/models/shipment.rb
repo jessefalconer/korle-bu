@@ -58,6 +58,22 @@ class Shipment < ApplicationRecord
     complete? || received? || archived?
   end
 
+  # Summary numbers for the show page, computed in a single query.
+  def packed_item_stats
+    unique, instances, quantity, weight, earliest, latest = packed_items.pick(Arel.sql(<<~SQL.squish))
+      COUNT(DISTINCT item_id), COUNT(*), SUM(quantity), SUM(weight), MIN(expiry_date), MAX(expiry_date)
+    SQL
+
+    {
+      unique_items: unique.to_i,
+      instances: instances.to_i,
+      quantity: quantity.to_i,
+      weight: weight.to_f.round(4),
+      earliest_expiry: earliest,
+      latest_expiry: latest
+    }
+  end
+
   private
 
   # TODO: Move this to a service

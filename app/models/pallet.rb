@@ -28,6 +28,8 @@ class Pallet < ApplicationRecord
   scope :in_progress, -> { where(status: IN_PROGRESS) }
   scope :warehoused, -> { where(container_id: nil, status: WAREHOUSED) }
   scope :reassignable, -> { where(status: [WAREHOUSED, STAGED, IN_PROGRESS]) }
+  # Preloads everything the pallet tables and location presenters read, avoiding N+1 queries
+  scope :with_location, -> { preload(:boxes, container: { shipment: :receiving_warehouse }) }
 
   delegate :shipment, to: :container, allow_nil: true
 
@@ -82,15 +84,18 @@ class Pallet < ApplicationRecord
     self.container_id = nil
   end
 
-  # TODO: Move these to a service
+  # Boxes still update one by one, because Box has its own orphan/adopt callbacks.
+  # Packed items are synced in bulk.
   def cascade_statuses
     boxes.where.not(status: status).find_each { |box| box.update(status: status) }
-    pallet_items.where.not(status: status).find_each { |pi| pi.update(status: status) }
+    PackedItem.where(pallet_id: id).sync_with_parents!
+    pallet_items.reset
   end
 
   def cascade_packed_items_location
-    pallet_items.each(&:save!)
-    box_items.each(&:save!)
+    PackedItem.where(pallet_id: id).or(PackedItem.where(box_id: Box.where(pallet_id: id).select(:id))).sync_with_parents!
+    pallet_items.reset
+    box_items.reset
   end
 
   def set_defaults

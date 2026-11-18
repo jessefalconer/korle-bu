@@ -15,21 +15,21 @@
           %th Items
           %th Remaining
       %tbody
-        - @packed_items.each do |(category, items)|
+        - @category_totals.each do |(category, totals)|
           %tr
             %td
               = link_to received_category_items_path(category) do
-                %p= category&.name
+                %p= category.name
             %td
               = link_to received_category_items_path(category) do
                 %p= category.description
             %td
               = link_to received_category_items_path(category) do
-                %p= items.group_by(&:item).count
+                %p= totals[:item_count]
             %td
               = link_to received_category_items_path(category) do
-                %p= items.sum(&:remaining_quantity)
-        - if @uncategorized_items.any?
+                %p= totals[:remaining]
+        - if @uncategorized_totals[:item_count].positive?
           %tr
             %td
               = link_to received_uncategorized_items_path do
@@ -39,7 +39,7 @@
                 %p.text-danger N/A
             %td
               = link_to received_uncategorized_items_path do
-                %p= @uncategorized_items.group_by(&:item).count
+                %p= @uncategorized_totals[:item_count]
             %td
               = link_to received_uncategorized_items_path do
-                %p= @uncategorized_items.sum(&:remaining_quantity)
+                %p= @uncategorized_totals[:remaining]

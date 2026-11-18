@@ -21,7 +21,7 @@ class ContainersController < ApplicationController
 
   def index
     @containers = if params[:display]
-      Container.includes(shipment: :receiving_warehouse)
+      Container.preload(shipment: :receiving_warehouse)
         .accessible_by(current_ability)
         .send(params[:display])
         .order(custom_uid: :desc)
@@ -36,16 +36,22 @@ class ContainersController < ApplicationController
 
   def show
     @staged_items = PackedItem.staged
+      .preload(:item)
       .order(created_at: :desc)
     @staged_boxes = Box.staged
+      .with_location
       .order(custom_uid: :desc)
     @staged_pallets = Pallet.staged
+      .with_location
       .order(custom_uid: :desc)
     @warehoused_items = PackedItem.warehoused
+      .preload(:item)
       .order(created_at: :desc)
     @warehoused_boxes = Box.warehoused
+      .with_location
       .order(custom_uid: :desc)
     @warehoused_pallets = Pallet.warehoused
+      .with_location
       .order(custom_uid: :desc)
     @box_options = Box.reassignable
       .order(id: :desc)
@@ -81,8 +87,8 @@ class ContainersController < ApplicationController
   end
 
   def set_container
-    @container = Container.includes(
-      :boxes, :pallets, :shipment, container_items: :item
+    @container = Container.preload(
+      :boxes, :pallets, :user, container_items: :item, shipment: :receiving_warehouse
     ).find(params[:id])
   end
 end

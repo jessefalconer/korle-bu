@@ -1,6 +1,25 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  # Sorts a collection newest-first by `column`. A preloaded association is sorted in
+  # memory, because calling `.order` on it would throw away the preload and query again.
+  def sorted_desc(records, column, preload: nil)
+    if records.respond_to?(:loaded?) && records.loaded?
+      records.sort_by { |r| r.public_send(column) }.reverse
+    else
+      relation = records.order(column => :desc)
+      preload ? relation.preload(preload) : relation
+    end
+  end
+
+  # <option> tags for the hospital dropdown. Unpack forms render one dropdown per
+  # packed item, so the options are built once per request and reused.
+  def hospital_options
+    @hospital_options ||= options_from_collection_for_select(
+      Hospital.accessible_by(current_ability).order(:name), :id, :name
+    )
+  end
+
   def delete_button(path, confirm_text, classes = "")
     link_to(path, class: "btn btn-danger responsive-button #{classes}", data: { confirm: confirm_text, method: :delete }) do
       tag.i("", class: "fa fa-trash") +
