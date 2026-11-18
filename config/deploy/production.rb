@@ -9,6 +9,11 @@
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
 server "134.122.42.117", user: "deploy", roles: %w[app db web]
+
+# Read only the user's SSH config. macOS's /etc/ssh/crypto.conf uses the
+# OpenSSH "^algo" prefix syntax, which net-ssh doesn't understand, leaving it
+# with no ciphers to offer ("could not settle on encryption_client algorithm").
+set :ssh_options, config: [File.expand_path("~/.ssh/config")]
 require "net/scp"
 
 # role-based syntax

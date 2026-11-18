@@ -12,6 +12,9 @@ gem "capistrano-rails", "~> 1.4"
 gem "capistrano-rbenv", "~> 2.1", ">= 2.1.4"
 gem "capistrano-bundler", "~> 2.0"
 gem "capistrano-secrets-yml", "~> 1.1.0"
+# ed25519 SSH key support for net-ssh (Capistrano)
+gem "bcrypt_pbkdf", ">= 1.0", "< 2.0", require: false
+gem "ed25519", ">= 1.2", "< 2.0", require: false
 gem "chartkick"
 gem "groupdate"
 gem "haml", "~> 5.1.2"
