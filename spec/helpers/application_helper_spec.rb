@@ -31,4 +31,26 @@ describe ApplicationHelper, type: :helper do
       end
     end
   end
+
+  describe "#hospital_options" do
+    let(:admin) { create :user, role: "Admin" }
+
+    before do
+      allow(helper).to receive(:current_ability).and_return(Ability.new(admin))
+      create :hospital, name: "Zed Clinic"
+      create :hospital, name: "Alpha Hospital"
+    end
+
+    it "renders option tags for accessible hospitals, sorted by name" do
+      options = Nokogiri::HTML.fragment(helper.hospital_options).css("option").map(&:text)
+
+      expect(options).to eq(["Alpha Hospital", "Zed Clinic"])
+    end
+
+    it "builds the options once per view and reuses them" do
+      first = helper.hospital_options
+
+      expect(count_queries { expect(helper.hospital_options).to equal(first) }).to eq(0)
+    end
+  end
 end
