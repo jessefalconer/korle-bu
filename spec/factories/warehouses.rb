@@ -3,5 +3,7 @@
 FactoryBot.define do
   factory :warehouse do
     user
+
+    sequence(:name) { |n| "Warehouse #{n}" }
   end
 end

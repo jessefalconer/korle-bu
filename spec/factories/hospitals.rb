@@ -5,6 +5,6 @@ FactoryBot.define do
     warehouse
     user
 
-    name { "KBNF" }
+    sequence(:name) { |n| "Hospital #{n}" }
   end
 end

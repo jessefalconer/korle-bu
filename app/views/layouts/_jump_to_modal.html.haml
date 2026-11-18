@@ -30,9 +30,9 @@
               = form_with url: items_path, method: :get, html: {class: "inline-search-form text-field" } do |f|
                 = f.text_field :search_string, {placeholder: "Item Search"}
                 = submit_button_value(["fa-search", "fa-stethoscope", "fa-arrow-right"], "")
-            .col-xs-12.padding-top
-              - path = container_path(Container.order(:created_at).last)
-              = link_button("Latest Container", path)
-            .col-xs-12.padding-top
-              - path = shipment_path(Shipment.order(:created_at).last)
-              = link_button("Latest Shipment", path)
+            - if (latest_container = Container.order(:created_at).last)
+              .col-xs-12.padding-top
+                = link_button("Latest Container", container_path(latest_container))
+            - if (latest_shipment = Shipment.order(:created_at).last)
+              .col-xs-12.padding-top
+                = link_button("Latest Shipment", shipment_path(latest_shipment))
