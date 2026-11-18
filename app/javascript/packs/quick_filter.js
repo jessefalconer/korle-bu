@@ -38,9 +38,9 @@ $(() => {
     "unpack-items", "history-items", "boxed-items", "palletized-items", "containerized-items"
   ]
 
-  Reflect.apply(Array, undefined, types).forEach(assoc => {
-    var table  = document.getElementById(`filter-${assoc}-table`);
-    var tabList = document.getElementById(assoc);
+  types.forEach(assoc => {
+    const table = document.getElementById(`filter-${assoc}-table`);
+    const tabList = document.getElementById(assoc);
 
     if (table !== null) {
       $(document).on("click input", `#${assoc}-quick-filter`, () => {

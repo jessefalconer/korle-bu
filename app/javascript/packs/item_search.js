@@ -15,41 +15,28 @@ function indexSearch(params, path, initDrawers) {
     });
 }
 
-function initIndexSearchListeners() {
-  if (document.querySelector("#index-search-submit") === null) { return; }
+function bindSearchListeners(submitSelector, getPath) {
+  const submit = () => {
+    const params = $("#search-params").val();
+    if (params !== "") indexSearch(params, getPath(), true);
+  };
 
-  const initDrawers = true;
-  $(document).on("click", "#index-search-submit", () => {
-      const params = $("#search-params").val();
-      const path = $("#index-search-submit").data("path");
-      if (params !== "") indexSearch(params, path, initDrawers);
-  });
-
+  $(document).on("click", submitSelector, submit);
   $(document).on("keyup", "#search-params", e => {
-      if (e.key === "Enter") {
-        const params = $("#search-params").val();
-        const path = $("#index-search-submit").data("path");
-        if (params !== "") indexSearch(params, path, initDrawers);
-      }
+    if (e.key === "Enter") submit();
   });
 }
 
+function initIndexSearchListeners() {
+  if (document.querySelector("#index-search-submit") === null) return;
+
+  bindSearchListeners("#index-search-submit", () => $("#index-search-submit").data("path"));
+}
+
 function initPackedSearchListeners() {
-  if (document.querySelector("#packed-search-submit") === null) { return; }
+  if (document.querySelector("#packed-search-submit") === null) return;
 
-  const path = "/packed_item_search";
-  const initDrawers = true;
-  $(document).on("click", "#packed-search-submit", () => {
-      const params = $("#search-params").val();
-      if (params !== "") indexSearch(params, path, initDrawers);
-  });
-
-  $(document).on("keyup", "#search-params", e => {
-      if (e.key === "Enter") {
-        const params = $("#search-params").val();
-        if (params !== "") indexSearch(params, path, initDrawers);
-      }
-  });
+  bindSearchListeners("#packed-search-submit", () => "/packed_item_search");
 }
 
 $(() => {

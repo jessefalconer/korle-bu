@@ -21,38 +21,51 @@ function packingSearch(params) {
     });
 }
 
+function toggleDrawer(header) {
+  const $header = $(header);
+  const icon = $header.find("i");
+  const sibling = $header.next();
+
+  if (sibling.hasClass("hidden")) {
+    sibling.removeClass("hidden").hide().slideDown("fast");
+    icon.removeClass("fa-ellipsis-v").addClass("fa-times");
+    $header.addClass("open");
+  } else {
+    sibling.slideUp("fast", () => {
+      sibling.addClass("hidden").slideDown("fast");
+      icon.removeClass("fa-times").addClass("fa-ellipsis-v");
+      $header.removeClass("open");
+    });
+  }
+}
+
+// Bold each search word (2+ chars) inside the result names, preserving the original casing
+function highlightMatches(elements, params) {
+  const words = params
+    .split(" ")
+    .filter(word => word.length > 1)
+    .map(word => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  if (words.length === 0) return;
+
+  const pattern = new RegExp(`(${words.join("|")})`, "gi");
+
+  elements.forEach(el => {
+    // split() with a capture group alternates [text, match, text, match, ...]
+    const parts = el.textContent.split(pattern).map((part, i) => {
+      if (i % 2 === 0) return document.createTextNode(part);
+
+      const strong = document.createElement("strong");
+      strong.textContent = part;
+      return strong;
+    });
+    el.replaceChildren(...parts);
+  });
+}
+
 function initResultsDrawerListeners(params) {
-  const resultsEls = document.querySelectorAll(".results-item-name-value");
-  const paramsCompare = params.split(" ");
+  highlightMatches(document.querySelectorAll(".results-item-name-value"), params);
 
-  resultsEls.forEach(el => {
-    for (const word of paramsCompare) {
-      if (word.length === 1) break;
-      const elText = el.innerHTML.toLowerCase();
-      if (elText.indexOf(word.toLowerCase()) >= 0) {
-        el.innerHTML = elText.replace(word, `<strong>${word}</strong>`);
-      }
-    }
-  })
-
-  $(".results-item-name").on("click", e => {
-    const icon = $(e.currentTarget).find("i");
-    const sibling = $(e.currentTarget).next();
-
-    if (sibling.hasClass("hidden")) {
-      sibling.removeClass("hidden").hide().slideDown("fast");
-      icon.removeClass("fa-ellipsis-v");
-      icon.addClass("fa-times");
-      $(e.currentTarget).addClass("open");
-    } else {
-      sibling.slideUp("fast", function() {
-        sibling.addClass("hidden").slideDown("fast");
-        icon.removeClass("fa-times");
-        icon.addClass("fa-ellipsis-v");
-        $(e.currentTarget).removeClass("open");
-      });
-    }
-  })
+  $(".results-item-name").on("click", e => toggleDrawer(e.currentTarget));
 }
 
 export function initManageDrawerListeners() {
@@ -62,22 +75,7 @@ export function initManageDrawerListeners() {
     // Do not toggle drawer if input selected
     if (e.target.nodeName === "INPUT") return;
 
-    const icon = $(e.currentTarget).find("i");
-    const sibling = $(e.currentTarget).next();
-
-    if (sibling.hasClass("hidden")) {
-      sibling.removeClass("hidden").hide().slideDown("fast");
-      icon.removeClass("fa-ellipsis-v");
-      icon.addClass("fa-times");
-      $(e.currentTarget).addClass("open");
-    } else {
-      sibling.slideUp("fast", function() {
-        sibling.addClass("hidden").slideDown("fast");
-        icon.removeClass("fa-times");
-        icon.addClass("fa-ellipsis-v");
-        $(e.currentTarget).removeClass("open");
-      });
-    }
+    toggleDrawer(e.currentTarget);
   })
 }
 

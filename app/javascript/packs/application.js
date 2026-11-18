@@ -3,6 +3,9 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
+// Share webpack's jQuery with the CDN-loaded jQuery UI plugin (see application layout)
+window.$ = window.jQuery = $;
+
 require("@rails/ujs").start()
 require("@rails/activestorage").start()
 require("channels")
@@ -17,14 +20,10 @@ import "../packs/reconcile";
 import "../packs/mass_actions";
 import "chartkick/chart.js"
 
-$(function () {
-  var uls = $('.sidebar-nav > ul > *').clone();
-  uls.addClass('visible-xs');
-  $('#main-menu').append(uls.clone());
-});
+$(() => {
+  const uls = $(".sidebar-nav > ul > *").clone();
+  uls.addClass("visible-xs");
+  $("#main-menu").append(uls);
 
-$(document).ready(function () {
-    $(".datepickers").datepicker({
-      dateFormat: "yy-mm-dd"
-    });
+  $(".datepickers").datepicker({ dateFormat: "yy-mm-dd" });
 });

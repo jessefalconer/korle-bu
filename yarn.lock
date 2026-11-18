@@ -4058,11 +4058,6 @@ jest-worker@^26.5.0:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jquery-ujs@^1.2.2:
-  version "1.2.3"
-  resolved "https://registry.npmjs.org/jquery-ujs/-/jquery-ujs-1.2.3.tgz"
-  integrity sha512-59wvfx5vcCTHMeQT1/OwFiAj+UffLIwjRIoXdpO7Z7BCFGepzq9T9oLVeoItjTqjoXfUrHJvV7QU6pUR+UzOoA==
-
 jquery@^3.5.1:
   version "3.6.3"
   resolved "https://registry.npmjs.org/jquery/-/jquery-3.6.3.tgz"

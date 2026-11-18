@@ -32,14 +32,12 @@ function updateCheckCount() {
 function initReconcileCheckBoxListeners() {
   if (!document.querySelectorAll(".submit-count")[0]) return;
   const checkboxes = document.querySelectorAll("input[type=checkbox]");
-  if (!checkboxes) return;
 
   checkboxes.forEach(checkbox => {
     checkbox.addEventListener("change", e => {
-      tdEls = e.target.parentNode.parentNode.children
-      for (let tdEl of tdEls) {
+      for (const tdEl of e.target.closest("tr").children) {
         tdEl.classList.toggle("selected");
-      };
+      }
 
       e.target.closest("tr").classList.toggle("selected");
       updateCheckCount();

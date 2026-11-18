@@ -197,11 +197,6 @@ footer {
 
 table tbody tr td p { margin-bottom: 0; }
 
-nav.pagination {
-  margin: 20px 0;
-  text-align: center;
-}
-
 input.table-quick-filter {
   border: none;
   border-bottom: 1px solid #ccc;
@@ -308,8 +303,8 @@ img.kbnf-logo-center {
 }
 
 .status-n-a,
-.status-warehoused {color: #a94442; }
-.status-staged {color: #a94442; }
+.status-warehoused,
+.status-staged { color: #a94442; }
 .status-in-progress { color: #8a6d3b; }
 .status-complete { color: #31708f; }
 .status-received { color: #3c763d; }
@@ -334,7 +329,7 @@ table.table-striped.link-rows tbody tr td {
     &.status-in-progress { color: #8a6d3b; }
     &.status-complete { color: #31708f; }
     &.status-received { color: #3c763d; }
-    &.status-staged { color: #a94442; }
+    &.status-staged,
     &.status-warehoused { color: #a94442; }
   }
 }
