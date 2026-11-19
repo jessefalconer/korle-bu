@@ -14,7 +14,7 @@
   .main-content
     .row
       .col-md-5
-        .row
+        .row.detail-card
           .col-xs-12
             %h5.text-muted Name
             %h4= @shipment.name
@@ -62,7 +62,6 @@
             %h5= @shipment.created_at.strftime("%Y-%m-%d")
 
       .col-md-7
-        %br
         .panel.panel-default
           %a.panel-heading{data: {toggle: "collapse"}, href: "#containers"}
             %i.fa.fa-truck

@@ -1,41 +1,46 @@
+import { searchInto } from "./search_request.js";
+
 function packingSearch(params) {
-    const modelID = $("#search-model-id").val();
-    const model = $("#search-model").val();
-    const status = $("#status").val();
-    $.ajax({
-        url: "/item_search_form",
-        type: "get",
-        data: { search: params,
-                id: modelID,
-                model: model,
-                status: status },
-        async: false,
-        success: function (data) {
-            $("#search-results").append(data);
-            $(".datepickers").datepicker({
-              dateFormat: "yy-mm-dd"
-            });
-            initResultsDrawerListeners(params);
-        },
-        error: function () { alert("Search could not be completed."); }
-    });
+  searchInto("#search-results", {
+    url: "/item_search_form",
+    data: {
+      search: params,
+      id: $("#search-model-id").val(),
+      model: $("#search-model").val(),
+      status: $("#status").val()
+    }
+  }, () => {
+    $("#search-results .datepickers").datepicker({ dateFormat: "yy-mm-dd" });
+    initResultsDrawerListeners(params);
+  });
 }
 
+const DRAWER_MS = 200;
+
+// Opens or closes the form under a list row. stop() drops queued animations, so
+// rapid taps reverse the slide smoothly instead of stacking up.
 function toggleDrawer(header) {
   const $header = $(header);
-  const icon = $header.find("i");
-  const sibling = $header.next();
+  const drawer = $header.next();
+  const opening = !$header.hasClass("open");
 
-  if (sibling.hasClass("hidden")) {
-    sibling.removeClass("hidden").hide().slideDown("fast");
-    icon.removeClass("fa-ellipsis-v").addClass("fa-times");
-    $header.addClass("open");
+  $header.toggleClass("open", opening).attr("aria-expanded", opening);
+
+  // An interrupted slide leaves inline sizes behind; clear them so the drawer can
+  // grow with its contents afterwards
+  const reset = { height: "", marginTop: "", marginBottom: "", paddingTop: "", paddingBottom: "", overflow: "", opacity: "" };
+
+  if (opening) {
+    // .hidden is display:none !important, so swap it for an inline display:none to slide from
+    if (drawer.hasClass("hidden")) drawer.hide().removeClass("hidden");
+    drawer.stop(true)
+      .css("opacity", drawer.is(":visible") ? drawer.css("opacity") : 0)
+      .animate({ opacity: 1 }, { duration: DRAWER_MS, queue: false })
+      .slideDown(DRAWER_MS, () => drawer.css(reset));
   } else {
-    sibling.slideUp("fast", () => {
-      sibling.addClass("hidden").slideDown("fast");
-      icon.removeClass("fa-times").addClass("fa-ellipsis-v");
-      $header.removeClass("open");
-    });
+    drawer.stop(true)
+      .animate({ opacity: 0 }, { duration: DRAWER_MS, queue: false })
+      .slideUp(DRAWER_MS, () => drawer.addClass("hidden").css(reset).css("display", ""));
   }
 }
 
@@ -65,13 +70,14 @@ function highlightMatches(elements, params) {
 function initResultsDrawerListeners(params) {
   highlightMatches(document.querySelectorAll(".results-item-name-value"), params);
 
-  $(".results-item-name").on("click", e => toggleDrawer(e.currentTarget));
+  // Namespaced so a re-render never binds a second handler (which would open then instantly close)
+  $(".results-item-name").off("click.drawer").on("click.drawer", e => toggleDrawer(e.currentTarget));
 }
 
 export function initManageDrawerListeners() {
   if (document.querySelector(".manage-item-name") === null) { return; }
 
-  $(".manage-item-name").on("click", e => {
+  $(".manage-item-name").off("click.drawer").on("click.drawer", e => {
     // Do not toggle drawer if input selected
     if (e.target.nodeName === "INPUT") return;
 
@@ -82,37 +88,30 @@ export function initManageDrawerListeners() {
 function initPackingSearchListeners() {
   if (document.querySelector("#packing-search-submit") === null) { return; }
 
-  var typingTimer;
-  var searchDelayInterval = 300;
-  var params;
-  var minimumChars = 3;
+  const searchDelayInterval = 300;
+  const minimumChars = 3;
+  let typingTimer;
 
-  $(document).on("input", "#search-params", function(){
-      clearTimeout(typingTimer);
-      params = $("#search-params").val();
-      if ( params !== "" && params.length >= minimumChars ) {
-          typingTimer = setTimeout(typingComplete, searchDelayInterval);
-      } else if ( params === "" ) {
-        $("#search-results").empty();
-      }
+  const searchNow = () => {
+    clearTimeout(typingTimer);
+    const params = $("#search-params").val();
+    if (params !== "") packingSearch(params);
+  };
+
+  $(document).on("input", "#search-params", () => {
+    clearTimeout(typingTimer);
+    const params = $("#search-params").val();
+
+    if (params.length >= minimumChars) {
+      typingTimer = setTimeout(searchNow, searchDelayInterval);
+    } else if (params === "") {
+      $("#search-results").empty();
+    }
   });
 
-  function typingComplete () {
-      $("#search-results").empty();
-      packingSearch(params);
-  }
-
-  $(document).on("click", "#packing-search-submit", () => {
-      $("#search-results").empty();
-      const params = $("#search-params").val();
-      if ( params !== "" ) { packingSearch(params); }
-  });
-
+  $(document).on("click", "#packing-search-submit", searchNow);
   $(document).on("keyup", "#search-params", e => {
-      if (e.key === "Enter") {
-        const params = $("#search-params").val();
-        if ( params !== "" ) { packingSearch(params); }
-      }
+    if (e.key === "Enter") searchNow();
   });
 }
 

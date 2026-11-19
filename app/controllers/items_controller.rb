@@ -3,7 +3,6 @@
 class ItemsController < ApplicationController
   load_and_authorize_resource only: %i[create update destroy]
   before_action :set_item, only: %i[show destroy update]
-  after_action :destroy_photo, only: :update
 
   def new
     @item = Item.new
@@ -99,7 +98,7 @@ class ItemsController < ApplicationController
     @items = PackedItem.received_in(current_user.warehouse_id)
       .where.not(items: { category_id: nil })
       .where(item_id: search_results_item_ids)
-      .preload(item: [:category, { photo_attachment: :blob }])
+      .preload(item: :category)
       .with_parents
       .group_by(&:item)
       .sort_by { |item, _items| item.generated_name }
@@ -144,10 +143,6 @@ class ItemsController < ApplicationController
 
   private
 
-  def destroy_photo
-    @item.photo.destroy if params[:destroy_photo] && @item.photo.present?
-  end
-
   def generate_form_url(klass, id)
     case klass
     when "Box"
@@ -175,7 +170,7 @@ class ItemsController < ApplicationController
       :numerical_size_2, :numerical_units_2, :numerical_description_2,
       :area_1, :area_2, :area_units, :area_description,
       :range_1, :range_2, :range_units, :range_description, :unit_weight,
-      :category_id, :notes, :verified, :photo, :flagged
+      :category_id, :notes, :verified, :flagged
     )
   end
 

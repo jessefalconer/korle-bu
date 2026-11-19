@@ -12,7 +12,7 @@
       .row.inline-add-item
         .col-xs-12.results-item-name{data: {item_id: item[0]}}
           %p.results-item-name-value= item[1]
-          %i.fa.fa-ellipsis-v
+          %i.fa.fa-chevron-down.drawer-caret
         .col-xs-12.results-item-form.hidden
           .row
             .col-xs-6.col-sm-3
@@ -30,9 +30,10 @@
                 = f.label :expires
                 = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "expiry-#{item[0]}", placeholder: "YYYY-MM-DD"
             .col-xs-6.col-sm-3
-              .padding-top
-                = f.label "Generate ID?", class: "padding-top"
-                = f.check_box :show_id, value: false, id: "show-id-#{item[0]}"
+              .form-group
+                %label.checkbox-option.inline-field
+                  = f.check_box :show_id, value: false, id: "show-id-#{item[0]}"
+                  Generate ID?
             .col-xs-12
               .form-group
                 %label &nbsp;

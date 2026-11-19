@@ -1,21 +1,17 @@
+import { searchInto } from "./search_request.js";
+
 function reconcileSearch(params) {
-    const compareId = $("#compare-id").val();
-    const similarIds = $("#compare-id").data("similar-ids");
-    $.ajax({
-        url: "/reconcile_item_search",
-        type: "get",
-        data: { search: params,
-                compare_id: compareId,
-                similar_ids: similarIds },
-        async: false,
-        success: function (data) {
-            $("#search-results").empty();
-            $("#search-results").append(data);
-            initCheckBoxListeners();
-            updateCheckCount();
-        },
-        error: function () { alert("Search could not be completed."); }
-    });
+  searchInto("#search-results", {
+    url: "/reconcile_item_search",
+    data: {
+      search: params,
+      compare_id: $("#compare-id").val(),
+      similar_ids: $("#compare-id").data("similar-ids")
+    }
+  }, () => {
+    initReconcileCheckBoxListeners(document.getElementById("search-results"));
+    updateCheckCount();
+  });
 }
 
 function updateCheckCount() {
@@ -29,9 +25,11 @@ function updateCheckCount() {
   }
 }
 
-function initReconcileCheckBoxListeners() {
+// `root` limits binding to freshly loaded search results, so existing checkboxes
+// are not bound twice (a double toggle would cancel itself out)
+function initReconcileCheckBoxListeners(root = document) {
   if (!document.querySelectorAll(".submit-count")[0]) return;
-  const checkboxes = document.querySelectorAll("input[type=checkbox]");
+  const checkboxes = root.querySelectorAll("input[type=checkbox]");
 
   checkboxes.forEach(checkbox => {
     checkbox.addEventListener("change", e => {
@@ -58,7 +56,6 @@ function initReconcileSearchListeners() {
   });
 
   $(document).on("click", "#reconcile-search-submit", () => {
-      $("#search-results").empty();
       const params = $("#search-params").val();
       if (params !== "") reconcileSearch(params);
   });

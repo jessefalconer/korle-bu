@@ -12,7 +12,7 @@
     - if can? :reconcile, Item
       = link_button("Start Reconcile", reconcile_start_path(@item))
   .main-content
-    .row
+    .row.detail-card
       .col-xs-12
         %h5.text-muted Name
         %h4= @item.generated_name
@@ -42,7 +42,3 @@
             Instances
             %i.fa.fa-search
           %h5= @item.packed_items.count
-      - if @item.photo.attached?
-        .col-xs-12
-          %h6.text-muted Attached Photo
-          %img{src: url_for(@item.photo), style: "width: 100%;"}

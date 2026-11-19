@@ -16,7 +16,7 @@
             %em.show-id ID: ##{ci.id}
         .drawer-info
           %span.label.label-default= ci.quantity - ci.remaining_quantity
-          %i.fa.fa-ellipsis-v
+          %i.fa.fa-chevron-down.drawer-caret
       .col-xs-12.manage-item-form.hidden
         - ci.unpacking_events.order(timestamp: :desc).each do |event|
           .unpacking-entry

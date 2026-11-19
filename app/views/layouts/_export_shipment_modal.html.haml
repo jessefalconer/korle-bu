@@ -13,11 +13,11 @@
           .col-xs-12
             = form_for ShipmentExport.new(@shipment.id), url: shipment_exports_path do |f|
               %h5 Select a grouping strategy:
-              .form-group
-                %label By Item Category
+              %label.radio-option
                 = f.radio_button :group_by, "category", checked: true
-              .form-group
-                %label By Item
+                By Item Category
+              %label.radio-option
                 = f.radio_button :group_by, "item"
+                By Item
               = f.hidden_field :id, value: @shipment.id
               = submit_export

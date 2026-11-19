@@ -1,18 +1,11 @@
-import { initManageDrawerListeners } from "./manage_item_search.js"
+import { initManageDrawerListeners } from "./manage_item_search.js";
+import { searchInto } from "./search_request.js";
 
 function indexSearch(params, path, initDrawers) {
-    $.ajax({
-        url: path,
-        type: "get",
-        data: { search: params },
-        async: false,
-        success: function (data) {
-            $(".pagination").empty();
-            $("#search-results").empty().append(data);
-            if (initDrawers) initManageDrawerListeners();
-        },
-        error: function () { alert("Search could not be completed."); }
-    });
+  searchInto("#search-results", { url: path, data: { search: params } }, () => {
+    $(".pagination").empty();
+    if (initDrawers) initManageDrawerListeners();
+  });
 }
 
 function bindSearchListeners(submitSelector, getPath) {

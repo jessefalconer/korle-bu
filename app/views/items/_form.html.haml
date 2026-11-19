@@ -110,24 +110,16 @@
             = f.text_field :numerical_description_2, class: "form-control", placeholder: "Eg: vial, canister, blade"
 
   .panel.panel-default
-    %a.panel-heading{data: {toggle: "collapse"}, href: "#photos-#{item.id}"}
-      %i.fa.fa-images
-      Photos & Notes
+    %a.panel-heading{data: {toggle: "collapse"}, href: "#notes-#{item.id}"}
+      %i.fa.fa-clipboard-list
+      Notes
       %i.fa.fa-edit.pull-right
-    .collapse{class: ((item.notes.present? || item.photo.attached?) && "in" ), id: "photos-#{item.id}"}
+    .collapse{class: (item.notes.present? && "in"), id: "notes-#{item.id}"}
       .row.form-row
         .col-xs-12
           .form-group
             = f.label :notes
             = f.text_field :notes, class: "form-control"
-        .col-xs-8
-          .form-group
-            = f.label :photo
-            = f.file_field :photo, class: "form-control", accept: "image/png, image/gif, image/jpeg"
-        .col-xs-4
-          .form-group.inline-image-checkbox
-            = check_box_tag :destroy_photo, disabled: "disabled", class: "form-control"
-            %label Delete Photo
 
   .row.select-fields
     .col-xs-12.col-sm-6

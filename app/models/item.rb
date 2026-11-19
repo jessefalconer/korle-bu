@@ -23,8 +23,6 @@ class Item < ApplicationRecord
   has_many :packed_items, dependent: :destroy
   has_many :item_boxes, dependent: :destroy # Remove this after legacy data
 
-  has_one_attached :photo
-
   scope :unverified, -> { where(verified: false) }
   scope :verified, -> { where(verified: true) }
   scope :uncategorized, -> { where(category: nil) }

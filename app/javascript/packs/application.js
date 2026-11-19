@@ -7,7 +7,6 @@
 window.$ = window.jQuery = $;
 
 require("@rails/ujs").start()
-require("@rails/activestorage").start()
 
 import "../src/errors";
 import "bootstrap/dist/js/bootstrap";
@@ -19,10 +18,27 @@ import "../src/reconcile";
 import "../src/mass_actions";
 import "chartkick/chart.js"
 
+// Respect the OS "reduce motion" setting for jQuery animations too
+$.fx.off = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Bootstrap only flips `.collapsed` on a toggle when it is clicked, so set it from each
+// target's real state on load; the CSS chevrons rely on it
+function syncCollapseToggles() {
+  $("[data-toggle='collapse']").each((_i, el) => {
+    const target = $(el).attr("data-target") || $(el).attr("href");
+    if (!target || target === "#" || el.closest(".navbar-header")) return;
+
+    let $target;
+    try { $target = $(target).first(); } catch (_e) { return; } // not a valid selector
+    if ($target.length) $(el).toggleClass("collapsed", !$target.hasClass("in"));
+  });
+}
+
 $(() => {
   const uls = $(".sidebar-nav > ul > *").clone();
   uls.addClass("visible-xs");
   $("#main-menu").append(uls);
 
   $(".datepickers").datepicker({ dateFormat: "yy-mm-dd" });
+  syncCollapseToggles();
 });

@@ -11,7 +11,7 @@
       - unless pi.weight.to_f.zero?
         %span.label.label-primary #{pi.weight}kg
       %span.label.label-success= pi.quantity
-      %i.fa.fa-ellipsis-v
+      %i.fa.fa-chevron-down.drawer-caret
       = check_box_tag "packed_item_ids[]", pi.id, false, class: "mass-action", form: "mass_action", id: "mass-action-packed-item-#{pi.id}"
   .col-xs-12.manage-item-form.hidden
     .row
@@ -32,9 +32,9 @@
           = f.label :expires
           = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "YYYY-MM-DD"
       .col-xs-12
-        .pull-left.padding-top-small
-          %label Generate ID?
+        %label.checkbox-option.pull-left
           = f.check_box :show_id, value: pi.show_id, id: "show-id-#{pi.id}"
+          Generate ID?
         .btn-toolbar.list-toolbar
           = submit_button_responsive("Update", "pull-right")
           = delete_button(path, "Are you sure you want to delete #{pi.generated_name}?", "pull-right")

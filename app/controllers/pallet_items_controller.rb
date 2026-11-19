@@ -80,7 +80,7 @@ class PalletItemsController < ApplicationController
         :numerical_size_2, :numerical_units_2, :numerical_description_2,
         :area_1, :area_2, :area_units, :area_description,
         :range_1, :range_2, :range_units, :range_description, :unit_weight,
-        :category_id, :notes, :verified, :photo, :flagged
+        :category_id, :notes, :verified, :flagged
       )
       .merge(user: current_user)
   end

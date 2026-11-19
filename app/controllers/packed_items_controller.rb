@@ -10,7 +10,7 @@ class PackedItemsController < ApplicationController
 
     # Paginate distinct items in SQL, then load packed items only for this page.
     items = Item.where(id: received.select(:item_id))
-      .preload(:category, photo_attachment: :blob)
+      .preload(:category)
       .order(:generated_name, :id)
       .page(params[:page]).per(per_page)
     packed_by_item = received.where(item_id: items.map(&:id)).with_parents.group_by(&:item_id)

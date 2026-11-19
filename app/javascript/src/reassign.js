@@ -3,7 +3,7 @@ function initAssignmentListeners() {
 
   if (quickNav != null) {
     quickNav.firstElementChild.classList.add("active");
-    document.querySelector(".tab-content.quick-add").children[1].classList.add("active", "in");
+    document.querySelector(".tab-content.quick-add > .tab-pane").classList.add("active", "in");
   }
 
 
@@ -28,15 +28,15 @@ function initAssignmentListeners() {
     if (selected === "Box" || selected === "Pallet" || selected === "Container") {
       $("#status-flag").val(null);
       $("#current-location").val(false);
-      $(`#${selected.toLowerCase()}-assignment-form`).removeClass("hidden").hide().fadeIn();
+      $(`#${selected.toLowerCase()}-assignment-form`).removeClass("hidden").hide().fadeIn(150);
       $(`#${selected.toLowerCase()}-assignment-input option:selected`).prop("disabled", false);
     } else if (selected === "Staging" || selected === "Warehouse") {
-      $(`#${selected.toLowerCase()}-message`).removeClass("hidden").hide().fadeIn();
+      $(`#${selected.toLowerCase()}-message`).removeClass("hidden").hide().fadeIn(150);
       // Ugly way to match validated statuses, yuck
       $("#status-flag").val(selected === "Staging" ? "Staged" : "Warehoused");
       $("#current-location").val(false);
     } else if (selected === "Current Location") {
-      $("#current-location-message").removeClass("hidden").hide().fadeIn();
+      $("#current-location-message").removeClass("hidden").hide().fadeIn(150);
       $("#status-flag").val(null);
       $("#current-location").val(true);
     } else {

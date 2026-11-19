@@ -8,11 +8,11 @@
         - else
           %span.hidden-xs.hidden-sm= packed_items.map(&:location_name).uniq.join(", ")
         %span.label.label-info= packed_items.sum(&:remaining_quantity)
-        %i.fa.fa-ellipsis-v
+        %i.fa.fa-chevron-down.drawer-caret
     .col-xs-12.manage-item-form.hidden
       .row
         .col-xs-12
-          - if item.photo.present? || item.notes.present?
+          - if item.notes.present?
             = link_to item_path(item) do
               %h5.text-info Additional Information Available
           - if item.category

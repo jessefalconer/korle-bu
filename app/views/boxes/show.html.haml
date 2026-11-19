@@ -18,7 +18,7 @@
   .main-content
     .row
       .col-md-5
-        .row
+        .row.detail-card
           .col-xs-12
             %h5.text-muted Name
             %h4= @box.name
@@ -44,7 +44,6 @@
             %h5= @box.created_at.strftime("%Y-%m-%d")
 
       .col-md-7
-        %br
         - present(@box) do |box|
           .panel.panel-default
             %a.panel-heading{data: {toggle: "collapse"}, href: "#location"}

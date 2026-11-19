@@ -11,7 +11,7 @@
     - if can?(:manage, Shipment) && @unpacking_events.any?
       = render "layouts/export_hospital_modal"
   .main-content
-    .row
+    .row.detail-card
       .col-xs-12
         %h5.text-muted Name
         %h4= @hospital.name

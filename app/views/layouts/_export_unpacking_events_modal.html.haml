@@ -13,18 +13,22 @@
           .col-xs-12
             = form_for :unpacking_events_export, url: unpacking_events_exports_path do |f|
               %h5 Choose a date range. Leave blank for maximum ranges:
-              .form-group
-                = f.label :start_date
-                = f.text_field :start_date, value: (DateTime.now - 1.month).strftime("%Y-%m-%d"), class: "form-control datepickers", placeholder: "YYYY-MM-DD"
-                = f.label :end_date
-                = f.text_field :end_date, value: DateTime.now.strftime("%Y-%m-%d"), class: "form-control datepickers", placeholder: "YYYY-MM-DD"
+              .row
+                .col-xs-6
+                  .form-group
+                    = f.label :start_date
+                    = f.text_field :start_date, value: (DateTime.now - 1.month).strftime("%Y-%m-%d"), class: "form-control datepickers", placeholder: "YYYY-MM-DD"
+                .col-xs-6
+                  .form-group
+                    = f.label :end_date
+                    = f.text_field :end_date, value: DateTime.now.strftime("%Y-%m-%d"), class: "form-control datepickers", placeholder: "YYYY-MM-DD"
               %h5 Date sorting:
-              .form-group
-                %label Descending
+              %label.radio-option
                 = f.radio_button :sorting, "desc", checked: true
-                %br
-                %label{style: "margin-right: 8px;"} Ascending
+                Descending
+              %label.radio-option
                 = f.radio_button :sorting, "asc"
+                Ascending
               %h5 Optionally filter results by hospital/facility/clinic:
               .form-group
                 = f.select :hospital_id, options_from_collection_for_select(Hospital.all.order(:name), :id, :name), { include_blank: "All" }, { class: "form-control" }

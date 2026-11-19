@@ -13,8 +13,9 @@
       %label Expiry Date
       = f.text_field :expiry_date, value: "", placeholder: "YYYY-MM-DD", class: "form-control datepickers"
   .col-xs-6.col-sm-3
-    .padding-top
-      %label.padding-top Generate ID?
-      = f.check_box :show_id
+    .form-group
+      %label.checkbox-option.inline-field
+        = f.check_box :show_id
+        Generate ID?
 %h5 Complete the new item's general information below.
 = render partial: "items/form", locals: { item: Item.new, submit_path: "item" }

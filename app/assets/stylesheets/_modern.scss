@@ -1,0 +1,1066 @@
+// Modernization layer. Loaded last so it refines Bootstrap 3 and the older theme
+// without rewriting them. Mobile first: phone rules are the default, wider
+// screens opt in through min-width queries.
+
+$brand: #007096;
+$brand-dark: #005d7d;
+$accent: #ed8b00;
+$ink: #1f2a33;
+$muted: #6b7781;
+$line: #e3e7ea;
+// Surface levels, back to front:
+//   $canvas  - the page itself
+//   $surface - cards: panels, tables, lists, forms, the active tab
+//   $sunken  - headers and insets inside a card (table heads, panel headings, open drawers)
+//   $track   - recessed controls such as the tab bar
+$surface: #ffffff;
+$canvas: #eceff3;
+$sunken: #f5f7f9;
+$hover: #eef3f6;
+$track: #e1e6eb;
+$radius: 10px;
+$radius-sm: 8px;
+$shadow-sm: 0 1px 2px rgba(16, 24, 40, .06);
+$shadow-lg: 0 12px 32px rgba(16, 24, 40, .18);
+$font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+
+// ---------------------------------------------------------------- Base
+body,
+h1, h2, h3, h4, h5, h6, p, a,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.btn, .form-control, .tooltip, .popover {
+  font-family: $font;
+}
+
+body {
+  background: $canvas;
+  color: $ink;
+  -webkit-font-smoothing: antialiased;
+}
+
+h4, h5, h6 { line-height: 1.35; }
+.text-muted { color: $muted; }
+hr { border-top-color: $line; }
+
+a:focus-visible,
+.btn:focus-visible,
+.form-control:focus-visible {
+  outline: 2px solid rgba($brand, .45);
+  outline-offset: 2px;
+}
+
+// ---------------------------------------------------------------- Navbar
+.theme-1 .navbar {
+  border-bottom: 3px solid $accent;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .12);
+}
+
+.navbar-default .navbar-brand {
+  font-weight: 600;
+  letter-spacing: .2px;
+}
+
+.navbar-default .navbar-toggle {
+  border-color: rgba(255, 255, 255, .5);
+  border-radius: $radius-sm;
+
+  &:hover,
+  &:focus { background: rgba(255, 255, 255, .12); }
+}
+
+// Phone menu: the sidebar is cloned into #main-menu (see packs/application.js)
+@media (max-width: 767px) {
+  .navbar-collapse {
+    max-height: calc(100vh - 56px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #main-menu {
+    margin-top: 4px;
+    margin-bottom: 8px;
+
+    > li > a,
+    > li > .nav-header {
+      padding: 12px 15px;
+      color: #fff;
+      background: transparent;
+      border: 0;
+      line-height: 1.4;
+      font-size: 15px;
+
+      i[class*="fa-"] { line-height: inherit; }
+    }
+
+    .nav-header:hover { background: rgba(255, 255, 255, .08); }
+    .fa-fw { margin-right: 6px; }
+
+    .nav-list {
+      background: rgba(0, 0, 0, .15);
+      border-radius: $radius-sm;
+      margin: 0 8px 6px;
+
+      > li { border-left: 0 !important; }
+      > li > a {
+        color: #fff;
+        margin-left: 0 !important;
+        padding: 11px 16px;
+        border: 0 !important;
+        background: transparent !important;
+      }
+      .fa { color: rgba(255, 255, 255, .75); }
+      > li.disabled > a { color: rgba(255, 255, 255, .6); }
+    }
+  }
+}
+
+// Menu links are flex rows so a label that wraps stays indented past its icon
+.nav-list > li > a {
+  display: flex;
+  align-items: baseline;
+
+  > .fa-fw { flex: 0 0 auto; }
+}
+
+// ---------------------------------------------------------------- Sidebar (desktop)
+.sidebar-nav {
+  .nav-header {
+    background: $surface;
+    border-top: 0;
+    border-bottom: 1px solid $line;
+    color: $ink;
+
+    &:hover { background: $hover; }
+  }
+
+  .nav-list {
+    background: $sunken;
+
+    > li > a {
+      color: $ink;
+      padding: .55em 1.25em;
+    }
+
+    > li > a:hover { background: $hover; }
+
+    > li:hover,
+    > .active { border-left-color: $brand; }
+
+    > li.disabled > a,
+    > li.disabled > a:hover { color: $muted; background: transparent; cursor: default; }
+
+    .fa { color: $muted; }
+  }
+
+  // Every menu icon is fixed width (fa-fw) so the labels line up in one column
+  // (section headers already get padding from _theme.scss)
+  .nav-list .fa-fw { margin-right: 6px; }
+
+}
+
+// ---------------------------------------------------------------- Page shell
+.content {
+  background: $canvas;
+  border-left: 1px solid $line;
+  padding: 12px 15px 72px; // 15px matches the Bootstrap row gutter
+
+  @media (min-width: 768px) { padding: 20px 24px 72px; }
+}
+
+.header {
+  background: transparent;
+  border-left: 0; // _theme.scss draws a 1px white line here, visible on the grey page
+  border-bottom: 1px solid $line;
+  padding: 0 0 12px;
+  margin-bottom: 16px;
+
+  // The action buttons sit directly in .header; give them even spacing that wraps
+  > .btn,
+  > a.btn,
+  > form { margin-bottom: 6px; }
+
+  // Keep the icon toolbar on one row on phones
+  @media (max-width: 767px) {
+    > .btn:not(.btn-xs):not(.btn-sm),
+    > a.btn:not(.btn-xs):not(.btn-sm) { padding-left: 11px; padding-right: 11px; }
+  }
+}
+
+.breadcrumb {
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+// ---------------------------------------------------------------- Buttons
+$control-height: 40px;
+
+// Buttons here are <button>, <a> and <div> elements. Only <button> centres its
+// text natively, so every button is a flex box: text and icons sit on the
+// vertical centre whatever the tag, and all share the input height.
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: $control-height;
+  padding: 0 14px;
+  line-height: 1.2;
+  vertical-align: middle;
+  border-radius: $radius-sm;
+  font-weight: 500;
+  transition: background-color .15s ease, box-shadow .15s ease, border-color .15s ease;
+
+  // Flex drops the spaces between icon and label, so `gap` supplies them
+  > span,
+  > i { line-height: 1; }
+
+  &.btn-sm { min-height: 32px; padding: 0 10px; gap: 5px; }
+  &.btn-xs { min-height: 24px; padding: 0 7px; gap: 4px; }
+  &.btn-block { display: flex; width: 100%; }
+
+  // Bootstrap 3 hides these with `display: none`; keep that winning over inline-flex
+  &.hidden { display: none !important; }
+}
+
+.btn-primary {
+  background-color: $brand;
+  border-color: $brand;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &.active { background-color: $brand-dark; border-color: $brand-dark; }
+}
+
+// ---------------------------------------------------------------- Forms
+.form-control {
+  border-radius: $radius-sm;
+  border-color: #cfd6db;
+  box-shadow: none;
+  height: $control-height;
+
+  &:focus {
+    border-color: $brand;
+    box-shadow: 0 0 0 3px rgba($brand, .15);
+  }
+}
+
+textarea.form-control { height: auto; }
+
+label { color: $ink; font-weight: 500; margin-bottom: 4px; }
+.form-group { margin-bottom: 14px; }
+
+.input-group .form-control:first-child { border-radius: $radius-sm 0 0 $radius-sm; }
+.input-group-btn:last-child > .btn { border-radius: 0 $radius-sm $radius-sm 0; }
+.input-group-btn > .btn { height: $control-height; }
+
+// Inline ID / search forms (Jump To and others) match the control height
+.inline-search-form input { height: $control-height; }
+
+// 16px inputs stop iOS Safari from zooming the page when a field is focused
+@media (max-width: 767px) {
+  .form-control,
+  input, select, textarea { font-size: 16px; }
+}
+
+// Checkbox + label pairs. Wrapping the box in its label makes the text clickable;
+// .inline-field drops it onto the same 40px row as the labelled inputs beside it.
+.checkbox-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: $control-height;
+  margin: 0;
+  font-weight: 500;
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex: 0 0 18px;
+    cursor: pointer;
+  }
+
+  &.inline-field { margin-top: 24px; } // height of a field label above an input
+}
+
+// ---------------------------------------------------------------- Panels
+.panel {
+  border: 1px solid $line;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+}
+
+.panel .panel-heading,
+.panel .panel-heading:not(.no-collapse):hover {
+  background: $sunken;
+  border-bottom: 1px solid $line;
+  box-shadow: none;
+  color: $ink;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 11px 15px;
+  filter: none;
+}
+
+.panel .panel-heading:not(.no-collapse):hover { background: $hover; }
+
+.panel .panel-heading .label { box-shadow: none; }
+
+.close-collapse {
+  background: $sunken;
+  border-top-color: $line;
+  color: $muted;
+  font-weight: 500;
+
+  &:hover { background: $hover; }
+}
+
+// ---------------------------------------------------------------- Tables
+.table > thead > tr > th {
+  background: $sunken;
+  border-bottom: 1px solid $line;
+  color: $muted;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+
+.table > tbody > tr > td { border-top-color: $line; }
+.table-striped > tbody > tr:nth-child(odd) > td { background-color: #fafbfc; }
+.table-striped > tbody > tr:nth-child(even) > td { background-color: $surface; }
+.table-hover > tbody > tr:hover > td,
+.table-striped.link-rows > tbody > tr:hover > td { background-color: $hover; }
+
+// Tables that sit on the page (index lists, Quick Add) become white cards.
+// `separate` is needed for the rounded corners; spacing 0 keeps it looking collapsed.
+.main-content .table {
+  background: $surface;
+  border: 1px solid $line;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+
+  > thead:first-child > tr:first-child > th:first-child { border-top-left-radius: $radius - 1; }
+  > thead:first-child > tr:first-child > th:last-child { border-top-right-radius: $radius - 1; }
+  > tbody:last-child > tr:last-child > td:first-child { border-bottom-left-radius: $radius - 1; }
+  > tbody:last-child > tr:last-child > td:last-child { border-bottom-right-radius: $radius - 1; }
+  > thead > tr > th { border-top: 0; }
+}
+
+// ...but inside a panel or modal the container is already the card
+.panel .table,
+.modal .table {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  margin-bottom: 0;
+
+  > thead > tr > th,
+  > tbody > tr > td { border-radius: 0 !important; }
+}
+
+// Tables scroll sideways instead of overflowing the page
+.main-content .table-responsive { border: 0; }
+
+// ---------------------------------------------------------------- Tabs
+// A segmented control: tabs sit in a recessed grey track, the active one is a raised white chip
+.nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 4px;
+  background: $track;
+  border: 0;
+  border-radius: $radius;
+
+  &::before,
+  &::after { display: none; }
+
+  > li {
+    float: none;
+    margin: 0;
+  }
+
+  > li > a,
+  > li > a:hover,
+  > li > a:focus {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 8px 14px;
+    border: 0;
+    border-radius: $radius-sm;
+    background: transparent;
+    color: $muted;
+    font-weight: 500;
+    line-height: 1.3;
+    transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
+  }
+
+  > li > a:hover { background: rgba(255, 255, 255, .55); color: $ink; }
+
+  > li.active > a,
+  > li.active > a:hover,
+  > li.active > a:focus {
+    background: $surface;
+    color: $brand;
+    border: 0;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .12), 0 1px 1px rgba(16, 24, 40, .04);
+  }
+}
+
+// On phones the tabs become one swipeable row instead of wrapping into two
+@media (max-width: 767px) {
+  .nav-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar { display: none; }
+
+    > li { flex: 0 0 auto; }
+    > li > a { white-space: nowrap; }
+  }
+}
+
+// ---------------------------------------------------------------- Labels / badges
+.label {
+  border-radius: 999px;
+  font-weight: 600;
+  padding: .25em .6em;
+}
+
+// ---------------------------------------------------------------- Modals
+// Shared look
+.modal-backdrop.in { opacity: .45; }
+
+.modal-content {
+  border: 0;
+  border-radius: 14px;
+  box-shadow: $shadow-lg;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-header {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 14px 20px;
+  border-bottom: 1px solid $line;
+
+  &::before,
+  &::after { display: none; }
+
+  .modal-title {
+    color: $ink;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+    padding-right: 12px;
+  }
+
+  .close {
+    order: 2;
+    margin: 0 0 0 auto;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 36px;
+    border-radius: 50%;
+    font-size: 26px;
+    font-weight: 400;
+    line-height: 1;
+    opacity: .55;
+    text-shadow: none;
+
+    &:hover,
+    &:focus { background: #eef1f3; opacity: .9; }
+  }
+}
+
+// The body scrolls on its own so the header (and close button) never leave the screen
+.modal-body {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  padding: 16px 5px 20px;
+
+  > .row,
+  > form > .row { margin-left: 0; margin-right: 0; }
+
+  .row.edit-modal-body,
+  .row.mass-action-form,
+  .row.jump-to-body { padding: 0; }
+
+  h5 { color: $ink; line-height: 1.45; }
+
+  // Inline label + radio pairs (export / duplicate modals)
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 10px;
+    font-weight: 400;
+    cursor: pointer;
+
+    input[type="radio"] { margin: 0; width: 18px; height: 18px; flex: 0 0 18px; }
+  }
+
+  // Primary action sits at the end of the form, full width on phones
+  .col-xs-12:last-child > .btn.pull-right,
+  .btn-toolbar.list-toolbar { margin-top: 6px; }
+}
+
+.mass-action-warning {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+
+  h5 { margin: 4px 0; }
+}
+
+// The item form is built from panels, which need their own inset
+.modal[id^="item-"] .modal-body { padding-left: 12px; padding-right: 12px; }
+
+// Jump To: inputs grow to fill the row, buttons stay compact
+.jump-to-body {
+  text-align: left;
+
+  > .col-xs-12 > h5 { margin-top: 0; margin-bottom: 14px; color: $muted; }
+
+  .inline-search-form {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 0;
+
+    input,
+    &.text-field input {
+      flex: 1 1 auto;
+      width: auto;
+      min-width: 0;
+      height: 40px;
+      text-align: left;
+      padding: 6px 12px;
+      border: 1px solid #cfd6db;
+      border-radius: $radius-sm;
+    }
+
+    .btn { flex: 0 0 auto; }
+  }
+
+  .padding-top { padding-top: 6px; }
+  .padding-top .btn { width: 100%; }
+}
+
+// Phones: modals become bottom sheets that use the full width
+@media (max-width: 767px) {
+  .modal-dialog {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    width: auto;
+  }
+
+  .modal.fade .modal-dialog {
+    transform: translate3d(0, 100%, 0);
+    transition: transform .28s cubic-bezier(.2, .8, .2, 1);
+  }
+
+  .modal.in .modal-dialog { transform: none; }
+
+  .modal-content {
+    border-radius: 16px 16px 0 0;
+    max-height: calc(100vh - 32px);
+    max-height: calc(100dvh - 32px);
+    padding-bottom: env(safe-area-inset-bottom);
+
+    // Grab handle
+    &::before {
+      content: "";
+      display: block;
+      width: 40px;
+      height: 4px;
+      border-radius: 2px;
+      background: #d3d9de;
+      margin: 8px auto 0;
+      flex: 0 0 auto;
+    }
+  }
+
+  .modal-header { padding-top: 8px; }
+
+  // Header toolbars hide button text on phones; inside a sheet there is room for it
+  .modal .responsive-button span.main-text { display: inline; }
+
+  // Primary actions span the sheet so they are easy to hit with a thumb
+  .modal-body {
+    .col-xs-12:last-child > .btn.pull-right,
+    .col-xs-12:last-child > .btn,
+    form:not(.inline-search-form) > .btn[type="submit"],
+    .btn-toolbar.list-toolbar .btn[type="submit"] {
+      float: none !important;
+      display: flex;
+      width: 100%;
+    }
+
+    .btn-toolbar.list-toolbar {
+      display: flex;
+      gap: 8px;
+      margin-left: 0;
+
+      > .btn { margin-left: 0; float: none; }
+      > .btn[type="submit"] { flex: 1 1 auto; width: auto; }
+    }
+  }
+}
+
+// Tablets and up: centred, wider dialogs that cap at the viewport height
+@media (min-width: 768px) {
+  .modal-dialog {
+    width: 640px;
+    margin: 6vh auto;
+  }
+
+  .modal-content { max-height: 88vh; }
+
+  #add-hospital-modal .modal-dialog,
+  .modal[id^="item-"] .modal-dialog { width: 760px; }
+
+  .modal-body { padding: 20px 9px 22px; }
+}
+
+// jQuery UI datepicker has to sit above Bootstrap's modal (z-index 1050)
+.ui-datepicker { z-index: 1100 !important; }
+
+// ---------------------------------------------------------------- Flash messages
+// Floating toast instead of a full-bleed bar
+footer .flash {
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom));
+  width: auto;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  border-radius: $radius;
+  box-shadow: $shadow-lg;
+  font-weight: 500;
+  z-index: 1060;
+  animation: flash-in .25s ease-out;
+
+  &.error { background-color: #d93b3b; }
+  &.success { background-color: #12854a; }
+  &.notice,
+  &.alert { background-color: $ink; }
+}
+
+@keyframes flash-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+// ---------------------------------------------------------------- Inline item rows (search / manage)
+// Each row is a white list item; an open drawer is a grey inset under its row
+.row.inline-add-item {
+  // _overrides.scss gives every input in a row a 5px left margin (meant for the row's
+  // checkbox), which pushed drawer fields out of line with their labels
+  .form-control { margin: 0; }
+  .drawer-info input[type="checkbox"] { margin: 0 0 0 8px; }
+
+  // Badges and the caret stay together on one line; a long item name wraps instead
+  .drawer-info {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    gap: 4px;
+  }
+
+  background: $surface;
+  border-color: $line;
+
+  &:first-of-type { border-top: 1px solid $line; }
+
+  .manage-item-name,
+  .results-item-name {
+    padding: 12px 12px;
+    min-height: 48px;
+
+    &:hover { background-color: $hover; }
+    &.open { background-color: $surface; box-shadow: inset 3px 0 0 $brand; }
+  }
+
+  .manage-item-form,
+  .results-item-form {
+    margin-top: 0;
+    padding-top: 12px;
+    padding-bottom: 4px;
+    background: $sunken;
+    border-top: 1px solid $line;
+  }
+}
+
+// ---------------------------------------------------------------- Surfaces
+// The sidebar is a white column that runs the full height beside the grey page
+.sidebar-nav { background: $surface; }
+
+// The sidebar is absolutely positioned, so it cannot stretch to the page height.
+// Paint its column (and the dividing line) into the body background instead.
+@media (min-width: 768px) {
+  body {
+    background: linear-gradient(to right, $surface 239px, $line 239px, $line 240px, $canvas 240px);
+  }
+}
+
+.content { border-left: 0; }
+
+// Forms on the "new" pages become white cards (the item form is already made of panels)
+.main-content > .row > [class*="col-"] > form:not(.inline-search-form),
+.main-content > .row > form:not(.new_item):not(.edit_item) {
+  display: flow-root;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+  padding: 16px;
+}
+
+.main-content > .row > form:not(.new_item):not(.edit_item) { margin: 0 15px 16px; }
+
+// The name / ID / status block at the top of each detail page
+.row.detail-card {
+  margin: 0 0 16px;
+  padding: 6px 0 4px;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+
+  hr { margin: 10px 0 4px; }
+}
+
+// Tab panels on the item pages (Search / New / Manage / Unpack / History) sit in one
+// white card under the tab track, so their forms and lists are not left on the page
+.main-content .tab-content {
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+  padding: 4px 16px 16px;
+
+  > .tab-pane > h5:first-child,
+  > .tab-pane > form > h5:first-child,
+  > .tab-pane > h4:first-child { margin-top: 12px; }
+
+  // Panels inside the card (the item form) read as sections, not cards on cards
+  .panel { box-shadow: none; }
+
+  @media (max-width: 767px) { padding: 2px 12px 12px; }
+}
+
+// A tab bar's spacer <br> is not needed once the content is a card
+.main-content .nav-tabs + .row > .col-xs-12 > br:first-child { display: none; }
+.main-content .nav-tabs + .row > .col-xs-12 > .tab-content { margin-top: 12px; }
+
+// A search bar at the top of a list page sits in its own white toolbar card
+.main-content > .input-group.search,
+.main-content > .tab-content .input-group.search { margin-bottom: 12px; }
+
+.main-content > .input-group.search {
+  display: block;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
+  padding: 10px;
+}
+
+// The item form's closing fields (category, weight, flags) sit below its panels.
+// On the standalone New Item page the two rows join into one card, flush with the panels.
+.main-content > .row > form > .row.select-fields {
+  margin: 0;
+  background: $surface;
+  border: 1px solid $line;
+  border-top: 0;
+  border-bottom: 0;
+  padding-top: 14px;
+
+  &:first-of-type,
+  &:not(.row.select-fields + .row.select-fields) {
+    border-top: 1px solid $line;
+    border-radius: $radius $radius 0 0;
+  }
+
+  & + .row.select-fields {
+    padding-top: 0;
+    border-bottom: 1px solid $line;
+    border-radius: 0 0 $radius $radius;
+    box-shadow: $shadow-sm;
+    margin-bottom: 16px;
+  }
+}
+
+// Unpacking history entries inside an open drawer
+.unpacking-entry {
+  padding: 8px 10px;
+  border-radius: $radius-sm;
+
+  &,
+  &:nth-child(even) { background-color: transparent; }
+
+  &:hover,
+  &:nth-child(even):hover,
+  &:last-child:hover { background-color: $hover; }
+
+  & + .unpacking-entry { border-top: 1px solid $line; }
+}
+
+// Danger zone sits on its own white card so the red reads clearly
+.danger-zone { background: $surface; }
+
+// ---------------------------------------------------------------- Misc
+.danger-zone { border-radius: $radius; overflow: hidden; }
+
+nav.pagination span:not(.gap) a,
+nav.pagination span.current { border-radius: $radius-sm; }
+
+em.show-id { border-radius: 6px; }
+
+.dialog .panel { box-shadow: $shadow-sm; }
+
+.footer-block .footer-links {
+  border-top: 0;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, .06);
+}
+
+// ---------------------------------------------------------------- Motion
+$ease-out: cubic-bezier(.2, .8, .2, 1);
+$ease-in-out: cubic-bezier(.4, 0, .2, 1);
+
+// Bootstrap collapse: quicker, with a softer curve than the default .35s ease
+.collapsing {
+  transition: height .25s $ease-in-out;
+}
+
+// Tab panes fade with a small lift instead of a flat opacity blink
+.tab-pane.fade {
+  transform: translateY(4px);
+  transition: opacity .18s ease-out, transform .18s $ease-out;
+
+  &.in { transform: none; }
+}
+
+// Sidebar / phone menu chevrons rotate instead of swapping glyphs
+.sidebar-nav .nav-header,
+#main-menu .nav-header {
+  .fa-collapse {
+    float: right;
+    transition: transform .25s $ease-in-out;
+
+    &::before { content: "\f078"; }
+  }
+
+  &:not(.collapsed) .fa-collapse { transform: rotate(180deg); }
+}
+
+#main-menu .nav-header .fa-collapse { opacity: .7; margin-top: 3px; }
+
+// Collapsible panels get a chevron on the far right that turns when opened.
+// Headings that already show their own right-hand icon (the item form) are skipped.
+.panel > a.panel-heading[data-toggle="collapse"],
+.panel a.panel-heading[data-toggle="collapse"] {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  > .label { float: none; margin-left: auto; }
+
+  &::after {
+    content: "\f078";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 11px;
+    color: $muted;
+    margin-left: 10px;
+    transition: transform .25s $ease-in-out;
+  }
+
+  &:not(:has(> .label))::after { margin-left: auto; }
+  &:has(> .pull-right)::after { display: none; }
+  &:has(> .pull-right) > .pull-right { margin-left: auto; }
+
+  &:not(.collapsed)::after { transform: rotate(180deg); }
+}
+
+// List-row drawers (search results, manage, unpack)
+.manage-item-name,
+.results-item-name {
+  transition: background-color .15s ease;
+
+  // Caret points down when closed and turns to point up when the drawer opens
+  .drawer-info .drawer-caret {
+    width: 14px;
+    margin-left: 6px;
+    font-size: 12px;
+    text-align: center;
+    color: $muted;
+    transition: transform .22s $ease-in-out, color .15s ease;
+  }
+
+  &:hover .drawer-caret { color: $ink; }
+  &.open .drawer-caret { transform: rotate(180deg); color: $brand; }
+}
+
+// Search results: dim while a new search runs, then fade the results in
+#search-results {
+  transition: opacity .15s ease;
+
+  &.is-loading { opacity: .45; pointer-events: none; }
+}
+
+.fade-in-up { animation: fade-in-up .22s $ease-out both; }
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+// Selected rows tint smoothly
+.row.inline-add-item,
+tr td { transition: background-color .15s ease, border-color .15s ease; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+// ---------------------------------------------------------------- Spacing
+// A toolbar inside a field group (the button lined up beside a field) must not add
+// its own 1em bottom margin on top of the group's
+.form-group > .btn-toolbar.list-toolbar:last-child { margin-bottom: 0; }
+
+// One inset for content inside any card: 16px from the edge on every side
+// (Bootstrap columns bring 15px; the extra 1px or the padding below makes up the rest).
+
+// Item form: _overrides.scss pads each .form-group by 15px on top of the column
+// padding, which doubled the inset on the closing fields. Columns alone do it now.
+.new_item .form-group,
+.edit_item .form-group { padding-left: 0; padding-right: 0; }
+
+// Fields inside a collapsible panel (General, Measurements, Notes...): room under the
+// heading to match the room at the bottom
+.panel .collapse .row.form-row,
+.panel .collapsing .row.form-row,
+.modal-body .collapse .row.form-row,
+.modal-body .collapsing .row.form-row { padding: 14px 16px 0; }
+
+// Category / Weight / Flags card on the New Item page
+.main-content > .row > form > .row.select-fields {
+  padding-left: 1px;
+  padding-right: 1px;
+  padding-top: 14px;
+
+  & + .row.select-fields { padding-top: 0; }
+}
+
+// Open drawers
+.row.inline-add-item {
+  .manage-item-form,
+  .results-item-form {
+    padding: 14px 16px;
+
+    // the bottom padding is the gap; drop the trailing margin of whatever ends the drawer
+    > :last-child,
+    > form > :last-child,
+    > .row:last-child > [class*="col-"]:last-child > :last-child,
+    > form > .row:last-child > [class*="col-"]:last-child > :last-child,
+    .btn-toolbar.list-toolbar:last-child { margin-bottom: 0; }
+
+    // A heading that opens the drawer would add its own top margin to the padding
+    > .row:first-child > [class*="col-"]:first-child > :first-child,
+    > :first-child:is(h4, h5, h6) { margin-top: 0; }
+
+    // When the drawer ends in a row of labelled fields, their 14px bottom margin would
+    // stack on the padding; pull the last row up by that much
+    > .row:last-child:has(> [class*="col-"]:last-child > .form-group:last-child),
+    > form:last-child > .row:last-child:has(> [class*="col-"]:last-child > .form-group:last-child) {
+      // flow-root: the drawer is a float, so it would otherwise stretch to fit the
+      // floated columns (and their margins) and ignore this negative margin
+      display: flow-root;
+      margin-bottom: -14px;
+    }
+
+    // Unpack drawers end with a floated "Add a hospital" link after the last form;
+    // keep it in flow and tuck it under the fields so the bottom gap stays even
+    > h6.pull-right:last-child {
+      float: none !important;
+      text-align: right;
+      margin: -4px 0 0;
+    }
+  }
+}
+
+// Modals: 20px, matching the title in the header
+.modal-body { padding: 18px 5px 20px; }
+@media (min-width: 768px) { .modal-body { padding: 18px 5px 20px; } }
+
+// No trailing gap at the bottom of a card: the last block's margin was adding to the padding
+.modal-body,
+.tab-content > .tab-pane,
+.row.detail-card,
+.main-content > .row > [class*="col-"] > form,
+.main-content > .row > form:not(.new_item):not(.edit_item) {
+  .btn-toolbar.list-toolbar:last-child,
+  > :last-child,
+  > form > :last-child,
+  > .row:last-child > [class*="col-"]:last-child > :last-child,
+  > form > .row:last-child > [class*="col-"]:last-child > :last-child { margin-bottom: 0; }
+}
+
+// ---------------------------------------------------------------- Selects
+// Native arrows sit hard against the edge; draw our own chevron 14px in from the right
+select.form-control {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 38px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%236b7781' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px 8px;
+
+  &[multiple],
+  &[size]:not([size="1"]) {
+    padding-right: 12px;
+    background-image: none;
+  }
+
+  &:disabled { opacity: .65; }
+}

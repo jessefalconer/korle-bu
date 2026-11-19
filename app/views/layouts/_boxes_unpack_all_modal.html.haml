@@ -20,13 +20,16 @@
 
           = form_for @box, url: boxes_unpack_all_path(@box), method: :post do |f|
             .col-xs-12
-              %label Hopsital/Facility/Clinic
-              = select_tag("hospital_id", hospital_options, { include_blank: true, class: "form-control" })
-              %label Unpacked On
-              - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
-              = text_field_tag :timestamp, today, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
-              %label Notes
-              = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"
+              .form-group
+                %label Hospital/Facility/Clinic
+                = select_tag("hospital_id", hospital_options, { include_blank: true, class: "form-control" })
+              .form-group
+                %label Unpacked On
+                - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
+                = text_field_tag :timestamp, today, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
+              .form-group
+                %label Notes
+                = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"
               %h6
                 %a{data: {target: "#add-hospital-modal", toggle: "modal"}, href: "", "data-dismiss" => "modal"} Don't see your hospital/facility/clinic? Add one.
             .col-xs-12

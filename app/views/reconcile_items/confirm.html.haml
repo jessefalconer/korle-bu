@@ -123,12 +123,11 @@
               flagged for review
 
           = form_with url: execute_reconcile_path(@item), id: "execute_form" do
-            .form-group
+            %label.checkbox-option
               = check_box_tag :delete_item, true, false
-              %label Delete Merge Items after Reconcile
+              Delete Merge Items after Reconcile
             - unless @item.verified
-              %br
-              .form-group
+              %label.checkbox-option
                 = check_box_tag :verify_item, true, true
-                %label Verify Target Item
+                Verify Target Item
             = submit_button_warning("Merge", "pull-right")
