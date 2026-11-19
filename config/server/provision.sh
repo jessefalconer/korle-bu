@@ -8,7 +8,7 @@
 # Safe to re-run: each step checks whether it is already done.
 #
 # What it sets up:
-#   - users: "admin" (sudo, with a password you choose) and "deploy" (runs the
+#   - users: "kbnfadmin" (sudo, with a password you choose) and "deploy" (runs the
 #     app, NO sudo). Both log in with the SSH key(s) the droplet was created with.
 #   - SSH: keys only, no root login, no passwords, no agent forwarding
 #   - firewall: only 22, 80, 443; fail2ban for SSH
@@ -25,7 +25,7 @@ PG_VERSION=18
 APP=korle-bu
 DOMAIN=inventory.kbnf.org
 DB=kbnf_production
-ADMIN=admin
+ADMIN=kbnfadmin
 DEPLOY=deploy
 
 log() { printf '\n\033[1;34m==> %s\033[0m\n' "$*"; }
@@ -217,6 +217,7 @@ systemctl restart nginx
 log "Ruby $RUBY_VERSION for $DEPLOY (rbenv; this takes 10-15 minutes)"
 sudo -u "$DEPLOY" -H RUBY_VERSION="$RUBY_VERSION" bash <<'EOF'
 set -euo pipefail
+cd ~ # ruby-build returns to the starting folder; deploy cannot enter /root
 [ -d ~/.rbenv ] || git clone -q --depth 1 https://github.com/rbenv/rbenv.git ~/.rbenv
 if [ -d ~/.rbenv/plugins/ruby-build ]; then
   git -C ~/.rbenv/plugins/ruby-build pull -q

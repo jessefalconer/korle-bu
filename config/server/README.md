@@ -5,7 +5,7 @@ How the production server for inventory.kbnf.org is built and operated.
 - **OS:** Ubuntu 24.04 LTS, automatic security updates and reboots (11:00 UTC)
 - **App:** Ruby (rbenv) + Puma as a systemd user service of `deploy`, behind nginx
 - **Database:** PostgreSQL 18, Unix socket only, `peer` authentication, no passwords
-- **Access:** SSH keys only. `admin` has sudo (with a password); `deploy` has none.
+- **Access:** SSH keys only. `kbnfadmin` has sudo (with a password); `deploy` has none.
   Only ports 22, 80 and 443 are open.
 - **Secrets:** `config/credentials/production.yml.enc` (committed, encrypted). Its key,
   `config/credentials/production.key`, is never committed: keep it in a password
@@ -18,14 +18,14 @@ points at it (pass it to Capistrano as `SERVER_HOST=...`).
 
 1. Create an Ubuntu 24.04 droplet with your SSH key (no password), and a cloud
    firewall allowing inbound 22, 80 and 443 only.
-2. Run the setup script. It asks once for a password for `admin` (used for sudo only):
+2. Run the setup script. It asks once for a password for `kbnfadmin` (used for sudo only):
 
    ```bash
    scp config/server/provision.sh root@HOST:
    ssh -t root@HOST 'bash provision.sh'
    ```
 
-3. **In a new terminal, check `ssh admin@HOST` works** before closing the root
+3. **In a new terminal, check `ssh kbnfadmin@HOST` works** before closing the root
    session: root login is disabled from then on.
 4. Log in once as deploy so your machine records the server's host key, and upload
    the credentials key:
@@ -48,7 +48,7 @@ points at it (pass it to Capistrano as `SERVER_HOST=...`).
    (certbot asks for an email and for you to accept Let's Encrypt's terms):
 
    ```bash
-   ssh -t admin@inventory.kbnf.org 'sudo certbot --nginx -d inventory.kbnf.org --redirect'
+   ssh -t kbnfadmin@inventory.kbnf.org 'sudo certbot --nginx -d inventory.kbnf.org --redirect'
    ```
 
    Renewal is automatic. Check with `sudo certbot renew --dry-run`.
