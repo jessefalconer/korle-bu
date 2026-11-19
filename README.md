@@ -72,7 +72,7 @@ Deploys use Capistrano to a single server (see `config/deploy/production.rb`):
 bundle exec cap production deploy
 ```
 
-The deploy runs `yarn install` before precompiling assets. Production secrets are managed with `capistrano-secrets-yml`, and the database connection comes from `DATABASE_URL` and `KBNF_DATABASE_PASSWORD` on the server.
+The deploy runs `yarn install` before precompiling assets. **The server runs Node 12**, older than `.node-version`, so JavaScript dependencies must install on Node 12; `resolutions` in `package.json` caps packages that need newer Node. Production secrets are managed with `capistrano-secrets-yml`, and the database connection comes from `DATABASE_URL` and `KBNF_DATABASE_PASSWORD` on the server.
 
 ## Legacy data
 
