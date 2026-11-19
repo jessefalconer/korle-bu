@@ -17,6 +17,6 @@ class ShipmentExportsController < ApplicationController
   end
 
   def export_params
-    params.require(:shipment_export).permit(:id, :group_by)
+    params.expect(shipment_export: %i[id group_by])
   end
 end

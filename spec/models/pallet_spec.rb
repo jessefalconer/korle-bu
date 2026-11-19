@@ -54,7 +54,7 @@ describe Pallet do
   end
 
   context "a pallet, with a box, has its status changed to 'Staged'" do
-    it "dissassociates itself from the container, but the boxes are unchanged"  do
+    it "dissassociates itself from the container, but the boxes are unchanged" do
       subject.update(status: Pallet::STAGED)
       expect(subject.boxes).to include(box)
       expect(box.reload.status).to eq(Box::IN_PROGRESS)

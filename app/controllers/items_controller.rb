@@ -4,6 +4,22 @@ class ItemsController < ApplicationController
   load_and_authorize_resource only: %i[create update destroy]
   before_action :set_item, only: %i[show destroy update]
 
+  def index
+    @items = if params[:category]
+      Item.includes(:category).where(category_id: params[:category])
+        .order(:generated_name)
+        .page params[:page]
+    elsif params[:search_string]
+      Item.includes(:category).search_by_generated_name(params[:search_string])
+        .page params[:page]
+    else
+      Item.includes(:category).order(:generated_name).page params[:page]
+    end
+  end
+
+  def show
+  end
+
   def new
     @item = Item.new
   end
@@ -17,19 +33,6 @@ class ItemsController < ApplicationController
     else
       redirect_to items_path,
                   flash: { error: "Failed to create new item: #{item.errors.full_messages.to_sentence}" }
-    end
-  end
-
-  def index
-    @items = if params[:category]
-      Item.includes(:category).where(category_id: params[:category])
-        .order(:generated_name)
-        .page params[:page]
-    elsif params[:search_string]
-      Item.includes(:category).search_by_generated_name(params[:search_string])
-        .page params[:page]
-    else
-      Item.includes(:category).all.order(:generated_name).page params[:page]
     end
   end
 
@@ -69,7 +72,7 @@ class ItemsController < ApplicationController
     @search_results_items = Item.search_by_generated_name(params[:search])
       .where
       .not(id: excluded_ids)
-    @item = Item.find(params[:compare_id])
+    @item = Item.find(params.expect(:compare_id))
 
     render json: render_to_string(
       partial: "results_reconcile",
@@ -108,9 +111,6 @@ class ItemsController < ApplicationController
       layout: false,
       locals: { items: @items }
     ).to_json
-  end
-
-  def show
   end
 
   def update
@@ -169,17 +169,17 @@ class ItemsController < ApplicationController
   end
 
   def item_params
-    params.require(:item).permit(
-      :brand, :object, :standardized_size,
-      :numerical_size_1, :numerical_units_1, :numerical_description_1,
-      :numerical_size_2, :numerical_units_2, :numerical_description_2,
-      :area_1, :area_2, :area_units, :area_description,
-      :range_1, :range_2, :range_units, :range_description, :unit_weight,
-      :category_id, :notes, :verified, :flagged
+    params.expect(
+      item: %i[brand object standardized_size
+               numerical_size_1 numerical_units_1 numerical_description_1
+               numerical_size_2 numerical_units_2 numerical_description_2
+               area_1 area_2 area_units area_description
+               range_1 range_2 range_units range_description unit_weight
+               category_id notes verified flagged]
     )
   end
 
   def set_item
-    @item = Item.find(params[:id])
+    @item = Item.find(params.expect(:id))
   end
 end

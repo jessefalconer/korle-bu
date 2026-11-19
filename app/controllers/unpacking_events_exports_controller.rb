@@ -11,7 +11,7 @@ class UnpackingEventsExportsController < ApplicationController
 
     send_data(
       @export.to_csv,
-      filename: file_name + ".csv"
+      filename: "#{file_name}.csv"
     )
   end
 
@@ -19,14 +19,14 @@ class UnpackingEventsExportsController < ApplicationController
 
   def set_export
     @export = UnpackingEventsExport.new(
-        export_params[:start_date],
-        export_params[:end_date],
-        export_params[:hospital_id],
-        export_params[:sorting]
-      )
+      export_params[:start_date],
+      export_params[:end_date],
+      export_params[:hospital_id],
+      export_params[:sorting]
+    )
   end
 
   def export_params
-    params.require(:unpacking_events_export).permit(:start_date, :end_date, :hospital_id, :sorting)
+    params.expect(unpacking_events_export: %i[start_date end_date hospital_id sorting])
   end
 end

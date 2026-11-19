@@ -17,6 +17,6 @@ class HospitalExportsController < ApplicationController
   end
 
   def export_params
-    params.require(:hospital_export).permit(:id, :start_date, :end_date)
+    params.expect(hospital_export: %i[id start_date end_date])
   end
 end

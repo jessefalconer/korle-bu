@@ -3,6 +3,21 @@
 class StagedItemsController < ApplicationController
   before_action :set_packed_item, except: %i[create index add_with_item]
 
+  def index
+    @packed_items = PackedItem.staged
+      .order(created_at: :desc)
+      .page params[:page]
+    @box_options = Box.reassignable
+      .order(id: :desc)
+      .pluck(:name, :id)
+    @pallet_options = Pallet.reassignable
+      .order(id: :desc)
+      .pluck(:name, :id)
+    @container_options = Container.in_progress
+      .order(id: :desc)
+      .pluck(:name, :id)
+  end
+
   def create
     packed_item = PackedItem.new(packed_item_params)
 
@@ -25,21 +40,6 @@ class StagedItemsController < ApplicationController
     end
 
     redirect_to staged_items_path, flash: message
-  end
-
-  def index
-    @packed_items = PackedItem.staged
-      .order(created_at: :desc)
-      .page params[:page]
-    @box_options = Box.reassignable
-      .order(id: :desc)
-      .pluck(:name, :id)
-    @pallet_options = Pallet.reassignable
-      .order(id: :desc)
-      .pluck(:name, :id)
-    @container_options = Container.in_progress
-      .order(id: :desc)
-      .pluck(:name, :id)
   end
 
   def add_with_item
@@ -66,28 +66,28 @@ class StagedItemsController < ApplicationController
   private
 
   def packed_item_params
-    params.require(:packed_item)
-      .permit(
-        :expiry_date, :quantity, :item_id, :weight,
-        :box_id, :pallet_id, :container_id, :show_id, :status
+    params
+      .expect(
+        packed_item: %i[expiry_date quantity item_id weight
+                        box_id pallet_id container_id show_id status]
       )
       .merge(user: current_user)
   end
 
   def item_params
-    params.require(:item)
-      .permit(
-        :brand, :object, :standardized_size,
-        :numerical_size_1, :numerical_units_1, :numerical_description_1,
-        :numerical_size_2, :numerical_units_2, :numerical_description_2,
-        :area_1, :area_2, :area_units, :area_description,
-        :range_1, :range_2, :range_units, :range_description, :unit_weight,
-        :category_id, :notes, :verified, :flagged
+    params
+      .expect(
+        item: %i[brand object standardized_size
+                 numerical_size_1 numerical_units_1 numerical_description_1
+                 numerical_size_2 numerical_units_2 numerical_description_2
+                 area_1 area_2 area_units area_description
+                 range_1 range_2 range_units range_description unit_weight
+                 category_id notes verified flagged]
       )
       .merge(user: current_user)
   end
 
   def set_packed_item
-    @packed_item = PackedItem.find(params[:id])
+    @packed_item = PackedItem.find(params.expect(:id))
   end
 end

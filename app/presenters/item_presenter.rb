@@ -8,7 +8,7 @@ class ItemPresenter < BasePresenter
     words = generated_name.to_s.split.uniq.sort_by { |word| -word.length }
     return compare_item.to_s if words.empty?
 
-    pattern = Regexp.new("(#{words.map { |word| Regexp.escape(word) }.join('|')})", Regexp::IGNORECASE)
+    pattern = Regexp.new("(#{words.map { |word| Regexp.escape(word) }.join("|")})", Regexp::IGNORECASE)
     parts = compare_item.to_s.split(pattern)
 
     safe_join(parts.each_with_index.map { |part, i| i.odd? ? tag.strong(part.capitalize) : part })

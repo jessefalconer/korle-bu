@@ -14,7 +14,7 @@ class Hospital < ApplicationRecord
   has_many :packed_items, through: :unpacking_events
 
   validates :status, inclusion: { in: STATUSES }
-  validates :name, uniqueness: true, presence: true  # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :name, uniqueness: true, presence: true # rubocop:disable Rails/UniqueValidationWithoutIndex
 
   paginates_per 25
 
@@ -23,6 +23,6 @@ class Hospital < ApplicationRecord
   end
 
   def full_address
-    [street, postal_code, city, province, country].reject(&:blank?).join(", ")
+    [street, postal_code, city, province, country].compact_blank.join(", ")
   end
 end

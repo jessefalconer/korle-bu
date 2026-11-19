@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
+  PROFILE_FIELDS = %i[
+    email first_name last_name phone notes achiever_name achievement_title
+    achievement_description achievement_value achievement_max_value
+  ].freeze
+  PASSWORD_FIELDS = %i[password password_confirmation].freeze
+  # Only people allowed to manage roles may set these (the form hides them for
+  # everyone else; this enforces it on the server too).
+  ROLE_FIELDS = %i[role status warehouse_id].freeze
+
   load_and_authorize_resource
   before_action :set_user, only: %i[show destroy update change_password]
-
-  def new
-    @user = User.new
-  end
 
   def index
     @users = if params[:warehouse]
@@ -16,18 +21,22 @@ class UsersController < ApplicationController
     end
   end
 
+  def show
+  end
+
+  def new
+    @user = User.new
+  end
+
   def create
     # The admin sets a temporary password; the new user must replace it at first login.
     user = User.create(user_params.merge(must_change_password: true))
     if user.errors.any?
       redirect_to new_user_path,
-        flash: { error: user.errors.full_messages.to_sentence }
+                  flash: { error: user.errors.full_messages.to_sentence }
     else
       redirect_to users_path, flash: { success: "User created." }
     end
-  end
-
-  def show
   end
 
   def update
@@ -35,7 +44,7 @@ class UsersController < ApplicationController
       redirect_to user_path(@user), flash: { success: "User updated." }
     else
       redirect_to user_path(@user),
-        flash: { error: @user.errors.full_messages.to_sentence }
+                  flash: { error: @user.errors.full_messages.to_sentence }
     end
   end
 
@@ -49,7 +58,7 @@ class UsersController < ApplicationController
       redirect_to user_path(@user), flash: { success: notice }
     else
       redirect_to user_path(@user),
-        flash: { error: @user.errors.full_messages.to_sentence }
+                  flash: { error: @user.errors.full_messages.to_sentence }
     end
   end
 
@@ -60,25 +69,16 @@ class UsersController < ApplicationController
 
   private
 
-  PROFILE_FIELDS = %i[
-    email first_name last_name phone notes achiever_name achievement_title
-    achievement_description achievement_value achievement_max_value
-  ].freeze
-  PASSWORD_FIELDS = %i[password password_confirmation].freeze
-  # Only people allowed to manage roles may set these (the form hides them for
-  # everyone else; this enforces it on the server too).
-  ROLE_FIELDS = %i[role status warehouse_id].freeze
-
   # Used for create/update, including by CanCanCan's load_and_authorize_resource.
   def user_params
     permitted = PROFILE_FIELDS.dup
     permitted += PASSWORD_FIELDS if action_name == "create"
     permitted += ROLE_FIELDS if can_alter_roles?
-    params.require(:user).permit(*permitted)
+    params.expect(user: [*permitted])
   end
 
   def password_params
-    params.require(:user).permit(*PASSWORD_FIELDS)
+    params.expect(user: [*PASSWORD_FIELDS])
   end
 
   # Mirrors the condition in users/_form: role managers, or a "masquerader"
@@ -91,6 +91,6 @@ class UsersController < ApplicationController
   end
 
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find(params.expect(:id))
   end
 end

@@ -33,17 +33,17 @@ class MassActionsController < ApplicationController
 
         { box_id: nil, pallet_id: nil, container_id: nil, status: params[:status] }
       elsif params[:box_id].present?
-        @box = Box.find(params[:box_id])
+        @box = Box.find(params.expect(:box_id))
         @name = @box.name
 
         { box_id: params[:box_id], pallet_id: nil, container_id: nil, status: @box.status }
       elsif params[:pallet_id].present?
-        @pallet = Pallet.find(params[:pallet_id])
+        @pallet = Pallet.find(params.expect(:pallet_id))
         @name = @pallet.name
 
         { box_id: nil, pallet_id: params[:pallet_id], container_id: nil, status: @pallet.status }
       elsif params[:container_id].present?
-        @container = Container.find(params[:container_id])
+        @container = Container.find(params.expect(:container_id))
         @name = @container.name
 
         { box_id: nil, pallet_id: nil, container_id: params[:container_id], status: @container.status }
@@ -59,7 +59,7 @@ class MassActionsController < ApplicationController
   def build_current_location
     return unless params[:current_location] == "true" && params[:current_location].present?
 
-    key = "#{params[:current_location_class].downcase}_id".to_sym
+    key = :"#{params.expect(:current_location_class).downcase}_id"
     params[key] = params[:current_location_id]
   end
 end

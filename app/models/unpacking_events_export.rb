@@ -2,6 +2,7 @@
 
 class UnpackingEventsExport
   include ActiveModel::Model
+
   require "csv"
 
   attr_accessor :group_by
@@ -15,10 +16,8 @@ class UnpackingEventsExport
 
   def to_csv
     CSV.generate(headers: true) do |csv|
-      csv << %w[Item Item\ ID Quantity Origin Destination User Date]
-      collection = UnpackingEvent.where(
-        "timestamp >= ? AND timestamp <= ?", @start_date, @end_date
-      )
+      csv << ["Item", "Item ID", "Quantity", "Origin", "Destination", "User", "Date"]
+      collection = UnpackingEvent.where(timestamp: @start_date..@end_date)
       collection = collection.where(hospital_id: @hospital_id) if @hospital_id.present?
 
       generate_rows(collection, csv)

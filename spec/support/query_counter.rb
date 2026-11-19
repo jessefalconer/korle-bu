@@ -5,14 +5,14 @@ module QueryCounter
 
   # Returns the number of SQL queries run inside the block, ignoring schema lookups
   # and query-cache hits.
-  def count_queries(&block)
+  def count_queries(&)
     count = 0
     counter = lambda do |*, payload|
       next if payload[:cached] || IGNORED_QUERY_NAMES.include?(payload[:name])
 
       count += 1
     end
-    ActiveSupport::Notifications.subscribed(counter, "sql.active_record", &block)
+    ActiveSupport::Notifications.subscribed(counter, "sql.active_record", &)
     count
   end
 

@@ -70,6 +70,32 @@ describe "Sessions", type: :request do
     end
   end
 
+  describe "GET / (dashboard)" do
+    let(:achievement) do
+      {
+        achiever_name: "Team Accra", achievement_title: "boxes packed",
+        achievement_description: "in one weekend", achievement_value: 40, achievement_max_value: 50
+      }
+    end
+
+    it "skips users whose achievement is only partly filled in" do
+      create :user, achievement.merge(achievement_title: nil, achievement_description: nil)
+      sign_in user
+      get index_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).not_to include("Team Accra")
+    end
+
+    it "shows a fully filled-in achievement" do
+      create :user, achievement
+      sign_in user
+      get index_path
+
+      expect(response.body).to include("Boxes Packed*")
+    end
+  end
+
   describe "authorization" do
     it "redirects guests to the login page" do
       get index_path

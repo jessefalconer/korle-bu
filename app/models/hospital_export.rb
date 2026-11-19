@@ -2,6 +2,7 @@
 
 class HospitalExport
   include ActiveModel::Model
+
   require "csv"
 
   attr_accessor :start_date, :end_date

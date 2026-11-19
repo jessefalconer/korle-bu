@@ -4,22 +4,6 @@ class ShipmentsController < ApplicationController
   load_and_authorize_resource
   before_action :set_shipment, only: %i[show destroy update]
 
-  def new
-    @shipment = Shipment.new
-  end
-
-  def create
-    shipment = Shipment.new(shipment_params.merge(user: current_user))
-
-    if shipment.save
-      redirect_to shipment_path(shipment),
-        flash: { success: "Shipment created." }
-    else
-      redirect_to shipments_path,
-        flash: { error: "Failed to create new shipment: #{shipment.errors.full_messages.to_sentence}" }
-    end
-  end
-
   def index
     @shipments = Shipment.includes(:receiving_warehouse)
       .accessible_by(current_ability)
@@ -54,13 +38,29 @@ class ShipmentsController < ApplicationController
     end
   end
 
+  def new
+    @shipment = Shipment.new
+  end
+
+  def create
+    shipment = Shipment.new(shipment_params.merge(user: current_user))
+
+    if shipment.save
+      redirect_to shipment_path(shipment),
+                  flash: { success: "Shipment created." }
+    else
+      redirect_to shipments_path,
+                  flash: { error: "Failed to create new shipment: #{shipment.errors.full_messages.to_sentence}" }
+    end
+  end
+
   def update
     if @shipment.update(shipment_params)
       redirect_to shipment_path(@shipment),
-        flash: { success: "Shipment updated." }
+                  flash: { success: "Shipment updated." }
     else
       redirect_to shipment_path(@shipment),
-        flash: { error: "Failed to update shipment: #{@shipment.errors.full_messages.to_sentence}" }
+                  flash: { error: "Failed to update shipment: #{@shipment.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -72,10 +72,10 @@ class ShipmentsController < ApplicationController
   private
 
   def shipment_params
-    params.require(:shipment)
-      .permit(
-        :name, :status, :notes, :custom_uid,
-        :receiving_warehouse_id, :shipping_warehouse_id
+    params
+      .expect(
+        shipment: %i[name status notes custom_uid
+                     receiving_warehouse_id shipping_warehouse_id]
       )
   end
 
@@ -83,9 +83,9 @@ class ShipmentsController < ApplicationController
     # Preload exactly the associations the show page renders, so their any?/size/each
     # calls don't each go back to the database.
     @shipment = Shipment.preload(
-        :containers, :receiving_warehouse, :shipping_warehouse, :user,
-        :pallets, :pallet_boxes, :container_boxes,
-        container_items: :item, pallet_items: :item, box_items: :item
-      ).find(params[:id])
+      :containers, :receiving_warehouse, :shipping_warehouse, :user,
+      :pallets, :pallet_boxes, :container_boxes,
+      container_items: :item, pallet_items: :item, box_items: :item
+    ).find(params.expect(:id))
   end
 end

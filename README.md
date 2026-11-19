@@ -2,34 +2,32 @@ Inventory and shipment tracking for [Korle-Bu Neuroscience Foundation](https://k
 
 ## Tech
 
-- **Rails 6.1** on **Ruby 2.6.5** (pinned in `.ruby-version`)
-- **PostgreSQL** (production runs 12)
-- **Webpacker** with **Node 16** (pinned in `.node-version`) and **Yarn 1** for JavaScript; Sprockets for SCSS
-- **HAML** views, Bootstrap 3, jQuery and jQuery UI
+- **Rails 8.1** on **Ruby 4.0** (pinned in `.ruby-version`)
+- **PostgreSQL**
+- **Propshaft** for assets, **importmap-rails** for JavaScript and **dartsass-rails** for SCSS, so there's no Node or Yarn build step
+- **HAML** views, Bootstrap 3, jQuery and jQuery UI (their scripts are vendored in `vendor/javascript`; Bootstrap's SCSS is in `app/assets/stylesheets/_bootstrap.scss`)
+- **Puma** in development and production
 - **RSpec** and FactoryBot for tests, **RuboCop** for linting
 
-Notable gems: `cancancan` (permissions), `kaminari` (pagination), `pg_search` (search), `chartkick` (dashboard charts), `aws-sdk-s3` (Active Storage on DigitalOcean Spaces), `capistrano` (deploys).
+Notable gems: `cancancan` (permissions), `kaminari` (pagination), `pg_search` (search), `chartkick` (dashboard charts), `aws-sdk-s3` (Active Storage on DigitalOcean Spaces), `rack-attack` (request throttling), `capistrano` (deploys).
 
 ## Setup
 
-Install the pinned Ruby and Node with a version manager, e.g. rbenv and nodenv (both on Homebrew). They read `.ruby-version` and `.node-version` automatically once initialized in your shell:
+Install the pinned Ruby with rbenv (on Homebrew). It reads `.ruby-version` automatically once it's initialized in your shell (`eval "$(rbenv init -)"`):
 
 ```bash
 rbenv install
-nodenv install
-npm install -g yarn@1
 ```
 
 Then install dependencies and set up the database:
 
 ```bash
 bundle install
-yarn install
 bin/rails db:setup
-bin/rails server
+bin/dev
 ```
 
-`db:setup` creates the database, loads `db/schema.rb` and runs the seeds. Visit http://localhost:3000.
+`db:setup` creates the database, loads `db/schema.rb` and runs the seeds. `bin/dev` starts the Rails server and the Sass watcher together (see `Procfile.dev`). Visit http://localhost:3000.
 
 ### Seed data
 
@@ -56,23 +54,22 @@ The export blanks columns that hold details about real people (see `SCRUBBED_COL
 - **Tests:** `bundle exec rspec`
 - **Lint:** `bundle exec rubocop` (`-a` to autocorrect)
 - **Routes:** `bin/rails routes`, or http://localhost:3000/rails/info/routes
-- **JavaScript** compiles on demand when a page requests it. `bin/webpack` builds it ahead of time.
+- **JavaScript** is served as-is through import maps (`config/importmap.rb`); there's nothing to build.
+- **SCSS** is compiled by `bin/rails dartsass:watch` (run by `bin/dev`), or once with `bin/rails dartsass:build`.
 - **Database in use:** if `db:drop` or `db:reset` fails because other sessions are connected, run `bin/rails kpsql` to end them.
-
-### Troubleshooting (macOS)
-
-- **Commands hang under Spring:** set `DISABLE_SPRING=1`.
-- **Pack requests fail with `ECONNREFUSED localhost:3035`:** Ruby 2.6's socket check misreports closed ports on recent macOS, so Webpacker thinks the dev server is running. `config/initializers/webpacker_dev_server_check.rb` works around this in development; make sure you haven't removed it.
 
 ## Deployment
 
-Deploys use Capistrano to a single server (see `config/deploy/production.rb`):
+Deploys use Capistrano to a single server (see `config/deploy/production.rb`). They deploy `master` from GitHub, or another branch with `BRANCH=<name>`:
 
 ```bash
 bundle exec cap production deploy
 ```
 
-The deploy runs `yarn install` before precompiling assets. **The server runs Node 12**, older than `.node-version`, so JavaScript dependencies must install on Node 12; `resolutions` in `package.json` caps packages that need newer Node. Production secrets are managed with `capistrano-secrets-yml`, and the database connection comes from `DATABASE_URL` and `KBNF_DATABASE_PASSWORD` on the server.
+The deploy installs gems, precompiles assets, runs migrations and restarts Puma, which runs as a systemd user service (`journalctl --user -u korle-bu_puma_production -f` on the server for logs).
+
+- **Secrets:** production credentials live in `config/credentials/production.yml.enc`. The key, `config/credentials/production.key`, is a linked file in the server's `shared/` directory and isn't in git.
+- **Database:** the app connects over PostgreSQL's local Unix socket with peer authentication, so there's no database password (see `config/database.yml`).
 
 ## Legacy data
 

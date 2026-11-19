@@ -65,9 +65,12 @@ Metrics/CyclomaticComplexity:
 
 Metrics/ModuleLength:
   Exclude:
+    - "app/helpers/application_helper.rb"
 
 Metrics/PerceivedComplexity:
   Exclude:
+    - "app/models/packed_item.rb"
+    - "app/presenters/base_presenter.rb"
 
 Rails/HasAndBelongsToMany:
   Exclude:

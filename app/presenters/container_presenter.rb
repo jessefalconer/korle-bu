@@ -20,7 +20,7 @@ class ContainerPresenter < BasePresenter
 
   def warehouse_location
     location = shipment&.current_location || "N/A"
-    status = shipment&.status&.presence || "N/A"
+    status = shipment&.status.presence || "N/A"
 
     tag.td do
       tag.p(location, class: "status-#{location.parameterize}")

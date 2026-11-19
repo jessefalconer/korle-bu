@@ -4,6 +4,17 @@ class HospitalsController < ApplicationController
   load_and_authorize_resource
   before_action :set_hospital, only: %i[show destroy update]
 
+  def index
+    @hospitals = Hospital.accessible_by(current_ability).page params[:page]
+  end
+
+  def show
+    @unpacking_events = @hospital
+      .unpacking_events
+      .order(created_at: :desc)
+      .accessible_by(current_ability).page params[:page]
+  end
+
   def new
     @hospital = Hospital.new
   end
@@ -19,17 +30,6 @@ class HospitalsController < ApplicationController
       redirect_to path,
                   flash: { error: "Failed to create new hospital: #{hospital.errors.full_messages.to_sentence}" }
     end
-  end
-
-  def index
-    @hospitals = Hospital.accessible_by(current_ability).page params[:page]
-  end
-
-  def show
-    @unpacking_events = @hospital
-      .unpacking_events
-      .order(created_at: :desc)
-      .accessible_by(current_ability).page params[:page]
   end
 
   def update
@@ -51,15 +51,15 @@ class HospitalsController < ApplicationController
   private
 
   def hospital_params
-    params.require(:hospital)
-      .permit(
-        :name, :status, :notes, :user_id, :street, :city, :province,
-        :postal_code, :country, :phone, :warehouse_id, :longitude,
-        :latitude, :point_of_contact_name, :point_of_contact_phone
+    params
+      .expect(
+        hospital: %i[name status notes user_id street city province
+                     postal_code country phone warehouse_id longitude
+                     latitude point_of_contact_name point_of_contact_phone]
       )
   end
 
   def set_hospital
-    @hospital = Hospital.find(params[:id])
+    @hospital = Hospital.find(params.expect(:id))
   end
 end

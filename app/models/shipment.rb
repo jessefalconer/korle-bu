@@ -23,7 +23,7 @@ class Shipment < ApplicationRecord
   has_many :packed_items
   has_many :box_items, -> { where(container_id: nil) }, class_name: "PackedItem", inverse_of: :shipment
 
-  validates :name, :custom_uid, :user, presence: true
+  validates :name, :custom_uid, presence: true
   validates :custom_uid, :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :status, inclusion: { in: STATUSES }
 

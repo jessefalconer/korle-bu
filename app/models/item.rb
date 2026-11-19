@@ -32,9 +32,8 @@ class Item < ApplicationRecord
 
   validates :generated_name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
 
-  STANDARD_SIZES = %w[Assorted\ Sizes XXXS XXS XS Small Medium Large XL XXL XXXL].freeze
-  INFANT_SIZES = %w[Infant Newborn Preemie Infant\ Size\ 1 Infant\ Size\ 2 Infant\ Size\ 2.5
-                    Infant\ Size\ 3 Infant\ Size\ 3.5 Infant\ Size\ 4 Infant\ Size\ 4.5 Infant\ Size\ 5 Infant\ Size\ 6 Infant\ Size\ 7] +
+  STANDARD_SIZES = ["Assorted Sizes", "XXXS", "XXS", "XS", "Small", "Medium", "Large", "XL", "XXL", "XXXL"].freeze
+  INFANT_SIZES = ["Infant", "Newborn", "Preemie", "Infant Size 1", "Infant Size 2", "Infant Size 2.5", "Infant Size 3", "Infant Size 3.5", "Infant Size 4", "Infant Size 4.5", "Infant Size 5", "Infant Size 6", "Infant Size 7"] +
                  STANDARD_SIZES.map { |s| "Infant #{s}" }.freeze
   CHILD_SIZES = %w[Child] + STANDARD_SIZES.map { |s| "Child #{s}" }.freeze
   ADULT_SIZES = %w[Adult] + STANDARD_SIZES.map { |s| "Adult #{s}" }.freeze
@@ -73,7 +72,7 @@ class Item < ApplicationRecord
 
   def self.execute_merge(item, merge_items, delete: false, verify: true)
     merge_items.each do |merge_item|
-      PackedItem.where(item_id: merge_item.id).update_all(item_id: item.id) # rubocop:disable Rails/SkipsModelValidations#
+      PackedItem.where(item_id: merge_item.id).update_all(item_id: item.id) # rubocop:disable Rails/SkipsModelValidations
 
       Item.find(merge_item.id).destroy if delete
       Item.find(item.id).update(verified: verify) if verify
@@ -128,7 +127,7 @@ class Item < ApplicationRecord
     tri_1 = trigram(generated_name)
     tri_2 = trigram(comparison_item.generated_name)
 
-    return 0.0 if [tri_1, tri_2].any? { |arr| arr.size.zero? }
+    return 0.0 if [tri_1, tri_2].any?(&:empty?)
 
     # Find number of trigrams shared between them
     same_size = (tri_1 & tri_2).size

@@ -104,7 +104,7 @@ module SeedSnapshot
   # Received/unpacking pages only show stock in the current user's warehouse, so seeded
   # users belong to the warehouse holding the most received stock.
   def busiest_receiving_warehouse_id(conn)
-    conn.select_value(<<~SQL)
+    conn.select_value(<<~SQL.squish)
       SELECT shipments.receiving_warehouse_id
       FROM packed_items
       JOIN shipments ON shipments.id = packed_items.shipment_id

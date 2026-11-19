@@ -32,7 +32,7 @@ class Box < ApplicationRecord
     )
   }
 
-  validates :name, :custom_uid, :user, presence: true
+  validates :name, :custom_uid, presence: true
   validates :custom_uid, :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :status, inclusion: { in: STATUSES }
 
@@ -79,7 +79,7 @@ class Box < ApplicationRecord
   end
 
   def adopting_by_parent?
-    (pallet_id_change_to_be_saved&.first.nil? && container_id_change_to_be_saved&.first.nil?) &&
+    pallet_id_change_to_be_saved&.first.nil? && container_id_change_to_be_saved&.first.nil? &&
       (staged? || warehoused?) && !will_save_change_to_status?
   end
 

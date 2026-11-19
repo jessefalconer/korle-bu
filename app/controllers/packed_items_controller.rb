@@ -26,8 +26,7 @@ class PackedItemsController < ApplicationController
     totals_by_category = received.where.not(items: { category_id: nil })
       .group("items.category_id")
       .pluck(Arel.sql("items.category_id"), totals_sql)
-      .map { |category_id, item_count, remaining| [category_id, { item_count: item_count, remaining: remaining.to_i }] }
-      .to_h
+      .to_h { |category_id, item_count, remaining| [category_id, { item_count: item_count, remaining: remaining.to_i }] }
     @category_totals = Category.where(id: totals_by_category.keys).order(:name)
       .map { |category| [category, totals_by_category[category.id]] }
 
@@ -36,7 +35,7 @@ class PackedItemsController < ApplicationController
   end
 
   def received_category_items
-    @category = Category.find(params[:id])
+    @category = Category.find(params.expect(:id))
     @packed_items = PackedItem.received_in(@warehouse_id)
       .where(items: { category_id: params[:id] })
       .preload(:item)
@@ -55,7 +54,7 @@ class PackedItemsController < ApplicationController
   end
 
   def received_item_locations
-    @item = Item.find(params[:id])
+    @item = Item.find(params.expect(:id))
     received = PackedItem.received_in(@warehouse_id).where(item_id: params[:id])
 
     @box_items = received.where.not(box_id: nil).preload(:box)
@@ -79,10 +78,10 @@ class PackedItemsController < ApplicationController
           )
       end
 
-      message = { success: "#{params[:item_ids].count} item(s) unpacked." }
+      message = { success: "#{params.expect(item_ids: []).count} item(s) unpacked." }
     end
 
-    redirect_back fallback_location: request.referer, flash: message
+    redirect_back_or_to(request.referer, flash: message)
   end
 
   private

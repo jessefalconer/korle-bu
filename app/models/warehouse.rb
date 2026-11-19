@@ -25,7 +25,7 @@ class Warehouse < ApplicationRecord
   end
 
   def full_address
-    [street, postal_code, city, province, country].reject(&:blank?).join(", ")
+    [street, postal_code, city, province, country].compact_blank.join(", ")
   end
 
   def associations?

@@ -7,8 +7,7 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
 
   rescue_from CanCan::AccessDenied do |_exception|
-    redirect_back fallback_location: login_path,
-      flash: { error: "This action is not permitted with your user role." }
+    redirect_back_or_to(login_path, flash: { error: "This action is not permitted with your user role." })
   end
 
   private

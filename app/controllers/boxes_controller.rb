@@ -4,24 +4,6 @@ class BoxesController < ApplicationController
   load_and_authorize_resource
   before_action :set_box, only: %i[show destroy update]
 
-  def new
-    @box = Box.new(
-      container_id: params[:container_id],
-      pallet_id: params[:pallet_id]
-    )
-  end
-
-  def create
-    box = Box.new(box_params.merge(user: current_user))
-
-    if box.save
-      redirect_to box_path(box), flash: { success: "Box created." }
-    else
-      redirect_to boxes_path,
-        flash: { error: "Failed to create new box: #{box.errors.full_messages.to_sentence}" }
-    end
-  end
-
   def index
     @boxes = if (scope = display_scope(%w[staged in_progress warehoused]))
       Box.with_location
@@ -66,12 +48,30 @@ class BoxesController < ApplicationController
       .pluck(:name, :id)
   end
 
+  def new
+    @box = Box.new(
+      container_id: params[:container_id],
+      pallet_id: params[:pallet_id]
+    )
+  end
+
+  def create
+    box = Box.new(box_params.merge(user: current_user))
+
+    if box.save
+      redirect_to box_path(box), flash: { success: "Box created." }
+    else
+      redirect_to boxes_path,
+                  flash: { error: "Failed to create new box: #{box.errors.full_messages.to_sentence}" }
+    end
+  end
+
   def update
     if @box.update(box_params)
       redirect_to box_path(@box), flash: { success: "Box updated." }
     else
       redirect_to box_path(@box),
-        flash: { error: "Failed to update box: #{@box.errors.full_messages.to_sentence}" }
+                  flash: { error: "Failed to update box: #{@box.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -89,7 +89,7 @@ class BoxesController < ApplicationController
       redirect_to path
     else
       redirect_to params[:redirect],
-        flash: { error: "Box with custom ID #{box_params[:custom_uid]} not found." }
+                  flash: { error: "Box with custom ID #{box_params[:custom_uid]} not found." }
     end
   end
 
@@ -114,11 +114,11 @@ class BoxesController < ApplicationController
       message = { success: "#{@box.box_items.count} item(s) unpacked." }
     end
 
-    redirect_back fallback_location: request.referer, flash: message
+    redirect_back_or_to(request.referer, flash: message)
   end
 
   def duplicate
-    box = Box.find(params[:box_id])
+    box = Box.find(params.expect(:box_id))
     deep_clone = params[:strategy] == "deep"
     pallet_id = box.pallet_id if deep_clone
     container_id = box.container_id if deep_clone
@@ -149,21 +149,20 @@ class BoxesController < ApplicationController
       end
     end
 
-    redirect_back fallback_location: request.referer,
-      flash: { success: "#{box.name} duplicated #{params[:duplication_count]} times." }
+    redirect_back_or_to(request.referer, flash: { success: "#{box.name} duplicated #{params[:duplication_count]} times." })
   end
 
   private
 
   def box_params
-    params.require(:box)
-      .permit(
-        :name, :status, :notes, :custom_uid,
-        :pallet_id, :container_id, :weight
+    params
+      .expect(
+        box: %i[name status notes custom_uid
+                pallet_id container_id weight]
       )
   end
 
   def set_box
-    @box = Box.with_location.preload(:user, box_items: :item).find(params[:id])
+    @box = Box.with_location.preload(:user, box_items: :item).find(params.expect(:id))
   end
 end

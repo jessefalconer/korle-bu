@@ -39,7 +39,7 @@ describe User do
     end
 
     it "rejects malformed phone numbers" do
-      ["abc", "12345", "123-45-678"].each do |phone|
+      %w[abc 12345 123-45-678].each do |phone|
         expect(build(:user, phone: phone)).not_to be_valid, "expected #{phone} to be invalid"
       end
     end

@@ -32,9 +32,9 @@ describe ShipmentExport do
 
       expect(header).to eq(["Item", "Item Quantity", "Category", "Item Weight (kg)", "Locations"])
       expect(body).to eq([
-        ["Crutch", "1", "N/A", "0", container.name],
-        ["Gauze", "7", "Medical", "2.0", "#{container.name}, #{box.name}"]
-      ])
+                           ["Crutch", "1", "N/A", "0", container.name],
+                           ["Gauze", "7", "Medical", "2.0", "#{container.name}, #{box.name}"]
+                         ])
     end
   end
 
@@ -44,11 +44,11 @@ describe ShipmentExport do
 
       expect(header).to eq(["Category", "Item", "Item Quantity", "Item Weight (kg)", "Locations"])
       expect(body).to eq([
-        ["Medical", "-", "-", "-", "-"],
-        ["-", "Gauze", "7", "2.0", "#{container.name}, #{box.name}"],
-        ["N/A", "-", "-", "-", "-"],
-        ["-", "Crutch", "1", "0", container.name]
-      ])
+                           ["Medical", "-", "-", "-", "-"],
+                           ["-", "Gauze", "7", "2.0", "#{container.name}, #{box.name}"],
+                           ["N/A", "-", "-", "-", "-"],
+                           ["-", "Crutch", "1", "0", container.name]
+                         ])
     end
   end
 

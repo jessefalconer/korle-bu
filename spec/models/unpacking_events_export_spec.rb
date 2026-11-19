@@ -31,23 +31,23 @@ describe UnpackingEventsExport do
 
     expect(header).to eq(["Item", "Item ID", "Quantity", "Origin", "Destination", "User", "Date"])
     expect(body).to eq([
-      ["Syringe", item.id.to_s, "1", box.name, "Ridge Hospital", "Efua Owusu", "2026-02-01"],
-      ["Syringe", item.id.to_s, "2", box.name, "Tema General", "Efua Owusu", "2026-03-01"]
-    ])
+                         ["Syringe", item.id.to_s, "1", box.name, "Ridge Hospital", "Efua Owusu", "2026-02-01"],
+                         ["Syringe", item.id.to_s, "2", box.name, "Tema General", "Efua Owusu", "2026-03-01"]
+                       ])
   end
 
   it "filters by hospital" do
     _, *body = rows(hospital_id: hospital.id)
-    expect(body.map { |r| r[4] }).to eq(["Ridge Hospital"])
+    expect(body.pluck(4)).to eq(["Ridge Hospital"])
   end
 
   it "sorts descending when asked" do
     _, *body = rows(sorting: "desc")
-    expect(body.map { |r| r[6] }).to eq(%w[2026-03-01 2026-02-01])
+    expect(body.pluck(6)).to eq(%w[2026-03-01 2026-02-01])
   end
 
   it "defaults the start date to the earliest event" do
     _, *body = rows(start_date: nil)
-    expect(body.map { |r| r[2] }).to contain_exactly("1", "2", "3")
+    expect(body.pluck(2)).to contain_exactly("1", "2", "3")
   end
 end

@@ -4,21 +4,6 @@ class PalletsController < ApplicationController
   load_and_authorize_resource
   before_action :set_pallet, only: %i[show destroy update]
 
-  def new
-    @pallet = Pallet.new(container_id: params[:container_id])
-  end
-
-  def create
-    pallet = Pallet.new(pallet_params.merge(user: current_user))
-
-    if pallet.save
-      redirect_to pallet_path(pallet), flash: { success: "Pallet created." }
-    else
-      redirect_to pallets_path,
-        flash: { error: "Failed to create new pallet: #{pallet.errors.full_messages.to_sentence}" }
-    end
-  end
-
   def index
     @pallets = if (scope = display_scope(%w[staged in_progress warehoused]))
       Pallet.with_location
@@ -69,12 +54,27 @@ class PalletsController < ApplicationController
       .pluck(:name, :id)
   end
 
+  def new
+    @pallet = Pallet.new(container_id: params[:container_id])
+  end
+
+  def create
+    pallet = Pallet.new(pallet_params.merge(user: current_user))
+
+    if pallet.save
+      redirect_to pallet_path(pallet), flash: { success: "Pallet created." }
+    else
+      redirect_to pallets_path,
+                  flash: { error: "Failed to create new pallet: #{pallet.errors.full_messages.to_sentence}" }
+    end
+  end
+
   def update
     if @pallet.update(pallet_params)
       redirect_to pallet_path(@pallet), flash: { success: "Pallet updated." }
     else
       redirect_to pallet_path(@pallet),
-        flash: { error: "Failed to update pallet: #{@pallet.errors.full_messages.to_sentence}" }
+                  flash: { error: "Failed to update pallet: #{@pallet.errors.full_messages.to_sentence}" }
     end
   end
 
@@ -92,7 +92,7 @@ class PalletsController < ApplicationController
       redirect_to path
     else
       redirect_to params[:redirect],
-      flash: { error: "Pallet with custom ID #{pallet_params[:custom_uid]} not found." }
+                  flash: { error: "Pallet with custom ID #{pallet_params[:custom_uid]} not found." }
     end
   end
 
@@ -117,16 +117,16 @@ class PalletsController < ApplicationController
       message = { success: "#{@pallet.pallet_items.count} item(s) unpacked." }
     end
 
-    redirect_back fallback_location: request.referer, flash: message
+    redirect_back_or_to(request.referer, flash: message)
   end
 
   private
 
   def pallet_params
-    params.require(:pallet)
-      .permit(
-        :name, :status, :notes, :custom_uid,
-        :container_id, :category_id, :weight
+    params
+      .expect(
+        pallet: %i[name status notes custom_uid
+                   container_id category_id weight]
       )
   end
 
@@ -135,6 +135,6 @@ class PalletsController < ApplicationController
       :boxes, :category, :user,
       pallet_items: :item, box_items: :item,
       container: { shipment: :receiving_warehouse }
-    ).find(params[:id])
+    ).find(params.expect(:id))
   end
 end

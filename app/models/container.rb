@@ -25,7 +25,7 @@ class Container < ApplicationRecord
   scope :staged, -> { where(shipment_id: nil) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }
 
-  validates :name, :custom_uid, :user, presence: true
+  validates :name, :custom_uid, presence: true
   validates :custom_uid, :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :status, inclusion: { in: STATUSES }
 

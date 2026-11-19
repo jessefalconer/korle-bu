@@ -25,15 +25,15 @@ class BoxUnpackingEventsController < ApplicationController
   private
 
   def unpacking_event_params
-    params.require(:unpacking_event)
-      .permit(:quantity, :weight, :notes, :box_item_id, :hospital_id, :timestamp)
+    params
+      .expect(unpacking_event: %i[quantity weight notes box_item_id hospital_id timestamp])
   end
 
   def set_unpacking_event
-    @unpacking_event = UnpackingEvent.find(params[:id])
+    @unpacking_event = UnpackingEvent.find(params.expect(:id))
   end
 
   def set_packed_item
-    @packed_item = PackedItem.find(params[:box_item_id])
+    @packed_item = PackedItem.find(params.expect(:box_item_id))
   end
 end

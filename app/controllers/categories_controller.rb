@@ -4,6 +4,13 @@ class CategoriesController < ApplicationController
   load_and_authorize_resource
   before_action :set_category, only: %i[show destroy update]
 
+  def index
+    @categories = Category.order(:name).page params[:page]
+  end
+
+  def show
+  end
+
   def new
     @category = Category.new
   end
@@ -17,13 +24,6 @@ class CategoriesController < ApplicationController
       redirect_to categories_path,
                   flash: { error: "Failed to create new category: #{category.errors.full_messages.to_sentence}" }
     end
-  end
-
-  def index
-    @categories = Category.all.order(:name).page params[:page]
-  end
-
-  def show
   end
 
   def update
@@ -43,10 +43,10 @@ class CategoriesController < ApplicationController
   private
 
   def category_params
-    params.require(:category).permit(:name, :description)
+    params.expect(category: %i[name description])
   end
 
   def set_category
-    @category = Category.find(params[:id])
+    @category = Category.find(params.expect(:id))
   end
 end

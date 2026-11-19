@@ -4,7 +4,7 @@
     {
       "name": "rails",
       "runtimeExecutable": "bash",
-      "runtimeArgs": ["-lc", "export PATH=\"$HOME/.nodenv/shims:$HOME/.rbenv/shims:$PATH\"; DISABLE_SPRING=1 bin/dev"],
+      "runtimeArgs": ["-lc", "export PATH=\"$HOME/.rbenv/shims:$PATH\"; bin/dev"],
       "port": 3000
     }
   ]

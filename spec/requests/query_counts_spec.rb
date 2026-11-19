@@ -50,7 +50,7 @@ describe "Query counts", type: :request do
 
     3.times { add_rows.call }
     expect(queries_for_get(path)).to eq(baseline),
-      "expected #{path} to run #{baseline} queries regardless of row count, but it ran more after adding rows"
+                                     "expected #{path} to run #{baseline} queries regardless of row count, but it ran more after adding rows"
   end
 
   it "does not N+1 on the shipment page" do

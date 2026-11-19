@@ -1,15 +1,16 @@
-require: rubocop-rails
+plugins: rubocop-rails
 
 # This file contains rule exceptions that we want to fix eventually.
 inherit_from: .rubocop_todo.yml
 
 
 AllCops:
+  NewCops: enable
+  SuggestExtensions: false
   Exclude:
     - "bin/**/*"
     - "db/**/*"
-    - "node_modules/**/*"
-    - "vendor/**/*" # for Circle CI's benefit
+    - "vendor/**/*"
 
 Layout/DefEndAlignment:
   EnforcedStyleAlignWith: def
@@ -127,4 +128,8 @@ Style/TrailingCommaInHashLiteral:
   Enabled: false
 
 Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+
+# The app is English-only and keeps its flash messages inline.
+Rails/I18nLocaleTexts:
   Enabled: false

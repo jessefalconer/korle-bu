@@ -33,7 +33,7 @@ class Pallet < ApplicationRecord
 
   delegate :shipment, to: :container, allow_nil: true
 
-  validates :name, :custom_uid, :user, presence: true
+  validates :name, :custom_uid, presence: true
   validates :custom_uid, :name, uniqueness: true # rubocop:disable Rails/UniqueValidationWithoutIndex
   validates :status, inclusion: { in: STATUSES }
 
@@ -47,7 +47,7 @@ class Pallet < ApplicationRecord
   end
 
   after_save do
-    cascade_statuses if !status_changed_to_warehoused_or_staged?
+    cascade_statuses unless status_changed_to_warehoused_or_staged?
     cascade_packed_items_location if saved_change_to_container_id
   end
 
@@ -71,7 +71,7 @@ class Pallet < ApplicationRecord
     return false unless saved_change_to_status?
 
     from, to = saved_change_to_status
-    [WAREHOUSED, STAGED].include?(to) && ![WAREHOUSED, STAGED].include?(from)
+    [WAREHOUSED, STAGED].include?(to) && [WAREHOUSED, STAGED].exclude?(from)
   end
 
   def adopt_status

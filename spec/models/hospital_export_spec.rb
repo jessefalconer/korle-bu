@@ -32,9 +32,9 @@ describe HospitalExport do
 
     expect(header).to eq(%w[Item Category Quantity User Date])
     expect(body).to eq([
-      ["Gauze", "Medical", "3", "Kwame Asante", "2026-03-01"],
-      ["Gauze", "Medical", "4", "Kwame Asante", "2026-03-02"]
-    ])
+                         ["Gauze", "Medical", "3", "Kwame Asante", "2026-03-01"],
+                         ["Gauze", "Medical", "4", "Kwame Asante", "2026-03-02"]
+                       ])
   end
 
   it "includes events on the start and end days" do
@@ -42,7 +42,7 @@ describe HospitalExport do
     event_on(Date.new(2026, 3, 31), quantity: 2)
 
     _, *body = rows("start_date" => "2026-03-01", "end_date" => "2026-03-31")
-    expect(body.map { |r| r[2] }).to eq(%w[1 2])
+    expect(body.pluck(2)).to eq(%w[1 2])
   end
 
   it "ignores other hospitals' events" do
@@ -57,6 +57,6 @@ describe HospitalExport do
     event_on(Time.zone.today - 1, quantity: 7)
 
     _, *body = rows
-    expect(body.map { |r| r[2] }).to eq(%w[6])
+    expect(body.pluck(2)).to eq(%w[6])
   end
 end

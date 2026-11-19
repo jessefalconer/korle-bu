@@ -78,12 +78,12 @@ describe "Received items", type: :request do
 
       get "/received_categories"
 
-      rows = Nokogiri::HTML(response.body).css("tbody tr").map { |tr| tr.css("td p").map { |p| p.text.strip } }
+      rows = response.parsed_body.css("tbody tr").map { |tr| tr.css("td p").map { |p| p.text.strip } }
       expect(rows).to eq([
-        ["Another", "", "1", "4"],
-        [category.name, "", "1", "7"],
-        ["Uncategorized", "N/A", "2", "8"]
-      ])
+                           ["Another", "", "1", "4"],
+                           [category.name, "", "1", "7"],
+                           ["Uncategorized", "N/A", "2", "8"]
+                         ])
     end
 
     it "does not N+1 as categories grow" do
@@ -96,9 +96,9 @@ describe "Received items", type: :request do
 
   # Each panel heading's text mapped to the count in its label, e.g. "Boxed Items" => "2".
   def panel_counts(html)
-    Nokogiri::HTML(html).css(".panel-heading").map do |heading|
+    Nokogiri::HTML(html).css(".panel-heading").to_h do |heading|
       [heading.text.sub(heading.css(".label").text, "").strip, heading.css(".label").text.strip]
-    end.to_h
+    end
   end
 
   def table_rows(html)
@@ -163,7 +163,7 @@ describe "Received items", type: :request do
       packed_item(item: create(:item, object: "Aspirin", category: category), container: container)
 
       get "/packed_item_search?search=Gauze"
-      names = Nokogiri::HTML(JSON.parse(response.body)).css(".manage-item-name > p").map { |p| p.text.strip }
+      names = Nokogiri::HTML(response.parsed_body).css(".manage-item-name > p").map { |p| p.text.strip }
 
       expect(names).to eq(["Gauze Pad"])
     end

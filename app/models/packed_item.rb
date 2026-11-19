@@ -110,7 +110,7 @@ class PackedItem < ApplicationRecord
   def self.by_item
     all.group_by(&:item).each_with_object({}) do |(item, packed_items), hash|
       hash[item.generated_name] = {
-        category: (item.category&.name || "N/A"),
+        category: item.category&.name || "N/A",
         quantity: packed_items.sum(&:quantity),
         weight: packed_items.pluck(:weight).compact.sum,
         location: packed_items.map(&:location_name).uniq.join(", ")

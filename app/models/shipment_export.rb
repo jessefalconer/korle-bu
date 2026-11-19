@@ -2,6 +2,7 @@
 
 class ShipmentExport
   include ActiveModel::Model
+
   require "csv"
 
   attr_accessor :group_by
@@ -15,10 +16,10 @@ class ShipmentExport
     CSV.generate(headers: true) do |csv|
       case @group_by
       when "category"
-        csv << %w[Category Item Item\ Quantity Item\ Weight\ (kg) Locations]
+        csv << ["Category", "Item", "Item Quantity", "Item Weight (kg)", "Locations"]
         generate_by_category(@shipment.packed_items, csv)
       when "item"
-        csv << %w[Item Item\ Quantity Category Item\ Weight\ (kg) Locations]
+        csv << ["Item", "Item Quantity", "Category", "Item Weight (kg)", "Locations"]
         generate_by_item(@shipment.packed_items, csv)
       else
         csv << ["Error generating CSV"]

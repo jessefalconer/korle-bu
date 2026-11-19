@@ -81,7 +81,7 @@ describe "Request parameter safety", type: :request do
       user = create :user, status: "Active", role: "Volunteer"
       sign_in create(:user, status: "Active", role: "Admin")
       patch change_password_user_path(user),
-        params: { user: { password: "changed123", password_confirmation: "changed123", role: "Admin" } }
+            params: { user: { password: "changed123", password_confirmation: "changed123", role: "Admin" } }
 
       user.reload
       expect(user.authenticate("changed123")).to be_truthy
@@ -135,7 +135,7 @@ describe "Request parameter safety", type: :request do
     it "does not expose the direct-upload endpoint" do
       expect do
         post "/rails/active_storage/direct_uploads",
-          params: { blob: { filename: "x.png", byte_size: 1, checksum: "x", content_type: "image/png" } }
+             params: { blob: { filename: "x.png", byte_size: 1, checksum: "x", content_type: "image/png" } }
       end.not_to change(ActiveStorage::Blob, :count)
 
       expect(response).to have_http_status(:not_found)
