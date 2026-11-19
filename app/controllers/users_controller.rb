@@ -1,10 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  load_and_authorize_resource except: %i[signup create_public_user]
-  skip_before_action :authorized, only: %i[new signup create_public_user]
+  load_and_authorize_resource
   before_action :set_user, only: %i[show destroy update change_password]
-  before_action :existing_session, only: %i[signup create_public_user]
 
   def new
     @user = User.new
@@ -19,7 +17,8 @@ class UsersController < ApplicationController
   end
 
   def create
-    user = User.create(user_params)
+    # The admin sets a temporary password; the new user must replace it at first login.
+    user = User.create(user_params.merge(must_change_password: true))
     if user.errors.any?
       redirect_to new_user_path,
         flash: { error: user.errors.full_messages.to_sentence }
@@ -40,9 +39,14 @@ class UsersController < ApplicationController
     end
   end
 
+  # Admins and Shipping Managers resetting someone else's password: it becomes a
+  # temporary password the user must replace at next login. (People change their
+  # own password through PasswordsController, which asks for the current one.)
   def change_password
-    if @user.update(password_params)
-      redirect_to user_path(@user), flash: { success: "Password updated." }
+    resetting_someone_else = @user != current_user
+    if @user.update(password_params.merge(must_change_password: resetting_someone_else))
+      notice = resetting_someone_else ? "Temporary password set. #{@user.first_name} must choose a new one at next login." : "Password updated."
+      redirect_to user_path(@user), flash: { success: notice }
     else
       redirect_to user_path(@user),
         flash: { error: @user.errors.full_messages.to_sentence }
@@ -52,23 +56,6 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     redirect_to users_path, flash: { success: "#{@user.name} deleted." }
-  end
-
-  def signup
-    @user = User.new
-  end
-
-  def create_public_user
-    # Public sign-ups always start as a deactivated Volunteer awaiting approval;
-    # role and status are never taken from the request.
-    @user = User.create(public_signup_params.merge(role: "Volunteer", status: "Deactivated"))
-    if @user.errors.any?
-      redirect_to signup_path,
-        flash: { error: @user.errors.full_messages.to_sentence }
-    else
-      redirect_to login_path,
-        flash: { success: "User created, waiting for administrator approval." }
-    end
   end
 
   private
@@ -94,10 +81,6 @@ class UsersController < ApplicationController
     params.require(:user).permit(*PASSWORD_FIELDS)
   end
 
-  def public_signup_params
-    params.require(:user).permit(:email, :first_name, :last_name, :phone, *PASSWORD_FIELDS)
-  end
-
   # Mirrors the condition in users/_form: role managers, or a "masquerader"
   # (a tester who may switch their own role) editing their own account.
   def can_alter_roles?
@@ -105,10 +88,6 @@ class UsersController < ApplicationController
 
     can?(:alter_roles, User) ||
       (current_user.masquerader && params[:id].to_s == current_user.id.to_s)
-  end
-
-  def existing_session
-    redirect_to index_path if logged_in?
   end
 
   def set_user

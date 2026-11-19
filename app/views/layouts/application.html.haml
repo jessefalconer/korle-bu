@@ -14,7 +14,8 @@
     -# before the importmap modules below
     = javascript_include_tag "jquery.min", "bootstrap.min", "jquery-ui.min"
     = javascript_importmap_tags
-  %body.theme-1
+  -# with-sidebar: the header partial only draws the sidebar for signed-in users
+  %body.theme-1{class: ("with-sidebar" if current_user)}
     = render "layouts/header"
 
     = yield

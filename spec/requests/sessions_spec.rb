@@ -11,6 +11,15 @@ describe "Sessions", type: :request do
       expect(response).to have_http_status(:ok)
     end
 
+    it "has no sidebar column for guests" do
+      get login_path
+
+      expect(response.body).to include("theme-1")
+      expect(response.body).not_to include("with-sidebar")
+      expect(response.body).not_to include(privacy_path)
+      expect(response.body).not_to include(terms_path)
+    end
+
     it "redirects signed-in users to the dashboard" do
       sign_in user
       get login_path
@@ -47,7 +56,7 @@ describe "Sessions", type: :request do
 
       expect(response).to redirect_to(login_path)
       expect(session[:user_id]).to be_nil
-      expect(flash[:success]).to match(/administrator must approve/)
+      expect(flash[:error]).to match(/deactivated/)
     end
   end
 

@@ -6,6 +6,7 @@ class StaticPagesController < ApplicationController
   PAGES = %w[privacy terms admin_help volunteer_help dev_updates].freeze
 
   skip_before_action :authorized
+  skip_before_action :require_password_change
 
   def show
     page = params.require(:page)

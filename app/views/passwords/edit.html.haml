@@ -1,0 +1,25 @@
+.col-xs-12
+  .dialog
+    .panel.panel-default
+      %p.panel-heading.no-collapse Change Password
+      .panel-body
+        - if current_user.must_change_password
+          %p
+            Your account has a temporary password. Choose your own password to continue.
+        = form_tag password_path, method: :patch do
+          .form-group
+            %label{for: "current_password"}= current_user.must_change_password ? "Temporary Password" : "Current Password"
+            = password_field_tag :current_password, nil, class: "form-control span12", autocomplete: "current-password", required: true
+          .form-group
+            %label{for: "password"} New Password
+            = password_field_tag :password, nil, class: "form-control span12", autocomplete: "new-password", minlength: User::MIN_PASSWORD_LENGTH, required: true
+            %small.text-muted At least #{User::MIN_PASSWORD_LENGTH} characters.
+          .form-group
+            %label{for: "password_confirmation"} Confirm New Password
+            = password_field_tag :password_confirmation, nil, class: "form-control span12", autocomplete: "new-password", minlength: User::MIN_PASSWORD_LENGTH, required: true
+          .form-group
+            = submit_button("Change Password", "", "fa-user-shield")
+          .clearfix
+        - if current_user.must_change_password
+          %p.text-muted
+            = link_to "Log out", logout_path

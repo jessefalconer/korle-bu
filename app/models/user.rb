@@ -5,6 +5,9 @@ class User < ApplicationRecord
 
   STATUSES = %w[Active Deactivated].freeze
   ROLES = %w[Volunteer Shipping\ Manager Admin Receiving\ Manager].freeze
+  # Applies whenever a password is set or changed. Existing passwords are only
+  # stored as hashes and are never re-validated, so shorter old ones keep working.
+  MIN_PASSWORD_LENGTH = 8
 
   belongs_to :warehouse, optional: true
 
@@ -24,7 +27,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true, on: %i[create update]
   validates :status, inclusion: { in: STATUSES }, on: %i[create update]
   validates :role, inclusion: { in: ROLES }, on: %i[create update]
-  validates :password, presence: true, length: { minimum: 6 }, on: %i[create change_password]
+  validates :password, length: { minimum: MIN_PASSWORD_LENGTH }, allow_nil: true
 
   paginates_per 25
 

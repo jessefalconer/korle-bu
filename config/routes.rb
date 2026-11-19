@@ -14,8 +14,8 @@ Rails.application.routes.draw do
   get "logout", to: "sessions#destroy"
   get "my_activity", to: "sessions#my_activity"
 
-  get "signup", to: "users#signup"
-  post "create_public_user", to: "users#create_public_user"
+  # Accounts are created by admins; users change their own password here
+  resource :password, only: %i[edit update]
 
   get "reconcile_item_search", to: "items#reconcile_search"
   get "item_search_form", to: "items#search_form"

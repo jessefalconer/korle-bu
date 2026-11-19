@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   before_action :authorized
+  before_action :require_password_change
   helper_method :current_user
   helper_method :logged_in?
 
@@ -25,6 +26,14 @@ class ApplicationController < ActionController::Base
 
   def authorized
     redirect_to login_path unless logged_in?
+  end
+
+  # Someone using a temporary password set by an admin can do nothing else
+  # until they have chosen their own.
+  def require_password_change
+    return unless logged_in? && current_user.must_change_password
+
+    redirect_to edit_password_path, flash: { error: "Please choose a new password before continuing." }
   end
 
   # Index pages accept ?display=<scope> to filter. Only names in `allowed` are

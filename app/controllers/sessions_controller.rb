@@ -2,6 +2,7 @@
 
 class SessionsController < ApplicationController
   skip_before_action :authorized, only: %i[new create]
+  skip_before_action :require_password_change, only: %i[new create destroy]
   before_action :existing_session, only: %i[new create]
 
   def new
@@ -13,8 +14,11 @@ class SessionsController < ApplicationController
       session[:user_id] = @user.id
       if @user.status == "Deactivated"
         redirect_to login_path,
-          flash: { success: "Your account has been created, however an administrator must approve it. Please check back later." }
+          flash: { error: "This account is deactivated. Please contact a KBNF administrator." }
         session.clear
+      elsif @user.must_change_password
+        redirect_to edit_password_path,
+          flash: { success: "Welcome! Please choose your own password to continue." }
       else
         redirect_to index_path, flash: { success: "Successfully logged in." }
       end

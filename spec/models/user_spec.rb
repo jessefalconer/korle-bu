@@ -49,9 +49,18 @@ describe User do
       expect(build(:user, role: "Overlord")).not_to be_valid
     end
 
-    it "requires a password of at least 6 characters on create" do
-      expect(build(:user, password: "12345")).not_to be_valid
-      expect(build(:user, password: "123456")).to be_valid
+    it "requires a new password of at least 8 characters" do
+      expect(build(:user, password: "1234567")).not_to be_valid
+      expect(build(:user, password: "12345678")).to be_valid
+    end
+
+    it "keeps accepting an existing shorter password, and saving other changes" do
+      old = create(:user, status: "Active")
+      old.update_column(:password_digest, BCrypt::Password.create("123456", cost: BCrypt::Engine::MIN_COST))
+      reloaded = User.find(old.id)
+
+      expect(reloaded.authenticate("123456")).to be_truthy
+      expect(reloaded.update(first_name: "Ama")).to be(true)
     end
 
     it "does not require the password when updating other attributes" do

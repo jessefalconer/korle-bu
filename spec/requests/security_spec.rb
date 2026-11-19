@@ -6,7 +6,7 @@ require "rails_helper"
 describe "Request parameter safety", type: :request do
   let!(:warehouse) { create :warehouse, user: create(:user, status: "Active", role: "Admin") }
 
-  describe "POST /create_public_user (public sign-up)" do
+  describe "public sign-up (removed)" do
     let(:params) do
       {
         user: {
@@ -17,20 +17,24 @@ describe "Request parameter safety", type: :request do
       }
     end
 
-    it "always creates a deactivated Volunteer, ignoring role, status and warehouse" do
-      expect { post create_public_user_path, params: params }.to change(User, :count).by(1)
+    it "no longer exists" do
+      get "/signup"
+      expect(response).to have_http_status(:not_found)
 
-      user = User.find_by!(email: "newcomer@kbnf.org")
-      expect(user.role).to eq("Volunteer")
-      expect(user.status).to eq("Deactivated")
-      expect(user.warehouse_id).to be_nil
+      expect { post "/create_public_user", params: params }.not_to change(User, :count)
+      expect(response).to have_http_status(:not_found)
     end
 
-    it "does not let the new account sign in until approved" do
-      post create_public_user_path, params: params
-      sign_in User.find_by!(email: "newcomer@kbnf.org"), password: "secret123"
+    it "does not let guests create users through the admin form either" do
+      expect { post users_path, params: params }.not_to change(User, :count)
+      expect(response).to redirect_to(login_path)
+    end
 
-      expect(session[:user_id]).to be_nil
+    it "does not link to sign-up from the login page" do
+      get login_path
+
+      expect(response.body).not_to include("Sign Up")
+      expect(response.body).to include("Ask a KBNF administrator")
     end
   end
 

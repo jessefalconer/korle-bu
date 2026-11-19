@@ -727,9 +727,10 @@ footer .flash {
 .sidebar-nav { background: $surface; }
 
 // The sidebar is absolutely positioned, so it cannot stretch to the page height.
-// Paint its column (and the dividing line) into the body background instead.
+// Paint its column (and the dividing line) into the body background instead,
+// only on pages that have a sidebar (not the login page or other guest pages).
 @media (min-width: 768px) {
-  body {
+  body.with-sidebar {
     background: linear-gradient(to right, $surface 239px, $line 239px, $line 240px, $canvas 240px);
   }
 }
@@ -849,11 +850,6 @@ nav.pagination span.current { border-radius: $radius-sm; }
 em.show-id { border-radius: 6px; }
 
 .dialog .panel { box-shadow: $shadow-sm; }
-
-.footer-block .footer-links {
-  border-top: 0;
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, .06);
-}
 
 // ---------------------------------------------------------------- Motion
 $ease-out: cubic-bezier(.2, .8, .2, 1);

@@ -25,11 +25,14 @@
         = f.select(:warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @user.warehouse_id), { include_blank: "None" }, { class: "form-control" })
     -if create_password
       .form-group
-        %label Password
-        = f.password_field :password, class: "form-control"
+        %label Temporary Password
+        = f.password_field :password, class: "form-control", autocomplete: "new-password", minlength: User::MIN_PASSWORD_LENGTH
+        %small.text-muted
+          At least #{User::MIN_PASSWORD_LENGTH} characters. Share it with the person privately;
+          they'll have to choose their own password at first login.
       .form-group
-        %label Confirm Password
-        = f.password_field :password_confirmation, class: "form-control"
+        %label Confirm Temporary Password
+        = f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", minlength: User::MIN_PASSWORD_LENGTH
 
   .col-xs-12.col-sm-6
     .form-group
