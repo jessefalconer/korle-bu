@@ -16,7 +16,6 @@ gem "capistrano-secrets-yml", "~> 1.1.0"
 gem "bcrypt_pbkdf", ">= 1.0", "< 2.0", require: false
 gem "ed25519", ">= 1.2", "< 2.0", require: false
 gem "chartkick"
-gem "groupdate"
 gem "haml", "~> 5.1.2"
 gem "kaminari"
 gem "pg_search"
@@ -33,13 +32,10 @@ gem "puma", "~> 4.1"
 gem "sass-rails", ">= 6"
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem "webpacker", "~> 4.0"
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem "jbuilder", "~> 2.7"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 # Use Active Model has_secure_password
 gem "bcrypt", "~> 3.1.7"
-gem "mimemagic", github: "mimemagicrb/mimemagic", ref: "01f92d86d15d85cfd0f20dabd025dcbd36a8a60f"
 # Use Active Storage variant
 # gem "image_processing", "~> 1.2"
 

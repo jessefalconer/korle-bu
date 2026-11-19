@@ -8,16 +8,15 @@ window.$ = window.jQuery = $;
 
 require("@rails/ujs").start()
 require("@rails/activestorage").start()
-require("channels")
 
-import "../packs/errors";
-import "../packs/bootstrap";
-import "../packs/manage_item_search";
-import "../packs/item_search";
-import "../packs/quick_filter";
-import "../packs/reassign";
-import "../packs/reconcile";
-import "../packs/mass_actions";
+import "../src/errors";
+import "../src/bootstrap";
+import "../src/manage_item_search";
+import "../src/item_search";
+import "../src/quick_filter";
+import "../src/reassign";
+import "../src/reconcile";
+import "../src/mass_actions";
 import "chartkick/chart.js"
 
 $(() => {

@@ -28,9 +28,6 @@ class SessionsController < ApplicationController
     redirect_to login_path, flash: { success: "Successfully logged out." }
   end
 
-  def login
-  end
-
   def index
     @random_achievement = User.where
       .not(
@@ -91,6 +88,12 @@ class SessionsController < ApplicationController
       .order("packed_items.quantity desc")
       .limit(1)
       .first
+
+    @recent_items = Item.includes(:category, :user).order(created_at: :desc).limit(10)
+    @recent_item_instance_counts = PackedItem.where(item_id: @recent_items.map(&:id)).group(:item_id).count
+    @recent_unpacking_events = UnpackingEvent.includes(:hospital, :user, packed_item: :item)
+      .order(created_at: :desc)
+      .limit(10)
 
     return unless current_user.receiving_manager?
 

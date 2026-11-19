@@ -43,25 +43,24 @@ Rails.application.routes.draw do
   resources :hospital_exports, only: :create
   resources :shipment_exports, only: :create
   resources :unpacking_events_exports, only: :create
-  resources :categories
-  resources :items
-  resources :users do
+  resources :categories, except: :edit
+  resources :items, except: :edit
+  resources :users, except: :edit do
     member do
       patch :change_password
     end
   end
-  resources :warehouses
-  resources :hospitals
-  resources :packed_items, only: :index
-  resources :staged_items
+  resources :warehouses, except: :edit
+  resources :hospitals, except: :edit
+  resources :staged_items, except: %i[new show edit]
   post "staged_item_add_with_item", to: "staged_items#add_with_item"
-  resources :warehoused_items
+  resources :warehoused_items, except: %i[new show edit]
   post "warehoused_item_add_with_item", to: "warehoused_items#add_with_item"
   post "boxes/:id/unpack_all", to: "boxes#unpack_all", as: "boxes_unpack_all"
   post "pallets/:id/unpack_all", to: "pallets#unpack_all", as: "pallets_unpack_all"
 
   concern :boxable_items do
-    resources :boxes do
+    resources :boxes, except: :edit do
       get "duplicate", to: "boxes#duplicate"
       post "add_with_item", to: "box_items#add_with_item"
       resources :box_items, except: %i[show edit new] do
@@ -71,7 +70,7 @@ Rails.application.routes.draw do
   end
 
   concern :palletable_items do
-    resources :pallets do
+    resources :pallets, except: :edit do
       post "add_with_item", to: "pallet_items#add_with_item"
       resources :pallet_items, except: %i[show edit new] do
         resources :pallet_unpacking_events, only: %i[create destroy]
@@ -81,7 +80,7 @@ Rails.application.routes.draw do
   end
 
   concern :containable_items do
-    resources :containers do
+    resources :containers, except: :edit do
       post "add_with_item", to: "container_items#add_with_item"
       resources :container_items, except: %i[show edit new] do
         resources :container_unpacking_events, only: %i[create destroy]
@@ -93,7 +92,7 @@ Rails.application.routes.draw do
   concerns :boxable_items
   concerns :palletable_items
   concerns :containable_items
-  resources :shipments do
+  resources :shipments, except: :edit do
     concerns :containable_items
   end
 

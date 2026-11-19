@@ -21,7 +21,7 @@ class ShipmentsController < ApplicationController
   end
 
   def index
-    @shipments = Shipment.includes(:receiving_warehouse, :shipping_warehouse)
+    @shipments = Shipment.includes(:receiving_warehouse)
       .accessible_by(current_ability)
       .order(custom_uid: :desc)
       .page params[:page]

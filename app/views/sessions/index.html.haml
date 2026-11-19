@@ -234,7 +234,7 @@
         #new-items.collapse.in
           %table.table.list
             %tbody
-              - Item.order(:created_at).reverse.first(10).each do |item|
+              - @recent_items.each do |item|
                 %tr
                   %td
                     = link_to item_path(item) do
@@ -247,7 +247,7 @@
                   %td
                     %p Instances:
                     = link_to item_instances_path(item) do
-                      %p= item.packed_items.count
+                      %p= @recent_item_instance_counts.fetch(item.id, 0)
 
       .panel.panel-default
         %a.panel-heading{data: {toggle: "collapse"}, href: "#unpacked-items"}
@@ -256,7 +256,7 @@
         #unpacked-items.collapse.in
           %table.table.list
             %tbody
-              - UnpackingEvent.order(:created_at).reverse.first(10).each do |event|
+              - @recent_unpacking_events.each do |event|
                 %tr
                   %td
                     = link_to item_path(event.item) do
