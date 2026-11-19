@@ -1,58 +1,43 @@
 # frozen_string_literal: true
 
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.19.1"
+lock "~> 3.19"
 
 set :application, "korle-bu"
-set :repo_url, "git@github.com:jessefalconer/korle-bu.git"
-
-# Default branch is :master
-# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
-
-# Deploy to the user's home directory
+# Public repo: the server clones over HTTPS, so it holds no GitHub key
+set :repo_url, "https://github.com/jessefalconer/korle-bu.git"
+set :branch, ENV.fetch("BRANCH", "master")
 set :deploy_to, "/home/deploy/#{fetch :application}"
-
-# Default value for :format is :airbrussh.
-# set :format, :airbrussh
-
-# You can configure the Airbrussh format using :format_options.
-# These are the defaults.
-set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
-
-# Default value for :pty is false
-# set :pty, true
-
-# Default value for :linked_files is []
-# append :linked_files, "config/database.yml"
-
-# Default value for linked_dirs is []
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", ".bundle", "public/system", "public/uploads"
-
-# Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
-
-# Default value for local_user is ENV["USER"]
-# set :local_user, -> { `git config user.name`.chomp }
-
-# Only keep the last 5 releases to save disk space
 set :keep_releases, 5
 
-# Ensure bundler is installed and used
-set :bundle_flags, "--deployment"
-set :bundle_binstubs, -> { shared_path.join("bin") }
+set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
 
-# Uncomment the following to require manually verifying the host key before first deploy.
-# set :ssh_options, verify_host_key: :secure
+# Ruby: rbenv in the deploy user's home, version from .ruby-version
+set :rbenv_type, :user
+set :rbenv_ruby, File.read(File.expand_path("../.ruby-version", __dir__)).strip
 
-before "deploy:assets:precompile", "deploy:yarn_install"
+# Gems: installed per release into shared/bundle, without dev/test gems
+set :bundle_config, { deployment: true, without: "development:test" }
+set :bundle_jobs, 2
 
-namespace :deploy do
-  desc "Run rake yarn:install"
-  task :yarn_install do
-    on roles(:web) do
-      within release_path do
-        execute("cd #{release_path} && yarn install")
-      end
-    end
-  end
-end
+# Files and folders kept between releases.
+# The production credentials key is copied to the server once by hand
+# (see config/server/README.md); it is never committed.
+append :linked_files, "config/credentials/production.key"
+append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "vendor/bundle", "public/system", "storage"
+
+# Assets are compiled on the server (dartsass + propshaft; no Node needed)
+set :assets_roles, [:web]
+set :migration_role, :db
+
+# Puma runs as a systemd *user* service of the deploy user. Lingering (so the
+# service runs without anyone logged in) is enabled once by the server setup
+# script, because the deploy user has no sudo rights.
+set :puma_systemctl_user, :user
+set :puma_enable_lingering, false
+set :puma_bind, "tcp://127.0.0.1:3000"
+set :puma_service_unit_env_vars, ["RAILS_ENV=production", "MALLOC_ARENA_MAX=2"]
+# Send Puma and Rails output to the systemd journal (rotated automatically):
+#   journalctl --user -u korle-bu_puma_production -f
+set :puma_access_log, false
+set :puma_error_log, false

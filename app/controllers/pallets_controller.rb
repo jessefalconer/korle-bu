@@ -20,10 +20,10 @@ class PalletsController < ApplicationController
   end
 
   def index
-    @pallets = if params[:display]
+    @pallets = if (scope = display_scope(%w[staged in_progress warehoused]))
       Pallet.with_location
         .accessible_by(current_ability)
-        .send(params[:display])
+        .public_send(scope)
         .order(custom_uid: :desc)
         .page params[:page]
     else

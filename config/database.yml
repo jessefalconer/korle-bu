@@ -78,7 +78,11 @@ test:
 #   production:
 #     url: <%= ENV['DATABASE_URL'] %>
 #
+# Production connects over PostgreSQL's local Unix socket with "peer"
+# authentication: the database role has the same name as the Linux user the
+# app runs as, so no password exists to leak, and Postgres accepts no network
+# connections at all. The role owns only this database and is not a superuser.
 production:
   <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
-  password: <%= ENV['KBNF_DATABASE_PASSWORD'] %>
+  database: kbnf_production
+  host: <%= ENV.fetch("PGHOST", "/var/run/postgresql") %>

@@ -1,77 +1,74 @@
 # frozen_string_literal: true
 
 source "https://rubygems.org"
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.6.5"
+ruby file: ".ruby-version"
+
+gem "rails", "~> 8.1.4"
+
+# Database
+gem "pg", "~> 1.5"
+
+# Web server
+gem "puma", ">= 8.0.3"
+
+# Assets: Propshaft serves files, importmap loads JavaScript without Node,
+# dartsass-rails compiles the SCSS without Node
+gem "dartsass-rails"
+gem "importmap-rails"
+gem "propshaft"
+
+# File storage on DigitalOcean Spaces (S3-compatible API)
 gem "aws-sdk-s3", require: false
-gem "cancancan", "~> 3.2.1"
-gem "capistrano", "~> 3.11"
-gem "capistrano-passenger", "~> 0.2.0"
-gem "capistrano-rails", "~> 1.4"
-gem "capistrano-rbenv", "~> 2.1", ">= 2.1.4"
-gem "capistrano-bundler", "~> 2.0"
-gem "capistrano-secrets-yml", "~> 1.1.0"
-# ed25519 SSH key support for net-ssh (Capistrano)
-gem "bcrypt_pbkdf", ">= 1.0", "< 2.0", require: false
-gem "ed25519", ">= 1.2", "< 2.0", require: false
+
+# Authentication / authorisation
+gem "bcrypt", "~> 3.1.20"
+gem "cancancan", "~> 3.6"
+
+# Views and UI helpers
 gem "chartkick"
-gem "haml", "~> 5.2"
+gem "haml", "~> 6.3"
 gem "kaminari"
 gem "pg_search"
-# Bundle edge Rails instead: gem "rails", github: "rails/rails"
-gem "rails", "~> 6.1.7"
-gem "rails-static-router"
+
+# CSV exports (no longer bundled with Ruby since 3.4)
+gem "csv"
+
+# Request throttling
 gem "rack-attack"
-gem "rake"
-# Use postgresql as the database for Active Record
-gem "pg", ">= 0.18", "< 2.0"
-# Use Puma as the app server
-gem "puma", "~> 6.6"
-# Use SCSS for stylesheets
-gem "sass-rails", ">= 6"
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem "webpacker", "~> 4.0"
-# Use Redis adapter to run Action Cable in production
-# gem "redis", "~> 4.0"
-# Use Active Model has_secure_password
-gem "bcrypt", "~> 3.1.7"
-# Use Active Storage variant
-# gem "image_processing", "~> 1.2"
 
 # Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", ">= 1.4.2", require: false
+gem "bootsnap", require: false
 
-gem "net-scp"
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[windows jruby]
 
 group :development, :test do
-  # Call "byebug" anywhere in the code to stop execution and get a debugger console
-  gem "byebug", platforms: %i[mri mingw x64_mingw]
-  gem "factory_bot_rails", "< 6.1"
   gem "bullet"
-  gem "rspec-rails", "~> 4.1"
+  gem "debug", platforms: %i[mri windows], require: "debug/prelude"
+  gem "factory_bot_rails"
+  gem "rspec-rails", "~> 8.0"
 end
 
 group :development do
-  # Access an interactive console on exception pages or by calling "console" anywhere in the code.
-  gem "listen", "~> 3.2"
+  # Deploys
+  gem "capistrano", "~> 3.19", require: false
+  gem "capistrano3-puma", "~> 8.1", require: false
+  gem "capistrano-bundler", "~> 2.1", require: false
+  gem "capistrano-rails", "~> 1.6", require: false
+  gem "capistrano-rbenv", "~> 2.2", require: false
+  # ed25519 SSH key support for net-ssh (Capistrano)
+  gem "bcrypt_pbkdf", ">= 1.0", "< 2.0", require: false
+  gem "ed25519", ">= 1.2", "< 2.0", require: false
+
+  gem "rack-mini-profiler", require: false
   gem "rails-erd"
   gem "rubocop", require: false
   gem "rubocop-rails", require: false
-  gem "rack-mini-profiler", "2.3.1", require: false
-  gem "web-console", ">= 3.3.0"
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem "spring"
-  gem "spring-watcher-listen", "~> 2.0.0"
+  gem "web-console"
 end
 
 group :test do
-  # Adds support for Capybara system testing and selenium driver
-  gem "capybara", ">= 2.15"
+  gem "capybara"
   gem "selenium-webdriver"
-  # Easy installation and use of web drivers to run system tests with browsers
-  gem "webdrivers"
 end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]

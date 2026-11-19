@@ -12,7 +12,6 @@ describe "Received items", type: :request do
   let(:category) { create :category }
 
   before do
-    skip_webpacker_assets
     create :hospital, warehouse: warehouse
     sign_in user
   end

@@ -33,8 +33,15 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 RSpec.configure do |config|
+  # Pages link the compiled stylesheet, so build it once if it is missing
+  # (fresh clone, CI, or after `assets:clobber`).
+  config.before(:suite) do
+    css = Rails.root.join("app/assets/builds/application.css")
+    system("bin/rails", "dartsass:build", exception: true) unless css.exist?
+  end
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_paths = [Rails.root.join("spec/fixtures")]
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

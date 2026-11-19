@@ -14,7 +14,6 @@ describe "Query counts", type: :request do
   let(:box) { create :box, pallet: pallet, container: nil }
 
   before do
-    skip_webpacker_assets
     sign_in user
   end
 

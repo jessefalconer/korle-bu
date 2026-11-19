@@ -8,12 +8,12 @@
     %title KBNF | Inventory
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag 'application', media: 'all'
-    %link{rel: "stylesheet", href: "//code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css"}
+    = stylesheet_link_tag "jquery-ui.min", "application", media: "all"
     = favicon_link_tag "/kbnf-favicon-32x32.png", skip_pipeline: true
-    = javascript_pack_tag 'application'
-    -# jQuery UI attaches to the window.jQuery exposed by the application pack, so it must load after it
-    %script{src: "https://code.jquery.com/ui/1.13.3/jquery-ui.js"}
+    -# Plain (non-module) scripts the app code relies on as globals; they run in order,
+    -# before the importmap modules below
+    = javascript_include_tag "jquery.min", "bootstrap.min", "jquery-ui.min"
+    = javascript_importmap_tags
   %body.theme-1
     = render "layouts/header"
 

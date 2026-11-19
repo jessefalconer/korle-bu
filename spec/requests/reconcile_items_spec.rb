@@ -6,7 +6,6 @@ describe "Reconcile items", type: :request do
   let(:admin) { create :user, status: "Active", role: "Admin" }
 
   before do
-    skip_webpacker_assets
     sign_in admin
   end
 

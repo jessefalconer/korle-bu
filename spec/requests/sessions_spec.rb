@@ -7,7 +7,6 @@ describe "Sessions", type: :request do
 
   describe "GET /login" do
     it "renders the login page for guests" do
-      skip_webpacker_assets
       get login_path
       expect(response).to have_http_status(:ok)
     end
@@ -74,14 +73,12 @@ describe "Sessions", type: :request do
     end
 
     it "lets an admin view warehouses" do
-      skip_webpacker_assets
       sign_in create(:user, status: "Active", role: "Admin")
       get warehouses_path
       expect(response).to have_http_status(:ok)
     end
 
     it "omits the latest container and shipment links when none exist" do
-      skip_webpacker_assets
       sign_in create(:user, status: "Active", role: "Admin")
       get warehouses_path
 
@@ -90,7 +87,6 @@ describe "Sessions", type: :request do
     end
 
     it "links to the latest container and shipment" do
-      skip_webpacker_assets
       create :container, shipment: nil
       latest_shipment = create :shipment
       latest_container = create :container, shipment: latest_shipment

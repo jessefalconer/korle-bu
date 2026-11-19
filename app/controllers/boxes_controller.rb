@@ -23,10 +23,10 @@ class BoxesController < ApplicationController
   end
 
   def index
-    @boxes = if params[:display]
+    @boxes = if (scope = display_scope(%w[staged in_progress warehoused]))
       Box.with_location
         .accessible_by(current_ability)
-        .send(params[:display])
+        .public_send(scope)
         .order(custom_uid: :desc)
         .page params[:page]
     else

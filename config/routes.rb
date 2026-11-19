@@ -3,11 +3,12 @@
 Rails.application.routes.draw do
   root "sessions#index", as: :index
 
-  get "/privacy", to: static("privacy.html")
-  get "/terms", to: static("terms.html")
-  get "/admin_help", to: static("admin_help.html")
-  get "/volunteer_help", to: static("volunteer_help.html")
-  get "/dev_updates", to: static("dev_updates.html")
+  # Health check for the server's monitoring: 200 if the app boots, 500 otherwise.
+  get "up" => "rails/health#show", as: :rails_health_check
+
+  StaticPagesController::PAGES.each do |page|
+    get "/#{page}", to: "static_pages#show", page: page, as: page
+  end
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
   get "logout", to: "sessions#destroy"

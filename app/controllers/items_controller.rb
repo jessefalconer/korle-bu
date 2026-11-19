@@ -114,8 +114,8 @@ class ItemsController < ApplicationController
   end
 
   def update
-    path = if permitted_redirect
-      eval(params[:redirect]) # rubocop:disable Security/Eval
+    path = if (list_path = reconcile_list_redirect)
+      list_path
     elsif params[:redirect] == "reconcile_start_path"
       reconcile_start_path(@item)
     else
@@ -131,8 +131,8 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    path = if permitted_redirect
-      eval(params[:redirect]) # rubocop:disable Security/Eval
+    path = if (list_path = reconcile_list_redirect)
+      list_path
     else
       items_path
     end
@@ -158,9 +158,14 @@ class ItemsController < ApplicationController
     end
   end
 
-  def permitted_redirect
-    %w[reconcile_unverified_path reconcile_uncategorized_path
-       reconcile_flagged_path].include? params[:redirect]
+  # Forms on the reconcile lists send the list's route name so the user lands
+  # back on it. Map the few allowed names to paths; anything else is ignored.
+  def reconcile_list_redirect
+    case params[:redirect]
+    when "reconcile_unverified_path" then reconcile_unverified_path
+    when "reconcile_uncategorized_path" then reconcile_uncategorized_path
+    when "reconcile_flagged_path" then reconcile_flagged_path
+    end
   end
 
   def item_params

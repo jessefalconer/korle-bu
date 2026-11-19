@@ -1,22 +1,20 @@
-// This file is automatically compiled by Webpack, along with any other files
-// present in this directory. You're encouraged to place your actual application logic in
-// a relevant structure within app/javascript and only use these pack files to reference
-// that code so it'll be compiled.
+// Entry point, loaded as a module through the importmap (config/importmap.rb).
+//
+// jQuery, Bootstrap 3 and jQuery UI are loaded as plain scripts by the layout
+// before this module runs, so the global $ / jQuery are already set up here.
 
-// Share webpack's jQuery with the CDN-loaded jQuery UI plugin (see application layout)
-window.$ = window.jQuery = $;
+import Rails from "@rails/ujs";
+Rails.start();
 
-require("@rails/ujs").start()
-
-import "../src/errors";
-import "bootstrap/dist/js/bootstrap";
-import "../src/manage_item_search";
-import "../src/item_search";
-import "../src/quick_filter";
-import "../src/reassign";
-import "../src/reconcile";
-import "../src/mass_actions";
-import "chartkick/chart.js"
+import "src/errors";
+import "src/manage_item_search";
+import "src/item_search";
+import "src/quick_filter";
+import "src/reassign";
+import "src/reconcile";
+import "src/mass_actions";
+import "chartkick";
+import "Chart.bundle";
 
 // Respect the OS "reduce motion" setting for jQuery animations too
 $.fx.off = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

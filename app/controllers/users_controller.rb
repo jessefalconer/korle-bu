@@ -41,7 +41,7 @@ class UsersController < ApplicationController
   end
 
   def change_password
-    if @user.update(user_params)
+    if @user.update(password_params)
       redirect_to user_path(@user), flash: { success: "Password updated." }
     else
       redirect_to user_path(@user),
@@ -59,7 +59,9 @@ class UsersController < ApplicationController
   end
 
   def create_public_user
-    @user = User.create(user_params)
+    # Public sign-ups always start as a deactivated Volunteer awaiting approval;
+    # role and status are never taken from the request.
+    @user = User.create(public_signup_params.merge(role: "Volunteer", status: "Deactivated"))
     if @user.errors.any?
       redirect_to signup_path,
         flash: { error: @user.errors.full_messages.to_sentence }
@@ -71,14 +73,38 @@ class UsersController < ApplicationController
 
   private
 
+  PROFILE_FIELDS = %i[
+    email first_name last_name phone notes achiever_name achievement_title
+    achievement_description achievement_value achievement_max_value
+  ].freeze
+  PASSWORD_FIELDS = %i[password password_confirmation].freeze
+  # Only people allowed to manage roles may set these (the form hides them for
+  # everyone else; this enforces it on the server too).
+  ROLE_FIELDS = %i[role status warehouse_id].freeze
+
+  # Used for create/update, including by CanCanCan's load_and_authorize_resource.
   def user_params
-    params.require(:user)
-      .permit(
-        :email, :password, :password_confirmation, :last_name, :first_name,
-        :phone, :role, :status, :notes, :warehouse_id, :achiever_name,
-        :achievement_title, :achievement_description, :achievement_value,
-        :achievement_max_value
-      )
+    permitted = PROFILE_FIELDS.dup
+    permitted += PASSWORD_FIELDS if action_name == "create"
+    permitted += ROLE_FIELDS if can_alter_roles?
+    params.require(:user).permit(*permitted)
+  end
+
+  def password_params
+    params.require(:user).permit(*PASSWORD_FIELDS)
+  end
+
+  def public_signup_params
+    params.require(:user).permit(:email, :first_name, :last_name, :phone, *PASSWORD_FIELDS)
+  end
+
+  # Mirrors the condition in users/_form: role managers, or a "masquerader"
+  # (a tester who may switch their own role) editing their own account.
+  def can_alter_roles?
+    return false unless logged_in?
+
+    can?(:alter_roles, User) ||
+      (current_user.masquerader && params[:id].to_s == current_user.id.to_s)
   end
 
   def existing_session

@@ -1,5 +1,5 @@
-import { initManageDrawerListeners } from "./manage_item_search.js";
-import { searchInto } from "./search_request.js";
+import { initManageDrawerListeners } from "src/manage_item_search";
+import { searchInto } from "src/search_request";
 
 function indexSearch(params, path, initDrawers) {
   searchInto("#search-results", { url: path, data: { search: params } }, () => {

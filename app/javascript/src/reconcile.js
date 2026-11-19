@@ -1,4 +1,4 @@
-import { searchInto } from "./search_request.js";
+import { searchInto } from "src/search_request";
 
 function reconcileSearch(params) {
   searchInto("#search-results", {

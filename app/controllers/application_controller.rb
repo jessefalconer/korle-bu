@@ -26,4 +26,10 @@ class ApplicationController < ActionController::Base
   def authorized
     redirect_to login_path unless logged_in?
   end
+
+  # Index pages accept ?display=<scope> to filter. Only names in `allowed` are
+  # ever called, and the name returned comes from that list, never the request.
+  def display_scope(allowed)
+    allowed.find { |name| name == params[:display] }
+  end
 end
