@@ -7,13 +7,13 @@
     = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(current_user.selectable_statuses(Shipment), @shipment.status), {}, { class: "form-control", id: "status" }
+    = f.select :status, options_for_select(current_user.selectable_statuses(Shipment), @shipment.status), {}, { class: "form-select", id: "status" }
   .form-group
     = f.label :shipping_warehouse_id
-    = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), { include_blank: "" }, { class: "form-control" }
+    = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), { include_blank: "" }, { class: "form-select" }
   .form-group
     = f.label :receiving_warehouse_id
-    = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), { include_blank: "" }, { class: "form-control" }
+    = f.select :receiving_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.receiving_warehouse_id), { include_blank: "" }, { class: "form-select" }
   .form-group
     = f.label :notes
     = f.text_field :notes, class: "form-control"

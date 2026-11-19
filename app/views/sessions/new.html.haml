@@ -1,9 +1,9 @@
-.col-xs-12
+.col-12
   .dialog
     %img{src: "/kbnf-logo.png", alt: "Korle-Bu Neuroscience Foundation", class: "kbnf-logo-center"}
-    .panel.panel-default
-      %p.panel-heading.no-collapse Sign In
-      .panel-body
+    .card
+      %p.card-header.no-collapse Sign In
+      .card-body
         = form_tag login_path do
           .form-group
             %label Email
@@ -14,5 +14,5 @@
           .form-group
             = submit_button("Sign In", "", "fa-user")
           .clearfix
-      %p.panel-heading.no-collapse
+      %p.card-header.no-collapse
         Need an account? Ask a KBNF administrator.

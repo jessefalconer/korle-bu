@@ -1,18 +1,18 @@
 .row.padding-top-small
-  .col-xs-6.col-sm-3
+  .col-6.col-sm-3
     .form-group
       %label Quantity
       = f.number_field :quantity, value: 1, min: 1, class: "form-control"
       = f.hidden_field :staged, value: staged
-  .col-xs-6.col-sm-3
+  .col-6.col-sm-3
     .form-group
       %label Weight (kg)
       = f.number_field :weight, value: 0, min: 0, step: :any, class: "form-control"
-  .col-xs-6.col-sm-3
+  .col-6.col-sm-3
     .form-group
       %label Expiry Date
       = f.text_field :expiry_date, value: "", placeholder: "YYYY-MM-DD", class: "form-control datepickers"
-  .col-xs-6.col-sm-3
+  .col-6.col-sm-3
     .form-group
       %label.checkbox-option.inline-field
         = f.check_box :show_id

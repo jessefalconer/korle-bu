@@ -1,16 +1,16 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li
+      %li.breadcrumb-item
         = link_to "Items by Category", received_categories_path
-      %li
+      %li.breadcrumb-item
         - if @item.category
           = link_to @item.category.name, received_category_items_path(@item.category)
         - else
           = link_to "Uncategorized", received_uncategorized_items_path
-      %li.active= @item.generated_name
+      %li.breadcrumb-item.active= @item.generated_name
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, UnpackingEvent
       = render partial: "layouts/mass_action_unpack_modal"
@@ -19,16 +19,16 @@
     %h6
       = link_to "View additional information on this item.", item_path(@item)
     - if @box_items.any?
-      .panel.panel-default
-        %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
+      .card
+        %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#box_items"}
           %i.fa.fa-stethoscope
           Boxed Items
-          %span.label.label-info= @box_items.size
+          %span.badge.text-bg-info= @box_items.size
         .collapse{id: "box_items"}
           %table.table.table-striped
             %thead
               %tr
-                %th.hidden-xs Shipped Quantity
+                %th.d-none.d-sm-table-cell Shipped Quantity
                 %th Remaining Quantity
                 %th Box Info
                 %th Items
@@ -36,7 +36,7 @@
             %tbody
               - @box_items.each do |item|
                 %tr
-                  %td.hidden-xs
+                  %td.d-none.d-sm-table-cell
                     %p= item.quantity
                   %td
                     %p= item.remaining_quantity
@@ -50,16 +50,16 @@
                     = check_box_tag "item_ids[]", item.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{item.id}"
 
     - if @pallet_items.any?
-      .panel.panel-default
-        %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
+      .card
+        %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#pallet_items"}
           %i.fa.fa-stethoscope
           Palletized Items
-          %span.label.label-info= @pallet_items.size
+          %span.badge.text-bg-info= @pallet_items.size
         .collapse{id: "pallet_items"}
           %table.table.table-striped
             %thead
               %tr
-                %th.hidden-xs Shipped Quantity
+                %th.d-none.d-sm-table-cell Shipped Quantity
                 %th Remaining Quantity
                 %th Pallet Info
                 %th Items
@@ -67,7 +67,7 @@
             %tbody
               - @pallet_items.each do |item|
                 %tr
-                  %td.hidden-xs
+                  %td.d-none.d-sm-table-cell
                     %p= item.quantity
                   %td
                     %p= item.remaining_quantity
@@ -81,16 +81,16 @@
                     = check_box_tag "item_ids[]", item.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{item.id}"
 
     - if @container_items.any?
-      .panel.panel-default
-        %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+      .card
+        %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#container_items"}
           %i.fa.fa-stethoscope
           Containerized Items
-          %span.label.label-info= @container_items.size
+          %span.badge.text-bg-info= @container_items.size
         .collapse{id: "container_items"}
           %table.table.table-striped
             %thead
               %tr
-                %th.hidden-xs Shipped Quantity
+                %th.d-none.d-sm-table-cell Shipped Quantity
                 %th Remaining Quantity
                 %th Container Info
                 %th Items
@@ -98,7 +98,7 @@
             %tbody
               - @container_items.each do |item|
                 %tr
-                  %td.hidden-xs
+                  %td.d-none.d-sm-table-cell
                     %p= item.quantity
                   %td
                     %p= item.remaining_quantity

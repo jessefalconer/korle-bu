@@ -1,51 +1,51 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li
+      %li.breadcrumb-item
         = link_to "Reconcile - Unverified", reconcile_unverified_path
-      %li
+      %li.breadcrumb-item
         = link_to "Reconciling: #{@item.generated_name}", reconcile_start_path(@item)
-      %li.active Confirm Merge
+      %li.breadcrumb-item.active Confirm Merge
     = render partial: "layouts/jump_to_modal"
   .main-content
     .row
-      .col-xs-12
+      .col-12
         %h3 Confirm merge items and target.
-      .col-xs-12
+      .col-12
         %h4 Target Item
         %p This item will receive all instances of the selected merge items.
     .row.stats-container
-      .col-xs-12
+      .col-12
         %h5.text-muted Name
         = link_to item_path(@item) do
           %h4= @item.generated_name
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h5.text-muted Created By
         %h4= @item.user.name
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h5.text-muted Created At
         %h4= @item.created_at.strftime("%Y-%m-%d")
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h5.text-muted Verified
         %h4{style: "color: #{!@item.verified ? "#ff4d4d" : "#02a556"}"}= @item.verified.to_s.capitalize
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h5.text-muted Category
         %h4{style: "color: #{!@item.category.present? ? "#ff4d4d" : "#02a556"}"}= @item.category&.name || "N/A"
 
     .row
-      .col-xs-12
+      .col-12
         %h4 Merge Items
         %p Items below will be merged into the target item above.
-      .col-xs-12
+      .col-12
         %table.table.table-striped.table-hover
           %thead
             %tr
               %th Name
-              %th.hidden-xs Category
-              %th.hidden-xs Verified
-              %th.hidden-xs Flagged
+              %th.d-none.d-sm-table-cell Category
+              %th.d-none.d-sm-table-cell Verified
+              %th.d-none.d-sm-table-cell Flagged
               %th Instances
               %th
           %tbody
@@ -55,13 +55,13 @@
                   %p
                     = item.generated_name
                     = hidden_field_tag "confirmed_reconcile_ids[]", item.id, form: "execute_form"
-                %td.hidden-xs
+                %td.d-none.d-sm-table-cell
                   %p
                     = item.category&.name || "N/A"
-                %td.hidden-xs
+                %td.d-none.d-sm-table-cell
                   %p{class: !item.verified ? "text-danger" : "text-success"}
                     = item.verified&.to_s.capitalize
-                %td.hidden-xs
+                %td.d-none.d-sm-table-cell
                   %p{class: item.flagged ? "text-danger" : "text-success"}
                     = item.flagged&.to_s.capitalize
                 %td
@@ -77,7 +77,7 @@
 
     %br
     .row
-      .col-xs-12
+      .col-12
         .danger-zone
           %h3.title Danger Zone
           %p.body
@@ -130,4 +130,4 @@
               %label.checkbox-option
                 = check_box_tag :verify_item, true, true
                 Verify Target Item
-            = submit_button_warning("Merge", "pull-right")
+            = submit_button_warning("Merge", "float-end")

@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Received Items — Master List
+      %li.breadcrumb-item.active Received Items — Master List
     = render partial: "layouts/jump_to_modal"
     = link_refresh_button(all_received_items_path, "Clear Results", "fa-sync")
   .main-content

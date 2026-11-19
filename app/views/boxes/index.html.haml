@@ -2,9 +2,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active= title.titleize
+      %li.breadcrumb-item.active= title.titleize
     = render partial: "layouts/jump_to_modal"
     - if can? :create, Box
       = add_button(new_box_path, "Box", "fa-box-open")

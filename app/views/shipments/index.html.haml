@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Shipments
+      %li.breadcrumb-item.active Shipments
     = render partial: "layouts/jump_to_modal"
   .main-content
     %table.table.table-striped.table-hover.link-rows
@@ -12,8 +12,8 @@
           %th Custom ID
           %th Name
           %th Status
-          %th.hidden-xs Receiver
-          %th.hidden-xs Created At
+          %th.d-none.d-sm-table-cell Receiver
+          %th.d-none.d-sm-table-cell Created At
       %tbody
         - @shipments.each do |shipment|
           %tr
@@ -26,10 +26,10 @@
             %td
               = link_to shipment_path(shipment) do
                 %p{class: "status-#{shipment.status.parameterize}"}= shipment.status
-            %td.hidden-xs
+            %td.d-none.d-sm-table-cell
               = link_to shipment_path(shipment) do
                 %p= shipment.receiving_warehouse.name
-            %td.hidden-xs
+            %td.d-none.d-sm-table-cell
               = link_to shipment_path(shipment) do
                 %p= shipment.created_at.strftime("%Y-%m-%d")
 

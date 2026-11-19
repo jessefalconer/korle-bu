@@ -1,6 +1,6 @@
 - if @search_results_items.none?
   .row
-    .col-xs-12
+    .col-12
       %h5.text-center No results. Try simplifying your search. Examples: remove hyphens, avoid plurals, use keywords only, etc...
 - else
   - placeholder_item = Item.new(generated_name: comparison_item)
@@ -8,9 +8,9 @@
     %thead
       %tr
         %th Name
-        %th.hidden-xs Category
-        %th.hidden-xs Verified
-        %th.hidden-xs Flagged
+        %th.d-none.d-sm-table-cell Category
+        %th.d-none.d-sm-table-cell Verified
+        %th.d-none.d-sm-table-cell Flagged
         %th Instances
         %th
     %tbody
@@ -19,13 +19,13 @@
           %td
             %p
               = present(placeholder_item).match(item.generated_name)
-          %td.hidden-xs
+          %td.d-none.d-sm-table-cell
             %p
               = item.category&.name || "N/A"
-          %td.hidden-xs
+          %td.d-none.d-sm-table-cell
             %p{class: !item.verified ? "text-danger" : "text-success"}
               = item.verified&.to_s.capitalize
-          %td.hidden-xs
+          %td.d-none.d-sm-table-cell
             %p{class: item.flagged ? "text-danger" : "text-success"}
               = item.flagged&.to_s.capitalize
           %td

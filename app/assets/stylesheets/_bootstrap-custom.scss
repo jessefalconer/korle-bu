@@ -1,0 +1,82 @@
+// Bootstrap 5, compiled from the vendored source in vendor/assets/stylesheets/bootstrap.
+//
+// The variables below keep the app's existing look after moving off Bootstrap 3:
+// - Bootstrap 3's breakpoints (768/992/1200), so col-sm/md/lg and the min-width
+//   media queries in _modern.scss keep meaning the same screen sizes.
+// - Bootstrap 3's 14px base font and heading sizes.
+// - Bootstrap 3's darker text colors for success/info/warning/danger, which read
+//   better on white than Bootstrap 5's.
+
+$primary: #007096;
+$body-color: #1f2a33;
+$link-color: #007096;
+$link-decoration: none;
+$link-hover-decoration: underline;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 768px,
+  md: 992px,
+  lg: 1200px,
+  xl: 1400px,
+  xxl: 1600px
+);
+$container-max-widths: (
+  sm: 750px,
+  md: 970px,
+  lg: 1170px,
+  xl: 1320px,
+  xxl: 1520px
+);
+$grid-gutter-width: 30px;
+
+$font-size-base: .875rem;
+$line-height-base: 1.428571429;
+$h1-font-size: 2.25rem;
+$h2-font-size: 1.875rem;
+$h3-font-size: 1.5rem;
+$h4-font-size: 1.125rem;
+$h5-font-size: .875rem;
+$h6-font-size: .75rem;
+$headings-font-weight: 500;
+$headings-line-height: 1.1;
+$headings-margin-bottom: 10px;
+$paragraph-margin-bottom: 10px;
+
+$table-border-color: #e3e7ea;
+$table-cell-padding-y: 8px;
+$table-cell-padding-x: 8px;
+$table-cell-padding-y-sm: 5px;
+$table-cell-padding-x-sm: 5px;
+
+@import "bootstrap/bootstrap";
+
+// Bootstrap 3 text colors (Bootstrap 5's are too light to read on white)
+.text-success { color: #3c763d !important; }
+.text-info { color: #31708f !important; }
+.text-warning { color: #8a6d3b !important; }
+.text-danger { color: #a94442 !important; }
+
+// Bootstrap 3 margins on headings: 20px above h1-h3, 10px above h4-h6
+h1, h2, h3, .h1, .h2, .h3 { margin-top: 20px; }
+h4, h5, h6, .h4, .h5, .h6 { margin-top: 10px; }
+
+// The old Bootstrap 3 build was customised to color h2-h6 in the brand blue
+h2, h3, h4, h5, h6 { color: #007096; }
+
+// Bootstrap 5 cells inherit their border color from the table, but the theme resets
+// borders on tables inside cards (`border: 0`), which turns the row lines near-black
+.table > :not(caption) > * > * { border-color: var(--bs-table-border-color); }
+
+// Bootstrap 5 cards break long words mid-word; Bootstrap 3 panels didn't, and labels
+// like "Uncategorized Items" in the dashboard stats rely on that
+.card { word-wrap: normal; }
+
+// Bootstrap 5's .nav is a horizontal flex row; the sidebar's .nav-list menus stack
+.nav.nav-list { flex-direction: column; flex-wrap: nowrap; }
+
+// The navbar's account menu draws its own Font Awesome caret
+.navbar .dropdown-toggle::after { display: none; }
+
+// The app's JS toggles .hidden (Bootstrap 3 had it; Bootstrap 5 uses .d-none)
+.hidden { display: none !important; }

@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Warehouses
+      %li.breadcrumb-item.active Warehouses
     = render partial: "layouts/jump_to_modal"
     = add_button(new_warehouse_path, "Warehouse", "fa-warehouse")
   .main-content
@@ -11,7 +11,7 @@
       %thead
         %tr
           %th Name
-          %th.hidden-xs City
+          %th.d-none.d-sm-table-cell City
           %th Country
           %th Status
       %tbody
@@ -20,7 +20,7 @@
             %td
               = link_to warehouse_path(warehouse) do
                 %p= warehouse.name
-            %td.hidden-xs
+            %td.d-none.d-sm-table-cell
               = link_to warehouse_path(warehouse) do
                 %p= warehouse.city
             %td

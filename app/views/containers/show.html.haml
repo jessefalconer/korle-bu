@@ -1,7 +1,7 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
       = present(@container).breadcrumbs
     = render partial: "layouts/jump_to_modal"
@@ -16,36 +16,36 @@
     .row.detail-layout
       .col-md-5
         .row.detail-card
-          .col-xs-12
+          .col-12
             %h5.text-muted Name
             %h4= @container.name
           - if @container.notes.present?
-            .col-xs-12
+            .col-12
               %h6.text-muted Notes
               %h5= @container.notes
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Custom ID
             %h5= @container.custom_uid
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Status
             %h5{class: "status-#{@container.status.parameterize}"}= @container.status
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Weight (kg)
             %h5= @container.weight.to_f.round(4) || "N/A"
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Created By
             %h5= @container.user.name
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Created At
             %h5= @container.created_at.strftime("%Y-%m-%d")
 
       .col-md-7
         - present(@container) do |container|
-          .panel.panel-default
-            %a.panel-heading{data: {toggle: "collapse"}, href: "#location"}
+          .card
+            %a.card-header{data: {"bs-toggle": "collapse"}, href: "#location"}
               %i.fa.fa-map-marker-alt
               Location Details
-            #location.collapse.in
+            .collapse.show#location
               %table.table.list
                 %tbody
                   %tr
@@ -57,20 +57,20 @@
                       %p Shipment
                     = container.shipment_location
 
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#pallets"}
             %i.fa.fa-pallet
             Pallets in this Container
-            %span.label{class: @container.pallets.any? ? "label-success" : "label-warning"}= @container.pallets.size
+            %span.badge{class: @container.pallets.any? ? "text-bg-success" : "text-bg-warning"}= @container.pallets.size
 
           - if @container.pallets.any?
-            #pallets.collapse
+            .collapse#pallets
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallets"}
               = render partial: "pallets/micro_table", locals: {pallets: @container.pallets}
-              .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#pallets"}
                 %span Close
           - else
-            #pallets.collapse.panel-body
+            .collapse.card-body#pallets
               %h5.text-center
                 No pallets
                 %i.fa.fa-fw.fa-pallet
@@ -78,20 +78,20 @@
                 %i.fa.fa-fw.fa-truck
                 container
 
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#boxes"}
             %i.fa.fa-box-open
             Boxes in this Container
-            %span.label{class: @container.boxes.any? ? "label-success" : "label-warning"}= @container.boxes.size
+            %span.badge{class: @container.boxes.any? ? "text-bg-success" : "text-bg-warning"}= @container.boxes.size
 
           - if @container.boxes.any?
-            #boxes.collapse
+            .collapse#boxes
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "boxes"}
               = render partial: "boxes/micro_table", locals: {boxes: @container.boxes, table_id: "filter-boxes-table"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#boxes"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#boxes"}
                 %span Close
           - else
-            #boxes.collapse.panel-body
+            .collapse.card-body#boxes
               %h5.text-center
                 No boxes
                 %i.fa.fa-fw.fa-box-open
@@ -99,20 +99,20 @@
                 %i.fa.fa-fw.fa-truck
                 container
 
-        .panel.panel-default
-          %a.panel-heading.collapsed{class: (@container.container_items.size > 5 && "collapsed"),data: {toggle: "collapse"}, href: "#packed-items"}
+        .card
+          %a.card-header.collapsed{class: (@container.container_items.size > 5 && "collapsed"),data: {"bs-toggle": "collapse"}, href: "#packed-items"}
             %i.fa.fa-stethoscope
             Containerized Items
-            %span.label{class: @container.container_items.any? ? "label-success" : "label-warning"}= @container.container_items.size
+            %span.badge{class: @container.container_items.any? ? "text-bg-success" : "text-bg-warning"}= @container.container_items.size
 
           - if @container.container_items.any?
-            #packed-items.collapse{class: (@container.container_items.size < 6 && "in")}
+            .collapse#packed-items{class: (@container.container_items.size < 6 && "show")}
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "packed-items"}
               = render partial: "packed_items/micro_table", locals: {packed_items: @container.container_items, assoc: "packed-items"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#packed-items"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#packed-items"}
                 %span Close
           - else
-            #packed-items.collapse.panel-body
+            .collapse.card-body#packed-items
               %h5.text-center
                 No packed items
                 %i.fa.fa-fw.fa-stethoscope

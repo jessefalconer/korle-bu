@@ -1,28 +1,28 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Reconcile - Unverified
+      %li.breadcrumb-item.active Reconcile - Unverified
     = render partial: "layouts/jump_to_modal"
     = link_refresh_button(reconcile_unverified_path, "Clear Results", "fa-sync")
   .main-content
     .row
-      .col-xs-12
+      .col-12
         - percentage = (Item.verified.count.to_f/Item.count.to_f*100).round(2)
         - color = Item.unverified.count.zero? ? "#3c763d" : "#007096"
         - color = percentage < 50 ? "#8a6d3b" : color
         %h5.text-center #{Item.verified.count}/#{Item.count} (#{percentage}%) Verified
         = bar_chart({"" => Item.verified.count}, max: Item.count, height: "65px", colors: [color])
         %h5.text-center #{Item.unverified.count} Remaining
-      .col-xs-12
+      .col-12
         - if @items.any?
           = render partial: "items/search_form", locals: { path: "/unverified_item_search" }
           %table.table.table-striped.table-hover.link-rows
             %thead
               %tr
                 %th Name
-                %th.hidden-xs Category
+                %th.d-none.d-sm-table-cell Category
                 %th Instances
             %tbody#search-results
               = render "unverified_table"

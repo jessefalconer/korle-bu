@@ -1,4 +1,4 @@
-%button.btn.btn-primary.responsive-button{data: {target: "#duplicate-modal", toggle: "modal"}}
+%button.btn.btn-primary.responsive-button{data: {"bs-target": "#duplicate-modal", "bs-toggle": "modal"}}
   %i.fa.fa-eye-dropper
   %span.main-text Duplicate
   %span.mass-action-count
@@ -6,21 +6,20 @@
   .modal-dialog
     .modal-content
       .modal-header
-        %h5#assignmentModalLabel.modal-title Duplicate #{@box.name}
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"}  ×
-      .modal-body#assignmentModalBody.margin-top
+        %h5.modal-title#assignmentModalLabel Duplicate #{@box.name}
+        %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
+      .modal-body.margin-top#assignmentModalBody
         = form_for @box, url: box_duplicate_path(@box), method: :get do |f|
           .row.mass-action-form
-            .col-xs-12
+            .col-12
               %h5
                 Newly duplicated box names will continue to be unique.
-            .col-xs-12
+            .col-12
               %h5
                 Duplication Count
               .form-group
                 = number_field_tag :duplication_count, 1, { min: 1, class: "form-control" }
-            .col-xs-12
+            .col-12
               %h5
                 Duplication Strategy
               %label.radio-option
@@ -29,5 +28,5 @@
               %label.radio-option
                 = radio_button_tag :strategy, "shallow", false, { disabled: @box.pallet.nil? && @box.container.nil? }
                 Everything Except Pallet and/or Container Assignments
-            .col-xs-12
-              = submit_button_responsive("Duplicate", "pull-right")
+            .col-12
+              = submit_button_responsive("Duplicate", "float-end")

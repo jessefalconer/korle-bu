@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active #{params[:display].present? ? params[:display].titleize + " " : "" }Containers
+      %li.breadcrumb-item.active #{params[:display].present? ? params[:display].titleize + " " : "" }Containers
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, Container
       = add_button(new_container_path, "Container", "fa-truck")
@@ -14,8 +14,8 @@
           %th Custom ID
           %th Name
           %th Status
-          %th.hidden-xs Receiver
-          %th.hidden-xs Created At
+          %th.d-none.d-sm-table-cell Receiver
+          %th.d-none.d-sm-table-cell Created At
       %tbody
         - @containers.each do |container|
           %tr
@@ -28,10 +28,10 @@
             %td
               = link_to container_path(container) do
                 %p{class: "status-#{container.status.parameterize}"}= container.status
-            %td.hidden-xs
+            %td.d-none.d-sm-table-cell
               = link_to container_path(container) do
                 %p= container.shipment&.receiving_warehouse&.name
-            %td.hidden-xs
+            %td.d-none.d-sm-table-cell
               = link_to container_path(container) do
                 %p= container.created_at.strftime("%Y-%m-%d")
 

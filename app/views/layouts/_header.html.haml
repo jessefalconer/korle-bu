@@ -1,40 +1,30 @@
-.navbar.navbar-default{role: "navigation"}
-  .navbar-header
-    - if current_user
-      %button.navbar-toggle.collapsed{data: {target: ".navbar-collapse", toggle: "collapse"}, type: "button"}
-        %span.sr-only Toggle navigation
-        %span.icon-bar
-        %span.icon-bar
-        %span.icon-bar
-    = link_to index_path do
-      %span.navbar-brand
-        KBNF Inventory
+%nav.navbar.navbar-expand-sm.navbar-dark
+  .container-fluid
+    = link_to "KBNF Inventory", index_path, class: "navbar-brand"
 
-  - if current_user
-    .navbar-collapse.collapse{style: "height: 1px;"}
-      %ul#main-menu.nav.navbar-nav.navbar-right
-        %li.dropdown.hidden-xs
-          %a.dropdown-toggle{data: {toggle: "dropdown"}, href: "#"}
-            %i.fa.fa-user.padding-right-small
-            = current_user.name
-            %i.fa.fa-caret-down
-          %ul.dropdown-menu
-            %li
-              = link_to user_path(current_user) do
-                My Account
-            %li
-              = link_to logout_path do
-                Logout
+    - if current_user
+      %button.navbar-toggler.collapsed{type: "button", data: {"bs-target": "#main-nav", "bs-toggle": "collapse"}, aria: {controls: "main-nav", expanded: "false", label: "Toggle navigation"}}
+        %span.navbar-toggler-icon
+      .collapse.navbar-collapse#main-nav
+        %ul.navbar-nav.ms-auto#main-menu
+          %li.nav-item.dropdown.d-none.d-sm-block
+            %a.nav-link.dropdown-toggle{href: "#", role: "button", data: {"bs-toggle": "dropdown"}, aria: {expanded: "false"}}
+              %i.fa.fa-user.padding-right-small
+              = current_user.name
+              %i.fa.fa-caret-down
+            %ul.dropdown-menu.dropdown-menu-end
+              %li= link_to "My Account", user_path(current_user), class: "dropdown-item"
+              %li= link_to "Logout", logout_path, class: "dropdown-item"
 
 - if current_user
   .sidebar-nav
     %ul
-      %li.hidden-sm.hidden-md.hidden-lg
-        %a.nav-header.collapsed{data: {target: ".user-menu", toggle: "collapse"}}
+      %li.d-sm-none
+        %a.nav-header.collapsed{data: {"bs-target": ".user-menu", "bs-toggle": "collapse"}}
           %i.fa.fa-fw.fa-user
           =current_user.first_name
           %i.fa.fa-collapse
-      %li.hidden-sm.hidden-md.hidden-lg
+      %li.d-sm-none
         %ul.user-menu.nav.nav-list.collapse
           %li
             = link_to user_path(current_user) do
@@ -52,7 +42,7 @@
 
       - unless current_user.volunteer?
         %li
-          %a.nav-header.collapsed{data: {target: ".dashboard-menu", toggle: "collapse"}}
+          %a.nav-header.collapsed{data: {"bs-target": ".dashboard-menu", "bs-toggle": "collapse"}}
             %i.fa.fa-fw.fa-tachometer-alt
             Admin
             %i.fa.fa-collapse
@@ -87,7 +77,7 @@
 
       - if can? :manage, Item
         %li
-          %a.nav-header.collapsed{data: {target: ".reconcile-menu", toggle: "collapse"}}
+          %a.nav-header.collapsed{data: {"bs-target": ".reconcile-menu", "bs-toggle": "collapse"}}
             %i.fa.fa-fw.fa-compress-alt
             Reconciliation
             %i.fa.fa-collapse
@@ -108,7 +98,7 @@
 
       - if can? :read, Shipment
         %li
-          %a.nav-header.collapsed{data: {target: ".shipments-menu", toggle: "collapse"}}
+          %a.nav-header.collapsed{data: {"bs-target": ".shipments-menu", "bs-toggle": "collapse"}}
             %i.fa.fa-fw.fa-ship
             Shipments
             %i.fa.fa-collapse
@@ -126,7 +116,7 @@
 
       - if can? :read, Container
         %li
-          %a.nav-header.collapsed{data: {target: ".containers-menu", toggle: "collapse"}}
+          %a.nav-header.collapsed{data: {"bs-target": ".containers-menu", "bs-toggle": "collapse"}}
             %i.fa.fa-fw.fa-truck
             Containers
             %i.fa.fa-collapse
@@ -143,7 +133,7 @@
                   New
 
       %li
-        %a.nav-header.collapsed{data: {target: ".pallets-menu", toggle: "collapse"}}
+        %a.nav-header.collapsed{data: {"bs-target": ".pallets-menu", "bs-toggle": "collapse"}}
           %i.fa.fa-fw.fa-pallet
           Pallets
           %i.fa.fa-collapse
@@ -164,7 +154,7 @@
                 New
 
       %li
-        %a.nav-header.collapsed{data: {target: ".box-menu", toggle: "collapse"}}
+        %a.nav-header.collapsed{data: {"bs-target": ".box-menu", "bs-toggle": "collapse"}}
           %i.fa.fa-fw.fa-box-open
           Boxes
           %i.fa.fa-collapse
@@ -186,7 +176,7 @@
 
       - unless current_user.receiving_manager?
         %li
-          %a.nav-header.collapsed{data: {target: ".staging-menu", toggle: "collapse"}}
+          %a.nav-header.collapsed{data: {"bs-target": ".staging-menu", "bs-toggle": "collapse"}}
             %i.fa.fa-fw.fa-truck-loading
             Staging Area
             %i.fa.fa-collapse
@@ -207,7 +197,7 @@
                 %span.fa.fa-fw.fa-stethoscope
                 Items
         %li
-          %a.nav-header.collapsed{data: {target: ".warehouse-menu", toggle: "collapse"}}
+          %a.nav-header.collapsed{data: {"bs-target": ".warehouse-menu", "bs-toggle": "collapse"}}
             %i.fa.fa-fw.fa-clipboard-list
             Warehouse Area
             %i.fa.fa-collapse
@@ -229,7 +219,7 @@
                 Items
       - if current_user.receiving_manager? || current_user.masquerader
         %li
-          %a.nav-header.collapsed{data: {target: ".all-items-menu", toggle: "collapse"}}
+          %a.nav-header.collapsed{data: {"bs-target": ".all-items-menu", "bs-toggle": "collapse"}}
             %i.fa.fa-fw.fa-stethoscope
             Unpack Items
             %i.fa.fa-collapse
@@ -254,7 +244,7 @@
           My Activity
 
       %li
-        %a.nav-header.collapsed{data: {target: ".about-menu", toggle: "collapse"}}
+        %a.nav-header.collapsed{data: {"bs-target": ".about-menu", "bs-toggle": "collapse"}}
           %i.fa.fa-fw.fa-info
           About
           %i.fa.fa-collapse
@@ -279,7 +269,7 @@
               %a
                 %span.fa.fa-fw.fa-question
                 Receiving Help (Coming Soon)
-          %li.hidden-sm.hidden-md.hidden-lg
+          %li.d-sm-none
             = link_to "mailto:jesse@kbnf.org?subject=I%20Found%20a%20Bug%21&body=Please%20reply%20with%20your%20browser%2C%20URL%20and%20name%2E", {target: "_blank",rel: "noopener noreferrer" } do
               %span.fa.fa-fw.fa-bug
               Report a Bug

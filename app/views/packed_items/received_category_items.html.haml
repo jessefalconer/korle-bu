@@ -1,11 +1,11 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li
+      %li.breadcrumb-item
         = link_to "Items by Category", received_categories_path
-      %li.active= @category&.name || "Uncategorized"
+      %li.breadcrumb-item.active= @category&.name || "Uncategorized"
     = render partial: "layouts/jump_to_modal"
   .main-content
     %h5 Select an item to view its possible locations.

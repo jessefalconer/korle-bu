@@ -54,12 +54,12 @@ a:focus-visible,
   box-shadow: 0 1px 4px rgba(0, 0, 0, .12);
 }
 
-.navbar-default .navbar-brand {
+.navbar .navbar-brand {
   font-weight: 600;
   letter-spacing: .2px;
 }
 
-.navbar-default .navbar-toggle {
+.navbar .navbar-toggler {
   border-color: rgba(255, 255, 255, .5);
   border-radius: $radius-sm;
 
@@ -193,6 +193,7 @@ a:focus-visible,
   margin-bottom: 12px;
   font-size: 13px;
   white-space: nowrap;
+  flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
@@ -260,7 +261,7 @@ $control-height: 40px;
 
   &:active,
   &.active,
-  .open > &.dropdown-toggle {
+  &.dropdown-toggle.show {
     color: #fff;
     background-color: $edge;
     border-color: $edge;
@@ -286,7 +287,7 @@ $control-height: 40px;
 
   &:active,
   &.active,
-  .open > &.dropdown-toggle {
+  &.dropdown-toggle.show {
     color: $fg-hover;
     background-color: $pressed;
     border-color: #b9c3cb;
@@ -346,8 +347,8 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 .form-group { margin-bottom: 14px; }
 
 .input-group .form-control:first-child { border-radius: $radius-sm 0 0 $radius-sm; }
-.input-group-btn:last-child > .btn { border-radius: 0 $radius-sm $radius-sm 0; }
-.input-group-btn > .btn { height: $control-height; }
+.input-group > .btn:last-child { border-radius: 0 $radius-sm $radius-sm 0; }
+.input-group > .btn { height: $control-height; }
 
 // Inline ID / search forms (Jump To and others) match the control height
 .inline-search-form input { height: $control-height; }
@@ -382,15 +383,15 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 }
 
 // ---------------------------------------------------------------- Panels
-.panel {
+.card {
   border: 1px solid $line;
   border-radius: $radius;
   box-shadow: $shadow-sm;
   overflow: hidden;
 }
 
-.panel .panel-heading,
-.panel .panel-heading:not(.no-collapse):hover {
+.card .card-header,
+.card .card-header:not(.no-collapse):hover {
   background: $sunken;
   border-bottom: 1px solid $line;
   box-shadow: none;
@@ -401,9 +402,9 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
   filter: none;
 }
 
-.panel .panel-heading:not(.no-collapse):hover { background: $hover; }
+.card .card-header:not(.no-collapse):hover { background: $hover; }
 
-.panel .panel-heading .label { box-shadow: none; }
+.card .card-header .badge { box-shadow: none; }
 
 .close-collapse {
   background: $sunken;
@@ -449,7 +450,7 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 }
 
 // ...but inside a panel or modal the container is already the card
-.panel .table,
+.card .table,
 .modal .table {
   border: 0;
   border-radius: 0;
@@ -477,14 +478,11 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
   &::before,
   &::after { display: none; }
 
-  > li {
-    float: none;
-    margin: 0;
-  }
+  > .nav-item { margin: 0; }
 
-  > li > a,
-  > li > a:hover,
-  > li > a:focus {
+  .nav-link,
+  .nav-link:hover,
+  .nav-link:focus {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -499,11 +497,11 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
     transition: background-color .15s ease, color .15s ease, box-shadow .15s ease;
   }
 
-  > li > a:hover { background: rgba(255, 255, 255, .55); color: $ink; }
+  .nav-link:hover { background: rgba(255, 255, 255, .55); color: $ink; }
 
-  > li.active > a,
-  > li.active > a:hover,
-  > li.active > a:focus {
+  .nav-link.active,
+  .nav-link.active:hover,
+  .nav-link.active:focus {
     background: $surface;
     color: $brand;
     border: 0;
@@ -522,13 +520,13 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 
     &::-webkit-scrollbar { display: none; }
 
-    > li { flex: 0 0 auto; }
-    > li > a { white-space: nowrap; }
+    > .nav-item { flex: 0 0 auto; }
+    .nav-link { white-space: nowrap; }
   }
 }
 
 // ---------------------------------------------------------------- Labels / badges
-.label {
+.badge {
   border-radius: 999px;
   font-weight: 600;
   padding: .25em .6em;
@@ -536,7 +534,7 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 
 // ---------------------------------------------------------------- Modals
 // Shared look
-.modal-backdrop.in { opacity: .45; }
+.modal-backdrop.show { opacity: .45; }
 
 .modal-content {
   border: 0;
@@ -567,21 +565,19 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
     padding-right: 12px;
   }
 
-  .close {
+  .btn-close {
     order: 2;
     margin: 0 0 0 auto;
+    padding: 0;
     width: 36px;
     height: 36px;
     flex: 0 0 36px;
     border-radius: 50%;
-    font-size: 26px;
-    font-weight: 400;
-    line-height: 1;
+    background-size: 13px;
     opacity: .55;
-    text-shadow: none;
 
     &:hover,
-    &:focus { background: #eef1f3; opacity: .9; }
+    &:focus { background-color: #eef1f3; opacity: .9; box-shadow: none; }
   }
 }
 
@@ -615,7 +611,7 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
   }
 
   // Primary action sits at the end of the form, full width on phones
-  .col-xs-12:last-child > .btn.pull-right,
+  .col-12:last-child > .btn.float-end,
   .btn-toolbar.list-toolbar { margin-top: 6px; }
 }
 
@@ -634,7 +630,7 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 .jump-to-body {
   text-align: left;
 
-  > .col-xs-12 > h5 { margin-top: 0; margin-bottom: 14px; color: $muted; }
+  > .col-12 > h5 { margin-top: 0; margin-bottom: 14px; color: $muted; }
 
   .inline-search-form {
     display: flex;
@@ -678,7 +674,7 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
     transition: transform .28s cubic-bezier(.2, .8, .2, 1);
   }
 
-  .modal.in .modal-dialog { transform: none; }
+  .modal.show .modal-dialog { transform: none; }
 
   .modal-content {
     border-radius: 16px 16px 0 0;
@@ -706,8 +702,8 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 
   // Primary actions span the sheet so they are easy to hit with a thumb
   .modal-body {
-    .col-xs-12:last-child > .btn.pull-right,
-    .col-xs-12:last-child > .btn,
+    .col-12:last-child > .btn.float-end,
+    .col-12:last-child > .btn,
     form:not(.inline-search-form) > .btn[type="submit"],
     .btn-toolbar.list-toolbar .btn[type="submit"] {
       float: none !important;
@@ -863,14 +859,14 @@ footer .flash {
   > .tab-pane > h4:first-child { margin-top: 12px; }
 
   // Panels inside the card (the item form) read as sections, not cards on cards
-  .panel { box-shadow: none; }
+  .card { box-shadow: none; }
 
   @media (max-width: 767px) { padding: 2px 12px 12px; }
 }
 
 // A tab bar's spacer <br> is not needed once the content is a card
-.main-content .nav-tabs + .row > .col-xs-12 > br:first-child { display: none; }
-.main-content .nav-tabs + .row > .col-xs-12 > .tab-content { margin-top: 12px; }
+.main-content .nav-tabs + .row > .col-12 > br:first-child { display: none; }
+.main-content .nav-tabs + .row > .col-12 > .tab-content { margin-top: 12px; }
 
 // A search bar at the top of a list page sits in its own white toolbar card
 .main-content > .input-group.search,
@@ -936,7 +932,7 @@ nav.pagination span.current { border-radius: $radius-sm; }
 
 em.show-id { border-radius: 6px; }
 
-.dialog .panel { box-shadow: $shadow-sm; }
+.dialog .card { box-shadow: $shadow-sm; }
 
 // ---------------------------------------------------------------- Motion
 $ease-out: cubic-bezier(.2, .8, .2, 1);
@@ -952,7 +948,7 @@ $ease-in-out: cubic-bezier(.4, 0, .2, 1);
   transform: translateY(4px);
   transition: opacity .18s ease-out, transform .18s $ease-out;
 
-  &.in { transform: none; }
+  &.show { transform: none; }
 }
 
 // Menu section headers are flex rows: icon, label, then the chevron pushed to the
@@ -988,13 +984,13 @@ $ease-in-out: cubic-bezier(.4, 0, .2, 1);
 
 // Collapsible panels get a chevron on the far right that turns when opened.
 // Headings that already show their own right-hand icon (the item form) are skipped.
-.panel > a.panel-heading[data-toggle="collapse"],
-.panel a.panel-heading[data-toggle="collapse"] {
+.card > a.card-header[data-bs-toggle="collapse"],
+.card a.card-header[data-bs-toggle="collapse"] {
   display: flex;
   align-items: center;
   gap: 6px;
 
-  > .label { float: none; margin-left: auto; }
+  > .badge { float: none; margin-left: auto; }
 
   &::after {
     content: "\f078";
@@ -1006,9 +1002,9 @@ $ease-in-out: cubic-bezier(.4, 0, .2, 1);
     transition: transform .25s $ease-in-out;
   }
 
-  &:not(:has(> .label))::after { margin-left: auto; }
-  &:has(> .pull-right)::after { display: none; }
-  &:has(> .pull-right) > .pull-right { margin-left: auto; }
+  &:not(:has(> .badge))::after { margin-left: auto; }
+  &:has(> .float-end)::after { display: none; }
+  &:has(> .float-end) > .float-end { margin-left: auto; }
 
   &:not(.collapsed)::after { transform: rotate(180deg); }
 }
@@ -1075,8 +1071,8 @@ tr td { transition: background-color .15s ease, border-color .15s ease; }
 
 // Fields inside a collapsible panel (General, Measurements, Notes...): room under the
 // heading to match the room at the bottom
-.panel .collapse .row.form-row,
-.panel .collapsing .row.form-row,
+.card .collapse .row.form-row,
+.card .collapsing .row.form-row,
 .modal-body .collapse .row.form-row,
 .modal-body .collapsing .row.form-row { padding: 14px 16px 0; }
 
@@ -1118,7 +1114,7 @@ tr td { transition: background-color .15s ease, border-color .15s ease; }
 
     // Unpack drawers end with a floated "Add a hospital" link after the last form;
     // keep it in flow and tuck it under the fields so the bottom gap stays even
-    > h6.pull-right:last-child {
+    > h6.float-end:last-child {
       float: none !important;
       text-align: right;
       margin: -4px 0 0;
@@ -1241,9 +1237,9 @@ select.form-control {
 // heavier than the words beside them. Icons next to text run a little smaller.
 .sidebar-nav .fa,
 #main-menu .fa,
-.panel-heading > .fa,
-.panel-heading > i,
-.nav-tabs > li > a > .fa,
+.card-header > .fa,
+.card-header > i,
+.nav-tabs .nav-link > .fa,
 h4 > .fa, h5 > .fa, h6 > .fa,
 label > .fa,
 .drawer-caret { font-size: .8em; }

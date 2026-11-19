@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Items
+      %li.breadcrumb-item.active Items
     = render partial: "layouts/jump_to_modal"
     = add_button(new_item_path, "Item", "fa-stethoscope")
     = link_refresh_button(items_path, "Clear Results", "fa-sync")
@@ -14,8 +14,8 @@
         %thead
           %tr
             %th Name
-            %th.hidden-xs Category
-            %th.hidden-xs Verified
+            %th.d-none.d-sm-table-cell Category
+            %th.d-none.d-sm-table-cell Verified
         %tbody#search-results
           = render "table"
     - else

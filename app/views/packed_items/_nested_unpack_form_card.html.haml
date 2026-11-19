@@ -1,17 +1,17 @@
 - items.each do |(item, packed_items)|
   .row.inline-add-item
-    .col-xs-12.manage-item-name
+    .col-12.manage-item-name
       %p= item.generated_name
       .drawer-info
         - if packed_items.size > 4
-          %span.hidden-xs.hidden-sm #{packed_items.map(&:location_name).uniq.pop(3).join(", ")} and #{packed_items.size - 3} others
+          %span.d-none.d-md-inline #{packed_items.map(&:location_name).uniq.pop(3).join(", ")} and #{packed_items.size - 3} others
         - else
-          %span.hidden-xs.hidden-sm= packed_items.map(&:location_name).uniq.join(", ")
-        %span.label.label-info= packed_items.sum(&:remaining_quantity)
+          %span.d-none.d-md-inline= packed_items.map(&:location_name).uniq.join(", ")
+        %span.badge.text-bg-info= packed_items.sum(&:remaining_quantity)
         %i.fa.fa-chevron-down.drawer-caret
-    .col-xs-12.manage-item-form.hidden
+    .col-12.manage-item-form.hidden
       .row
-        .col-xs-12
+        .col-12
           - if item.notes.present?
             = link_to item_path(item) do
               %h5.text-info Additional Information Available
@@ -22,7 +22,7 @@
       - packed_items.each do |pi|
         = form_for :unpacking_event, url: present(pi).unpack_path do |f|
           .row
-            .col-xs-4.col-md-3.col-lg-2
+            .col-4.col-md-3.col-lg-2
               %h4.text-muted
                 Located in
                 %i.fa.fa-level-down-alt
@@ -30,29 +30,29 @@
               - if pi.show_id
                 %p
                   %em.show-id ID: ##{pi.id}
-            .col-xs-8.col-md-9.col-lg-10
+            .col-8.col-md-9.col-lg-10
               .row
-                .col-xs-12.col-md-4
+                .col-12.col-md-4
                   .form-group
                     %label Unpacking Quantity
                     = f.number_field :quantity, value: pi.remaining_quantity, class: "form-control", min: 1, max: pi.remaining_quantity, id: "quantity-#{pi.id}"
-                .col-xs-12.col-md-4
+                .col-12.col-md-4
                   .form-group
                     %label Hospital/Facility/Clinic
-                    = f.select :hospital_id, hospital_options, { include_blank: "None" }, { class: "form-control", id: "hospital-assignment-#{pi.id}" }
-                .col-xs-12.col-md-4
+                    = f.select :hospital_id, hospital_options, { include_blank: "None" }, { class: "form-select", id: "hospital-assignment-#{pi.id}" }
+                .col-12.col-md-4
                   .form-group
                     %label Unpacked On
                     - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
                     = f.text_field :timestamp, value: today, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
-                .col-xs-10.col-sm-9.col-lg-10
+                .col-10.col-sm-9.col-lg-10
                   .form-group
                     = f.label "Notes"
                     = f.text_field :notes, class: "form-control", placeholder: "Explanation", id: "explanation-#{pi.id}"
-                .col-xs-2.col-sm-3.col-lg-2
+                .col-2.col-sm-3.col-lg-2
                   .form-group
                     %label &nbsp;
                     .btn-toolbar.list-toolbar
-                      = submit_button_responsive("Unpack", "pull-right")
-      %h6.pull-right
-        %a{data: {target: "#add-hospital-modal", toggle: "modal"}, href: ""} Don't see your hospital/facility/clinic? Add one.
+                      = submit_button_responsive("Unpack", "float-end")
+      %h6.float-end
+        %a{data: {"bs-target": "#add-hospital-modal", "bs-toggle": "modal"}, href: ""} Don't see your hospital/facility/clinic? Add one.

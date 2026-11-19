@@ -41,7 +41,7 @@ module ApplicationHelper
   end
 
   def link_index_button(path, icon)
-    link_to(path, class: "btn btn-primary hidden-sm hidden-md hidden-lg") do
+    link_to(path, class: "btn btn-primary d-sm-none") do
       tag.i("", class: "fa fa-th-list") +
         tag.span(" ") +
         tag.i("", class: "fa #{icon}")

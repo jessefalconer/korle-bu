@@ -2,9 +2,9 @@
   %thead
     %tr
       %th Name
-      %th.hidden-xs ID
-      %th.hidden-xs Quantity
-      %th.hidden-xs Weight
+      %th.d-none.d-sm-table-cell ID
+      %th.d-none.d-sm-table-cell Quantity
+      %th.d-none.d-sm-table-cell Weight
       %th Expires
       %th.mass-action-cell
   %tbody
@@ -12,11 +12,11 @@
       %tr
         %td
           %p= item.generated_name
-        %td.hidden-xs
+        %td.d-none.d-sm-table-cell
           %p= item.show_id ? item.id : ""
-        %td.hidden-xs
+        %td.d-none.d-sm-table-cell
           %p= item.quantity
-        %td.hidden-xs
+        %td.d-none.d-sm-table-cell
           %p= item.weight.to_f.zero? ? "N/A" : "#{item.weight}kg"
         %td
           %p= item.expiry_date&.strftime("%Y-%m-%d") || "N/A"

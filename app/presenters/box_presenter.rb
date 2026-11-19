@@ -14,7 +14,7 @@ class BoxPresenter < BasePresenter
       end
     end +
       tag.td do
-        tag.p(status, class: "pull-right status-#{status.parameterize}")
+        tag.p(status, class: "float-end status-#{status.parameterize}")
       end
   end
 
@@ -32,7 +32,7 @@ class BoxPresenter < BasePresenter
       end
     end +
       tag.td do
-        tag.p(status, class: "pull-right status-#{status.parameterize}")
+        tag.p(status, class: "float-end status-#{status.parameterize}")
       end
   end
 
@@ -49,7 +49,7 @@ class BoxPresenter < BasePresenter
       end
     end +
       tag.td do
-        tag.p(status, class: "pull-right status-#{status.parameterize}")
+        tag.p(status, class: "float-end status-#{status.parameterize}")
       end
   end
 
@@ -61,7 +61,7 @@ class BoxPresenter < BasePresenter
       tag.p(location, class: "status-#{location.parameterize}")
     end +
       tag.td do
-        tag.p(status, class: "pull-right status-#{status.parameterize}")
+        tag.p(status, class: "float-end status-#{status.parameterize}")
       end
   end
 end

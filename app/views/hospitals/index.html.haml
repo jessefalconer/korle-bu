@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Hospitals, Facilities & Clinics
+      %li.breadcrumb-item.active Hospitals, Facilities & Clinics
     = render partial: "layouts/jump_to_modal"
     = add_button(new_hospital_path, "Hospital/Facility/Clinic", "fa-hospital")
   .main-content
@@ -13,7 +13,7 @@
           %th Name
           %th Warehouse
           %th Country
-          %th.hidden-xs Status
+          %th.d-none.d-sm-table-cell Status
       %tbody
         - @hospitals.each do |hospital|
           %tr
@@ -26,7 +26,7 @@
             %td
               = link_to hospital_path(hospital) do
                 %p= hospital.country
-            %td.hidden-xs
+            %td.d-none.d-sm-table-cell
               = link_to hospital_path(hospital) do
                 %p{class: hospital.active? ? "text-success" : "text-danger"}= hospital.status
 

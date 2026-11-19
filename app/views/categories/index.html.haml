@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Categories
+      %li.breadcrumb-item.active Categories
     = render partial: "layouts/jump_to_modal"
     = add_button(new_category_path, "Category", "fa-file-medical")
   .main-content
@@ -11,14 +11,14 @@
       %thead
         %tr
           %th Name
-          %th.hidden-xs Description
+          %th.d-none.d-sm-table-cell Description
       %tbody
         - @categories.each do |category|
           %tr
             %td
               = link_to category_path(category) do
                 %p= category.name
-            %td.hidden-xs
+            %td.d-none.d-sm-table-cell
               = link_to category_path(category) do
                 %p= category.description
 

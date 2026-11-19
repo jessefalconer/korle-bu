@@ -24,7 +24,7 @@ class BasePresenter < SimpleDelegator
   end
 
   def breadcrumbs_item
-    breadcrumbs + tag.li(class: "active") do
+    breadcrumbs + tag.li(class: "breadcrumb-item active") do
       "Items"
     end
   end
@@ -32,7 +32,7 @@ class BasePresenter < SimpleDelegator
   def breadcrumbs_shipment
     return unless model.class != Shipment && shipment
 
-    tag.li do
+    tag.li(class: "breadcrumb-item") do
       link_to shipment.name, shipment_path(shipment)
     end
   end
@@ -41,11 +41,11 @@ class BasePresenter < SimpleDelegator
     if model.instance_of?(Box) && (container || pallet&.container)
       parent_container = container || pallet&.container
 
-      tag.li do
+      tag.li(class: "breadcrumb-item") do
         link_to parent_container.name, container_path(parent_container)
       end
     elsif model.instance_of?(Pallet) && container
-      tag.li do
+      tag.li(class: "breadcrumb-item") do
         link_to container.name, container_path(container)
       end
     end
@@ -54,13 +54,13 @@ class BasePresenter < SimpleDelegator
   def breadcrumbs_pallet
     return unless model.instance_of?(Box) && pallet
 
-    tag.li do
+    tag.li(class: "breadcrumb-item") do
       link_to pallet.name, pallet_path(pallet)
     end
   end
 
   def breadcrumbs_box
-    tag.li do
+    tag.li(class: "breadcrumb-item") do
       link_to model.name, url_for(model)
     end
   end

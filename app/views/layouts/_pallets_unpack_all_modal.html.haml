@@ -1,28 +1,27 @@
 = render partial: "layouts/add_hospital_modal", locals: {redirect: pallet_pallet_items_path(@pallet)}
-%button.btn.btn-primary.responsive-button{data: {target: "#unpack-all", toggle: "modal"}}
+%button.btn.btn-primary.responsive-button{data: {"bs-target": "#unpack-all", "bs-toggle": "modal"}}
   %i.fa.fa-truck-loading
   %span.main-text Unpack All
 .modal.fade{id: "unpack-all"}
   .modal-dialog
     .modal-content
       .modal-header
-        %h5#unpackModalLabel.modal-title Unpack all items in #{@pallet.name}.
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"}  ×
-      .modal-body#unpackModalBody.margin-top
+        %h5.modal-title#unpackModalLabel Unpack all items in #{@pallet.name}.
+        %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
+      .modal-body.margin-top#unpackModalBody
         .row.mass-action-form
           - unless @pallet.received?
-            .col-xs-12
+            .col-12
               %i.fas.fa-exclamation-triangle.text-warning
               This pallet has not been received. Check its status.
-          .col-xs-12
+          .col-12
             %h5 Send #{@pallet.pallet_items.size} item(s) to the selected hospital/facility/clinic:
 
           = form_for @pallet, url: pallets_unpack_all_path(@pallet), method: :post do |f|
-            .col-xs-12
+            .col-12
               .form-group
                 %label Hospital/Facility/Clinic
-                = select_tag("hospital_id", hospital_options, { include_blank: true, class: "form-control" })
+                = select_tag("hospital_id", hospital_options, { include_blank: true, class: "form-select" })
               .form-group
                 %label Unpacked On
                 - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
@@ -31,6 +30,6 @@
                 %label Notes
                 = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"
               %h6
-                %a{data: {target: "#add-hospital-modal", toggle: "modal"}, href: "", "data-dismiss" => "modal"} Don't see your clinic or hospital? Add one.
-            .col-xs-12
-              = submit_button_responsive("Update", "pull-right")
+                %a{data: {"bs-target": "#add-hospital-modal", "bs-toggle": "modal"}, href: "", "data-bs-dismiss" => "modal"} Don't see your clinic or hospital? Add one.
+            .col-12
+              = submit_button_responsive("Update", "float-end")

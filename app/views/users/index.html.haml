@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Users
+      %li.breadcrumb-item.active Users
     = render partial: "layouts/jump_to_modal"
     = add_button(new_user_path, "User", "fa-user")
   .main-content
@@ -11,8 +11,8 @@
       %thead
         %tr
           %th Name
-          %th.hidden-xs Email
-          %th.hidden-xs Phone
+          %th.d-none.d-sm-table-cell Email
+          %th.d-none.d-sm-table-cell Phone
           %th Role
           %th Status
       %tbody
@@ -21,10 +21,10 @@
             %td
               = link_to user_path(user) do
                 %p= user.name
-            %td.hidden-xs
+            %td.d-none.d-sm-table-cell
               = link_to user_path(user) do
                 %p= user.email
-            %td.hidden-xs
+            %td.d-none.d-sm-table-cell
               = link_to user_path(user) do
                 %p= user.phone
             %td

@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Staged Items
+      %li.breadcrumb-item.active Staged Items
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: "staged items", redirect: staged_items_path, record: nil }
@@ -11,24 +11,24 @@
   .main-content
     %ul.nav.nav-tabs
       - if can? :manage, PackedItem
-        %li.active
-          %a{data: {toggle: "tab"}, href: "#search"} Search
-        %li
-          %a{data: {toggle: "tab"}, href: "#new"} New
-        %li
-          %a{data: {toggle: "tab"}, href: "#manage-items"}
+        %li.nav-item
+          %a.nav-link.active{data: {"bs-toggle": "tab"}, href: "#search"} Search
+        %li.nav-item
+          %a.nav-link{data: {"bs-toggle": "tab"}, href: "#new"} New
+        %li.nav-item
+          %a.nav-link{data: {"bs-toggle": "tab"}, href: "#manage-items"}
             Manage
-            %span.label.label-success= @packed_items.count
+            %span.badge.text-bg-success= @packed_items.count
     .row
-      .col-xs-12
+      .col-12
         %br
         .tab-content
           - if can? :manage, PackedItem
-            #manage-items.tab-pane.fade
+            .tab-pane.fade#manage-items
               = render "manage_form"
 
-            #search.tab-pane.active.in
+            .tab-pane.active.show#search
               = render "search_form"
 
-            #new.tab-pane.fade
+            .tab-pane.fade#new
               = render "add_new_form"

@@ -1,4 +1,4 @@
-%button.btn.btn-primary.responsive-button{data: {target: "#mass-action-modal", toggle: "modal"}, disabled: true}
+%button.btn.btn-primary.responsive-button{data: {"bs-target": "#mass-action-modal", "bs-toggle": "modal"}, disabled: true}
   %i.fa.fa-clone
   %span.main-text Mass Action
   %span.mass-action-count
@@ -7,10 +7,9 @@
   .modal-dialog
     .modal-content
       .modal-header
-        %h5#assignmentModalLabel.modal-title Mass action for #{name}.
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"}  ×
-      .modal-body#assignmentModalBody.margin-top
+        %h5.modal-title#assignmentModalLabel Mass action for #{name}.
+        %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
+      .modal-body.margin-top#assignmentModalBody
         = form_with url: mass_action_path, id: "mass_action" do |f|
           = f.hidden_field :redirect, value: redirect
           = f.hidden_field :status, id: "status-flag"
@@ -18,15 +17,15 @@
           = f.hidden_field :current_location_class, value: record&.class&.to_s, id: "current-location-class"
           = f.hidden_field :current_location_id, value: record&.id, id: "current-location-id"
           .row.mass-action-form
-            .col-xs-12
+            .col-12
               %h5
                 Choose where to reassign these records. Invalid operations such as assigning a pallet to a box will automatically be skipped. |
                 Statuses are automatically updated in the process as well.
-            .col-xs-12
+            .col-12
               .form-group.record-assignments
                 %label Reassign to...
-                = select_tag("", options_for_select(["Current Location", "Warehouse", "Staging", "Box", "Pallet", "Container"], ""), { class: "form-control", id: "item-assignment" })
-            .col-xs-12
+                = select_tag("", options_for_select(["Current Location", "Warehouse", "Staging", "Box", "Pallet", "Container"], ""), { class: "form-select", id: "item-assignment" })
+            .col-12
               .form-group{id: "current-location-message"}
                 - if record.nil?
                   .mass-action-warning
@@ -47,7 +46,7 @@
                       Records already staged.
               .form-group.hidden{id: "box-assignment-form"}
                 %label Box Name
-                = select_tag("box_id", options_for_select(@box_options), { class: "form-control", id: "box-assignment-input" })
+                = select_tag("box_id", options_for_select(@box_options), { class: "form-select", id: "box-assignment-input" })
                 - if name.downcase.include?("pallets") || name.downcase.include?("boxes")
                   .mass-action-warning
                     %i.fas.fa-exclamation-triangle.text-warning
@@ -55,7 +54,7 @@
                       Any selected boxes or pallets will not be updated.
               .form-group.hidden{id: "pallet-assignment-form"}
                 %label Pallet Name
-                = select_tag("pallet_id", options_for_select(@pallet_options), { class: "form-control", id: "pallet-assignment-input" })
+                = select_tag("pallet_id", options_for_select(@pallet_options), { class: "form-select", id: "pallet-assignment-input" })
                 - if name.downcase.include?("pallets")
                   .mass-action-warning
                     %i.fas.fa-exclamation-triangle.text-warning
@@ -63,6 +62,6 @@
                       Any selected pallets will not be updated.
               .form-group.hidden{id: "container-assignment-form"}
                 %label Container Name
-                = select_tag("container_id", options_for_select(@container_options), { class: "form-control", id: "container-assignment-input" })
-            .col-xs-12
-              = submit_button_responsive("Update", "pull-right")
+                = select_tag("container_id", options_for_select(@container_options), { class: "form-select", id: "container-assignment-input" })
+            .col-12
+              = submit_button_responsive("Update", "float-end")

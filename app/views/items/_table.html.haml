@@ -5,10 +5,10 @@
     %td
       = link_to item_path(item) do
         %p= present(placeholder_item).match(item.generated_name)
-    %td.hidden-xs
+    %td.d-none.d-sm-table-cell
       = link_to item_path(item) do
         %p= item.category&.name
-    %td.hidden-xs
+    %td.d-none.d-sm-table-cell
       = link_to item_path(item) do
         - if item.verified
           %p.text-success= item.verified.to_s.capitalize

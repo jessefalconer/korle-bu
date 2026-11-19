@@ -1,7 +1,7 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
       = present(@pallet).breadcrumbs
     = render partial: "layouts/jump_to_modal"
@@ -18,40 +18,40 @@
     .row.detail-layout
       .col-md-5
         .row.detail-card
-          .col-xs-12
+          .col-12
             %h5.text-muted Name
             %h4= @pallet.name
           - if @pallet.notes.present?
-            .col-xs-12
+            .col-12
               %h6.text-muted Notes
               %h5= @pallet.notes
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Custom ID
             %h5= @pallet.custom_uid
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Status
             %h5{class: "status-#{@pallet.status.parameterize}"}= @pallet.status
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Weight (kg)
             %h5= @pallet.weight.to_f.round(4) || "N/A"
           - if @pallet.category
-            .col-xs-6.col-sm-4.col-md-6
+            .col-6.col-sm-4.col-md-6
               %h6.text-muted Category
               %h5= @pallet.category.name
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Created By
             %h5= @pallet.user.name
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Created At
             %h5= @pallet.created_at.strftime("%Y-%m-%d")
 
       .col-md-7
         - present(@pallet) do |pallet|
-          .panel.panel-default
-            %a.panel-heading{data: {toggle: "collapse"}, href: "#location"}
+          .card
+            %a.card-header{data: {"bs-toggle": "collapse"}, href: "#location"}
               %i.fa.fa-map-marker-alt
               Location Details
-            #location.collapse.in
+            .collapse.show#location
               %table.table.list
                 %tbody
                   %tr
@@ -67,60 +67,60 @@
                       %p Container
                     = pallet.container_location
 
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#boxes"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#boxes"}
             %i.fa.fa-box-open
             Boxes on this Pallet
-            %span.label{class: @pallet.boxes.any? ? "label-success" : "label-warning"}= @pallet.boxes.size
+            %span.badge{class: @pallet.boxes.any? ? "text-bg-success" : "text-bg-warning"}= @pallet.boxes.size
 
           - if @pallet.boxes.any?
-            #boxes.collapse
+            .collapse#boxes
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "boxes"}
               = render partial: "boxes/micro_table", locals: {boxes: @pallet.boxes, table_id: "filter-boxes-table"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#boxes"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#boxes"}
                 %span Close
           - else
-            #boxes.collapse.panel-body
+            .collapse.card-body#boxes
               %h5.text-center
                 No boxes
                 %i.fa.fa-box-open
                 assigned to this pallet
                 %i.fa.fa-pallet
 
-        .panel.panel-default
-          %a.panel-heading.collapsed{class: (@pallet.pallet_items.size > 5 && "collapsed"), data: {toggle: "collapse"}, href: "#packed-items"}
+        .card
+          %a.card-header.collapsed{class: (@pallet.pallet_items.size > 5 && "collapsed"), data: {"bs-toggle": "collapse"}, href: "#packed-items"}
             %i.fa.fa-stethoscope
             Palletized Items
-            %span.label{class: @pallet.pallet_items.any? ? "label-success" : "label-warning"}= @pallet.pallet_items.size
+            %span.badge{class: @pallet.pallet_items.any? ? "text-bg-success" : "text-bg-warning"}= @pallet.pallet_items.size
 
           - if @pallet.pallet_items.any?
-            #packed-items.collapse{class: (@pallet.pallet_items.size < 6 && "in")}
+            .collapse#packed-items{class: (@pallet.pallet_items.size < 6 && "show")}
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "packed-items"}
               = render partial: "packed_items/micro_table", locals: {packed_items: @pallet.pallet_items, assoc: "packed-items"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#packed-items"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#packed-items"}
                 %span Close
           - else
-            #packed-items.collapse.panel-body
+            .collapse.card-body#packed-items
               %h5.text-center
                 No packed items
                 %i.fa.fa-stethoscope
                 on this pallet
                 %i.fa.fa-pallet
 
-        .panel.panel-default
-          %a.panel-heading.collapsed{class: (@pallet.box_items.size > 5 && "collapsed"), data: {toggle: "collapse"}, href: "#boxed-items"}
+        .card
+          %a.card-header.collapsed{class: (@pallet.box_items.size > 5 && "collapsed"), data: {"bs-toggle": "collapse"}, href: "#boxed-items"}
             %i.fa.fa-stethoscope
             Packed Items in Boxes
-            %span.label{class: @pallet.box_items.any? ? "label-success" : "label-warning"}= @pallet.box_items.size
+            %span.badge{class: @pallet.box_items.any? ? "text-bg-success" : "text-bg-warning"}= @pallet.box_items.size
 
           - if @pallet.box_items.any?
-            #boxed-items.collapse{class: (@pallet.box_items.size < 6 && "in")}
+            .collapse#boxed-items{class: (@pallet.box_items.size < 6 && "show")}
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "boxed-items"}
               = render partial: "packed_items/micro_table", locals: {packed_items: @pallet.box_items, assoc: "boxed-items"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#boxed-items"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#boxed-items"}
                 %span Close
           - else
-            #boxed-items.collapse.panel-body
+            .collapse.card-body#boxed-items
               %h5.text-center
                 No packed items
                 %i.fa.fa-stethoscope

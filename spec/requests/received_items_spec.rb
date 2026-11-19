@@ -94,10 +94,10 @@ describe "Received items", type: :request do
     end
   end
 
-  # Each panel heading's text mapped to the count in its label, e.g. "Boxed Items" => "2".
-  def panel_counts(html)
-    Nokogiri::HTML(html).css(".panel-heading").to_h do |heading|
-      [heading.text.sub(heading.css(".label").text, "").strip, heading.css(".label").text.strip]
+  # Each card header's text mapped to the count in its badge, e.g. "Boxed Items" => "2".
+  def card_counts(html)
+    Nokogiri::HTML(html).css(".card-header").to_h do |heading|
+      [heading.text.sub(heading.css(".badge").text, "").strip, heading.css(".badge").text.strip]
     end
   end
 
@@ -114,7 +114,7 @@ describe "Received items", type: :request do
 
       get "/received_category_items/#{item.id}/received_item_locations"
 
-      expect(panel_counts(response.body)).to eq(
+      expect(card_counts(response.body)).to eq(
         "Boxed Items" => "2", "Palletized Items" => "1", "Containerized Items" => "1"
       )
     end

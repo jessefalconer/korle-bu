@@ -1,20 +1,20 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Reconcile - Flagged
+      %li.breadcrumb-item.active Reconcile - Flagged
     = render partial: "layouts/jump_to_modal"
   .main-content
     .row
-      .col-xs-12
+      .col-12
         - percentage = (Item.not_flagged.count.to_f/Item.count.to_f*100).round(2)
         - color = Item.flagged.count.zero? ? "#3c763d" : "#007096"
         - color = percentage < 50 ? "#8a6d3b" : color
         %h5.text-center #{Item.not_flagged.count}/#{Item.count} (#{percentage}%) Resolved
         = bar_chart({"" => Item.not_flagged.count}, max: Item.count, height: "65px", colors: [color])
         %h5.text-center #{Item.flagged.count} Remaining
-      .col-xs-12
+      .col-12
         - if @items.any?
           %table.table.table-striped.table-hover.link-rows
             %thead
@@ -27,13 +27,13 @@
               - @items.each do |item|
                 %tr
                   %td
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                    %p{data: {"bs-target": "#item-#{item.id}Modal", "bs-toggle": "modal"}}
                       = item.generated_name
                   %td
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.verified ? "text-success" : "text-danger"}
+                    %p{data: {"bs-target": "#item-#{item.id}Modal", "bs-toggle": "modal"}, class: item.verified ? "text-success" : "text-danger"}
                       = item.verified.to_s.capitalize
                   %td
-                    %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+                    %p{data: {"bs-target": "#item-#{item.id}Modal", "bs-toggle": "modal"}}
                       = item.category&.name || "N/A"
                   %td
                     = link_to item_instances_path(item) do

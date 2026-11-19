@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Items by Category
+      %li.breadcrumb-item.active Items by Category
     = render partial: "layouts/jump_to_modal"
   .main-content
     %h5 Select a category to narrow down your search.

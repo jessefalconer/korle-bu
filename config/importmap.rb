@@ -2,7 +2,7 @@
 
 # JavaScript modules, loaded by the browser without a build step.
 #
-# jQuery, Bootstrap 3 and jQuery UI are not modules: they are plain scripts in
+# jQuery, Bootstrap 5 and jQuery UI are not modules: they are plain scripts in
 # vendor/javascript, loaded by the layout before these modules run, and the app
 # code uses the global $ they set up.
 

@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active= @shipment.name
+      %li.breadcrumb-item.active= @shipment.name
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, Shipment
       = render partial: "layouts/edit_modal"
@@ -15,60 +15,60 @@
     .row.detail-layout
       .col-md-5
         .row.detail-card
-          .col-xs-12
+          .col-12
             %h5.text-muted Name
             %h4= @shipment.name
           - if @shipment.notes.present?
-            .col-xs-12
+            .col-12
               %h6.text-muted Notes
               %h5= @shipment.notes
-          .col-xs-12
+          .col-12
             %h6.text-muted Receiving Warehouse
             %h5= @shipment.receiving_warehouse&.name || "N/A"
-          .col-xs-12
+          .col-12
             %h6.text-muted Shipping Warehouse
             %h5= @shipment.shipping_warehouse&.name || "N/A"
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Custom ID
             %h5= @shipment.custom_uid
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Status
             %h5{class: "status-#{@shipment.status.parameterize}"}= @shipment.status
           - stats = @shipment.packed_item_stats
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Items (Unique)
             %h5= stats[:unique_items]
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Items (Instances)
             %h5= stats[:instances]
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Items (Quantity)
             %h5= stats[:quantity]
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Items (Est. Weight)
             %h5 #{stats[:weight]}kg
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Earliest Expiry
             %h5= stats[:earliest_expiry]&.strftime("%Y-%m-%d") || "N/A"
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Latest Expiry
             %h5= stats[:latest_expiry]&.strftime("%Y-%m-%d") || "N/A"
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Created By
             %h5= @shipment.user.name
-          .col-xs-6.col-sm-4.col-md-6
+          .col-6.col-sm-4.col-md-6
             %h6.text-muted Created At
             %h5= @shipment.created_at.strftime("%Y-%m-%d")
 
       .col-md-7
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#containers"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#containers"}
             %i.fa.fa-truck
             Containers in this Shipment
-            %span.label{class: @shipment.containers.any? ? "label-success" : "label-warning"}= @shipment.containers.size
+            %span.badge{class: @shipment.containers.any? ? "text-bg-success" : "text-bg-warning"}= @shipment.containers.size
 
           - if @shipment.containers.any?
-            #containers.collapse
+            .collapse#containers
               %table.table.table-striped.link-rows
                 %thead
                   %tr
@@ -87,10 +87,10 @@
                       %td
                         = link_to container_path(container) do
                           %p{class: "status-#{container.status.parameterize}"}= container.status
-              .close-collapse{data: {toggle: "collapse"}, href: "#containers"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#containers"}
                 %span Close
           - else
-            #containers.collapse.panel-body
+            .collapse.card-body#containers
               %h5.text-center
                 No containers
                 %i.fa.fa-fw.fa-truck
@@ -98,123 +98,123 @@
                 %i.fa.fa-fw.fa-ship
 
 
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#container-items"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#container-items"}
             %i.fa.fa-truck
             %i.fa.fa-stethoscope
             Containerized Items
-            %span.label{class: @shipment.container_items.any? ? "label-success" : "label-warning"}= @shipment.container_items.size
+            %span.badge{class: @shipment.container_items.any? ? "text-bg-success" : "text-bg-warning"}= @shipment.container_items.size
 
           - if @shipment.container_items.any?
-            #container-items.collapse
+            .collapse#container-items
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "containerized-items"}
               = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.container_items, assoc: "containerized-items"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#container-items"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#container-items"}
                 %span Close
           - else
-            #container-items.collapse.panel-body
+            .collapse.card-body#container-items
               %h5.text-center
                 No packed items
                 %i.fa.fa-fw.fa-stethoscope
                 in any containers
                 %i.fa.fa-fw.fa-truck
 
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#pallets"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#pallets"}
             %i.fa.fa-pallet
             Pallets Assigned to Containers
-            %span.label{class: @shipment.pallets.any? ? "label-success" : "label-warning"}= @shipment.pallets.size
+            %span.badge{class: @shipment.pallets.any? ? "text-bg-success" : "text-bg-warning"}= @shipment.pallets.size
 
           - if @shipment.pallets.any?
-            #pallets.collapse
+            .collapse#pallets
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallets"}
               = render partial: "pallets/micro_table", locals: {pallets: @shipment.pallets}
-              .close-collapse{data: {toggle: "collapse"}, href: "#pallets"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#pallets"}
                 %span Close
           - else
-            #pallets.collapse.panel-body
+            .collapse.card-body#pallets
               %h5.text-center
                 No pallets
                 %i.fa.fa-fw.fa-pallet
                 assigned to any containers
                 %i.fa.fa-fw.fa-truck
 
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#pallet-items"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#pallet-items"}
             %i.fa.fa-pallet
             %i.fa.fa-stethoscope
             Palletized Items
-            %span.label{class: @shipment.pallet_items.any? ? "label-success" : "label-warning"}= @shipment.pallet_items.size
+            %span.badge{class: @shipment.pallet_items.any? ? "text-bg-success" : "text-bg-warning"}= @shipment.pallet_items.size
 
           - if @shipment.pallet_items.any?
-            #pallet-items.collapse
+            .collapse#pallet-items
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "palletized-items"}
               = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.pallet_items, assoc: "palletized-items"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#pallet-items"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#pallet-items"}
                 %span Close
           - else
-            #pallet-items.collapse.panel-body
+            .collapse.card-body#pallet-items
               %h5.text-center
                 No packed items
                 %i.fa.fa-fw.fa-stethoscope
                 on any pallets
                 %i.fa.fa-fw.fa-pallet
 
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#pallet_boxes"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#pallet_boxes"}
             %i.fa.fa-box-open
             Boxes Assigned to Pallets
-            %span.label{class: @shipment.pallet_boxes.any? ? "label-success" : "label-warning"}= @shipment.pallet_boxes.size
+            %span.badge{class: @shipment.pallet_boxes.any? ? "text-bg-success" : "text-bg-warning"}= @shipment.pallet_boxes.size
 
           - if @shipment.pallet_boxes.any?
-            #pallet_boxes.collapse
+            .collapse#pallet_boxes
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "pallet-boxes"}
               = render partial: "boxes/micro_table", locals: {boxes: @shipment.pallet_boxes, table_id: "filter-pallet-boxes-table"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#pallet_boxes"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#pallet_boxes"}
                 %span Close
           - else
-            #pallet_boxes.collapse.panel-body
+            .collapse.card-body#pallet_boxes
               %h5.text-center
                 No boxes
                 %i.fa.fa-fw.fa-box-open
                 assigned to any pallets
                 %i.fa.fa-fw.fa-pallet
 
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#container_boxes"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#container_boxes"}
             %i.fa.fa-box-open
             Boxes Assigned to Containers
-            %span.label{class: @shipment.container_boxes.any? ? "label-success" : "label-warning"}= @shipment.container_boxes.size
+            %span.badge{class: @shipment.container_boxes.any? ? "text-bg-success" : "text-bg-warning"}= @shipment.container_boxes.size
 
           - if @shipment.container_boxes.any?
-            #container_boxes.collapse
+            .collapse#container_boxes
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by custom ID...", assoc: "container-boxes"}
               = render partial: "boxes/micro_table", locals: {boxes: @shipment.container_boxes, table_id: "filter-container-boxes-table"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#container_boxes"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#container_boxes"}
                 %span Close
           - else
-            #container_boxes.collapse.panel-body
+            .collapse.card-body#container_boxes
               %h5.text-center
                 No boxes
                 %i.fa.fa-fw.fa-box-open
                 assigned to any containers
                 %i.fa.fa-fw.fa-truck
 
-        .panel.panel-default
-          %a.panel-heading{data: {toggle: "collapse"}, href: "#box-items"}
+        .card
+          %a.card-header{data: {"bs-toggle": "collapse"}, href: "#box-items"}
             %i.fa.fa-box-open
             %i.fa.fa-stethoscope
             Boxed Items
-            %span.label{class: @shipment.box_items.any? ? "label-success" : "label-warning"}= @shipment.box_items.size
+            %span.badge{class: @shipment.box_items.any? ? "text-bg-success" : "text-bg-warning"}= @shipment.box_items.size
 
           - if @shipment.box_items.any?
-            #box-items.collapse
+            .collapse#box-items
               = render partial: "layouts/table_quick_filter", locals: {placeholder: "Filter by name...", assoc: "boxed-items"}
               = render partial: "packed_items/micro_table", locals: {packed_items: @shipment.box_items, assoc: "boxed-items"}
-              .close-collapse{data: {toggle: "collapse"}, href: "#box-items"}
+              .close-collapse{data: {"bs-toggle": "collapse"}, href: "#box-items"}
                 %span Close
           - else
-            #box-items.collapse.panel-body
+            .collapse.card-body#box-items
               %h5.text-center
                 No packed items
                 %i.fa.fa-fw.fa-stethoscope

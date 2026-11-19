@@ -1,16 +1,15 @@
 - record = @box || @pallet || @container || @shipment || @category || @item || @warehouse || @hospital || @user
 -# lol its agile
-%button.btn.btn-primary.responsive-button{data: {target: "#edit-modal", toggle: "modal"}}
+%button.btn.btn-primary.responsive-button{data: {"bs-target": "#edit-modal", "bs-toggle": "modal"}}
   %i.fa.fa-edit
   %span.main-text Edit
 .modal.fade{id: "edit-modal"}
   .modal-dialog
     .modal-content
       .modal-header
-        %h5#assignmentModalLabel.modal-title Edit #{record.try(:name) || record.generated_name }
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"}  ×
-      .modal-body#assignmentModalBody.margin-top
+        %h5.modal-title#assignmentModalLabel Edit #{record.try(:name) || record.generated_name }
+        %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
+      .modal-body.margin-top#assignmentModalBody
         .row.edit-modal-body
-          .col-xs-12
+          .col-12
             = render "form"

@@ -4,10 +4,10 @@
   %tr
     %td
       = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_uncategorized_path"}
-      %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+      %p{data: {"bs-target": "#item-#{item.id}Modal", "bs-toggle": "modal"}}
         = present(placeholder_item).match(item.generated_name)
     %td
-      %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}, class: item.verified ? "text-success" : "text-danger"}
+      %p{data: {"bs-target": "#item-#{item.id}Modal", "bs-toggle": "modal"}, class: item.verified ? "text-success" : "text-danger"}
         = item.verified.to_s.capitalize
 
     %td

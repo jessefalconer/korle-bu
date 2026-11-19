@@ -1,9 +1,9 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li.active Unpacking History for #{current_user.warehouse.name}
+      %li.breadcrumb-item.active Unpacking History for #{current_user.warehouse.name}
     = render partial: "layouts/jump_to_modal"
     - if can? :manage, Shipment
       = render "layouts/export_unpacking_events_modal"
@@ -15,10 +15,10 @@
             %th Item
             %th Quantity
             %th Origin
-            %th.hidden-xs Destination
-            %th.hidden-xs User
+            %th.d-none.d-sm-table-cell Destination
+            %th.d-none.d-sm-table-cell User
             %th Unpacked On
-            %th.hidden-xs.hidden-sm Created At
+            %th.d-none.d-md-table-cell Created At
         %tbody
           - @events.each do |event|
             %tr
@@ -31,16 +31,16 @@
               %td
                 = link_to present(event.packed_item).path do
                   %p= event.packed_item.location_name
-              %td.hidden-xs
+              %td.d-none.d-sm-table-cell
                 = link_to present(event.packed_item).path do
                   %p= event.hospital.name
-              %td.hidden-xs
+              %td.d-none.d-sm-table-cell
                 = link_to present(event.packed_item).path do
                   %p= event.user.name
               %td
                 = link_to present(event.packed_item).path do
                   %p= event.timestamp.strftime("%Y-%m-%d")
-              %td.hidden-xs.hidden-sm
+              %td.d-none.d-md-table-cell
                 = link_to present(event.packed_item).path do
                   %p= event.created_at.strftime("%Y-%m-%d")
 

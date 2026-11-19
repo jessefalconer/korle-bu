@@ -2,8 +2,8 @@ function initAssignmentListeners() {
   const quickNav = document.querySelector("ul.nav.nav-tabs.quick-add")
 
   if (quickNav != null) {
-    quickNav.firstElementChild.classList.add("active");
-    document.querySelector(".tab-content.quick-add > .tab-pane").classList.add("active", "in");
+    quickNav.querySelector(".nav-link").classList.add("active");
+    document.querySelector(".tab-content.quick-add > .tab-pane").classList.add("active", "show");
   }
 
 

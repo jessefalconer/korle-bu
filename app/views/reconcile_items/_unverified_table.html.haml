@@ -4,10 +4,10 @@
   %tr
     %td
       = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_unverified_path"}
-      %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+      %p{data: {"bs-target": "#item-#{item.id}Modal", "bs-toggle": "modal"}}
         = present(placeholder_item).match(item.generated_name)
-    %td.hidden-xs
-      %p{data: {target: "#item-#{item.id}Modal", toggle: "modal"}}
+    %td.d-none.d-sm-table-cell
+      %p{data: {"bs-target": "#item-#{item.id}Modal", "bs-toggle": "modal"}}
         = item.category&.name || "N/A"
     %td
       = link_to item_instances_path(item) do

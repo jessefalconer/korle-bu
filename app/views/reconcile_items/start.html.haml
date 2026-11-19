@@ -1,40 +1,40 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li
+      %li.breadcrumb-item
         = link_to "Reconcile - Unverified", reconcile_unverified_path
-      %li.active Reconciling: #{@item.generated_name}
+      %li.breadcrumb-item.active Reconciling: #{@item.generated_name}
     = render partial: "layouts/jump_to_modal"
   .main-content
     .row
-      .col-xs-12
+      .col-12
         %h3 Select all relevant items to reconcile.
         %p Any combination of suggested and search items can be selected.
     = render partial: "item_card", locals: {item: @item}
 
     - if @instance_counts.fetch(@item.id, 0).zero?
       .row
-        .col-xs-12
+        .col-12
           %p This item is not currently in use. You may wish to delete it.
           = delete_button(item_path(@item, redirect: "reconcile_unverified_path"), "Are you sure you want to delete #{@item.generated_name}? This cannot be reversed.")
     = form_for reconcile_confirm_path(@item) do |f|
       %br
       %br
       %ul.nav.nav-tabs
-        %li.active
-          %a{data: {toggle: "tab"}, href: "#suggestions"}
+        %li.nav-item
+          %a.nav-link.active{data: {"bs-toggle": "tab"}, href: "#suggestions"}
             Suggestions
-            %span.label.label-success= @similar_items.size
-        %li
-          %a{data: {toggle: "tab"}, href: "#search"}
+            %span.badge.text-bg-success= @similar_items.size
+        %li.nav-item
+          %a.nav-link{data: {"bs-toggle": "tab"}, href: "#search"}
             Search
       %br
       .row
-        .col-xs-12
+        .col-12
           .tab-content
-            #suggestions.tab-pane.active.in
+            .tab-pane.active.show#suggestions
               = submit_button("Confirm Reconcile", classes = "submit-count", icon = "fa-compress-alt")
               %h5 Items with similar names are shown here.
               - if @similar_items.any?
@@ -42,9 +42,9 @@
                   %thead
                     %tr
                       %th Name
-                      %th.hidden-xs Category
-                      %th.hidden-xs Verified
-                      %th.hidden-xs Flagged
+                      %th.d-none.d-sm-table-cell Category
+                      %th.d-none.d-sm-table-cell Verified
+                      %th.d-none.d-sm-table-cell Flagged
                       %th Instances
                       %th
                   %tbody
@@ -53,13 +53,13 @@
                         %td
                           %p
                             = present(@item).match(item.generated_name)
-                        %td.hidden-xs
+                        %td.d-none.d-sm-table-cell
                           %p
                             = item.category&.name || "N/A"
-                        %td.hidden-xs
+                        %td.d-none.d-sm-table-cell
                           %p{class: !item.verified ? "text-danger" : "text-success"}
                             = item.verified&.to_s.capitalize
-                        %td.hidden-xs
+                        %td.d-none.d-sm-table-cell
                           %p{class: item.flagged ? "text-danger" : "text-success"}
                             = item.flagged&.to_s.capitalize
                         %td
@@ -69,10 +69,10 @@
                           = check_box_tag "reconcile_ids[]", item.id, false, {id: item.id}
               - else
                 .row
-                  .col-xs-12
+                  .col-12
                     %h5.text-center No suggestions found. Try searching for an item.
 
-            #search.tab-pane.fade
+            .tab-pane.fade#search
               = submit_button("Confirm Reconcile", classes = "submit-count", icon = "fa-compress-alt")
               %h5 Results from the suggestions tab are automatically filtered from search results.
               = render "search_form"

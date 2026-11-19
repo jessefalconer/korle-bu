@@ -1,4 +1,4 @@
-%button.btn.btn-primary.responsive-button{data: {target: "#jump-to-modal", toggle: "modal"}}
+%button.btn.btn-primary.responsive-button{data: {"bs-target": "#jump-to-modal", "bs-toggle": "modal"}}
   %i.fa.fa-search-location
   %span.main-text Jump To&nbsp;
   %i.fa.fa-bolt
@@ -6,33 +6,32 @@
   .modal-dialog
     .modal-content
       .modal-header
-        %h5#assignmentModalLabel.modal-title Jump To...
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"}  ×
-      .modal-body#assignmentModalBody.margin-top
+        %h5.modal-title#assignmentModalLabel Jump To...
+        %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
+      .modal-body.margin-top#assignmentModalBody
         .row.jump-to-body
-          .col-xs-12
+          .col-12
             %h5 Enter the custom ID of the resource, jump to its info or item page. You can also quick search for an item or jump to the latest container or shipment.
-          .col-xs-12
+          .col-12
             = form_for :box, url: find_box_path, html: {class: "inline-search-form" } do |f|
               = hidden_field_tag :redirect, request.fullpath
               = f.number_field :custom_uid, {placeholder: "Custom ID"}
               = submit_button_value(["fa-box-open", "fa-arrow-right"], "info")
               = submit_button_value(["fa-box-open", "fa-stethoscope", "fa-arrow-right"], "items")
-          .col-xs-12
+          .col-12
             = form_for :pallet, url: find_pallet_path, html: {class: "inline-search-form" } do |f|
               = hidden_field_tag :redirect, request.fullpath
               = f.number_field :custom_uid, {placeholder: "Custom ID"}
               = submit_button_value(["fa-pallet", "fa-arrow-right"], "info")
               = submit_button_value(["fa-pallet", "fa-stethoscope", "fa-arrow-right"], "items")
           - unless current_user.receiving_manager?
-            .col-xs-12
+            .col-12
               = form_with url: items_path, method: :get, html: {class: "inline-search-form text-field" } do |f|
                 = f.text_field :search_string, {placeholder: "Item Search"}
                 = submit_button_value(["fa-search", "fa-stethoscope", "fa-arrow-right"], "")
             - if (latest_container = Container.order(:created_at).last)
-              .col-xs-12.padding-top
+              .col-12.padding-top
                 = link_button("Latest Container", container_path(latest_container))
             - if (latest_shipment = Shipment.order(:created_at).last)
-              .col-xs-12.padding-top
+              .col-12.padding-top
                 = link_button("Latest Shipment", shipment_path(latest_shipment))

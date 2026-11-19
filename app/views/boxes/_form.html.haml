@@ -10,7 +10,7 @@
     = f.number_field :custom_uid, min: 0, class: "form-control"
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(current_user.selectable_statuses(Box), @box.status), {}, { class: "form-control" }
+    = f.select :status, options_for_select(current_user.selectable_statuses(Box), @box.status), {}, { class: "form-select" }
   .form-group
     %label Weight (kg)
     = f.number_field :weight, min: 0, step: :any, class: "form-control"
@@ -19,11 +19,11 @@
     = f.text_field :notes, class: "form-control"
   .form-group
     %label Pallet Assignment
-    = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(id: :desc), :id, :name, pallet_id), { include_blank: "None" }, { class: "form-control", id: "pallet-assignment" }
+    = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(id: :desc), :id, :name, pallet_id), { include_blank: "None" }, { class: "form-select", id: "pallet-assignment" }
   %p.or-divider or
   .form-group
     %label Container Assignment
-    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(id: :desc), :id, :name, container_id), { include_blank: "None" }, { class: "form-control", id: "container-assignment" }
+    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(id: :desc), :id, :name, container_id), { include_blank: "None" }, { class: "form-select", id: "container-assignment" }
 
   .btn-toolbar.list-toolbar
     - if @box.persisted?

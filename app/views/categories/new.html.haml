@@ -1,11 +1,11 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li
+      %li.breadcrumb-item
         = link_to "Categories", categories_path
-      %li.active New Category
+      %li.breadcrumb-item.active New Category
     = render partial: "layouts/jump_to_modal"
   .main-content
     .row

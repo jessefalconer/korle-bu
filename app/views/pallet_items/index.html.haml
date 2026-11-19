@@ -1,7 +1,7 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
       = present(@pallet).breadcrumbs_item
     = render partial: "layouts/jump_to_modal"
@@ -9,50 +9,50 @@
   .main-content
     %ul.nav.nav-tabs
       - if can? :manage, PackedItem
-        %li.active
-          %a{data: {toggle: "tab"}, href: "#search"} Search
-        %li
-          %a{data: {toggle: "tab"}, href: "#new"} New
-        %li
-          %a{data: {toggle: "tab"}, href: "#manage-items"}
+        %li.nav-item
+          %a.nav-link.active{data: {"bs-toggle": "tab"}, href: "#search"} Search
+        %li.nav-item
+          %a.nav-link{data: {"bs-toggle": "tab"}, href: "#new"} New
+        %li.nav-item
+          %a.nav-link{data: {"bs-toggle": "tab"}, href: "#manage-items"}
             Manage
-            %span.label.label-success= @pallet.pallet_items.count
+            %span.badge.text-bg-success= @pallet.pallet_items.count
       - elsif cannot? :manage, PackedItem
-        %li.active
-          %a{data: {toggle: "tab"}, href: "#manage-items"}
+        %li.nav-item
+          %a.nav-link.active{data: {"bs-toggle": "tab"}, href: "#manage-items"}
             Inventory
-            %span.label.label-success= @pallet.pallet_items.count
+            %span.badge.text-bg-success= @pallet.pallet_items.count
       - if can? :manage, UnpackingEvent
-        %li
-          %a{data: {toggle: "tab"}, href: "#unpack-items"}
+        %li.nav-item
+          %a.nav-link{data: {"bs-toggle": "tab"}, href: "#unpack-items"}
             Unpack
-            %span.label.label-info= @pallet.pallet_items.with_inventory.count
-        %li
-          %a{data: {toggle: "tab"}, href: "#history-items"}
+            %span.badge.text-bg-info= @pallet.pallet_items.with_inventory.count
+        %li.nav-item
+          %a.nav-link{data: {"bs-toggle": "tab"}, href: "#history-items"}
             History
-            %span.label.label-default= @pallet.pallet_items.with_events.count
+            %span.badge.text-bg-secondary= @pallet.pallet_items.with_events.count
 
     .row
-      .col-xs-12
+      .col-12
         %br
         .tab-content
           - if can? :manage, PackedItem
-            #manage-items.tab-pane.fade
+            .tab-pane.fade#manage-items
               = render "pallet_items/manage_form"
 
-            #search.tab-pane.active.in
+            .tab-pane.active.show#search
               = render "pallet_items/search_form"
 
-            #new.tab-pane.fade
+            .tab-pane.fade#new
               = render "pallet_items/add_new_form"
 
           - elsif cannot? :manage, PackedItem
-            #manage-items.tab-pane.active.in
+            .tab-pane.active.show#manage-items
               = render "pallet_items/list"
 
           - if can? :manage, UnpackingEvent
-            #unpack-items.tab-pane.fade
+            .tab-pane.fade#unpack-items
               = render "pallet_items/unpack_form"
 
-            #history-items.tab-pane.fade
+            .tab-pane.fade#history-items
               = render "pallet_items/history"

@@ -1,5 +1,5 @@
-.navbar-default .navbar-brand,
-.navbar-default .navbar-brand:hover { color: #fff; }
+.navbar .navbar-brand,
+.navbar .navbar-brand:hover { color: #fff; }
 
 h1.page {
   text-align: center;
@@ -64,7 +64,7 @@ footer {
 
   .body {
     margin-top: 15px;
-    color: darken(#ff4d4d, 20%);
+    color: #e60000;
   }
 
   ul.fa-ul li {
@@ -77,7 +77,7 @@ footer {
     margin-bottom: 0;
 
     label {
-      color: darken(#ff4d4d, 20%);
+      color: #e60000;
       font-size: 14px;
       font-weight: normal;
     }

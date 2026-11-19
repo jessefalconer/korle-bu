@@ -1,7 +1,8 @@
 // Entry point, loaded as a module through the importmap (config/importmap.rb).
 //
-// jQuery, Bootstrap 3 and jQuery UI are loaded as plain scripts by the layout
-// before this module runs, so the global $ / jQuery are already set up here.
+// jQuery, Bootstrap 5 and jQuery UI are loaded as plain scripts by the layout before
+// this module runs, so the global $ / jQuery are already set up here. Bootstrap 5 sees
+// jQuery and still fires its events through it (e.g. "show.bs.collapse").
 
 import Rails from "@rails/ujs";
 Rails.start();
@@ -19,37 +20,23 @@ import "Chart.bundle";
 // Respect the OS "reduce motion" setting for jQuery animations too
 $.fx.off = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// Bootstrap only flips `.collapsed` on a toggle when it is clicked, so set it from each
-// target's real state on load; the CSS chevrons rely on it
+// Bootstrap sets `.collapsed` on a toggle only once it has been clicked, so set it from
+// each target's real state on load; the CSS chevrons rely on it. (Bootstrap 5 keeps it in
+// sync from then on, including toggles that target a class, like ".dashboard-menu".)
 function syncCollapseToggles() {
-  $("[data-toggle='collapse']").each((_i, el) => {
-    const target = $(el).attr("data-target") || $(el).attr("href");
-    if (!target || target === "#" || el.closest(".navbar-header")) return;
+  $("[data-bs-toggle='collapse']").each((_i, el) => {
+    const target = $(el).attr("data-bs-target") || $(el).attr("href");
+    if (!target || target === "#" || el.classList.contains("navbar-toggler")) return;
 
     let $target;
     try { $target = $(target).first(); } catch (_e) { return; } // not a valid selector
-    if ($target.length) $(el).toggleClass("collapsed", !$target.hasClass("in"));
+    if ($target.length) $(el).toggleClass("collapsed", !$target.hasClass("show"));
   });
 }
 
-// Bootstrap 3.4 also only updates `.collapsed` on toggles that target an #id. Menu
-// toggles target classes (".dashboard-menu"), so update every matching toggle whenever a
-// collapse starts opening or closing; the chevrons then rotate in step with it.
-$(document).on("show.bs.collapse hide.bs.collapse", (e) => {
-  const opening = e.type === "show";
-  $("[data-toggle='collapse']").each((_i, el) => {
-    const target = $(el).attr("data-target") || $(el).attr("href");
-    if (!target || target === "#") return;
-
-    try {
-      if ($(e.target).is(target)) $(el).toggleClass("collapsed", !opening);
-    } catch (_e) { /* not a valid selector */ }
-  });
-});
-
 $(() => {
   const uls = $(".sidebar-nav > ul > *").clone();
-  uls.addClass("visible-xs");
+  uls.addClass("d-sm-none");
   $("#main-menu").append(uls);
 
   $(".datepickers").datepicker({ dateFormat: "yy-mm-dd" });

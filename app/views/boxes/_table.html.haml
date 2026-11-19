@@ -5,9 +5,9 @@
       %th Custom ID
       %th Name
       %th Status
-      %th.hidden-sm.hidden-xs Palletized?
-      %th.hidden-xs Receiver
-      %th.hidden-xs Created At
+      %th.d-none.d-md-table-cell Palletized?
+      %th.d-none.d-sm-table-cell Receiver
+      %th.d-none.d-sm-table-cell Created At
       - if can?(:create, Box)
         %th.mass-action-cell
   %tbody
@@ -22,13 +22,13 @@
         %td
           = link_to box_path(box) do
             %p{class: "status-#{box.status.parameterize}"}= box.status
-        %td.hidden-sm.hidden-xs
+        %td.d-none.d-md-table-cell
           = link_to box_path(box) do
             %p{class: (box.pallet.nil? ? "text-warning" : "text-success")}= box.pallet.nil? ? "No" : "Yes"
-        %td.hidden-xs
+        %td.d-none.d-sm-table-cell
           = link_to box_path(box) do
             %p= box&.shipment&.receiving_warehouse&.name
-        %td.hidden-xs
+        %td.d-none.d-sm-table-cell
           = link_to box_path(box) do
             %p= box.created_at.strftime("%Y-%m-%d")
         - if can?(:create, Box)

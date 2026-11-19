@@ -1,20 +1,20 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to index_path do
           Home
-      %li.active My Activity (30 Days)
+      %li.breadcrumb-item.active My Activity (30 Days)
     = render partial: "layouts/jump_to_modal"
   .main-content
     .row
-      .col-xs-12
+      .col-12
         - if @boxes.any?
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#boxes"}
+          .card
+            %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#boxes"}
               %i.fa.fa-box-open
               Boxes
-              %span.label.label-info= @boxes.size
+              %span.badge.text-bg-info= @boxes.size
             .collapse{id: "boxes"}
               %table.table.table-striped
                 %thead
@@ -22,8 +22,8 @@
                     %th Custom ID
                     %th Name
                     %th Created At
-                    %th.hidden-xs Status
-                    %th.hidden-xs Boxed Items
+                    %th.d-none.d-sm-table-cell Status
+                    %th.d-none.d-sm-table-cell Boxed Items
                 %tbody
                   - @boxes.each do |box|
                     %tr
@@ -34,17 +34,17 @@
                           %p= box.name
                       %td
                         %p= box.created_at.strftime("%Y-%m-%d")
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= box.status
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= box.box_items.size
 
         - if @pallets.any?
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallets"}
+          .card
+            %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#pallets"}
               %i.fa.fa-pallet
               Pallets
-              %span.label.label-info= @pallets.size
+              %span.badge.text-bg-info= @pallets.size
             .collapse{id: "pallets"}
               %table.table.table-striped
                 %thead
@@ -52,8 +52,8 @@
                     %th Custom ID
                     %th Name
                     %th Created At
-                    %th.hidden-xs Status
-                    %th.hidden-xs Palletized Items
+                    %th.d-none.d-sm-table-cell Status
+                    %th.d-none.d-sm-table-cell Palletized Items
                 %tbody
                   - @pallets.each do |pallet|
                     %tr
@@ -64,17 +64,17 @@
                           %p= pallet.name
                       %td
                         %p= pallet.created_at.strftime("%Y-%m-%d")
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= pallet.status
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= pallet.pallet_items.size
 
         - if @containers.any?
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#containers"}
+          .card
+            %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#containers"}
               %i.fa.fa-truck
               Containers
-              %span.label.label-info= @containers.size
+              %span.badge.text-bg-info= @containers.size
             .collapse{id: "containers"}
               %table.table.table-striped
                 %thead
@@ -82,8 +82,8 @@
                     %th Custom ID
                     %th Name
                     %th Created At
-                    %th.hidden-xs Status
-                    %th.hidden-xs Containerized Items
+                    %th.d-none.d-sm-table-cell Status
+                    %th.d-none.d-sm-table-cell Containerized Items
                 %tbody
                   - @containers.each do |container|
                     %tr
@@ -94,35 +94,35 @@
                           %p= container.name
                       %td
                         %p= container.created_at.strftime("%Y-%m-%d")
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= container.status
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= container.container_items.size
 
         - if @staged_items.any?
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#staged_items"}
+          .card
+            %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#staged_items"}
               %i.fa.fa-stethoscope
               Staged Items
-              %span.label.label-info= @staged_items.size
+              %span.badge.text-bg-info= @staged_items.size
             .collapse{id: "staged_items"}
               %table.table.table-striped
                 %tbody
                   %thead
                     %tr
-                      %th.hidden-xs Quantity
+                      %th.d-none.d-sm-table-cell Quantity
                       %th Name
-                      %th.hidden-xs
+                      %th.d-none.d-sm-table-cell
                       %th Staging
                       %th Date
                   - @staged_items.each do |item|
                     %tr
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= item.quantity
                       %td
                         = link_to item_path(item.item_id) do
                           = item.generated_name
-                      %td.hidden-xs.text-center
+                      %td.text-center.d-none.d-sm-table-cell
                         %i.fa.fa-arrow-right
                       %td
                         = link_to staged_items_path do
@@ -131,29 +131,29 @@
                         %p= item.created_at.strftime("%Y-%m-%d")
 
         - if @warehoused_items.any?
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#warehoused_items"}
+          .card
+            %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#warehoused_items"}
               %i.fa.fa-stethoscope
               Warehoused Items
-              %span.label.label-info= @warehoused_items.size
+              %span.badge.text-bg-info= @warehoused_items.size
             .collapse{id: "warehoused_items"}
               %table.table.table-striped
                 %tbody
                   %thead
                     %tr
-                      %th.hidden-xs Quantity
+                      %th.d-none.d-sm-table-cell Quantity
                       %th Name
-                      %th.hidden-xs
+                      %th.d-none.d-sm-table-cell
                       %th Staging
                       %th Date
                   - @warehoused_items.each do |item|
                     %tr
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= item.quantity
                       %td
                         = link_to item_path(item.item_id) do
                           = item.generated_name
-                      %td.hidden-xs.text-center
+                      %td.text-center.d-none.d-sm-table-cell
                         %i.fa.fa-arrow-right
                       %td
                         = link_to warehoused_items_path do
@@ -162,29 +162,29 @@
                         %p= item.created_at.strftime("%Y-%m-%d")
 
         - if @box_items.any?
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#box_items"}
+          .card
+            %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#box_items"}
               %i.fa.fa-stethoscope
               Boxed Items
-              %span.label.label-info= @box_items.size
+              %span.badge.text-bg-info= @box_items.size
             .collapse{id: "box_items"}
               %table.table.table-striped
                 %tbody
                   %thead
                     %tr
-                      %th.hidden-xs Quantity
+                      %th.d-none.d-sm-table-cell Quantity
                       %th Name
-                      %th.hidden-xs
+                      %th.d-none.d-sm-table-cell
                       %th Box
                       %th Date
                   - @box_items.each do |item|
                     %tr
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= item.quantity
                       %td
                         = link_to item_path(item.item_id) do
                           = item.generated_name
-                      %td.hidden-xs.text-center
+                      %td.text-center.d-none.d-sm-table-cell
                         %i.fa.fa-arrow-right
                       %td
                         = link_to box_path(item.box) do
@@ -193,29 +193,29 @@
                         %p= item.created_at.strftime("%Y-%m-%d")
 
         - if @pallet_items.any?
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#pallet_items"}
+          .card
+            %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#pallet_items"}
               %i.fa.fa-stethoscope
               Palletized Items
-              %span.label.label-info= @pallet_items.size
+              %span.badge.text-bg-info= @pallet_items.size
             .collapse{id: "pallet_items"}
               %table.table.table-striped
                 %tbody
                   %thead
                     %tr
-                      %th.hidden-xs Quantity
+                      %th.d-none.d-sm-table-cell Quantity
                       %th Name
-                      %th.hidden-xs
+                      %th.d-none.d-sm-table-cell
                       %th Pallet
                       %th Date
                   - @pallet_items.each do |item|
                     %tr
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= item.quantity
                       %td
                         = link_to item_path(item.item_id) do
                           = item.generated_name
-                      %td.hidden-xs.text-center
+                      %td.text-center.d-none.d-sm-table-cell
                         %i.fa.fa-arrow-right
                       %td
                         = link_to pallet_path(item.pallet) do
@@ -224,29 +224,29 @@
                         %p= item.created_at.strftime("%Y-%m-%d")
 
         - if @container_items.any?
-          .panel.panel-default
-            %a.panel-heading.collapsed{data: {toggle: "collapse"}, href: "#container_items"}
+          .card
+            %a.card-header.collapsed{data: {"bs-toggle": "collapse"}, href: "#container_items"}
               %i.fa.fa-stethoscope
               Containerized Items
-              %span.label.label-info= @container_items.size
+              %span.badge.text-bg-info= @container_items.size
             .collapse{id: "container_items"}
               %table.table.table-striped
                 %tbody
                   %thead
                     %tr
-                      %th.hidden-xs Quantity
+                      %th.d-none.d-sm-table-cell Quantity
                       %th Name
-                      %th.hidden-xs
+                      %th.d-none.d-sm-table-cell
                       %th Container
                       %th Date
                   - @container_items.each do |item|
                     %tr
-                      %td.hidden-xs
+                      %td.d-none.d-sm-table-cell
                         %p= item.quantity
                       %td
                         = link_to item_path(item.item_id) do
                           = item.generated_name
-                      %td.hidden-xs.text-center
+                      %td.text-center.d-none.d-sm-table-cell
                         %i.fa.fa-arrow-right
                       %td
                         = link_to container_path(item.container) do

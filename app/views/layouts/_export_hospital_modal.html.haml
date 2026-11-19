@@ -1,28 +1,27 @@
-%button.btn.btn-primary{data: {target: "#export-modal", toggle: "modal"}}
+%button.btn.btn-primary{data: {"bs-target": "#export-modal", "bs-toggle": "modal"}}
   %span Export
   %i.fa.fa-file-export
 .modal.fade{id: "export-modal"}
   .modal-dialog
     .modal-content
       .modal-header
-        %h5#assignmentModalLabel.modal-title Export #{@hospital.name} Unpacked Items
-        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
-          %span{"aria-hidden" => "true"}  ×
-      .modal-body#assignmentModalBody.margin-top
+        %h5.modal-title#assignmentModalLabel Export #{@hospital.name} Unpacked Items
+        %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
+      .modal-body.margin-top#assignmentModalBody
         .row.edit-modal-body
           = form_for HospitalExport.new(@hospital.id), url: hospital_exports_path do |f|
-            .col-xs-12
+            .col-12
               %h5 Select a date range to export. The default dates encompass all unpacking records.
-            .col-xs-6
+            .col-6
               .form-group
                 - min_date = @hospital.unpacking_events.minimum("created_at") || Date.today
                 = f.label :start_date
                 = f.text_field :start_date, value: min_date.strftime("%Y-%m-%d"), class: "form-control datepickers", placeholder: "YYYY-MM-DD"
-            .col-xs-6
+            .col-6
               .form-group
                 - max_date = @hospital.unpacking_events.maximum("created_at") || Date.today
                 = f.label :end_date
                 = f.text_field :end_date, value: max_date.strftime("%Y-%m-%d"), class: "form-control datepickers", placeholder: "YYYY-MM-DD"
             = f.hidden_field :id, value: @hospital.id
-            .col-xs-12
+            .col-12
               = submit_export

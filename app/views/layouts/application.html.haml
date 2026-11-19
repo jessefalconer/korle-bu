@@ -12,7 +12,7 @@
     = favicon_link_tag "/kbnf-favicon-32x32.png", skip_pipeline: true
     -# Plain (non-module) scripts the app code relies on as globals; they run in order,
     -# before the importmap modules below
-    = javascript_include_tag "jquery.min", "bootstrap.min", "jquery-ui.min"
+    = javascript_include_tag "jquery.min", "bootstrap.bundle.min", "jquery-ui.min"
     = javascript_importmap_tags
   -# with-sidebar: the header partial only draws the sidebar for signed-in users
   %body.theme-1{class: ("with-sidebar" if current_user)}

@@ -5,7 +5,7 @@ Inventory and shipment tracking for [Korle-Bu Neuroscience Foundation](https://k
 - **Rails 8.1** on **Ruby 4.0** (pinned in `.ruby-version`)
 - **PostgreSQL**
 - **Propshaft** for assets, **importmap-rails** for JavaScript and **dartsass-rails** for SCSS, so there's no Node or Yarn build step
-- **HAML** views, Bootstrap 3, jQuery and jQuery UI (their scripts are vendored in `vendor/javascript`; Bootstrap's SCSS is in `app/assets/stylesheets/_bootstrap.scss`)
+- **HAML** views, **Bootstrap 5.3**, jQuery and jQuery UI. Bootstrap's SCSS source is vendored in `vendor/assets/stylesheets/bootstrap` and configured in `app/assets/stylesheets/_bootstrap-custom.scss` (brand colours, and Bootstrap 3's breakpoints and type sizes, which the custom stylesheets were built around); the scripts are in `vendor/javascript`
 - **Puma** in development and production
 - **RSpec** and FactoryBot for tests, **RuboCop** for linting
 

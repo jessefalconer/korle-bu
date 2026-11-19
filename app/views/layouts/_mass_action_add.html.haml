@@ -2,60 +2,60 @@
 .main-content
   %ul.nav.nav-tabs.quick-add
     - if @staged_items.any?
-      %li
-        %a{data: {toggle: "tab"}, href: "#staged-items"}
+      %li.nav-item
+        %a.nav-link{data: {"bs-toggle": "tab"}, href: "#staged-items"}
           Staged
           %i.fa.fa-stethoscope
     - if display.include?(:boxes) && @staged_boxes.any?
-      %li
-        %a{data: {toggle: "tab"}, href: "#staged-boxes"}
+      %li.nav-item
+        %a.nav-link{data: {"bs-toggle": "tab"}, href: "#staged-boxes"}
           Staged
           %i.fa.fa-box-open
     - if display.include?(:pallets) && @staged_pallets.any?
-      %li
-        %a{data: {toggle: "tab"}, href: "#staged-pallets"}
+      %li.nav-item
+        %a.nav-link{data: {"bs-toggle": "tab"}, href: "#staged-pallets"}
           Staged
           %i.fa.fa-pallet
     - if @warehoused_items.any?
-      %li
-        %a{data: {toggle: "tab"}, href: "#warehoused-items"}
+      %li.nav-item
+        %a.nav-link{data: {"bs-toggle": "tab"}, href: "#warehoused-items"}
           Warehoused
           %i.fa.fa-stethoscope
     - if display.include?(:boxes) && @warehoused_boxes.any?
-      %li
-        %a{data: {toggle: "tab"}, href: "#warehoused-boxes"}
+      %li.nav-item
+        %a.nav-link{data: {"bs-toggle": "tab"}, href: "#warehoused-boxes"}
           Warehoused
           %i.fa.fa-box-open
     - if display.include?(:pallets) && @warehoused_pallets.any?
-      %li
-        %a{data: {toggle: "tab"}, href: "#warehoused-pallets"}
+      %li.nav-item
+        %a.nav-link{data: {"bs-toggle": "tab"}, href: "#warehoused-pallets"}
           Warehoused
           %i.fa.fa-pallet
 
   .row
-    .col-xs-12
+    .col-12
       .tab-content.quick-add
         - if @staged_items.any?
-          #staged-items.tab-pane
+          .tab-pane#staged-items
             %h5 Select staged items to reassign.
             = render "packed_items/mass_add_table", items: @staged_items
         - if display.include?(:boxes) && @staged_boxes.any?
-          #staged-boxes.tab-pane
+          .tab-pane#staged-boxes
             %h5 Select staged boxes to reassign. Boxes assigned to staged pallets are also listed here.
             = render "boxes/table", boxes: @staged_boxes
         - if display.include?(:pallets) && @staged_pallets.any?
-          #staged-pallets.tab-pane
+          .tab-pane#staged-pallets
             %h5 Select staged pallets to reassign.
             = render "pallets/table", pallets: @staged_pallets
         - if @warehoused_items.any?
-          #warehoused-items.tab-pane
+          .tab-pane#warehoused-items
             %h5 Select warehoused items to reassign.
             = render "packed_items/mass_add_table", items: @warehoused_items
         - if display.include?(:boxes) && @warehoused_boxes.any?
-          #warehoused-boxes.tab-pane
+          .tab-pane#warehoused-boxes
             %h5 Select warehoused boxes to reassign. Boxes assigned to warehoused pallets are also listed here.
             = render "boxes/table", boxes: @warehoused_boxes
         - if display.include?(:pallets) && @warehoused_pallets.any?
-          #warehoused-pallets.tab-pane
+          .tab-pane#warehoused-pallets
             %h5 Select warehoused pallets to reassign.
             = render "pallets/table", pallets: @warehoused_pallets

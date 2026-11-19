@@ -1,56 +1,56 @@
 .content
   .header
     %ul.breadcrumb
-      %li
+      %li.breadcrumb-item
         = link_to "Home", index_path
-      %li
+      %li.breadcrumb-item
         = link_to "Hospitals", hospitals_path
-      %li.active= @hospital.name
+      %li.breadcrumb-item.active= @hospital.name
     = render partial: "layouts/jump_to_modal"
     = render partial: "layouts/edit_modal"
     - if can?(:manage, Shipment) && @unpacking_events.any?
       = render "layouts/export_hospital_modal"
   .main-content
     .row.detail-card
-      .col-xs-12
+      .col-12
         %h5.text-muted Name
         %h4= @hospital.name
       - if @hospital.description.present?
-        .col-xs-12
+        .col-12
           %h6.text-muted Description
           %h5= @hospital.description
       - unless @hospital.full_address.blank?
-        .col-xs-12
+        .col-12
           %h6.text-muted Address
           %h5= @hospital.full_address
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h6.text-muted Phone
         %h5= @hospital.phone.presence || "N/A"
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h6.text-muted GPS Latitude
         %h5= @hospital.latitude.presence || "N/A"
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h6.text-muted GPS Longitude
         %h5= @hospital.longitude.presence || "N/A"
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h6.text-muted Point of Contact Name
         %h5= @hospital.point_of_contact_name.presence || "N/A"
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h6.text-muted Point of Contact Phone
         %h5= @hospital.point_of_contact_phone.presence || "N/A"
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h6.text-muted Status
         %h5{style: "color: #{@hospital.active? ? "#02a556" : "#ff4d4d"}"}= @hospital.status
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h6.text-muted Created By
         %h5= @hospital.user.name
-      .col-lg-3.col-sm-4.col-xs-6
+      .col-lg-3.col-sm-4.col-6
         %h6.text-muted Created At
         %h5= @hospital.created_at.strftime("%Y-%m-%d")
 
     - if @unpacking_events.any?
       .row
-        .col-xs-12
+        .col-12
           %h5 Unpacked Items (#{@unpacking_events.count}/#{@hospital.unpacking_events.count})
       %table.table.table-striped.table-hover.link-rows
         %thead
@@ -58,7 +58,7 @@
             %th Item
             %th Quantity
             %th Origin
-            %th.hidden-xs User
+            %th.d-none.d-sm-table-cell User
             %th Date
         %tbody
           - @unpacking_events.each do |event|
@@ -72,7 +72,7 @@
               %td
                 = link_to present(event.packed_item).path do
                   %p= event.packed_item.location_name
-              %td.hidden-xs
+              %td.d-none.d-sm-table-cell
                 = link_to present(event.packed_item).path do
                   %p= event.user.name
               %td
