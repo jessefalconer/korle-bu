@@ -53,3 +53,20 @@ $(() => {
     }
   });
 });
+
+// The × appears once there is text, and clearing re-runs the filter (via the
+// input event) so every row shows again.
+$(document).on("input", ".quick-filter .form-control", function () {
+  $(this).siblings(".quick-filter-clear").toggleClass("hidden", this.value === "");
+});
+
+$(document).on("click", ".quick-filter-clear", function () {
+  const input = $(this).siblings(".form-control");
+  input.val("").trigger("input").trigger("focus");
+});
+
+$(document).on("keydown", ".quick-filter .form-control", function (e) {
+  if (e.key === "Escape" && this.value !== "") {
+    $(this).val("").trigger("input");
+  }
+});

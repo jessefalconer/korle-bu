@@ -13,13 +13,12 @@
       = render partial: "layouts/mass_action_modal", locals: {name: @container.name, redirect: container_path(@container), record: @container}
 
   .main-content
-    .row
+    .row.detail-layout
       .col-md-5
         .row.detail-card
           .col-xs-12
             %h5.text-muted Name
             %h4= @container.name
-            %hr
           - if @container.notes.present?
             .col-xs-12
               %h6.text-muted Notes

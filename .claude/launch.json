@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "rails",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-lc", "export PATH=\"$HOME/.nodenv/shims:$HOME/.rbenv/shims:$PATH\"; DISABLE_SPRING=1 bin/dev"],
+      "port": 3000
+    }
+  ]
+}

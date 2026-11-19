@@ -168,23 +168,7 @@ input.table-quick-filter {
   border-radius: 0;
 }
 
-.table-filter-button {
-  border-radius: 0;
-
-  @media (max-width: 768px) {
-    span { display: none; }
-  }
-}
-
-input.list-quick-filter { border-radius: 4px 0 0 0; }
-
-.list-filter-button {
-  border-radius: 0 4px 0 0;
-
-  @media (max-width: 768px) {
-    span { display: none; }
-  }
-}
+input.list-quick-filter { border-radius: 4px 4px 0 0; }
 
 .close-collapse {
   border-top: 1px solid #ccc;

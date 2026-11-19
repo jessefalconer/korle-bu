@@ -32,6 +32,21 @@ function syncCollapseToggles() {
   });
 }
 
+// Bootstrap 3.4 also only updates `.collapsed` on toggles that target an #id. Menu
+// toggles target classes (".dashboard-menu"), so update every matching toggle whenever a
+// collapse starts opening or closing; the chevrons then rotate in step with it.
+$(document).on("show.bs.collapse hide.bs.collapse", (e) => {
+  const opening = e.type === "show";
+  $("[data-toggle='collapse']").each((_i, el) => {
+    const target = $(el).attr("data-target") || $(el).attr("href");
+    if (!target || target === "#") return;
+
+    try {
+      if ($(e.target).is(target)) $(el).toggleClass("collapsed", !opening);
+    } catch (_e) { /* not a valid selector */ }
+  });
+});
+
 $(() => {
   const uls = $(".sidebar-nav > ul > *").clone();
   uls.addClass("visible-xs");

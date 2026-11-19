@@ -15,7 +15,6 @@
       .col-xs-12
         %h5.text-muted Name
         %h4= @hospital.name
-        %hr
       - if @hospital.description.present?
         .col-xs-12
           %h6.text-muted Description
@@ -49,7 +48,6 @@
         %h6.text-muted Created At
         %h5= @hospital.created_at.strftime("%Y-%m-%d")
 
-    %hr
     - if @unpacking_events.any?
       .row
         .col-xs-12

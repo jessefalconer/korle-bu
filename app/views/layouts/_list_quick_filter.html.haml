@@ -1,8 +1,6 @@
-.input-group.search.span12
-  .input-group
-    = text_field_tag :search, "", placeholder: placeholder, class: "form-control list-quick-filter", id: "#{assoc}-quick-filter"
-    %span.input-group-btn.span12
-      %a{id: "quick-filter-submit"}
-        .btn.btn-primary.pull-left.list-filter-button
-          %span Quick Filter
-          %i.fa.fa-filter
+-# Filters as you type (see quick_filter.js); the × clears the field.
+.quick-filter.list-quick-filter-wrap
+  %span.fa.fa-filter.quick-filter-icon{aria: {hidden: true}}
+  = text_field_tag :search, "", placeholder: placeholder, class: "form-control list-quick-filter", id: "#{assoc}-quick-filter", autocomplete: "off", aria: {label: placeholder}
+  %button.quick-filter-clear.hidden{type: "button", title: "Clear filter", aria: {label: "Clear filter"}}
+    %span.fa.fa-times{aria: {hidden: true}}

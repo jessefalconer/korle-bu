@@ -2,7 +2,6 @@
 - redirect ||= nil
 = form_for @hospital do |f|
   %h5.text-center Hospital/Facility/Clinic
-  %hr
   .col-xs-12.col-sm-6
     .form-group
       = f.label :name
@@ -60,7 +59,6 @@
       = f.text_field :description, class: "form-control"
   .col-xs-12
     %h5.text-center Point of Contact
-    %hr
   .col-xs-12.col-sm-6
     .form-group
       %label Name

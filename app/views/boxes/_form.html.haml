@@ -20,9 +20,7 @@
   .form-group
     %label Pallet Assignment
     = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(id: :desc), :id, :name, pallet_id), { include_blank: "None" }, { class: "form-control", id: "pallet-assignment" }
-  %hr
-  %h5.text-center OR
-  %hr
+  %p.or-divider or
   .form-group
     %label Container Assignment
     = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(id: :desc), :id, :name, container_id), { include_blank: "None" }, { class: "form-control", id: "container-assignment" }
