@@ -126,4 +126,21 @@ describe "Request parameter safety", type: :request do
       expect(User.count).to be_positive
     end
   end
+
+  describe "Active Storage routes" do
+    it "does not expose the direct-upload endpoint" do
+      expect do
+        post "/rails/active_storage/direct_uploads",
+          params: { blob: { filename: "x.png", byte_size: 1, checksum: "x", content_type: "image/png" } }
+      end.not_to change(ActiveStorage::Blob, :count)
+
+      expect(response).to have_http_status(:not_found)
+    end
+
+    it "does not serve stored files" do
+      get "/rails/active_storage/blobs/redirect/abc/x.png"
+
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 end

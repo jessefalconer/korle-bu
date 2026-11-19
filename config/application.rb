@@ -27,6 +27,11 @@ module Kbnf
     # Photo uploads were removed, so no image variants are ever generated.
     config.active_storage.variant_processor = :disabled
 
+    # ...and no Active Storage URLs are needed: don't expose its routes, which
+    # include a direct-upload endpoint that accepts files without logging in.
+    # Existing files and their database records are left untouched.
+    config.active_storage.draw_routes = false
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
