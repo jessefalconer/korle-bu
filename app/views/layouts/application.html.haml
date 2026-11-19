@@ -8,11 +8,11 @@
     = csrf_meta_tags
     = csp_meta_tag
     = stylesheet_link_tag 'application', media: 'all'
-    %link{rel: "stylesheet", href: "//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"}
+    %link{rel: "stylesheet", href: "//code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css"}
     = favicon_link_tag "/kbnf-favicon-32x32.png", skip_pipeline: true
     = javascript_pack_tag 'application'
     -# jQuery UI attaches to the window.jQuery exposed by the application pack, so it must load after it
-    %script{src: "https://code.jquery.com/ui/1.12.1/jquery-ui.js"}
+    %script{src: "https://code.jquery.com/ui/1.13.3/jquery-ui.js"}
   %body.theme-1
     = render "layouts/header"
 

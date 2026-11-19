@@ -2,13 +2,13 @@ Inventory and shipment tracking for [Korle-Bu Neuroscience Foundation](https://k
 
 ## Tech
 
-- **Rails 6.0** on **Ruby 2.6.5** (pinned in `.ruby-version`)
+- **Rails 6.1** on **Ruby 2.6.5** (pinned in `.ruby-version`)
 - **PostgreSQL** (production runs 12)
 - **Webpacker** with **Node 16** (pinned in `.node-version`) and **Yarn 1** for JavaScript; Sprockets for SCSS
 - **HAML** views, Bootstrap 3, jQuery and jQuery UI
 - **RSpec** and FactoryBot for tests, **RuboCop** for linting
 
-Notable gems: `cancancan` (permissions), `kaminari` (pagination), `pg_search` (search), `chartkick` and `groupdate` (dashboard charts), `aws-sdk-s3` (Active Storage on DigitalOcean Spaces), `capistrano` (deploys).
+Notable gems: `cancancan` (permissions), `kaminari` (pagination), `pg_search` (search), `chartkick` (dashboard charts), `aws-sdk-s3` (Active Storage on DigitalOcean Spaces), `capistrano` (deploys).
 
 ## Setup
 

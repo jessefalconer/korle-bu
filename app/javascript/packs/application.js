@@ -10,7 +10,7 @@ require("@rails/ujs").start()
 require("@rails/activestorage").start()
 
 import "../src/errors";
-import "../src/bootstrap";
+import "bootstrap/dist/js/bootstrap";
 import "../src/manage_item_search";
 import "../src/item_search";
 import "../src/quick_filter";
