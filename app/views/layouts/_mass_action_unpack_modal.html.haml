@@ -23,7 +23,7 @@
                 .form-group
                   %label Unpacked On
                   - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
-                  = text_field_tag :timestamp, today, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
+                  = date_field_tag :timestamp, today, class: "form-control"
                 .form-group
                   %label Notes
                   = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"

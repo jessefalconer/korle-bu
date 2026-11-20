@@ -17,12 +17,12 @@
                 .form-group
                   - min_date = @hospital.unpacking_events.minimum("created_at") || Date.today
                   = f.label :start_date
-                  = f.text_field :start_date, value: min_date.strftime("%Y-%m-%d"), class: "form-control datepickers", placeholder: "YYYY-MM-DD"
+                  = f.date_field :start_date, value: min_date.strftime("%Y-%m-%d"), class: "form-control"
               .col-6
                 .form-group
                   - max_date = @hospital.unpacking_events.maximum("created_at") || Date.today
                   = f.label :end_date
-                  = f.text_field :end_date, value: max_date.strftime("%Y-%m-%d"), class: "form-control datepickers", placeholder: "YYYY-MM-DD"
+                  = f.date_field :end_date, value: max_date.strftime("%Y-%m-%d"), class: "form-control"
               = f.hidden_field :id, value: @hospital.id
               .col-12
                 = submit_export

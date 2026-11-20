@@ -33,7 +33,7 @@
               - if current_user.admin? || current_user.receiving_manager?
                 = form_for event, url: unpacking_event_path(event) do |f|
                   - timestamp = event.timestamp.strftime("%Y-%m-%d")
-                  = f.text_field :timestamp, value: timestamp, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
+                  = f.date_field :timestamp, value: timestamp, class: "form-control"
                   = submit_button_responsive("Update", "float-end btn-xs")
                 = delete_button(box_box_item_box_unpacking_event_path(@box, bi, event), "Are you sure you want to delete this unpacking entry?", "float-end btn-xs")
         .unpacking-entry

@@ -10,7 +10,6 @@ function packingSearch(params) {
       status: $("#status").val()
     }
   }, () => {
-    $("#search-results .datepickers").datepicker({ dateFormat: "yy-mm-dd" });
     initResultsDrawerListeners(params);
   });
 }

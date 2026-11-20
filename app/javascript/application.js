@@ -56,6 +56,5 @@ $(() => {
   uls.addClass("d-sm-none");
   $("#main-menu").append(uls);
 
-  $(".datepickers").datepicker({ dateFormat: "yy-mm-dd" });
   syncCollapseToggles();
 });

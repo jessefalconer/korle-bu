@@ -11,7 +11,7 @@
   .col-6.col-sm-3
     .form-group
       %label Expiry Date
-      = f.text_field :expiry_date, value: "", placeholder: "YYYY-MM-DD", class: "form-control datepickers"
+      = f.date_field :expiry_date, value: "", class: "form-control"
   .col-6.col-sm-3
     .form-group
       %label.checkbox-option.inline-field

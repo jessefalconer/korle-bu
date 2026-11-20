@@ -14,28 +14,27 @@
           %p.results-item-name-value= item[1]
           %i.fa.fa-chevron-down.drawer-caret
         .col-12.results-item-form.hidden
-          .row
-            .col-6.col-sm-3
+          -# One row on wider screens, bottom-aligned so Add lines up with the inputs
+          .row.align-items-end
+            .col-6.col-md
               .form-group
                 = f.label :quantity
                 = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{item[0]}"
                 = f.hidden_field :item_id, value: item[0], id: "item-#{item[0]}"
                 = f.hidden_field :status, value: status, id: "status-#{item[0]}"
-            .col-6.col-sm-3
+            .col-6.col-md
               .form-group
                 = f.label "Weight (kg)"
                 = f.number_field :weight, step: :any, class: "form-control", id: "weight-#{item[0]}"
-            .col-6.col-sm-3
+            .col-6.col-md
               .form-group
                 = f.label :expires
-                = f.text_field :expiry_date, value: "", class: "form-control datepickers", id: "expiry-#{item[0]}", placeholder: "YYYY-MM-DD"
-            .col-6.col-sm-3
+                = f.date_field :expiry_date, value: "", class: "form-control", id: "expiry-#{item[0]}"
+            .col-6.col-md-auto
               .form-group
                 %label.checkbox-option.inline-field
                   = f.check_box :show_id, value: false, id: "show-id-#{item[0]}"
                   Generate ID?
-            .col-12
-              .form-group
-                %label &nbsp;
-                .btn-toolbar.list-toolbar
-                  = submit_button("Add", "float-end")
+            .col-12.col-md-auto
+              .form-group.text-end
+                = submit_button("Add")

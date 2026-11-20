@@ -749,9 +749,6 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
   .modal-body { padding: 20px 9px 22px; }
 }
 
-// jQuery UI datepicker has to sit above Bootstrap's modal (z-index 1050)
-.ui-datepicker { z-index: 1100 !important; }
-
 // ---------------------------------------------------------------- Flash messages
 // Floating toast instead of a full-bleed bar
 footer .flash {
@@ -1129,9 +1126,8 @@ tr td { transition: background-color .15s ease, border-color .15s ease; }
     // stack on the padding; pull the last row up by that much
     > .row:last-child:has(> [class*="col-"]:last-child > .form-group:last-child),
     > form:last-child > .row:last-child:has(> [class*="col-"]:last-child > .form-group:last-child) {
-      // flow-root: the drawer is a float, so it would otherwise stretch to fit the
-      // floated columns (and their margins) and ignore this negative margin
-      display: flow-root;
+      // (Bootstrap 5 rows are flex boxes; never override their display here, or the
+      // columns stop sitting side by side)
       margin-bottom: -14px;
     }
 
@@ -1307,5 +1303,50 @@ label > .fa,
       align-content: flex-start;
       margin-bottom: 20px; // same as the panels, so both columns end level
     }
+  }
+}
+
+// ---------------------------------------------------------------- Date fields
+// Native date inputs (Rails date_field). iOS Safari centres the value and lets the
+// field shrink to its text; keep it left-aligned at the normal control height.
+input[type="date"].form-control {
+  -webkit-appearance: none;
+  appearance: none;
+  min-height: $control-height;
+  text-align: left;
+  // Half-width columns on phones are ~128px: tighter insets keep "yyyy-mm-dd"
+  // and the calendar icon from clipping
+  padding-left: 10px;
+  padding-right: 8px;
+
+  &::-webkit-date-and-time-value { text-align: left; }
+  &::-webkit-datetime-edit { padding: 0; }
+  &::-webkit-calendar-picker-indicator { opacity: .55; cursor: pointer; margin-left: 2px; padding: 0; }
+  &::-webkit-calendar-picker-indicator:hover { opacity: .9; }
+
+  // On touch screens a tap anywhere opens the phone's own picker; drop the icon
+  // so narrow (half-width) fields keep room for the whole date
+  @media (pointer: coarse) {
+    // !important: Chrome's own touch styles otherwise keep the icon showing
+    &::-webkit-calendar-picker-indicator { display: none !important; }
+  }
+}
+
+// Drawer rows marked .align-items-end (fields with the submit button at the end of
+// the same row): the columns must end level, so the fields carry no bottom margin
+// and wrapped lines on phones are spaced by row-gap instead. The drawer's own
+// padding is then the bottom gap, so the last-row pull-up above doesn't apply.
+.row.inline-add-item .results-item-form,
+.row.inline-add-item .manage-item-form {
+  > .row.align-items-end,
+  > form > .row.align-items-end {
+    row-gap: 14px;
+
+    > [class*="col-"] > .form-group { margin-bottom: 0; }
+  }
+
+  > .row.align-items-end:last-child:has(> [class*="col-"]:last-child > .form-group:last-child),
+  > form > .row.align-items-end:last-child:has(> [class*="col-"]:last-child > .form-group:last-child) {
+    margin-bottom: 0;
   }
 }

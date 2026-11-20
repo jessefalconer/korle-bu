@@ -30,7 +30,7 @@
       .col-6.col-sm-4
         .form-group
           = f.label :expires
-          = f.text_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control datepickers", id: "expiry-#{pi.id}", placeholder: "YYYY-MM-DD"
+          = f.date_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control", id: "expiry-#{pi.id}"
       .col-12
         %label.checkbox-option.float-start
           = f.check_box :show_id, value: pi.show_id, id: "show-id-#{pi.id}"
