@@ -344,6 +344,15 @@ $control-height: 40px;
 
 textarea.form-control { height: auto; }
 
+// Read-only fields (e.g. the generated name on "new" forms) look set, not typeable
+.form-control[readonly] {
+  background-color: $canvas;
+  color: $muted;
+  cursor: default;
+
+  &:focus { border-color: #cfd6db; }
+}
+
 label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 .form-group { margin-bottom: 14px; }
 

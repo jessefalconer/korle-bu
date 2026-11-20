@@ -1,10 +1,13 @@
 = form_for @shipment do |f|
   .form-group
     = f.label :name
-    = f.text_field :name, class: "form-control"
+    -# Assigned on create (see set_defaults in the model); editable afterwards
+    = f.text_field :name, class: "form-control", readonly: f.object.new_record?
+    - if f.object.new_record?
+      .form-text Assigned automatically. You can rename it after it's created.
   .form-group
     %label Custom ID
-    = f.number_field :custom_uid, min: 0, class: "form-control"
+    = f.number_field :custom_uid, min: 0, class: "form-control", readonly: f.object.new_record?
   .form-group
     = f.label :status
     = f.select :status, options_for_select(current_user.selectable_statuses(Shipment), @shipment.status), {}, { class: "form-select", id: "status" }
