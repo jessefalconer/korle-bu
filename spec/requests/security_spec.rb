@@ -131,12 +131,11 @@ describe "Request parameter safety", type: :request do
     end
   end
 
+  # Active Storage isn't loaded (the app stores no files), so none of its routes exist
   describe "Active Storage routes" do
     it "does not expose the direct-upload endpoint" do
-      expect do
-        post "/rails/active_storage/direct_uploads",
-             params: { blob: { filename: "x.png", byte_size: 1, checksum: "x", content_type: "image/png" } }
-      end.not_to change(ActiveStorage::Blob, :count)
+      post "/rails/active_storage/direct_uploads",
+           params: { blob: { filename: "x.png", byte_size: 1, checksum: "x", content_type: "image/png" } }
 
       expect(response).to have_http_status(:not_found)
     end

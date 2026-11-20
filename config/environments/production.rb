@@ -21,9 +21,6 @@ Rails.application.configure do
   # nginx serves public/ directly; this only matters if Rails serves a file itself.
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
 
-  # Store uploaded files on DigitalOcean Spaces (see config/storage.yml for options).
-  config.active_storage.service = :digitalocean
-
   # nginx terminates SSL and proxies to Puma over a local socket.
   config.assume_ssl = true
 

@@ -2,7 +2,17 @@
 
 require_relative "boot"
 
-require "rails/all"
+# Every framework except Active Storage, Action Text and Action Mailbox: the app stores
+# no files (photo uploads were removed and the DigitalOcean Spaces bucket retired), and
+# the other two depend on Active Storage.
+require "rails"
+require "active_record/railtie"
+require "active_job/railtie"
+require "action_controller/railtie"
+require "action_view/railtie"
+require "action_mailer/railtie"
+require "action_cable/engine"
+require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -23,14 +33,6 @@ module Kbnf
     # Sessions and cookies were already JSON-serialised (see the old
     # cookies_serializer initializer), so this only makes it explicit.
     config.action_dispatch.cookies_serializer = :json
-
-    # Photo uploads were removed, so no image variants are ever generated.
-    config.active_storage.variant_processor = :disabled
-
-    # ...and no Active Storage URLs are needed: don't expose its routes, which
-    # include a direct-upload endpoint that accepts files without logging in.
-    # Existing files and their database records are left untouched.
-    config.active_storage.draw_routes = false
 
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration can go into files in config/initializers

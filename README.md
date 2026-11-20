@@ -9,7 +9,7 @@ Inventory and shipment tracking for [Korle-Bu Neuroscience Foundation](https://k
 - **Puma** in development and production
 - **RSpec** and FactoryBot for tests, **RuboCop** for linting
 
-Notable gems: `cancancan` (permissions), `kaminari` (pagination), `pg_search` (search), `chartkick` (dashboard charts), `aws-sdk-s3` (Active Storage on DigitalOcean Spaces), `rack-attack` (request throttling), `capistrano` (deploys).
+Notable gems: `cancancan` (permissions), `kaminari` (pagination), `pg_search` (search), `chartkick` (dashboard charts), `rack-attack` (request throttling), `capistrano` (deploys).
 
 ## Setup
 

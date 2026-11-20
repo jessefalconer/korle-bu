@@ -18,9 +18,6 @@ gem "dartsass-rails"
 gem "importmap-rails"
 gem "propshaft"
 
-# File storage on DigitalOcean Spaces (S3-compatible API)
-gem "aws-sdk-s3", require: false
-
 # Authentication / authorisation
 gem "bcrypt", "~> 3.1.20"
 gem "cancancan", "~> 3.6"
