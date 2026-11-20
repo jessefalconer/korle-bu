@@ -1,6 +1,6 @@
 // Entry point, loaded as a module through the importmap (config/importmap.rb).
 //
-// jQuery, Bootstrap 5 and jQuery UI are loaded as plain scripts by the layout before
+// jQuery and Bootstrap 5 are loaded as plain scripts by the layout before
 // this module runs, so the global $ / jQuery are already set up here. Bootstrap 5 sees
 // jQuery and still fires its events through it (e.g. "show.bs.collapse").
 

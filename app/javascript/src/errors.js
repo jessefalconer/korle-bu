@@ -1,8 +1,6 @@
-$(document).ready(function () {
-  setTimeout((function () {
-    var els = document.getElementsByClassName("flash");
-    while (els[0]) {
-      els[0].parentNode.removeChild(els[0]);
-    }
-  }), 10000);
+// Flash messages clear themselves after 10 seconds
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    document.querySelectorAll(".flash").forEach(el => el.remove());
+  }, 10000);
 });

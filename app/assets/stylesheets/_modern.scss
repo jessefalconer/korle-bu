@@ -303,14 +303,13 @@ $control-height: 40px;
 .btn-success { @include btn-solid(#1e8e5a, #1a7f50, #166c44); }
 .btn-info    { @include btn-quiet($brand, $brand-dark); }
 .btn-warning { @include btn-solid($accent, #db7f00, #c47200); }
-.btn-default { @include btn-quiet($ink); }
 
 // Delete links sit beside Save. Outline them in red so the destructive option is
 // clear but never the loudest button; solid red stays for confirm-style actions.
 .btn-danger[data-method="delete"] { @include btn-quiet(#c13434, #a92c2c, #fdf0f0, #f9e1e1); }
 
 // Cancel / dismiss buttons are a way out, not an action: keep them quiet
-.btn[data-dismiss="modal"] { @include btn-quiet($ink); }
+.btn[data-bs-dismiss="modal"] { @include btn-quiet($ink); }
 
 // The page header toolbar holds many peer actions (Jump To, Edit, Duplicate…).
 // A row of solid buttons shouts; quiet buttons with brand icons read as a toolbar.
