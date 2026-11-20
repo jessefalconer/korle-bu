@@ -1,65 +1,66 @@
 - create_password ||= false
 = form_for @user do |f|
-  .col-12.col-sm-6
-    .form-group
-      %label First Name
-      = f.text_field :first_name, class: "form-control"
-    .form-group
-      %label Last Name
-      = f.text_field :last_name, class: "form-control"
-    .form-group
-      %label Email
-      = f.text_field :email, class: "form-control"
-    .form-group
-      %label Phone Number
-      = f.text_field :phone, class: "form-control"
-    - unless (cannot? :alter_roles, User) && !@user.masquerader
+  .row
+    .col-12.col-sm-6
       .form-group
-        %label Role
-        = f.select(:role, options_for_select(User::ROLES, @user.role), {}, { class: "form-select" })
+        %label First Name
+        = f.text_field :first_name, class: "form-control"
       .form-group
-        %label Status
-        = f.select(:status, options_for_select(User::STATUSES, @user.status), {}, { class: "form-select" })
+        %label Last Name
+        = f.text_field :last_name, class: "form-control"
       .form-group
-        %label Warehouse
-        = f.select(:warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @user.warehouse_id), { include_blank: "None" }, { class: "form-select" })
-    -if create_password
+        %label Email
+        = f.text_field :email, class: "form-control"
       .form-group
-        %label Temporary Password
-        = f.password_field :password, class: "form-control", autocomplete: "new-password", minlength: User::MIN_PASSWORD_LENGTH
-        %small.text-muted
-          At least #{User::MIN_PASSWORD_LENGTH} characters. Share it with the person privately;
-          they'll have to choose their own password at first login.
-      .form-group
-        %label Confirm Temporary Password
-        = f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", minlength: User::MIN_PASSWORD_LENGTH
+        %label Phone Number
+        = f.text_field :phone, class: "form-control"
+      - unless (cannot? :alter_roles, User) && !@user.masquerader
+        .form-group
+          %label Role
+          = f.select(:role, options_for_select(User::ROLES, @user.role), {}, { class: "form-select" })
+        .form-group
+          %label Status
+          = f.select(:status, options_for_select(User::STATUSES, @user.status), {}, { class: "form-select" })
+        .form-group
+          %label Warehouse
+          = f.select(:warehouse_id, options_from_collection_for_select(Warehouse.all.order(:name), :id, :name, @user.warehouse_id), { include_blank: "None" }, { class: "form-select" })
+      -if create_password
+        .form-group
+          %label Temporary Password
+          = f.password_field :password, class: "form-control", autocomplete: "new-password", minlength: User::MIN_PASSWORD_LENGTH
+          %small.text-muted
+            At least #{User::MIN_PASSWORD_LENGTH} characters. Share it with the person privately;
+            they'll have to choose their own password at first login.
+        .form-group
+          %label Confirm Temporary Password
+          = f.password_field :password_confirmation, class: "form-control", autocomplete: "new-password", minlength: User::MIN_PASSWORD_LENGTH
 
-  .col-12.col-sm-6
-    .form-group
-      %label Notes
-      = f.text_area :notes, disabled: current_user.id != @user.id, class: "form-control", style: "height: 475px;"
+    .col-12.col-sm-6
+      .form-group
+        %label Notes
+        = f.text_area :notes, disabled: current_user.id != @user.id, class: "form-control", style: "height: 475px;"
 
-  .col-12
-    %h5 Award someone an achievement for their work ethic or stupidity. Every page refresh randomly selects an achievement to display on the home page. All fields must be filled out to be valid. Achievement Value / Achievement Maximum Value determines the bar length.
-  .col-12.col-sm-6
-    .form-group
-      %label Achiever
-      = f.select(:achiever_name, options_for_select(User.pluck(:first_name), @user.achiever_name), { include_blank: "None" }, { class: "form-select" })
-    .form-group
-      %label Achievement Title
-      = f.text_field :achievement_title, class: "form-control"
-    .form-group
-      %label Achievement Title
-      = f.text_field :achievement_description, class: "form-control"
-  .col-12.col-sm-6
-    .form-group
-      %label Achievement Value
-      = f.number_field :achievement_value, class: "form-control", min: 1
-    .form-group
-      %label Achievement Maximum Value
-      = f.number_field :achievement_max_value, class: "form-control", min: 1
-  .col-12
-    .btn-toolbar.list-toolbar
-      - if current_user != @user && !@user.created_records? && @user.persisted?
-        = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed.")
-      = submit_button_responsive("Save")
+    .col-12
+      %h5 Award someone an achievement for their work ethic or stupidity. Every page refresh randomly selects an achievement to display on the home page. All fields must be filled out to be valid. Achievement Value / Achievement Maximum Value determines the bar length.
+    .col-12.col-sm-6
+      .form-group
+        %label Achiever
+        = f.select(:achiever_name, options_for_select(User.pluck(:first_name), @user.achiever_name), { include_blank: "None" }, { class: "form-select" })
+      .form-group
+        %label Achievement Title
+        = f.text_field :achievement_title, class: "form-control"
+      .form-group
+        %label Achievement Title
+        = f.text_field :achievement_description, class: "form-control"
+    .col-12.col-sm-6
+      .form-group
+        %label Achievement Value
+        = f.number_field :achievement_value, class: "form-control", min: 1
+      .form-group
+        %label Achievement Maximum Value
+        = f.number_field :achievement_max_value, class: "form-control", min: 1
+    .col-12
+      .btn-toolbar.list-toolbar
+        - if current_user != @user && !@user.created_records? && @user.persisted?
+          = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed.")
+        = submit_button_responsive("Save")

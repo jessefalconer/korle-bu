@@ -3,7 +3,7 @@
   %i.fa.fa-truck-loading
   %span.main-text Unpack All
   %span.mass-action-count
-.modal.fade{id: "unpack-all"}
+.modal.fade{id: "unpack-all", tabindex: "-1", "aria-hidden": "true"}
   .modal-dialog
     .modal-content
       .modal-header
@@ -15,18 +15,19 @@
             %h5 Send item(s) to the selected hospital/facility/clinic:
 
           = form_with url: received_categories_unpack_selected_path, method: :post, id: "mass_action" do |f|
-            .col-12
-              .form-group
-                %label Hospital/Facility/Clinic
-                = select_tag("hospital_id", hospital_options, { include_blank: true, class: "form-select" })
-              .form-group
-                %label Unpacked On
-                - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
-                = text_field_tag :timestamp, today, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
-              .form-group
-                %label Notes
-                = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"
-              %h6
-                %a{data: {"bs-target": "#add-hospital-modal", "bs-toggle": "modal"}, href: "", "data-bs-dismiss" => "modal"} Don't see your hospital/facility/clinic? Add one.
-            .col-12
-              = submit_button_responsive("Update", "float-end")
+            .row
+              .col-12
+                .form-group
+                  %label Hospital/Facility/Clinic
+                  = select_tag("hospital_id", hospital_options, { include_blank: true, class: "form-select" })
+                .form-group
+                  %label Unpacked On
+                  - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
+                  = text_field_tag :timestamp, today, placeholder: "YYYY-MM-DD", class: "form-control datepickers"
+                .form-group
+                  %label Notes
+                  = text_field_tag :notes, nil, placeholder: "Explanation", class: "form-control"
+                %h6
+                  %a{href: "#", data: {"switch-modal": "#add-hospital-modal"}} Don't see your hospital/facility/clinic? Add one.
+              .col-12
+                = submit_button_responsive("Update", "float-end")

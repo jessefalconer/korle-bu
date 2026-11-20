@@ -34,6 +34,23 @@ function syncCollapseToggles() {
   });
 }
 
+// Moving from one modal straight to another (the "Add one" hospital links in the unpack
+// modals): open the next modal only once the current one has finished closing. Opening it
+// mid-fade lets Bootstrap's cleanup for the first modal pull focus out of the second and
+// drop its `modal-open` state.
+$(document).on("click", "[data-switch-modal]", function (e) {
+  e.preventDefault();
+  const next = document.querySelector(this.dataset.switchModal);
+  if (!next) return;
+
+  const show = () => bootstrap.Modal.getOrCreateInstance(next).show();
+  const current = this.closest(".modal.show");
+  if (!current) { show(); return; }
+
+  current.addEventListener("hidden.bs.modal", show, { once: true });
+  bootstrap.Modal.getOrCreateInstance(current).hide();
+});
+
 $(() => {
   const uls = $(".sidebar-nav > ul > *").clone();
   uls.addClass("d-sm-none");

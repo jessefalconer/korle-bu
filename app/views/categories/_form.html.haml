@@ -1,15 +1,16 @@
 = form_for @category do |f|
-  .col-12.col-sm-4
-    .form-group
-      %label Name
-      = f.text_field :name, class: "form-control"
-  .col-12.col-sm-8
-    .form-group
-      %label Description
-      = f.text_field :description, class: "form-control"
+  .row
+    .col-12.col-sm-4
+      .form-group
+        %label Name
+        = f.text_field :name, class: "form-control"
+    .col-12.col-sm-8
+      .form-group
+        %label Description
+        = f.text_field :description, class: "form-control"
 
-  .col-12
-    .btn-toolbar.list-toolbar
-      - if @category.persisted? && @category.items.none?
-        = delete_button(category_path(@category), "Are you sure you want to delete #{@category.name}? This cannot be reversed")
-      = submit_button_responsive("Save")
+    .col-12
+      .btn-toolbar.list-toolbar
+        - if @category.persisted? && @category.items.none?
+          = delete_button(category_path(@category), "Are you sure you want to delete #{@category.name}? This cannot be reversed")
+        = submit_button_responsive("Save")

@@ -11,7 +11,8 @@ $primary: #007096;
 $body-color: #1f2a33;
 $link-color: #007096;
 $link-decoration: none;
-$link-hover-decoration: underline;
+$link-hover-decoration: none; // the old build never underlined links on hover
+$link-hover-color: #001117; // and turned them near-black
 
 $grid-breakpoints: (
   xs: 0,
@@ -49,6 +50,18 @@ $table-cell-padding-x: 8px;
 $table-cell-padding-y-sm: 5px;
 $table-cell-padding-x-sm: 5px;
 
+// Bootstrap 3 component spacing
+$card-spacer-y: 15px;
+$card-spacer-x: 15px;
+// Breadcrumbs, as the old build had them: ~9px either side of a light grey "/", and a
+// near-black, bold current page (styled below)
+$breadcrumb-item-padding-x: 9px;
+$breadcrumb-divider-color: #ccc;
+$breadcrumb-active-color: rgb(27, 27, 27);
+$modal-sm: 300px;
+$modal-md: 600px;
+$modal-lg: 900px;
+
 @import "bootstrap/bootstrap";
 
 // Bootstrap 3 text colors (Bootstrap 5's are too light to read on white)
@@ -68,6 +81,74 @@ h2, h3, h4, h5, h6 { color: #007096; }
 // borders on tables inside cards (`border: 0`), which turns the row lines near-black
 .table > :not(caption) > * > * { border-color: var(--bs-table-border-color); }
 
+// ---------------------------------------------------------------- Bootstrap 3 spacing
+// Bootstrap 5 dropped several margins Bootstrap 3 had built in, which the custom
+// stylesheets were written around. Without them stacked cards and toolbar buttons touch.
+
+// The old build set labels at 12px
+label { font-size: 12px; }
+
+// Panels had a 20px bottom margin; cards have none
+.card { margin-bottom: 20px; }
+
+// Lists had a 10px bottom margin (Bootstrap 5: 16px)
+ul, ol { margin-bottom: 10px; }
+
+// The old build had no bottom margin on tables (Bootstrap 5: 16px)
+.table { margin-bottom: 0; }
+
+// Checkboxes and radios sat 4px down to line up with their labels
+input[type="checkbox"], input[type="radio"] { margin: 4px 0 0; line-height: normal; }
+
+// Toolbars: Bootstrap 5's is a flex row with no gaps. Bootstrap 3's was a block with a
+// 5px gap before each item, and float-end buttons floated to the right edge.
+.btn-toolbar {
+  display: block;
+  margin-left: -5px;
+
+  &::after { content: ""; display: table; clear: both; }
+
+  > .btn-group,
+  > .input-group { float: left; }
+
+  > .btn,
+  > .btn-group,
+  > .input-group { margin-left: 5px; }
+}
+
+.breadcrumb-item.active { font-weight: bolder; letter-spacing: .35px; }
+
+// Navbar: Bootstrap 3's was 50px tall, with 15px of padding around the brand (18px)
+// and the menu links
+.navbar {
+  padding: 0 1em;
+  min-height: 50px;
+
+  > .container-fluid { padding-left: 0; padding-right: 0; }
+}
+.navbar-brand {
+  padding: 15px;
+  margin-right: 0;
+  font-size: 18px;
+  line-height: 20px;
+}
+// 44x34 like Bootstrap 3's button (a 22px icon)
+.navbar-toggler { margin: 8px 15px 8px 0; padding: 5px 10px; font-size: calc(22px / 1.5); }
+@include media-breakpoint-up(sm) {
+  .navbar-expand-sm .navbar-nav .nav-link { padding: 15px; line-height: 20px; }
+}
+
+// Modals: _modern.scss sizes them with `width` (640px, 760px for the wide ones), as
+// Bootstrap 3 did; Bootstrap 5's max-width would cap them at 600px
+@include media-breakpoint-up(sm) {
+  .modal-dialog { max-width: none; }
+}
+
+// Kaminari's pager is plain inline spans centred as text (see _overrides.scss), not
+// Bootstrap's pagination component; Bootstrap 5 would make it a gapless flex row
+nav.pagination { display: block; }
+
+// ----------------------------------------------------------------
 // Bootstrap 5 cards break long words mid-word; Bootstrap 3 panels didn't, and labels
 // like "Uncategorized Items" in the dashboard stats rely on that
 .card { word-wrap: normal; }
