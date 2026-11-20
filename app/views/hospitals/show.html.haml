@@ -40,7 +40,8 @@
         %h5= @hospital.point_of_contact_phone.presence || "N/A"
       .col-lg-3.col-sm-4.col-6
         %h6.text-muted Status
-        %h5{style: "color: #{@hospital.active? ? "#02a556" : "#ff4d4d"}"}= @hospital.status
+        %h5{style: "color: #{@hospital.active? ? "#02a556" : "#ff4d4d"}"}
+          %span.status-pill= @hospital.status
       .col-lg-3.col-sm-4.col-6
         %h6.text-muted Created By
         %h5= @hospital.user.name

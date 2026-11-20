@@ -35,7 +35,7 @@
                       %td
                         %p= box.created_at.strftime("%Y-%m-%d")
                       %td.d-none.d-sm-table-cell
-                        %p= box.status
+                        = status_label(box.status)
                       %td.d-none.d-sm-table-cell
                         %p= box.box_items.size
 
@@ -65,7 +65,7 @@
                       %td
                         %p= pallet.created_at.strftime("%Y-%m-%d")
                       %td.d-none.d-sm-table-cell
-                        %p= pallet.status
+                        = status_label(pallet.status)
                       %td.d-none.d-sm-table-cell
                         %p= pallet.pallet_items.size
 
@@ -95,7 +95,7 @@
                       %td
                         %p= container.created_at.strftime("%Y-%m-%d")
                       %td.d-none.d-sm-table-cell
-                        %p= container.status
+                        = status_label(container.status)
                       %td.d-none.d-sm-table-cell
                         %p= container.container_items.size
 

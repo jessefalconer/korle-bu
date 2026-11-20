@@ -38,7 +38,8 @@
           %h5= @warehouse.users.count
       .col-lg-3.col-sm-4.col-6
         %h6.text-muted Status
-        %h5{style: "color: #{@warehouse.active? ? "#02a556" : "#ff4d4d"}"}= @warehouse.status
+        %h5{style: "color: #{@warehouse.active? ? "#02a556" : "#ff4d4d"}"}
+          %span.status-pill= @warehouse.status
       .col-lg-3.col-sm-4.col-6
         %h6.text-muted Created By
         %h5= @warehouse.user.name

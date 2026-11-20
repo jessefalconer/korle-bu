@@ -31,7 +31,7 @@
             %h5= @box.custom_uid
           .col-6.col-sm-4.col-md-6
             %h6.text-muted Status
-            %h5{class: "status-#{@box.status.parameterize}"}= @box.status
+            = status_label(@box.status, :h5)
           .col-6.col-sm-4.col-md-6
             %h6.text-muted Weight (kg)
             %h5= @box.weight.to_f.round(4) || "N/A"

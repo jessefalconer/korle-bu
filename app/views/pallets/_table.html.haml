@@ -21,7 +21,7 @@
             %p= pallet.name
         %td
           = link_to pallet_path(pallet) do
-            %p{class: "status-#{pallet.status.parameterize}"}= pallet.status
+            = status_label(pallet.status)
         %td.d-none.d-md-table-cell
           = link_to pallet_path(pallet) do
             %p{class: (pallet.boxes.size.zero? ? "text-warning" : "text-success")}= pallet.boxes.size

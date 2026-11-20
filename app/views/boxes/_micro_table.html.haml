@@ -17,7 +17,7 @@
             %p= box.name
         %td
           = link_to box_path(box) do
-            %p{class: "status-#{box.status.parameterize}"}= box.status
+            = status_label(box.status)
         - if can?(:create, Box)
           %td.mass-action-cell
             = check_box_tag "box_ids[]", box.id, false, class: "mass-action-table", form: "mass_action", id: "mass-action-box-#{box.id}"

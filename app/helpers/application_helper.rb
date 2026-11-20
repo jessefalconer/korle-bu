@@ -121,6 +121,15 @@ module ApplicationHelper
     end
   end
 
+  # A status in its colour (the status-* classes) with a thin outline in the same colour.
+  # The outline is on an inner span, so the outer element can stay a full-height table
+  # link. "N/A" means there is no status, so it gets the colour but no outline.
+  def status_label(status, tag_name = :p, classes: nil, color_class: "status-#{status.to_s.parameterize}")
+    content_tag(tag_name, class: [color_class, classes].compact.join(" ")) do
+      status == "N/A" ? status : tag.span(status, class: "status-pill")
+    end
+  end
+
   def present(model)
     klass = "#{model.class}Presenter".constantize
     presenter = klass.new(model, self)

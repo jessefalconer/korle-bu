@@ -27,7 +27,7 @@
                 %p= container.name
             %td
               = link_to container_path(container) do
-                %p{class: "status-#{container.status.parameterize}"}= container.status
+                = status_label(container.status)
             %td.d-none.d-sm-table-cell
               = link_to container_path(container) do
                 %p= container.shipment&.receiving_warehouse&.name

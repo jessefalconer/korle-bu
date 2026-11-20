@@ -14,7 +14,7 @@ class ContainerPresenter < BasePresenter
       end
     end +
       tag.td do
-        tag.p(status, class: "float-end status-#{status.parameterize}")
+        h.status_label(status, classes: "float-end")
       end
   end
 
@@ -26,7 +26,7 @@ class ContainerPresenter < BasePresenter
       tag.p(location, class: "status-#{location.parameterize}")
     end +
       tag.td do
-        tag.p(status, class: "float-end status-#{status.parameterize}")
+        h.status_label(status, classes: "float-end")
       end
   end
 end

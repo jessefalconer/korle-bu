@@ -28,6 +28,6 @@
                 %p= hospital.country
             %td.d-none.d-sm-table-cell
               = link_to hospital_path(hospital) do
-                %p{class: hospital.active? ? "text-success" : "text-danger"}= hospital.status
+                = status_label(hospital.status, color_class: hospital.active? ? "text-success" : "text-danger")
 
     = paginate @hospitals

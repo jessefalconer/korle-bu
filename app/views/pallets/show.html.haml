@@ -30,7 +30,7 @@
             %h5= @pallet.custom_uid
           .col-6.col-sm-4.col-md-6
             %h6.text-muted Status
-            %h5{class: "status-#{@pallet.status.parameterize}"}= @pallet.status
+            = status_label(@pallet.status, :h5)
           .col-6.col-sm-4.col-md-6
             %h6.text-muted Weight (kg)
             %h5= @pallet.weight.to_f.round(4) || "N/A"

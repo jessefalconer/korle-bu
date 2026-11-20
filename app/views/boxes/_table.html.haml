@@ -21,7 +21,7 @@
             %p= box.name
         %td
           = link_to box_path(box) do
-            %p{class: "status-#{box.status.parameterize}"}= box.status
+            = status_label(box.status)
         %td.d-none.d-md-table-cell
           = link_to box_path(box) do
             %p{class: (box.pallet.nil? ? "text-warning" : "text-success")}= box.pallet.nil? ? "No" : "Yes"

@@ -10,11 +10,11 @@ class BoxPresenter < BasePresenter
           tag.p(pallet.name)
         end
       else
-        tag.p("N/A", class: "status-staged")
+        tag.p("N/A", class: "status-n-a")
       end
     end +
       tag.td do
-        tag.p(status, class: "float-end status-#{status.parameterize}")
+        h.status_label(status, classes: "float-end")
       end
   end
 
@@ -28,11 +28,11 @@ class BoxPresenter < BasePresenter
           tag.p(record.name)
         end
       else
-        tag.p("N/A", class: "status-staged")
+        tag.p("N/A", class: "status-n-a")
       end
     end +
       tag.td do
-        tag.p(status, class: "float-end status-#{status.parameterize}")
+        h.status_label(status, classes: "float-end")
       end
   end
 
@@ -45,11 +45,11 @@ class BoxPresenter < BasePresenter
           tag.p(shipment.name)
         end
       else
-        tag.p("N/A", class: "status-staged")
+        tag.p("N/A", class: "status-n-a")
       end
     end +
       tag.td do
-        tag.p(status, class: "float-end status-#{status.parameterize}")
+        h.status_label(status, classes: "float-end")
       end
   end
 
@@ -61,7 +61,7 @@ class BoxPresenter < BasePresenter
       tag.p(location, class: "status-#{location.parameterize}")
     end +
       tag.td do
-        tag.p(status, class: "float-end status-#{status.parameterize}")
+        h.status_label(status, classes: "float-end")
       end
   end
 end
