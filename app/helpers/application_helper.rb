@@ -42,14 +42,14 @@ module ApplicationHelper
 
   def link_index_button(path, icon)
     link_to(path, class: "btn btn-primary d-sm-none") do
-      tag.i("", class: "fa fa-th-list") +
+      tag.i("", class: "fa fa-table-list") +
         tag.span(" ") +
         tag.i("", class: "fa #{icon}")
     end
   end
 
   def submit_button_redirect(text, redirect = "", icon = nil)
-    icon ||= "fa-save"
+    icon ||= "fa-floppy-disk"
     button_tag(type: "submit", name: "redirect", value: redirect, class: "btn btn-primary responsive-button") do
       tag.i("", class: "fa #{icon}") +
         tag.span(" #{text}", class: "main-text")
@@ -58,7 +58,7 @@ module ApplicationHelper
 
   def submit_button_responsive(text, classes = "")
     button_tag(type: "submit", class: "btn btn-primary responsive-button #{classes}") do
-      tag.i("", class: "fa fa-save") +
+      tag.i("", class: "fa fa-floppy-disk") +
         tag.span(" #{text}", class: "main-text")
     end
   end
@@ -70,7 +70,7 @@ module ApplicationHelper
     end
   end
 
-  def submit_button(text, classes = "", icon = "fa-save")
+  def submit_button(text, classes = "", icon = "fa-floppy-disk")
     button_tag(type: "submit", class: "btn btn-primary #{classes}") do
       tag.i("", class: "fa #{icon}") +
         tag.span(" #{text}")
@@ -91,14 +91,14 @@ module ApplicationHelper
 
   def submit_button_warning(text, classes = "")
     button_tag(type: "submit", class: "btn btn-danger responsive-button #{classes}") do
-      tag.i("", class: "fa fa-compress-alt") +
+      tag.i("", class: "fa fa-down-left-and-up-right-to-center") +
         tag.span(" #{text}", class: "main-text")
     end
   end
 
   def swap_button(classes = "")
     button_tag(type: "submit", class: "btn btn-warning btn-xs #{classes} swap-button") do
-      tag.i("", class: "fa fa-exchange-alt") +
+      tag.i("", class: "fa fa-right-left") +
         tag.span(" Swap", class: "main-text")
     end
   end
@@ -114,7 +114,7 @@ module ApplicationHelper
 
   def manage_button(path, text, icon)
     link_to(path, class: "btn btn-primary responsive-button") do
-      tag.i("", class: "fa fa-tasks") +
+      tag.i("", class: "fa fa-list-check") +
         tag.span(" ") +
         tag.span("#{text} ", class: "main-text") +
         tag.i("", class: "fa #{icon}")

@@ -1,6 +1,6 @@
 = render partial: "layouts/add_hospital_modal", locals: {redirect: pallet_pallet_items_path(@pallet)}
 %button.btn.btn-primary.responsive-button{data: {"bs-target": "#unpack-all", "bs-toggle": "modal"}}
-  %i.fa.fa-truck-loading
+  %i.fa.fa-truck-ramp-box
   %span.main-text Unpack All
 .modal.fade{id: "unpack-all", tabindex: "-1", "aria-hidden": "true"}
   .modal-dialog
@@ -12,7 +12,7 @@
         .row.mass-action-form
           - unless @pallet.received?
             .col-12
-              %i.fas.fa-exclamation-triangle.text-warning
+              %i.fas.fa-triangle-exclamation.text-warning
               This pallet has not been received. Check its status.
           .col-12
             %h5 Send #{@pallet.pallet_items.size} item(s) to the selected hospital/facility/clinic:

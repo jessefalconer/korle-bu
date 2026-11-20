@@ -3,9 +3,9 @@
 = form_for item do |f|
   .card
     %a.card-header{data: {"bs-toggle": "collapse"}, href: "#general-#{item.id}"}
-      %i.fa.fa-clinic-medical
+      %i.fa.fa-house-chimney-medical
       General
-      %i.fa.fa-edit.float-end
+      %i.fa.fa-pen-to-square.float-end
     .collapse.show{id: "general-#{item.id}"}
       .row.form-row
         .col-12
@@ -25,7 +25,7 @@
     %a.card-header{data: {"bs-toggle": "collapse"}, href: "#measurement1-#{item.id}"}
       %i.fa.fa-flask
       &nbsp;General Measurement
-      %i.fa.fa-edit.float-end
+      %i.fa.fa-pen-to-square.float-end
     .collapse{class: (item.numerical_1_phrase.present? && "show" ), id: "measurement1-#{item.id}"}
       .row.form-row
         .col-6
@@ -45,7 +45,7 @@
     %a.card-header{data: {"bs-toggle": "collapse"}, href: "#area-#{item.id}"}
       %i.fa.fa-ruler-combined
       &nbsp;Area
-      %i.fa.fa-edit.float-end
+      %i.fa.fa-pen-to-square.float-end
     .collapse{class: (item.area_phrase.present? && "show" ), id: "area-#{item.id}"}
       .row.form-row
         .col-6
@@ -67,9 +67,9 @@
 
   .card
     %a.card-header{data: {"bs-toggle": "collapse"}, href: "#range-#{item.id}"}
-      %i.fa.fa-arrows-alt-h
+      %i.fa.fa-left-right
       Range
-      %i.fa.fa-edit.float-end
+      %i.fa.fa-pen-to-square.float-end
     .collapse{class: (item.area_phrase.present? && "show" ), id: "range-#{item.id}"}
       .row.form-row
         .col-6
@@ -93,7 +93,7 @@
     %a.card-header{data: {"bs-toggle": "collapse"}, href: "#measurement2-#{item.id}"}
       %i.fa.fa-flask
       &nbsp;Extra Measurement
-      %i.fa.fa-edit.float-end
+      %i.fa.fa-pen-to-square.float-end
     .collapse{class: (item.numerical_2_phrase.present? && "show" ), id: "measurement2-#{item.id}"}
       .row.form-row
         .col-6
@@ -113,7 +113,7 @@
     %a.card-header{data: {"bs-toggle": "collapse"}, href: "#notes-#{item.id}"}
       %i.fa.fa-clipboard-list
       Notes
-      %i.fa.fa-edit.float-end
+      %i.fa.fa-pen-to-square.float-end
     .collapse{class: (item.notes.present? && "show"), id: "notes-#{item.id}"}
       .row.form-row
         .col-12
@@ -157,10 +157,10 @@
             = delete_button(item_path(item, redirect: redirect), "Are you sure you want to delete #{item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
           = submit_button_redirect("Save and Exit", redirect)
           %button.btn.btn-warning{data: {"bs-dismiss": "modal"}, type: "button"}
-            %i.fa.fa-times
+            %i.fa.fa-xmark
             Cancel
         .btn-toolbar.list-toolbar.text-center
-          = submit_button_redirect("Save and Reconcile", "reconcile_start_path", "fa-compress-alt")
+          = submit_button_redirect("Save and Reconcile", "reconcile_start_path", "fa-down-left-and-up-right-to-center")
           = link_to reconcile_start_path(item), class: "btn btn-info" do
-            %i.fa.fa-compress-alt
+            %i.fa.fa-down-left-and-up-right-to-center
             Start Reconcile

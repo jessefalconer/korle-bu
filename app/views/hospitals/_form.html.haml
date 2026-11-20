@@ -74,7 +74,7 @@
           - if @hospital.unpacking_events.any?
             .mass-action-warning.padding-left-small
               %h5.text-warning
-                %i.fas.fa-exclamation-triangle
+                %i.fas.fa-triangle-exclamation
                 This Hospital/Facility/Clinic has unpacked items associated with it and cannot be deleted. Remove them first.
           - else
             = delete_button(hospital_path(@hospital), "Are you sure you want to delete #{@hospital.name}? This cannot be reversed")

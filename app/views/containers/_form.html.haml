@@ -11,7 +11,10 @@
     = f.number_field :custom_uid, min: 0, class: "form-control", readonly: f.object.new_record?
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(current_user.selectable_statuses(Container), @container.status), {}, { class: "form-select", id: "status" }
+    -# New containers always start In Progress (set_defaults in the model)
+    = f.select :status, options_for_select(current_user.selectable_statuses(Container), @container.status), {}, { class: "form-select", id: "status", disabled: f.object.new_record? }
+    - if f.object.new_record?
+      .form-text New containers start In Progress. You can change it after it's created.
   .form-group
     %label Weight (kg)
     = f.number_field :weight, min: 0, step: :any, class: "form-control"

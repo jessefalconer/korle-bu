@@ -1,5 +1,5 @@
 %button.btn.btn-primary.responsive-button{data: {"bs-target": "#jump-to-modal", "bs-toggle": "modal"}}
-  %i.fa.fa-search-location
+  %i.fa.fa-magnifying-glass-location
   %span.main-text Jump To&nbsp;
   %i.fa.fa-bolt
 .modal.fade{id: "jump-to-modal", tabindex: "-1", "aria-hidden": "true"}
@@ -28,7 +28,7 @@
             .col-12
               = form_with url: items_path, method: :get, html: {class: "inline-search-form text-field" } do |f|
                 = f.text_field :search_string, {placeholder: "Item Search"}
-                = submit_button_value(["fa-search", "fa-stethoscope", "fa-arrow-right"], "")
+                = submit_button_value(["fa-magnifying-glass", "fa-stethoscope", "fa-arrow-right"], "")
             - if (latest_container = Container.order(:created_at).last)
               .col-12.padding-top
                 = link_button("Latest Container", container_path(latest_container))

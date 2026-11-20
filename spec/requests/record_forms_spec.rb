@@ -17,6 +17,21 @@ describe "Box, pallet, container and shipment forms", type: :request do
                                 "form.edit_#{model} input[name='#{model}[#{attribute}]']")
   end
 
+  def status_select(html, model)
+    Nokogiri::HTML(html).at_css("form.new_#{model} select[name='#{model}[status]'], " \
+                                "form.edit_#{model} select[name='#{model}[status]']")
+  end
+
+  # Containers and shipments always start In Progress, so their status is fixed on
+  # "new"; boxes and pallets keep the status picked on the form.
+  { box: false, pallet: false, container: true, shipment: true }.each do |model, locked|
+    it "#{locked ? "locks" : "leaves editable"} the status on a new #{model}" do
+      get public_send(:"new_#{model}_path")
+
+      expect(status_select(response.body, model)["disabled"].present?).to eq(locked)
+    end
+  end
+
   {
     box: [-> { new_box_path }, -> { box_path(create(:box)) }],
     pallet: [-> { new_pallet_path }, -> { pallet_path(create(:pallet)) }],
@@ -39,6 +54,7 @@ describe "Box, pallet, container and shipment forms", type: :request do
         expect(response).to have_http_status(:ok)
         expect(field(response.body, :name, model)["readonly"]).to be_nil
         expect(field(response.body, :custom_uid, model)["readonly"]).to be_nil
+        expect(status_select(response.body, model)["disabled"]).to be_nil
       end
     end
   end

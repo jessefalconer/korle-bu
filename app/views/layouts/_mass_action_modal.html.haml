@@ -2,7 +2,7 @@
   %i.fa.fa-clone
   %span.main-text Mass Action
   %span.mass-action-count
-  %i.fa.fa-angle-double-right
+  %i.fa.fa-angles-right
 .modal.fade{id: "mass-action-modal", tabindex: "-1", "aria-hidden": "true"}
   .modal-dialog
     .modal-content
@@ -29,19 +29,19 @@
               .form-group{id: "current-location-message"}
                 - if record.nil?
                   .mass-action-warning
-                    %i.fas.fa-exclamation-triangle.text-warning
+                    %i.fas.fa-triangle-exclamation.text-warning
                     %h5.text-warning
                       Selected records will not be updated.
               .form-group.hidden{id: "warehouse-message"}
                 - if name.include? "warehoused"
                   .mass-action-warning
-                    %i.fas.fa-exclamation-triangle.text-warning
+                    %i.fas.fa-triangle-exclamation.text-warning
                     %h5.text-warning
                       Records already warehoused.
               .form-group.hidden{id: "staging-message"}
                 - if name.include? "staged"
                   .mass-action-warning
-                    %i.fas.fa-exclamation-triangle.text-warning
+                    %i.fas.fa-triangle-exclamation.text-warning
                     %h5.text-warning
                       Records already staged.
               .form-group.hidden{id: "box-assignment-form"}
@@ -49,7 +49,7 @@
                 = select_tag("box_id", options_for_select(@box_options), { class: "form-select", id: "box-assignment-input" })
                 - if name.downcase.include?("pallets") || name.downcase.include?("boxes")
                   .mass-action-warning
-                    %i.fas.fa-exclamation-triangle.text-warning
+                    %i.fas.fa-triangle-exclamation.text-warning
                     %h5.text-warning
                       Any selected boxes or pallets will not be updated.
               .form-group.hidden{id: "pallet-assignment-form"}
@@ -57,7 +57,7 @@
                 = select_tag("pallet_id", options_for_select(@pallet_options), { class: "form-select", id: "pallet-assignment-input" })
                 - if name.downcase.include?("pallets")
                   .mass-action-warning
-                    %i.fas.fa-exclamation-triangle.text-warning
+                    %i.fas.fa-triangle-exclamation.text-warning
                     %h5.text-warning
                       Any selected pallets will not be updated.
               .form-group.hidden{id: "container-assignment-form"}

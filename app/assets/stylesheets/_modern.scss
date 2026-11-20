@@ -344,8 +344,10 @@ $control-height: 40px;
 
 textarea.form-control { height: auto; }
 
-// Read-only fields (e.g. the generated name on "new" forms) look set, not typeable
-.form-control[readonly] {
+// Read-only fields (e.g. the generated name and fixed status on "new" forms) look set,
+// not editable
+.form-control[readonly],
+.form-select:disabled {
   background-color: $canvas;
   color: $muted;
   cursor: default;
@@ -1015,7 +1017,7 @@ $ease-in-out: cubic-bezier(.4, 0, .2, 1);
 
   &::after {
     content: "\f078";
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 7 Free";
     font-weight: 900;
     font-size: 11px;
     color: $muted;
@@ -1253,6 +1255,10 @@ select.form-control,
     border-top: 1px solid $line;
   }
 }
+
+// Font Awesome 7 makes every icon fixed-width (1.25em). Font Awesome 5 sized icons to
+// their glyph unless they had .fa-fw, which is how this app's markup is written.
+:root { --fa-width: auto; }
 
 // ---------------------------------------------------------------- Icon scale
 // Font Awesome glyphs fill the whole em box, so at the text's size they look

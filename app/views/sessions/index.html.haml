@@ -25,45 +25,45 @@
               %h5.text-muted.text-center New Items
               %h5.text-center.text-success
                 #{sprintf("%0.02f", new_items/Item.count.to_f*100)}%
-                %i.fa.fa-level-up-alt
+                %i.fa.fa-turn-up
             .col-md-2.col-sm-6.col-6
               %h3.text-center= unverified_items_30
               %h5.text-muted.text-center Unverified Items
               %h5.text-center.text-danger
                 - if unverified_items.zero?
                   0.00%
-                  %i.fa.fa-level-up-alt
+                  %i.fa.fa-turn-up
                 - else
                   #{sprintf("%0.02f", unverified_items_30/unverified_items.to_f*100)}%
-                  %i.fa.fa-level-up-alt
+                  %i.fa.fa-turn-up
             .col-md-2.col-sm-6.col-6
               %h3.text-center= uncategorized_items_30
               %h5.text-muted.text-center Uncategorized Items
               %h5.text-center.text-danger
                 - if uncategorized_items.zero?
                   0.00%
-                  %i.fa.fa-level-up-alt
+                  %i.fa.fa-turn-up
                 - else
                   #{sprintf("%0.02f", uncategorized_items_30/uncategorized_items.to_f*100)}%
-                  %i.fa.fa-level-up-alt
+                  %i.fa.fa-turn-up
             .col-md-2.col-sm-6.col-6
               %h3.text-center= packed_items
               %h5.text-muted.text-center Packed Items
               %h5.text-center.text-success
                 #{sprintf("%0.02f", packed_items/PackedItem.count.to_f*100)}%
-                %i.fa.fa-level-up-alt
+                %i.fa.fa-turn-up
             .col-md-2.col-sm-6.col-6
               %h3.text-center= box_count
               %h5.text-muted.text-center New Boxes
               %h5.text-center.text-success
                 #{sprintf("%0.02f", box_count/Box.count.to_f*100)}%
-                %i.fa.fa-level-up-alt
+                %i.fa.fa-turn-up
             .col-md-2.col-sm-6.col-6
               %h3.text-center= pallet_count
               %h5.text-muted.text-center New Pallets
               %h5.text-center.text-success
                 #{sprintf("%0.02f", pallet_count/Pallet.count.to_f*100)}%
-                %i.fa.fa-level-up-alt
+                %i.fa.fa-turn-up
 
       .card
         %a.card-header{data: {"bs-toggle": "collapse"}, href: "#leaderboard-stats"} Leaderboard (30 Days)

@@ -10,7 +10,10 @@
     = f.number_field :custom_uid, min: 0, class: "form-control", readonly: f.object.new_record?
   .form-group
     = f.label :status
-    = f.select :status, options_for_select(current_user.selectable_statuses(Shipment), @shipment.status), {}, { class: "form-select", id: "status" }
+    -# New shipments always start In Progress (set_defaults in the model)
+    = f.select :status, options_for_select(current_user.selectable_statuses(Shipment), @shipment.status), {}, { class: "form-select", id: "status", disabled: f.object.new_record? }
+    - if f.object.new_record?
+      .form-text New shipments start In Progress. You can change it after it's created.
   .form-group
     = f.label :shipping_warehouse_id
     = f.select :shipping_warehouse_id, options_from_collection_for_select(Warehouse.order(:name), :id, :name, @shipment.shipping_warehouse_id), { include_blank: "" }, { class: "form-select" }

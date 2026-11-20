@@ -92,7 +92,7 @@
 
             %li{class: (target_used && "no-warn")}
               %span.fa-li
-                %i.fas{class: target_used ? "fa-check" : "fa-exclamation-triangle"}
+                %i.fas{class: target_used ? "fa-check" : "fa-triangle-exclamation"}
               Target item is
               -unless target_used
                 %em not
@@ -100,7 +100,7 @@
 
             %li{class: (@item.verified && "no-warn")}
               %span.fa-li
-                %i.fas{class: @item.verified ? "fa-check" : "fa-exclamation-triangle"}
+                %i.fas{class: @item.verified ? "fa-check" : "fa-triangle-exclamation"}
               Target item is
               - if !@item.verified
                 %em not
@@ -108,7 +108,7 @@
 
             %li{class: (@item.category && "no-warn")}
               %span.fa-li
-                %i.fas{class: @item.category ? "fa-check" : "fa-exclamation-triangle"}
+                %i.fas{class: @item.category ? "fa-check" : "fa-triangle-exclamation"}
               Target item is
               - if !@item.category
                 %em not
@@ -116,7 +116,7 @@
 
             %li{class: (!@item.flagged && "no-warn")}
               %span.fa-li
-                %i.fas{class: !@item.flagged ? "fa-check" : "fa-exclamation-triangle"}
+                %i.fas{class: !@item.flagged ? "fa-check" : "fa-triangle-exclamation"}
               Target item is
               - if !@item.flagged
                 %em not

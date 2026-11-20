@@ -27,7 +27,7 @@ gem "cancancan", "~> 3.6"
 
 # Views and UI helpers
 gem "chartkick"
-gem "haml", "~> 6.3"
+gem "haml", "~> 7.5"
 gem "kaminari"
 gem "pg_search"
 
