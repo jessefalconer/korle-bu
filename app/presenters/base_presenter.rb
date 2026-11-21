@@ -19,49 +19,38 @@ class BasePresenter < SimpleDelegator
     __getobj__
   end
 
+  # What this record sits in, outermost first, ending with itself: its shipment,
+  # container and pallet, whichever apply. Drives both the page breadcrumbs and
+  # the nested "Located in" list on unpack forms.
+  def location_chain
+    [(shipment unless model.is_a?(Shipment)), parent_container, (pallet if model.is_a?(Box)), model].compact.uniq
+  end
+
   def breadcrumbs
-    safe_join [breadcrumbs_shipment, breadcrumbs_container, breadcrumbs_pallet, breadcrumbs_box]
+    safe_join(location_chain.map { |record| tag.li(link_to(record.name, url_for(record)), class: "breadcrumb-item") })
   end
 
   def breadcrumbs_item
-    breadcrumbs + tag.li(class: "breadcrumb-item active") do
-      "Items"
-    end
+    breadcrumbs + tag.li("Items", class: "breadcrumb-item active")
   end
 
-  def breadcrumbs_shipment
-    return unless model.class != Shipment && shipment
-
-    tag.li(class: "breadcrumb-item") do
-      link_to shipment.name, shipment_path(shipment)
-    end
-  end
-
-  def breadcrumbs_container
-    if model.instance_of?(Box) && (container || pallet&.container)
-      parent_container = container || pallet&.container
-
-      tag.li(class: "breadcrumb-item") do
-        link_to parent_container.name, container_path(parent_container)
-      end
-    elsif model.instance_of?(Pallet) && container
-      tag.li(class: "breadcrumb-item") do
-        link_to container.name, container_path(container)
+  # Each level indented under the one it sits in, as a nested list.
+  def location_tree
+    location_chain.reverse.inject(nil) do |inner, record|
+      tag.ul(class: "location-tree") do
+        tag.li { safe_join([link_to(record.name, url_for(record)), inner].compact) }
       end
     end
   end
 
-  def breadcrumbs_pallet
-    return unless model.instance_of?(Box) && pallet
+  private
 
-    tag.li(class: "breadcrumb-item") do
-      link_to pallet.name, pallet_path(pallet)
-    end
-  end
-
-  def breadcrumbs_box
-    tag.li(class: "breadcrumb-item") do
-      link_to model.name, url_for(model)
+  # A box's container, directly or through its pallet; a pallet's container.
+  def parent_container
+    if model.is_a?(Box)
+      container || pallet&.container
+    elsif model.is_a?(Pallet)
+      container
     end
   end
 end

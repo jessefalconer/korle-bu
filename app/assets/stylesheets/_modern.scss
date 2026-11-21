@@ -2237,3 +2237,145 @@ $status-critical: #d03b3b;
     > .btn { flex: 1 1 0; min-height: 44px; }
   }
 }
+
+// "Located in" on unpack forms: shipment > container > pallet > box, each level
+// indented under the one it sits in (BasePresenter#location_tree)
+.location-tree {
+  list-style: none;
+  margin: 2px 0 8px;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+
+  .location-tree {
+    margin: 0 0 0 6px;
+    padding-left: 10px;
+    border-left: 2px solid $line;
+    font-weight: 400;
+  }
+}
+
+// ---------------------------------------------------------------- Select menus
+// src/select_menu.js: styled dropdowns over the real (hidden) <select>
+.select-menu-native {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.select-menu {
+  position: relative;
+  min-width: 0;
+}
+
+// The closed state keeps Bootstrap's .form-select look (chevron and all)
+.select-menu-button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: $ink;
+  cursor: pointer;
+
+  &.is-placeholder { color: $muted; }
+  &[aria-expanded="true"] {
+    border-color: rgba($brand, .55);
+    box-shadow: 0 0 0 .2rem rgba($brand, .15);
+  }
+  &:disabled { cursor: not-allowed; }
+}
+
+.select-menu-popup {
+  position: fixed;
+  z-index: 1090; // above Bootstrap modals
+  display: flex;
+  flex-direction: column;
+  max-width: min(480px, calc(100vw - 16px));
+  overflow: hidden;
+  background: $surface;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  box-shadow: $shadow-lg;
+  animation: select-menu-in .12s ease-out;
+
+  &[hidden] { display: none; }
+}
+
+@keyframes select-menu-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .select-menu-popup { animation: none; }
+}
+
+.select-menu-search {
+  flex: none;
+  margin: 6px;
+  width: auto;
+}
+
+.select-menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.select-menu-option {
+  position: relative;
+  padding: 7px 10px 7px 30px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: $ink;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+
+  &.in-group { padding-left: 38px; }
+  &.is-active { background: $hover; }
+
+  &[aria-selected="true"] {
+    font-weight: 600;
+
+    &::before {
+      content: "\2713";
+      position: absolute;
+      left: 10px;
+      color: $brand;
+    }
+  }
+
+  &[aria-disabled="true"] {
+    color: $muted;
+    opacity: .55;
+    cursor: not-allowed;
+  }
+}
+
+.select-menu-group {
+  padding: 8px 10px 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: $muted;
+}
+
+.select-menu-note {
+  padding: 8px 10px;
+  font-size: 13px;
+  font-style: italic;
+  color: $muted;
+}

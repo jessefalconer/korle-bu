@@ -26,7 +26,7 @@
               %h4.text-muted
                 Located in
                 %i.fa.fa-turn-down
-              %h5= present(pi.parent).breadcrumbs
+              = present(pi.parent).location_tree
               - if pi.show_id
                 %p
                   %em.show-id ID: ##{pi.id}
