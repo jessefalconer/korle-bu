@@ -18,7 +18,6 @@
           = link_to label, index_path(range: range),
             class: "btn btn-sm #{range == stats.range ? "btn-primary" : "btn-outline-secondary"}",
             "aria-current": (range == stats.range ? "true" : nil)
-
     - if packer
       .card
         %a.card-header{data: {"bs-toggle": "collapse"}, href: "#page-stats"} Packing Activity (#{stats.period_name.capitalize})
@@ -40,80 +39,6 @@
               %strong #{number_with_delimiter(stats.weight_this_year)} kg
               packed so far this year: about the weight of
               %strong #{stats.elephants_this_year} #{"elephant".pluralize(stats.elephants_this_year == 1 ? 1 : 2)}.
-
-      .card
-        %a.card-header{data: {"bs-toggle": "collapse"}, href: "#leaderboard-stats"} Leaderboard (#{stats.period_name.capitalize})
-        .card-body.collapse.show#leaderboard-stats
-          .row
-            - stats.leaderboards.each do |board|
-              .col-md-6.leaderboard
-                %h5.chart-title
-                  %i.fa.fa-crown.text-warning{"aria-hidden": "true"}
-                  = board.title
-                %p.chart-subtitle= board.subtitle
-                - top = board.rows.first(DashboardStats::LEADERBOARD_SIZE)
-                = render "bar_list", ordered: true, empty: "No one yet. This could be you!",
-                  rows: top.map { |row| { label: row.name, value: row.value, you: row.user_id == current_user.id } }
-                - mine = stats.rank_on(board)
-                - if mine && mine[:rank] > DashboardStats::LEADERBOARD_SIZE
-                  %p.your-rank You're ##{mine[:rank]} of #{mine[:of]} with #{number_with_delimiter(mine[:value])}.
-            - if (achievement = stats.random_achievement)
-              .col-md-6.leaderboard
-                %h5.chart-title
-                  %i.fa.fa-medal.text-warning{"aria-hidden": "true"}
-                  #{achievement.achievement_title.titleize}*
-                %p.chart-subtitle= achievement.achievement_description.titleize
-                = render "bar_list", rows: [{ label: achievement.achiever_name, value: achievement.achievement_value }]
-                %p.your-rank Out of #{number_with_delimiter(achievement.achievement_max_value)}.
-          %p.achievement-note
-            = link_to user_path(current_user) do
-              *Award someone an achievement in your settings.
-          .highlight-grid
-            - [["Do You Even Lift?", "Heaviest packed item", stats.heaviest_item],
-               ["Bulk Discount", "Greatest single packed quantity", stats.biggest_quantity]].each do |title, caption, pick|
-              .highlight
-                %h5.chart-title= title
-                - if pick
-                  .highlight-name
-                    = pick[:name]
-                    %i.fa.fa-crown.text-warning{"aria-hidden": "true"}
-                  .highlight-value= pick[:value]
-                  .highlight-item= pick[:item]
-                - else
-                  .highlight-name No one (yet!)
-                %p.chart-subtitle= caption
-            .highlight
-              %h5.chart-title Your Streak
-              - streak = stats.streak
-              .highlight-name
-                %i.fa.fa-fire{"aria-hidden": "true", class: ("is-lit" if streak.positive?)}
-                #{streak} #{"week".pluralize(streak)}
-              %p.chart-subtitle
-                = streak.positive? ? "In a row with at least one packed item. Keep it going!" : "Pack an item this week to start a streak."
-
-      .card
-        %a.card-header{data: {"bs-toggle": "collapse"}, href: "#user-stats"} My Stats (All-time)
-        .card-body.collapse.show#user-stats
-          .stat-grid
-            - stats.my_totals.each do |label, value|
-              = render "stat_tile", label: label, value: value
-          - milestones = stats.milestones
-          .milestones
-            %h5.chart-title Packing milestones
-            %ul.milestone-badges
-              - DashboardStats::MILESTONES.each do |milestone|
-                - reached = milestones[:reached].include?(milestone)
-                %li.milestone{class: (reached ? "is-reached" : "is-locked")}
-                  %i.fa{class: reached ? "fa-medal" : "fa-lock", "aria-hidden": "true"}
-                  = number_with_delimiter(milestone)
-                  %span.visually-hidden= reached ? "reached" : "not reached yet"
-            - if milestones[:next]
-              - to_go = milestones[:next] - milestones[:count]
-              %p.chart-subtitle
-                You've packed #{number_with_delimiter(milestones[:count])} items.
-                #{number_with_delimiter(to_go)} more to reach #{number_with_delimiter(milestones[:next])}!
-            - else
-              %p.chart-subtitle You've packed #{number_with_delimiter(milestones[:count])} items. Every milestone reached!
 
     - if packer && can?(:read, Shipment)
       .card
@@ -190,6 +115,81 @@
             = link_to "See all received items", all_received_items_path
       = render "unpacking_card", unpacking: stats.unpacking, stats: stats,
         title: "Unpacking at #{current_user.warehouse&.name || "Your Warehouse"}"
+
+    - if packer
+      .card
+        %a.card-header{data: {"bs-toggle": "collapse"}, href: "#user-stats"} My Stats (All-time)
+        .card-body.collapse.show#user-stats
+          .stat-grid
+            - stats.my_totals.each do |label, value|
+              = render "stat_tile", label: label, value: value
+          - milestones = stats.milestones
+          .milestones
+            %h5.chart-title Packing milestones
+            %ul.milestone-badges
+              - DashboardStats::MILESTONES.each do |milestone|
+                - reached = milestones[:reached].include?(milestone)
+                %li.milestone{class: (reached ? "is-reached" : "is-locked")}
+                  %i.fa{class: reached ? "fa-medal" : "fa-lock", "aria-hidden": "true"}
+                  = number_with_delimiter(milestone)
+                  %span.visually-hidden= reached ? "reached" : "not reached yet"
+            - if milestones[:next]
+              - to_go = milestones[:next] - milestones[:count]
+              %p.chart-subtitle
+                You've packed #{number_with_delimiter(milestones[:count])} items.
+                #{number_with_delimiter(to_go)} more to reach #{number_with_delimiter(milestones[:next])}!
+            - else
+              %p.chart-subtitle You've packed #{number_with_delimiter(milestones[:count])} items. Every milestone reached!
+
+      .card
+        %a.card-header{data: {"bs-toggle": "collapse"}, href: "#leaderboard-stats"} Leaderboard (#{stats.period_name.capitalize})
+        .card-body.collapse.show#leaderboard-stats
+          .row
+            - stats.leaderboards.each do |board|
+              .col-md-6.leaderboard
+                %h5.chart-title
+                  %i.fa.fa-crown.text-warning{"aria-hidden": "true"}
+                  = board.title
+                %p.chart-subtitle= board.subtitle
+                - top = board.rows.first(DashboardStats::LEADERBOARD_SIZE)
+                = render "bar_list", ordered: true, empty: "No one yet. This could be you!",
+                  rows: top.map { |row| { label: row.name, value: row.value, you: row.user_id == current_user.id } }
+                - mine = stats.rank_on(board)
+                - if mine && mine[:rank] > DashboardStats::LEADERBOARD_SIZE
+                  %p.your-rank You're ##{mine[:rank]} of #{mine[:of]} with #{number_with_delimiter(mine[:value])}.
+            - if (achievement = stats.random_achievement)
+              .col-md-6.leaderboard
+                %h5.chart-title
+                  %i.fa.fa-medal.text-warning{"aria-hidden": "true"}
+                  #{achievement.achievement_title.titleize}*
+                %p.chart-subtitle= achievement.achievement_description.titleize
+                = render "bar_list", rows: [{ label: achievement.achiever_name, value: achievement.achievement_value }]
+                %p.your-rank Out of #{number_with_delimiter(achievement.achievement_max_value)}.
+          %p.achievement-note
+            = link_to user_path(current_user) do
+              *Award someone an achievement in your settings.
+          .highlight-grid
+            - [["Do You Even Lift?", "Heaviest packed item", stats.heaviest_item],
+               ["Bulk Discount", "Greatest single packed quantity", stats.biggest_quantity]].each do |title, caption, pick|
+              .highlight
+                %h5.chart-title= title
+                - if pick
+                  .highlight-name
+                    = pick[:name]
+                    %i.fa.fa-crown.text-warning{"aria-hidden": "true"}
+                  .highlight-value= pick[:value]
+                  .highlight-item= pick[:item]
+                - else
+                  .highlight-name No one (yet!)
+                %p.chart-subtitle= caption
+            .highlight
+              %h5.chart-title Your Streak
+              - streak = stats.streak
+              .highlight-name
+                %i.fa.fa-fire{"aria-hidden": "true", class: ("is-lit" if streak.positive?)}
+                #{streak} #{"week".pluralize(streak)}
+              %p.chart-subtitle
+                = streak.positive? ? "In a row with at least one packed item. Keep it going!" : "Pack an item this week to start a streak."
 
     .card
       %a.card-header{data: {"bs-toggle": "collapse"}, href: "#fun-stats"} Just For Fun

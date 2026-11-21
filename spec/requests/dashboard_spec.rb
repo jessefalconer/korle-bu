@@ -55,6 +55,27 @@ describe "Dashboard", type: :request do
                                      "Unpacking &amp; Destinations", "By warehouse")
   end
 
+  def card_titles
+    response.parsed_body.css(".card-header").map { |header| header.text.squish.sub(/ \(.*|Total:.*/, "").strip }
+  end
+
+  it "orders the cards: packing, shipments, unpacking, my stats, leaderboard, fun" do
+    sign_in_as "Admin"
+    get index_path
+
+    expect(card_titles).to eq(["Packing Activity", "Shipments & Data Quality", "Unpacking & Destinations", "My Stats",
+                               "Leaderboard", "Just For Fun", "Recently Added Users", "Recently Added Items",
+                               "Recently Unpacked Items", "Personal Notes"])
+  end
+
+  it "puts a receiving manager's warehouse cards in the unpacking slot" do
+    sign_in_as "Receiving Manager"
+    get index_path
+
+    expect(card_titles).to eq(["Inventory at #{warehouse.name}", "Unpacking at #{warehouse.name}", "Just For Fun",
+                               "Personal Notes"])
+  end
+
   it "switches the time range, including all time" do
     sign_in_as "Admin"
     get index_path(range: "30")
