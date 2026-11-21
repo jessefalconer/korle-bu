@@ -29,6 +29,8 @@ class Pallet < ApplicationRecord
   accepts_nested_attributes_for :pallet_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :assigned, -> { where.not(container_id: nil) }
+  # Receiver filter (ListFilter): through the container; nil means any warehouse.
+  scope :received_by, ->(warehouse_id = nil) { where(container_id: Container.received_by(warehouse_id).select(:id)) }
   scope :staged, -> { where(container_id: nil, status: STAGED) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }
   scope :warehoused, -> { where(container_id: nil, status: WAREHOUSED) }

@@ -8,7 +8,18 @@
     = add_button(new_item_path, "Item")
     = link_refresh_button(items_path, "Clear Results", "fa-arrows-rotate")
   .main-content
-    = render partial: "search_form", locals: { path: "/index_item_search" }
+    -# Search is part of the filter form (form="list-filter-form"): one URL holds
+    -# both, so Apply keeps the search, Search keeps the filters, and the count and
+    -# pages cover the searched, filtered list.
+    .input-group.search.span12
+      .input-group
+        = search_field_tag :search_string, params[:search_string], placeholder: "Search items...", class: "form-control",
+          id: "item-search", form: "list-filter-form", "aria-label": "Search items", autocomplete: "off"
+        = button_tag type: "submit", form: "list-filter-form", name: nil, class: "btn btn-primary responsive-button" do
+          %i.fa.fa-magnifying-glass{"aria-hidden": "true"}
+          %span Search
+    = render "layouts/list_filter", filter: @filter, path: items_path, total: @items.total_count,
+      keep: { search_string: params[:search_string] }, external: [:search_string], category: true, instances: true
     - if @items.any?
       %table.table.table-striped.table-hover.link-rows
         %thead
@@ -18,6 +29,9 @@
             %th.d-none.d-sm-table-cell Verified
         %tbody#search-results
           = render "table"
+    - elsif @filter.active? || params[:search_string].present?
+      - searched = %("#{params[:search_string]}") if params[:search_string].present?
+      %p.empty-state= ["No items match", searched, ("with these filters" if @filter.active?)].compact.join(" ") + "."
     - else
       %h4.text-center
         No results

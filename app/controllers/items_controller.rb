@@ -14,15 +14,13 @@ class ItemsController < ApplicationController
   before_action :set_item, only: %i[show destroy update]
 
   def index
-    @items = if params[:category]
-      Item.includes(:category).where(category_id: params[:category])
-        .order(:generated_name)
-        .page params[:page]
-    elsif params[:search_string]
-      Item.includes(:category).search_by_generated_name(params[:search_string])
-        .page params[:page]
+    @filter = ListFilter.new(Item, params, statuses: [])
+    items = @filter.apply(Item.includes(:category))
+    # Best matches first when searching (a blank search box means no search)
+    @items = if params[:search_string].present?
+      items.search_by_generated_name(params[:search_string]).page params[:page]
     else
-      Item.includes(:category).order(:generated_name).page params[:page]
+      items.order(:generated_name).page params[:page]
     end
   end
 
@@ -46,7 +44,7 @@ class ItemsController < ApplicationController
   end
 
   def index_search
-    @items = Item.search_by_generated_name(params[:search])
+    @items = ListFilter.new(Item, params, statuses: []).apply(Item.search_by_generated_name(params[:search]))
 
     render json: render_to_string(
       partial: "table",

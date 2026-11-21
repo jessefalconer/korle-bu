@@ -20,6 +20,11 @@ class Box < ApplicationRecord
   accepts_nested_attributes_for :box_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :assigned, -> { where("pallet_id IS NOT NULL OR container_id IS NOT NULL") }
+  # Receiver filter (ListFilter): through the container, or the pallet's container.
+  scope :received_by, lambda { |warehouse_id = nil|
+    where(container_id: Container.received_by(warehouse_id).select(:id))
+      .or(where(pallet_id: Pallet.received_by(warehouse_id).select(:id)))
+  }
   scope :staged, -> { left_outer_joins(:pallet).where("boxes.status = ? OR pallets.status = ?", STAGED, STAGED) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }
   scope :warehoused, -> { left_outer_joins(:pallet).where("boxes.status = ? OR pallets.status = ?", WAREHOUSED, WAREHOUSED) }

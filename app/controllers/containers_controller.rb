@@ -7,18 +7,12 @@ class ContainersController < ApplicationController
   before_action :set_container, only: %i[show destroy update]
 
   def index
-    @containers = if (scope = display_scope(%w[staged in_progress]))
-      Container.preload(shipment: :receiving_warehouse)
-        .accessible_by(current_ability)
-        .public_send(scope)
-        .order(custom_uid: :desc)
-        .page params[:page]
-    else
-      Container.includes(shipment: :receiving_warehouse)
-        .accessible_by(current_ability)
-        .order(custom_uid: :desc)
-        .page params[:page]
-    end
+    scope = display_scope(%w[staged in_progress])
+    # The staged / in-progress pages are already a status view: no status filter there
+    @filter = ListFilter.new(Container, params, statuses: scope ? [] : Container::STATUSES)
+    containers = Container.preload(shipment: :receiving_warehouse).accessible_by(current_ability)
+    containers = containers.public_send(scope) if scope
+    @containers = @filter.apply(containers).order(custom_uid: :desc).page params[:page]
   end
 
   def show

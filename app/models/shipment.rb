@@ -24,6 +24,9 @@ class Shipment < ApplicationRecord
   has_many :pallet_box_items, through: :pallet_boxes, source: :box_items
   has_many :container_box_items, through: :container_boxes, source: :box_items
   has_many :packed_items
+
+  # Receiver filter (ListFilter): the receiving warehouse; nil means any.
+  scope :received_by, ->(warehouse_id = nil) { warehouse_id ? where(receiving_warehouse_id: warehouse_id) : where.not(receiving_warehouse_id: nil) }
   has_many :box_items, -> { where(container_id: nil) }, class_name: "PackedItem", inverse_of: :shipment
 
   validates :name, :custom_uid, presence: true

@@ -8,6 +8,8 @@
     - if can? :manage, Container
       = add_button(new_container_path, "Container")
   .main-content
+    = render "layouts/list_filter", filter: @filter, path: containers_path, total: @containers.total_count,
+      keep: { display: params[:display] }, receiver: true
     %table.table.table-striped.table-hover.link-rows
       %thead
         %tr
@@ -36,3 +38,5 @@
                 %p= container.created_at.strftime("%Y-%m-%d")
 
     = paginate @containers, window: 2
+    - if @containers.empty?
+      %p.empty-state No containers match these filters.

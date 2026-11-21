@@ -9,19 +9,19 @@ class PalletsController < ApplicationController
   before_action :set_pallet, only: %i[show destroy update]
 
   def index
-    @pallets = if (scope = display_scope(%w[staged in_progress warehoused]))
-      Pallet.with_location
-        .accessible_by(current_ability)
-        .public_send(scope)
-        .order(custom_uid: :desc)
-        .page params[:page]
+    scope = display_scope(%w[staged in_progress warehoused])
+    # The staged / in-progress / warehoused pages are already a status view
+    @filter = ListFilter.new(Pallet, params, statuses: scope ? [] : Pallet::STATUSES)
+    pallets = Pallet.with_location.accessible_by(current_ability)
+    pallets = if scope
+      pallets.public_send(scope)
+    elsif @filter.statuses.empty?
+      # Staged and Warehoused have their own menus, unless asked for here
+      pallets.where.not(status: %w[Warehoused Staged])
     else
-      Pallet.with_location
-        .where.not(status: %w[Warehoused Staged])
-        .accessible_by(current_ability)
-        .order(custom_uid: :desc)
-        .page params[:page]
+      pallets
     end
+    @pallets = @filter.apply(pallets).order(custom_uid: :desc).page params[:page]
 
     @box_options = Box.reassignable
       .order(id: :desc)

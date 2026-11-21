@@ -1,8 +1,18 @@
 import { initManageDrawerListeners } from "src/manage_item_search";
 import { searchInto } from "src/search_request";
 
+// The list's filters (f[...] in the page URL) apply to live searches too
+function filterQuery() {
+  const query = new URLSearchParams();
+  new URLSearchParams(window.location.search).forEach((value, key) => {
+    if (key.startsWith("f[")) query.append(key, value);
+  });
+  return query.toString();
+}
+
 function indexSearch(params, path, initDrawers) {
-  searchInto("#search-results", { url: path, data: { search: params } }, () => {
+  const data = [new URLSearchParams({ search: params }).toString(), filterQuery()].filter(Boolean).join("&");
+  searchInto("#search-results", { url: path, data }, () => {
     $(".pagination").empty();
     if (initDrawers) initManageDrawerListeners();
   });

@@ -10,19 +10,19 @@ class BoxesController < ApplicationController
   before_action :set_box, only: %i[show destroy update]
 
   def index
-    @boxes = if (scope = display_scope(%w[staged in_progress warehoused]))
-      Box.with_location
-        .accessible_by(current_ability)
-        .public_send(scope)
-        .order(custom_uid: :desc)
-        .page params[:page]
+    scope = display_scope(%w[staged in_progress warehoused])
+    # The staged / in-progress / warehoused pages are already a status view
+    @filter = ListFilter.new(Box, params, statuses: scope ? [] : Box::STATUSES)
+    boxes = Box.with_location.accessible_by(current_ability)
+    boxes = if scope
+      boxes.public_send(scope)
+    elsif @filter.statuses.empty?
+      # Staged and Warehoused have their own menus, unless asked for here
+      boxes.where.not(status: %w[Warehoused Staged])
     else
-      Box.with_location
-        .where.not(status: %w[Warehoused Staged])
-        .accessible_by(current_ability)
-        .order(custom_uid: :desc)
-        .page params[:page]
+      boxes
     end
+    @boxes = @filter.apply(boxes).order(custom_uid: :desc).page params[:page]
 
     @box_options = Box.reassignable
       .order(id: :desc)

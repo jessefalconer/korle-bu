@@ -1,0 +1,74 @@
+-# Filters above a list (see ListFilter). A plain GET form: a filtered list can be
+-# bookmarked or shared, and paging keeps the filters. Opens by itself when any
+-# filter is set.
+-# locals: filter:, path:, total: (matching records),
+-#         keep: {} (page params to carry over, e.g. display:),
+-#         external: [] (keep names a field outside the panel already submits,
+-#                       via form="list-filter-form", like the items search box),
+-#         receiver: false, receiver_none: true, category: false, instances: false
+- keep = local_assigns[:keep] || {}
+- users = filter.user_choices
+- chosen = users.select { |_name, id| filter.user_ids.include?(id) }.map(&:first)
+- user_summary = chosen.empty? ? "Anyone" : (chosen.one? ? chosen.first : "#{chosen.size} people")
+- clear_path = keep.compact_blank.any? ? "#{path}?#{keep.compact_blank.to_query}" : path
+%details.list-filter{open: filter.active?}
+  %summary
+    %i.fa.fa-filter{"aria-hidden": "true"}
+    %span.list-filter-label Filters
+    - if filter.active?
+      %span.badge.text-bg-primary{title: "Filters set"}= filter.active_count
+    %span.list-filter-total #{number_with_delimiter(total)} #{"result".pluralize(total)}
+  = form_with url: path, method: :get, local: true, class: "list-filter-form", id: "list-filter-form" do
+    - keep.except(*Array(local_assigns[:external])).each do |name, value|
+      = hidden_field_tag name, value, id: nil if value.present?
+    - if filter.available_statuses.any?
+      %fieldset.list-filter-group
+        %legend Status
+        .filter-chips
+          - filter.available_statuses.each do |status|
+            %label.filter-chip
+              = check_box_tag "f[status][]", status, filter.statuses.include?(status), id: "f-status-#{status.parameterize}"
+              %span= status
+    .list-filter-row
+      %fieldset.list-filter-group
+        %legend Created
+        .filter-dates
+          %label
+            %span.visually-hidden Created from
+            = date_field_tag "f[from]", filter.from&.iso8601, class: "form-control", id: "f-from", "aria-label": "Created from"
+          %span.filter-dates-to to
+          %label
+            %span.visually-hidden Created until
+            = date_field_tag "f[to]", filter.to&.iso8601, class: "form-control", id: "f-to", "aria-label": "Created until"
+      - if users.any?
+        %fieldset.list-filter-group
+          %legend Created by
+          %details.filter-dropdown
+            %summary.form-select= user_summary
+            .filter-dropdown-menu
+              - users.each do |name, id|
+                %label.filter-check
+                  = check_box_tag "f[user][]", id, filter.user_ids.include?(id), id: "f-user-#{id}"
+                  %span= name
+      - if local_assigns[:receiver]
+        .list-filter-group
+          %label.legend{for: "f-receiver"} Receiver
+          - none = local_assigns.fetch(:receiver_none, true) ? [["None (not headed anywhere yet)", ListFilter::NONE]] : []
+          = select_tag "f[receiver]", options_for_select([["Any", ""]] + none + filter.receiver_choices, filter.receiver),
+            class: "form-select", id: "f-receiver"
+      - if local_assigns[:category]
+        .list-filter-group
+          %label.legend{for: "f-category"} Category
+          = select_tag "f[category]", options_for_select([["Any", ""], ["Uncategorized", ListFilter::NONE]] + filter.category_choices, filter.category),
+            class: "form-select", id: "f-category"
+      - if local_assigns[:instances]
+        .list-filter-group
+          %label.legend{for: "f-instances"} Instances
+          = select_tag "f[instances]", options_for_select([["Any", ""]] + ListFilter::INSTANCE_CHOICES.invert.to_a, filter.instances),
+            class: "form-select", id: "f-instances"
+    .list-filter-actions
+      - if filter.active?
+        = link_to "Clear filters", clear_path, class: "btn btn-cancel"
+      = button_tag type: "submit", name: nil, class: "btn btn-primary" do
+        %i.fa.fa-filter{"aria-hidden": "true"}
+        Apply

@@ -28,6 +28,8 @@ class Container < ApplicationRecord
   accepts_nested_attributes_for :container_items, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   scope :staged, -> { where(shipment_id: nil) }
+  # Receiver filter (ListFilter): through the shipment; nil means any warehouse.
+  scope :received_by, ->(warehouse_id = nil) { where(shipment_id: Shipment.received_by(warehouse_id).select(:id)) }
   scope :in_progress, -> { where(status: IN_PROGRESS) }
 
   validates :name, :custom_uid, presence: true

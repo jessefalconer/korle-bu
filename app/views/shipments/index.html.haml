@@ -6,6 +6,8 @@
       %li.breadcrumb-item.active Shipments
     = render partial: "layouts/jump_to_modal"
   .main-content
+    = render "layouts/list_filter", filter: @filter, path: shipments_path, total: @shipments.total_count,
+      receiver: true, receiver_none: false
     %table.table.table-striped.table-hover.link-rows
       %thead
         %tr
@@ -34,3 +36,5 @@
                 %p= shipment.created_at.strftime("%Y-%m-%d")
 
     = paginate @shipments, window: 2
+    - if @shipments.empty?
+      %p.empty-state No shipments match these filters.
