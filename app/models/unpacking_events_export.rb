@@ -33,15 +33,15 @@ class UnpackingEventsExport
   def generate_rows(collection, csv)
     # Sorted by the date shown in the Date column.
     collection.order(timestamp: @sorting, id: @sorting).each do |event|
-      csv << [
-        event.generated_name,
-        event.packed_item.item_id,
-        event.quantity,
-        event.packed_item.location_name,
-        event.hospital.name,
-        event.user.name,
-        event.timestamp.strftime("%Y-%m-%d")
-      ]
+      csv << CsvSafety.row([
+                             event.generated_name,
+                             event.packed_item.item_id,
+                             event.quantity,
+                             event.packed_item.location_name,
+                             event.hospital.name,
+                             event.user.name,
+                             event.timestamp.strftime("%Y-%m-%d")
+                           ])
     end
   end
 

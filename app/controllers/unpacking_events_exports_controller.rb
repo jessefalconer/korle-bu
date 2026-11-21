@@ -9,8 +9,10 @@ class UnpackingEventsExportsController < ApplicationController
     file_name = "Unpacking-Events-#{@export.start_date.iso8601}-to-#{@export.end_date.iso8601}"
     file_name += "-#{Hospital.find(export_params[:hospital_id]).name}" if export_params[:hospital_id].present?
 
+    # The byte-order mark makes Excel read the file as UTF-8
     send_data(
-      @export.to_csv,
+      CsvSafety::BOM + @export.to_csv,
+      type: "text/csv; charset=utf-8",
       filename: "#{file_name}.csv"
     )
   end

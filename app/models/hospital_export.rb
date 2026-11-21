@@ -23,10 +23,10 @@ class HospitalExport
       csv << %w[Item Category Quantity User Date]
 
       collection.each do |event|
-        csv << [
-          event.generated_name, event.category&.name || "N/A", event.quantity,
-          event.user.name, event.created_at.strftime("%Y-%m-%d")
-        ]
+        csv << CsvSafety.row([
+                               event.generated_name, event.category&.name || "N/A", event.quantity,
+                               event.user.name, event.created_at.strftime("%Y-%m-%d")
+                             ])
       end
     end
   end

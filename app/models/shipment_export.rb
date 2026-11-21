@@ -17,10 +17,10 @@ class ShipmentExport
       case @group_by
       when "category"
         csv << ["Category", "Item", "Item Quantity", "Item Weight (kg)", "Locations"]
-        generate_by_category(@shipment.packed_items, csv)
+        generate_by_category(packed_items, csv)
       when "item"
         csv << ["Item", "Item Quantity", "Category", "Item Weight (kg)", "Locations"]
-        generate_by_item(@shipment.packed_items, csv)
+        generate_by_item(packed_items, csv)
       else
         csv << ["Error generating CSV"]
       end
@@ -29,16 +29,24 @@ class ShipmentExport
 
   def generate_by_category(collection, csv)
     collection.by_category.sort.each do |category, items|
-      csv << [category, "-", "-", "-", "-"]
+      csv << CsvSafety.row([category, "-", "-", "-", "-"])
       items.sort.each do |item, values|
-        csv << ["-", item, values[:quantity], values[:weight], values[:location]]
+        csv << CsvSafety.row(["-", item, values[:quantity], values[:weight], values[:location]])
       end
     end
   end
 
   def generate_by_item(collection, csv)
     collection.by_item.sort.each do |item, values|
-      csv << [item, values[:quantity], values[:category], values[:weight], values[:location]]
+      csv << CsvSafety.row([item, values[:quantity], values[:category], values[:weight], values[:location]])
     end
+  end
+
+  private
+
+  # Everything the rows read (item, category, location) loaded up front: a few
+  # queries, rather than three or more per packed line.
+  def packed_items
+    @shipment.packed_items.preload(:box, :pallet, :container, item: :category)
   end
 end

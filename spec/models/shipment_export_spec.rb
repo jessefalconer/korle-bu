@@ -57,4 +57,33 @@ describe ShipmentExport do
       expect(rows("weight")).to eq([["Error generating CSV"]])
     end
   end
+
+  describe "spreadsheet safety" do
+    it "turns cells that would run as formulas into plain text" do
+      create :item, object: "=HYPERLINK(\"http://evil.example\")", category: create(:category, name: "@SUM(A1)")
+      create :packed_item, item: Item.last, container: container, box: nil, pallet: nil, quantity: 1
+
+      flagged = rows("item").find { |row| row.first.include?("HYPERLINK") }
+      expect(flagged.first).to start_with("'=HYPERLINK")
+      expect(flagged[2]).to eq("'@SUM(A1)")
+    end
+
+    it "leaves ordinary text, numbers and the \"-\" filler alone" do
+      expect(CsvSafety.row(["Gauze", 7, "-", "-5 mL", nil])).to eq(["Gauze", 7, "-", "'-5 mL", nil])
+    end
+  end
+
+  describe "speed" do
+    it "runs the same few queries however many lines the shipment has" do
+      baseline = count_queries { ShipmentExport.new(shipment.id, "item").to_csv }
+      3.times do
+        other_box = create :box, container: container, pallet: nil
+        create :packed_item, item: create(:item, category: create(:category)), box: other_box, container: nil, pallet: nil, quantity: 1
+      end
+
+      %w[item category].each do |grouping|
+        expect(count_queries { ShipmentExport.new(shipment.id, grouping).to_csv }).to eq(baseline)
+      end
+    end
+  end
 end

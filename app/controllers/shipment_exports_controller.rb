@@ -6,8 +6,10 @@ class ShipmentExportsController < ApplicationController
   before_action :set_export, only: :create
 
   def create
+    # The byte-order mark makes Excel read the file as UTF-8
     send_data(
-      @export.to_csv,
+      CsvSafety::BOM + @export.to_csv,
+      type: "text/csv; charset=utf-8",
       filename: "Shipment--#{export_params[:id]}-#{Time.zone.today}.csv"
     )
   end
