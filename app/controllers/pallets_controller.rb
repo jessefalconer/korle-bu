@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PalletsController < ApplicationController
+  include BulkUnpacking
+
   load_and_authorize_resource
   before_action :set_pallet, only: %i[show destroy update]
 
@@ -97,31 +99,7 @@ class PalletsController < ApplicationController
   end
 
   def unpack_all
-    # Definitely move this to a service :/
-    if params[:hospital_id].blank?
-      message = { error: "Please select a hospital/facility/clinic." }
-    else
-      UnpackingEvent.transaction do
-        @pallet.pallet_items.each do |pi|
-          next if pi.remaining_quantity.zero?
-
-          event = pi.unpacking_events.build(
-            hospital_id: params[:hospital_id],
-            notes: params[:notes],
-            user: current_user,
-            timestamp: params[:timestamp],
-            quantity: pi.remaining_quantity
-          )
-          # The hospital must be one this user may unpack to.
-          authorize! :create, event
-          event.save
-        end
-      end
-
-      message = { success: "#{@pallet.pallet_items.count} item(s) unpacked." }
-    end
-
-    redirect_back_or_to(request.referer, flash: message)
+    redirect_back_or_to(pallet_pallet_items_path(@pallet), flash: unpack_everything(@pallet.pallet_items))
   end
 
   private

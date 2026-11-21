@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class BoxesController < ApplicationController
+  include BulkUnpacking
   include PlacementAuthorization
 
   load_and_authorize_resource
@@ -96,42 +97,25 @@ class BoxesController < ApplicationController
   end
 
   def unpack_all
-    # Definitely move this to a service :/
-    if params[:hospital_id].blank?
-      message = { error: "Please select a hospital/facility/clinic." }
-    else
-      UnpackingEvent.transaction do
-        @box.box_items.each do |bi|
-          next if bi.remaining_quantity.zero?
-
-          event = bi.unpacking_events.build(
-            hospital_id: params[:hospital_id],
-            notes: params[:notes],
-            user: current_user,
-            timestamp: params[:timestamp],
-            quantity: bi.remaining_quantity
-          )
-          # The hospital must be one this user may unpack to.
-          authorize! :create, event
-          event.save
-        end
-      end
-
-      message = { success: "#{@box.box_items.count} item(s) unpacked." }
-    end
-
-    redirect_back_or_to(request.referer, flash: message)
+    redirect_back_or_to(box_box_items_path(@box), flash: unpack_everything(@box.box_items))
   end
+
+  MAX_DUPLICATES = 10
 
   def duplicate
     box = Box.find(params.expect(:box_id))
+    count = params[:duplication_count].to_i
+    unless count.between?(1, MAX_DUPLICATES)
+      return redirect_back_or_to(box_path(box), flash: { error: "Duplicate between 1 and #{MAX_DUPLICATES} copies at a time." })
+    end
+
     authorize! :read, box
     deep_clone = params[:strategy] == "deep"
     pallet_id = box.pallet_id if deep_clone
     container_id = box.container_id if deep_clone
 
     ActiveRecord::Base.transaction do
-      params[:duplication_count].to_i.times do
+      count.times do
         new_box = Box.new(
           status: box.status,
           weight: box.weight,
@@ -159,7 +143,7 @@ class BoxesController < ApplicationController
       end
     end
 
-    redirect_back_or_to(request.referer, flash: { success: "#{box.name} duplicated #{params[:duplication_count]} times." })
+    redirect_back_or_to(box_path(box), flash: { success: "#{box.name} duplicated #{count} #{"time".pluralize(count)}." })
   end
 
   private

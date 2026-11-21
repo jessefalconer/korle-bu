@@ -59,4 +59,17 @@ describe HospitalExport do
     _, *body = rows
     expect(body.pluck(2)).to eq(%w[6])
   end
+
+  it "exports uncategorized items as N/A" do
+    item.update!(category: nil)
+    event_on(Time.zone.today, quantity: 2)
+
+    expect(rows.last).to eq(["Gauze", "N/A", "2", "Kwame Asante", Time.zone.today.iso8601])
+  end
+
+  it "treats cleared date fields as today" do
+    event_on(Time.zone.today, quantity: 2)
+
+    expect(rows("start_date" => "", "end_date" => "").size).to eq(2)
+  end
 end

@@ -70,12 +70,16 @@ class Item < ApplicationRecord
     Item.search_by_generated_name(item.generated_name).where.not(id: item.id).limit(limit)
   end
 
+  # Moves every packed item from merge_items onto item, optionally deleting the
+  # emptied duplicates. All or nothing, and the target is never one of its own
+  # duplicates (deleting it would delete everything just merged into it).
   def self.execute_merge(item, merge_items, delete: false, verify: true)
-    merge_items.each do |merge_item|
-      PackedItem.where(item_id: merge_item.id).update_all(item_id: item.id) # rubocop:disable Rails/SkipsModelValidations
-
-      Item.find(merge_item.id).destroy if delete
-      Item.find(item.id).update(verified: verify) if verify
+    transaction do
+      where(id: merge_items).where.not(id: item.id).find_each do |merge_item|
+        PackedItem.where(item_id: merge_item.id).update_all(item_id: item.id) # rubocop:disable Rails/SkipsModelValidations
+        merge_item.reload.destroy! if delete
+      end
+      item.update!(verified: true) if verify
     end
   end
 
@@ -139,11 +143,14 @@ class Item < ApplicationRecord
 
   private
 
+  # Collapses stray whitespace in name parts. Notes are only trimmed, so the
+  # line breaks people type there survive.
   def sanitize_whitespace
     attribute_names.each do |name|
-      if send(name).respond_to?(:squish)
-        send("#{name}=", send(name).squish)
-      end
+      value = send(name)
+      next unless value.respond_to?(:squish)
+
+      send("#{name}=", name == "notes" ? value.strip : value.squish)
     end
   end
 end

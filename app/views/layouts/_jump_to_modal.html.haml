@@ -34,9 +34,8 @@
             -# lookups stay cheap; the modal is rendered on most pages.
             - latest_box = Box.accessible_by(current_ability).order(id: :desc).first
             - latest_pallet = Pallet.accessible_by(current_ability).order(id: :desc).first
-            - unless current_user.receiving_manager?
-              - latest_container = Container.order(id: :desc).first
-              - latest_shipment = Shipment.order(id: :desc).first
+            - latest_container = Container.accessible_by(current_ability).order(id: :desc).first
+            - latest_shipment = Shipment.accessible_by(current_ability).order(id: :desc).first
             - if [latest_box, latest_pallet, latest_container, latest_shipment].any?
               .row.latest-links
                 - if latest_box

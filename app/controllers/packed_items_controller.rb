@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PackedItemsController < ApplicationController
+  include BulkUnpacking
+
   # Received-inventory pages and unpacking: for those who log unpacking events.
   before_action { authorize! :create, UnpackingEvent }
   before_action :set_warehouse_id
@@ -64,26 +66,10 @@ class PackedItemsController < ApplicationController
   end
 
   def unpack_selected
-    # Definitely move this to a service :/
-    if params[:hospital_id].blank?
-      message = { error: "Please select a hospital/facility/clinic." }
+    message = if params[:item_ids].blank?
+      { error: "Select at least one item to unpack." }
     else
-      PackedItem.transaction do
-        PackedItem.where(id: params[:item_ids]).find_each do |pi|
-          authorize! :read, pi
-          event = pi.unpacking_events.build(
-            hospital_id: params[:hospital_id],
-            notes: params[:notes],
-            user: current_user,
-            timestamp: params[:timestamp],
-            quantity: pi.remaining_quantity
-          )
-          authorize! :create, event
-          event.save
-        end
-      end
-
-      message = { success: "#{params.expect(item_ids: []).count} item(s) unpacked." }
+      unpack_everything(PackedItem.where(id: params[:item_ids]))
     end
 
     redirect_back_or_to(all_received_items_path, flash: message)

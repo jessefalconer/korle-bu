@@ -133,4 +133,21 @@ describe User do
       expect(subject.authenticate("wrong")).to be(false)
     end
   end
+
+  describe "email" do
+    it "is stored lowercase and trimmed" do
+      user = create :user, email: "  Pat.Mensah@KBNF.org "
+      expect(user.reload.email).to eq("pat.mensah@kbnf.org")
+    end
+
+    it "is unique regardless of letter case" do
+      create :user, email: "pat@kbnf.org"
+      expect(build(:user, email: "PAT@kbnf.org")).not_to be_valid
+    end
+
+    it "is found regardless of letter case" do
+      user = create :user, email: "pat@kbnf.org"
+      expect(User.find_by(email: "Pat@KBNF.org")).to eq(user)
+    end
+  end
 end

@@ -9,7 +9,7 @@
         %h5.modal-title#assignmentModalLabel Duplicate #{@box.name}
         %button.btn-close{"aria-label" => "Close", "data-bs-dismiss" => "modal", :type => "button"}
       .modal-body.margin-top#assignmentModalBody
-        = form_for @box, url: box_duplicate_path(@box), method: :get do |f|
+        = form_for @box, url: box_duplicate_path(@box), method: :post do |f|
           .row.mass-action-form
             .col-12
               %h5
@@ -18,7 +18,8 @@
               %h5
                 Duplication Count
               .form-group
-                = number_field_tag :duplication_count, 1, { min: 1, class: "form-control" }
+                = number_field_tag :duplication_count, 1, { min: 1, max: BoxesController::MAX_DUPLICATES, class: "form-control" }
+                %small.form-text Up to #{BoxesController::MAX_DUPLICATES} copies at a time.
             .col-12
               %h5
                 Duplication Strategy

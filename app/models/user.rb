@@ -11,6 +11,10 @@ class User < ApplicationRecord
 
   belongs_to :warehouse, optional: true
 
+  # Stored and looked up in lowercase, so "Pat@KBNF.org" and "pat@kbnf.org"
+  # are one account and logging in ignores letter case.
+  normalizes :email, with: ->(email) { email.strip.downcase }
+
   has_many :shipments
   has_many :containers
   has_many :container_items, through: :containers
@@ -22,7 +26,7 @@ class User < ApplicationRecord
   has_many :warehouses
   has_many :items
 
-  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true, on: %i[create update] # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, uniqueness: true, on: %i[create update]
   validates :phone, format: { with: /\A(?:\+?\d{1,3}\s*-?)?\(?(?:\d{3})?\)?[- ]?\d{3}[- ]?\d{4}\z/ }
   validates :first_name, :last_name, presence: true, on: %i[create update]
   validates :status, inclusion: { in: STATUSES }, on: %i[create update]

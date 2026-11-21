@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_20_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_21_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -240,6 +240,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_090000) do
     t.integer "achievement_value"
     t.integer "achievement_max_value"
     t.boolean "must_change_password", default: false, null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["warehouse_id"], name: "index_users_on_warehouse_id"
   end
 

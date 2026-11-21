@@ -88,7 +88,8 @@ describe PackedItem do
     end
 
     it "finds items with remaining inventory" do
-      empty = create :packed_item, box: nil, pallet: nil, container: nil, status: PackedItem::STAGED, quantity: 0
+      empty = create :packed_item, box: nil, pallet: nil, container: nil, status: PackedItem::STAGED, quantity: 2
+      create :unpacking_event, packed_item: empty, quantity: 2
       staged.update(quantity: 4)
 
       expect(PackedItem.with_inventory).to include(staged)
@@ -130,6 +131,30 @@ describe PackedItem do
           "N/A" => { "Crutch" => { quantity: 2, weight: 2.0, location: PackedItem::WAREHOUSED } }
         )
       end
+    end
+  end
+
+  describe "quantity checks" do
+    let(:loose) { create :packed_item, box: nil, pallet: nil, container: nil, status: PackedItem::STAGED, quantity: 5 }
+
+    it "needs a positive whole quantity" do
+      expect(build(:packed_item, quantity: 0)).not_to be_valid
+      expect(build(:packed_item, quantity: -1)).not_to be_valid
+    end
+
+    it "can't be lowered below what has already been unpacked" do
+      create :unpacking_event, packed_item: loose, quantity: 4
+
+      expect(loose.reload.update(quantity: 3)).to be(false)
+      expect(loose.errors[:quantity]).to include("can't be less than the 4 already unpacked")
+      expect(loose.update(quantity: 4)).to be(true)
+    end
+  end
+
+  describe "with_inventory and with_events" do
+    it "stay chainable queries" do
+      expect(PackedItem.with_inventory).to be_a(ActiveRecord::Relation)
+      expect(PackedItem.with_events).to be_a(ActiveRecord::Relation)
     end
   end
 end

@@ -50,4 +50,20 @@ describe UnpackingEventsExport do
     _, *body = rows(start_date: nil)
     expect(body.pluck(2)).to contain_exactly("1", "2", "3")
   end
+
+  it "includes events later in the day on the end date" do
+    event_at(Time.zone.parse("2026-04-10 16:30"), quantity: 4)
+
+    _, *body = rows(start_date: "2026-04-10", end_date: "2026-04-10")
+    expect(body.pluck(2)).to eq(["4"])
+  end
+
+  it "falls back to newest-first for a missing or unknown sort order" do
+    expect(rows(sorting: nil).drop(1).pluck(6)).to eq(%w[2026-03-01 2026-02-01])
+    expect(rows(sorting: "sideways").drop(1).pluck(6)).to eq(%w[2026-03-01 2026-02-01])
+  end
+
+  it "treats an unreadable date as blank" do
+    expect(rows(start_date: "not-a-date").drop(1).size).to eq(3)
+  end
 end

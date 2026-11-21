@@ -21,8 +21,8 @@ class PackedItem < ApplicationRecord
 
   has_many :unpacking_events, dependent: :delete_all
 
-  scope :with_inventory, -> { left_joins(:unpacking_events).where("remaining_quantity > ?", 0).uniq }
-  scope :with_events, -> { joins(:unpacking_events).uniq }
+  scope :with_inventory, -> { where("packed_items.remaining_quantity > 0") }
+  scope :with_events, -> { where(id: UnpackingEvent.select(:packed_item_id)) }
   scope :staged, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: STAGED) }
   scope :warehoused, -> { where(box_id: nil, pallet_id: nil, container_id: nil, status: WAREHOUSED) }
   # Unarchived items with stock left, in received shipments bound for the warehouse.
@@ -48,6 +48,11 @@ class PackedItem < ApplicationRecord
   accepts_nested_attributes_for :unpacking_events, allow_destroy: true, reject_if: ->(x) { x[:quantity].blank? }
 
   validates :status, inclusion: { in: STATUSES }, if: ->(packed_item) { packed_item.will_not_assign? }
+  # New items and quantity edits only, so older zero-quantity records still save.
+  with_options if: -> { new_record? || will_save_change_to_quantity? } do
+    validates :quantity, numericality: { only_integer: true, greater_than: 0 }
+    validate :quantity_covers_unpacked, unless: :new_record?
+  end
   with_options presence: true do
     validates :box, if: ->(packed_item) { packed_item.box.present? && packed_item.status.blank? }
     validates :container, if: ->(packed_item) { packed_item.container.present? && packed_item.status.blank? }
@@ -146,6 +151,11 @@ class PackedItem < ApplicationRecord
   end
 
   private
+
+  def quantity_covers_unpacked
+    unpacked = unpacking_events.sum(:quantity)
+    errors.add(:quantity, "can't be less than the #{unpacked} already unpacked") if quantity.to_i < unpacked
+  end
 
   def set_shipment
     self.shipment = box&.shipment || pallet&.shipment || container&.shipment

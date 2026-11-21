@@ -8,5 +8,6 @@ FactoryBot.define do
     pallet
     container
     shipment
+    quantity { 1 }
   end
 end

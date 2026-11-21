@@ -163,5 +163,19 @@ describe Item do
       Item.execute_merge(target, [duplicate], verify: false)
       expect(target.reload).not_to be_verified
     end
+
+    it "never deletes the target, even if it is listed among the duplicates" do
+      Item.execute_merge(target, [duplicate, target], delete: true)
+
+      expect(Item.exists?(target.id)).to be(true)
+      expect(packed_item.reload.item).to eq(target)
+    end
+
+    it "changes nothing if any part of the merge fails" do
+      allow_any_instance_of(Item).to receive(:destroy!).and_raise(ActiveRecord::RecordNotDestroyed)
+
+      expect { Item.execute_merge(target, [duplicate], delete: true) }.to raise_error(ActiveRecord::RecordNotDestroyed)
+      expect(packed_item.reload.item).to eq(duplicate)
+    end
   end
 end

@@ -141,12 +141,34 @@ describe "Role authorization", type: :request do
     end
   end
 
+  describe "box duplication limits" do
+    before do
+      open_box
+      sign_in shipping_manager
+    end
+
+    it "copies up to 10 at a time" do
+      expect { post box_duplicate_path(open_box), params: { duplication_count: 10 } }.to change(Box, :count).by(10)
+    end
+
+    it "refuses more than 10, or none" do
+      expect { post box_duplicate_path(open_box), params: { duplication_count: 11 } }.not_to change(Box, :count)
+      expect(flash[:error]).to eq("Duplicate between 1 and 10 copies at a time.")
+      expect { post box_duplicate_path(open_box), params: { duplication_count: 0 } }.not_to change(Box, :count)
+    end
+
+    it "is no longer reachable by GET" do
+      get "/boxes/#{open_box.id}/duplicate", params: { duplication_count: 2 }
+      expect(Box.count).to eq(2)
+    end
+  end
+
   describe "box duplication" do
     it "is refused for a box the volunteer may not create" do
       sign_in volunteer
 
       expect do
-        get box_duplicate_path(complete_box), params: { duplication_count: 2 }
+        post box_duplicate_path(complete_box), params: { duplication_count: 2 }
       end.not_to change(Box, :count)
     end
   end
@@ -176,6 +198,24 @@ describe "Role authorization", type: :request do
       sign_in receiving_manager
 
       expect { unpack_to(other_hospital) }.not_to change(UnpackingEvent, :count)
+    end
+
+    it "explains when no items are ticked" do
+      sign_in receiving_manager
+      post received_categories_unpack_selected_path, params: { hospital_id: own_hospital.id }
+
+      expect(flash[:error]).to eq("Select at least one item to unpack.")
+    end
+
+    it "reports items it could not unpack instead of claiming success" do
+      sign_in receiving_manager
+      received_item # stock of 4
+      create :unpacking_event, packed_item: received_item, hospital: own_hospital, quantity: 4
+      received_item.update_columns(remaining_quantity: 4) # stale count, as with a double submit
+
+      expect { unpack_to(own_hospital) }.not_to change(UnpackingEvent, :count)
+      expect(flash[:success]).to eq("0 item(s) unpacked.")
+      expect(flash[:error]).to include("can't be more than the 0 remaining")
     end
 
     it "stops volunteers unpacking" do
