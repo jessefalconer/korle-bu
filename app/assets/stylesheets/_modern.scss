@@ -929,7 +929,9 @@ footer .flash {
 }
 
 // The name / ID / status block at the top of each detail page
-.row.detail-card {
+// (.stats-container: the item summary on the reconcile start and confirm pages)
+.row.detail-card,
+.row.stats-container {
   margin: 0 0 16px;
   padding: 6px 0 4px;
   background: $surface;

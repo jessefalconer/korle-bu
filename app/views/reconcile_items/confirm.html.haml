@@ -12,7 +12,7 @@
   .main-content
     .row
       .col-12
-        %h3 Confirm merge items and target.
+        %h3 Confirm merge items and merge target.
       .col-12
         %h4 Target Item
         %p This item will receive all instances of the selected merge items.
@@ -125,7 +125,7 @@
           = form_with url: execute_reconcile_path(@item), id: "execute_form" do
             %label.checkbox-option
               = check_box_tag :delete_item, true, false
-              Delete Merge Items after Reconcile
+              Delete Merge Old Items after Reconcile
             - unless @item.verified
               %label.checkbox-option
                 = check_box_tag :verify_item, true, true
