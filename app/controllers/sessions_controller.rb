@@ -33,6 +33,8 @@ class SessionsController < ApplicationController
       # A fresh session id at login, so one planted before login is useless.
       reset_session
       session[:user_id] = @user.id
+      # The clocks for the sign-in limits (ApplicationController#session_expiry_reason)
+      session[:signed_in_at] = session[:last_seen_at] = Time.current.to_i
       if @user.status == "Deactivated"
         redirect_to login_path,
                     flash: { error: "This account is deactivated. Please contact a KBNF administrator." }

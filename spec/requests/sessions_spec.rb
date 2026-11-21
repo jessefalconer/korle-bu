@@ -151,4 +151,66 @@ describe "Sessions", type: :request do
       expect(flash[:error]).to eq("This action is not permitted with your user role.")
     end
   end
+
+  describe "how long a sign-in lasts" do
+    include ActiveSupport::Testing::TimeHelpers
+
+    let(:user) { create :user, status: "Active", role: "Volunteer" }
+
+    before { sign_in user }
+
+    def still_signed_in?
+      get my_activity_path
+      response.successful?
+    end
+
+    it "stays signed in while used, however long the gaps under 72 hours" do
+      travel 71.hours
+      expect(still_signed_in?).to be(true)
+      travel 71.hours
+      expect(still_signed_in?).to be(true)
+    end
+
+    it "signs out after 72 hours without activity, and says why" do
+      travel 73.hours
+      get my_activity_path
+
+      expect(response).to redirect_to(login_path)
+      expect(flash[:error]).to eq("You were signed out after 72 hours without activity. Please sign in again.")
+      expect(still_signed_in?).to be(false)
+    end
+
+    it "signs out after 14 days even with daily use" do
+      13.times do
+        travel 1.day
+        expect(still_signed_in?).to be(true)
+      end
+      travel 1.day + 1.minute
+      get my_activity_path
+
+      expect(response).to redirect_to(login_path)
+      expect(flash[:error]).to eq("For security, sign-ins last 14 days. Please sign in again.")
+    end
+
+    it "starts both clocks again on a fresh sign-in" do
+      13.times do
+        travel 1.day
+        expect(still_signed_in?).to be(true)
+      end
+      get logout_path
+      sign_in user
+      travel 2.days # day 15: past the first sign-in's 14 days, but not this one's
+
+      expect(still_signed_in?).to be(true)
+    end
+
+    it "gives the cookie an expiry instead of leaving it to the browser" do
+      get my_activity_path
+      cookie = Array(response.headers["Set-Cookie"]).join("\n")
+
+      expect(cookie).to include("_kbnf_session=")
+      expires = Time.httpdate(cookie[/expires=([^;]+)/i, 1])
+      expect(expires).to be_within(1.minute).of(14.days.from_now)
+    end
+  end
 end
