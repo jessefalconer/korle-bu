@@ -1,7 +1,6 @@
 %button.btn.btn-primary.responsive-button{data: {"bs-target": "#jump-to-modal", "bs-toggle": "modal"}}
-  %i.fa.fa-magnifying-glass-location
-  %span.main-text Jump To&nbsp;
   %i.fa.fa-bolt
+  %span.main-text Jump To
 .modal.fade{id: "jump-to-modal", tabindex: "-1", "aria-hidden": "true"}
   .modal-dialog
     .modal-content
@@ -11,27 +10,40 @@
       .modal-body.margin-top#assignmentModalBody
         .row.jump-to-body
           .col-12
-            %h5 Enter the custom ID of the resource, jump to its info or item page. You can also quick search for an item or jump to the latest container or shipment.
-          .col-12
-            = form_for :box, url: find_box_path, html: {class: "inline-search-form" } do |f|
+            %h5 Enter the custom ID of the resource, jump to its info or item page. You can also quick search for an item or jump to the latest box, pallet, container or shipment.
+          -# One grid for both rows: the inputs share a column, and each button column is as
+          -# wide as its widest button, so the two Custom ID inputs always match
+          .col-12.id-search-grid
+            = form_for :box, url: find_box_path, html: {class: "inline-search-form id-search-form" } do |f|
               = hidden_field_tag :redirect, request.fullpath
-              = f.number_field :custom_uid, {placeholder: "Custom ID"}
-              = submit_button_value(["fa-box-open", "fa-arrow-right"], "info")
-              = submit_button_value(["fa-box-open", "fa-stethoscope", "fa-arrow-right"], "items")
-          .col-12
-            = form_for :pallet, url: find_pallet_path, html: {class: "inline-search-form" } do |f|
+              = f.number_field :custom_uid, {placeholder: "Custom ID", value: nil}
+              = submit_button_value(["fa-box-open", "Box", "fa-arrow-right"], "info")
+              = submit_button_value(["fa-box-open", "Box's", "fa-stethoscope", "Items", "fa-arrow-right"], "items")
+            = form_for :pallet, url: find_pallet_path, html: {class: "inline-search-form id-search-form" } do |f|
               = hidden_field_tag :redirect, request.fullpath
-              = f.number_field :custom_uid, {placeholder: "Custom ID"}
-              = submit_button_value(["fa-pallet", "fa-arrow-right"], "info")
-              = submit_button_value(["fa-pallet", "fa-stethoscope", "fa-arrow-right"], "items")
+              = f.number_field :custom_uid, {placeholder: "Custom ID", value: nil}
+              = submit_button_value(["fa-pallet", "Pallet", "fa-arrow-right"], "info")
+              = submit_button_value(["fa-pallet", "Pallet's", "fa-stethoscope", "Items", "fa-arrow-right"], "items")
           - unless current_user.receiving_manager?
             .col-12
               = form_with url: items_path, method: :get, html: {class: "inline-search-form text-field" } do |f|
                 = f.text_field :search_string, {placeholder: "Item Search"}
-                = submit_button_value(["fa-magnifying-glass", "fa-stethoscope", "fa-arrow-right"], "")
-            - if (latest_container = Container.order(:created_at).last)
-              .col-12.padding-top
-                = link_button("Latest Container", container_path(latest_container))
-            - if (latest_shipment = Shipment.order(:created_at).last)
-              .col-12.padding-top
-                = link_button("Latest Shipment", shipment_path(latest_shipment))
+                = submit_button_value(["fa-magnifying-glass", "fa-arrow-right"], "")
+          .col-12
+            -# Newest records this user can open. Ordered by id (the primary key index) so the
+            -# lookups stay cheap; the modal is rendered on most pages.
+            - latest_box = Box.accessible_by(current_ability).order(id: :desc).first
+            - latest_pallet = Pallet.accessible_by(current_ability).order(id: :desc).first
+            - unless current_user.receiving_manager?
+              - latest_container = Container.order(id: :desc).first
+              - latest_shipment = Shipment.order(id: :desc).first
+            - if [latest_box, latest_pallet, latest_container, latest_shipment].any?
+              .row.latest-links
+                - if latest_box
+                  .col-6= latest_link("Box", box_path(latest_box), "fa-box-open")
+                - if latest_pallet
+                  .col-6= latest_link("Pallet", pallet_path(latest_pallet), "fa-pallet")
+                - if latest_container
+                  .col-6= latest_link("Container", container_path(latest_container), "fa-truck")
+                - if latest_shipment
+                  .col-6= latest_link("Shipment", shipment_path(latest_shipment), "fa-ship")

@@ -7,7 +7,7 @@
       %li.breadcrumb-item.active= title.titleize
     = render partial: "layouts/jump_to_modal"
     - if can? :create, Pallet
-      = add_button(new_pallet_path, "Pallet", "fa-pallet")
+      = add_button(new_pallet_path, "Pallet")
     - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: title, redirect: pallets_path(display: params[:display]), record: nil }
 

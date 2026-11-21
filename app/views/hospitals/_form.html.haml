@@ -70,12 +70,4 @@
         = f.text_field :point_of_contact_phone, class: "form-control"
     .col-12
       .btn-toolbar.list-toolbar
-        - unless @hospital.new_record?
-          - if @hospital.unpacking_events.any?
-            .mass-action-warning.padding-left-small
-              %h5.text-warning
-                %i.fas.fa-triangle-exclamation
-                This Hospital/Facility/Clinic has unpacked items associated with it and cannot be deleted. Remove them first.
-          - else
-            = delete_button(hospital_path(@hospital), "Are you sure you want to delete #{@hospital.name}? This cannot be reversed")
         = submit_button_responsive("Save")

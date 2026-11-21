@@ -1,0 +1,12 @@
+-# In-app replacement for the browser's confirm() (see src/confirm_dialog.js). A native
+-# <dialog> opens above everything, including an open Bootstrap modal, and handles
+-# Escape and focus itself. The buttons close it with their value as the answer.
+%dialog#confirm-dialog.confirm-dialog{"aria-labelledby": "confirm-dialog-title", "aria-describedby": "confirm-dialog-message"}
+  %form{method: "dialog"}
+    %h5.confirm-dialog-title#confirm-dialog-title Are you sure?
+    %p.confirm-dialog-message#confirm-dialog-message
+    .confirm-dialog-actions
+      %button.btn.btn-cancel{type: "submit", value: "cancel"} Cancel
+      %button.btn.btn-danger.confirm-dialog-accept{type: "submit", value: "confirm"}
+        %i.fa.fa-trash
+        %span.confirm-dialog-accept-label Delete

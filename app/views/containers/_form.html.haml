@@ -1,32 +1,38 @@
 - shipment_id = @container.shipment_id.presence || params[:shipment_id]
 = form_for @container do |f|
-  .form-group
-    = f.label :name
-    -# Assigned on create (see set_defaults in the model); editable afterwards
-    = f.text_field :name, class: "form-control", readonly: f.object.new_record?
-    - if f.object.new_record?
-      .form-text Assigned automatically. You can rename it after it's created.
-  .form-group
-    %label Custom ID
-    = f.number_field :custom_uid, min: 0, class: "form-control", readonly: f.object.new_record?
-  .form-group
-    = f.label :status
-    -# New containers always start In Progress (set_defaults in the model)
-    = f.select :status, options_for_select(current_user.selectable_statuses(Container), @container.status), {}, { class: "form-select", id: "status", disabled: f.object.new_record? }
-    - if f.object.new_record?
-      .form-text New containers start In Progress. You can change it after it's created.
-  .form-group
-    %label Weight (kg)
-    = f.number_field :weight, min: 0, step: :any, class: "form-control"
-  .form-group
-    = f.label :notes
-    = f.text_field :notes, class: "form-control"
-  - if can? :reassign, Container
-    .form-group
-      %label Shipment Assignment
-      = f.select :shipment_id, options_from_collection_for_select(Shipment.accessible_by(current_ability).order(id: :desc), :id, :name, shipment_id), { include_blank: "None" }, { class: "form-select", id: "shipment-assignment"}
+  -# Short fields share rows on wider screens; Notes is last, full width
+  .row.form-fields
+    .col-12.col-sm-6.col-lg-4
+      .form-group
+        = f.label :name
+        -# Assigned on create (see set_defaults in the model); editable afterwards
+        = f.text_field :name, class: "form-control", readonly: f.object.new_record?
+        - if f.object.new_record?
+          .form-text Assigned automatically. You can rename it after it's created.
+    .col-12.col-sm-6.col-lg-4
+      .form-group
+        %label Custom ID
+        = f.number_field :custom_uid, min: 0, class: "form-control", readonly: f.object.new_record?
+    .col-12.col-sm-6.col-lg-4
+      .form-group
+        = f.label :status
+        -# New containers always start In Progress (set_defaults in the model)
+        = f.select :status, options_for_select(current_user.selectable_statuses(Container), @container.status), {}, { class: "form-select", id: "status", disabled: f.object.new_record? }
+        - if f.object.new_record?
+          .form-text New containers start In Progress. You can change it after it's created.
+    .col-12.col-sm-6.col-lg-4
+      .form-group
+        %label Weight (kg)
+        = f.number_field :weight, min: 0, step: :any, class: "form-control"
+    - if can? :reassign, Container
+      .col-12.col-sm-6.col-lg-4
+        .form-group
+          %label Shipment Assignment
+          = f.select :shipment_id, options_from_collection_for_select(Shipment.accessible_by(current_ability).order(id: :desc), :id, :name, shipment_id), { include_blank: "None" }, { class: "form-select", id: "shipment-assignment"}
+    .col-12
+      .form-group
+        = f.label :notes
+        = f.text_area :notes, rows: 3, class: "form-control"
 
   .btn-toolbar.list-toolbar
-    - if @container.persisted?
-      = delete_button(container_path(@container), "Are you sure you want to delete #{@container.name}? This cannot be reversed")
     = submit_button_responsive("Save")

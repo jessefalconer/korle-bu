@@ -32,7 +32,7 @@
                 %th Remaining Quantity
                 %th Box Info
                 %th Items
-                %th.mass-action-cell
+                = render "layouts/select_all_header"
             %tbody
               - @box_items.each do |item|
                 %tr
@@ -63,7 +63,7 @@
                 %th Remaining Quantity
                 %th Pallet Info
                 %th Items
-                %th.mass-action-cell
+                = render "layouts/select_all_header"
             %tbody
               - @pallet_items.each do |item|
                 %tr
@@ -94,7 +94,7 @@
                 %th Remaining Quantity
                 %th Container Info
                 %th Items
-                %th.mass-action-cell
+                = render "layouts/select_all_header"
             %tbody
               - @container_items.each do |item|
                 %tr

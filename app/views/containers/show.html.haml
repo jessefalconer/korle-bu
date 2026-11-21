@@ -8,9 +8,11 @@
     - if can? :manage, Container
       = render partial: "layouts/edit_modal"
     - if can? :read, PackedItem
-      = manage_button(container_container_items_path(@container), "Items", "fa-stethoscope")
+      = manage_button(container_container_items_path(@container), "Items")
     - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: @container.name, redirect: container_path(@container), record: @container}
+    - if can? :destroy, @container
+      = delete_button(container_path(@container), "Are you sure you want to delete #{@container.name}? This cannot be reversed")
 
   .main-content
     .row.detail-layout

@@ -5,7 +5,7 @@
       %th Name
       %th Status
       - if can?(:create, Pallet)
-        %th
+        = render "layouts/select_all_header"
   %tbody#filter-pallets-table
     - sorted_desc(pallets, :custom_uid).each do |pallet|
       %tr.filter-row

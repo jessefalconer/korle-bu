@@ -8,6 +8,8 @@
       %li.breadcrumb-item.active= @category.name
     = render partial: "layouts/jump_to_modal"
     = render partial: "layouts/edit_modal"
+    - if can?(:destroy, @category) && @category.items.none?
+      = delete_button(category_path(@category), "Are you sure you want to delete #{@category.name}? This cannot be reversed")
   .main-content
     .row.detail-card
       .col-12

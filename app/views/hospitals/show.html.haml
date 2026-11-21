@@ -10,6 +10,9 @@
     = render partial: "layouts/edit_modal"
     - if can?(:manage, Shipment) && @unpacking_events.any?
       = render "layouts/export_hospital_modal"
+    -# Hospitals with unpacked items can't be deleted until those are removed
+    - if can?(:destroy, @hospital) && @hospital.unpacking_events.none?
+      = delete_button(hospital_path(@hospital), "Are you sure you want to delete #{@hospital.name}? This cannot be reversed")
   .main-content
     .row.detail-card
       .col-12

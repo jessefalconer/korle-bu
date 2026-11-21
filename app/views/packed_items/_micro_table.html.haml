@@ -5,7 +5,7 @@
       %th Expires
       %th Quantity
       - if can?(:manage, PackedItem)
-        %th
+        = render "layouts/select_all_header"
   %tbody{id: "filter-#{assoc}-table"}
     - sorted_desc(packed_items, :updated_at, preload: :item).each do |pi|
       - path = present(pi).path

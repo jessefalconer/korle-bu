@@ -7,7 +7,7 @@
     = render partial: "layouts/jump_to_modal"
   .main-content
     .row
-      .col-md-4
+      .col-12.col-xl-8
         - unless @box.persisted?
           %h5 Confirm new box information.
         = render partial: "form"

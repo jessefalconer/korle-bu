@@ -33,10 +33,20 @@ module ApplicationHelper
     end
   end
 
+  # Jump To shortcut: "Latest [icon] Pallet" with an arrow at the far end
+  def latest_link(name, path, icon)
+    link_to(path, class: "btn latest-link") do
+      tag.span("Latest") +
+        tag.i("", class: "fa #{icon}") +
+        tag.span(name, class: "latest-link-name") +
+        tag.i("", class: "fa fa-arrow-right latest-link-arrow")
+    end
+  end
+
   def link_refresh_button(path, text, icon)
-    link_to(path, class: "btn btn-primary") do
-      tag.span("#{text} ") +
-        tag.i("", class: "fa #{icon}")
+    link_to(path, class: "btn btn-primary responsive-button") do
+      tag.i("", class: "fa #{icon}") +
+        tag.span(" #{text}", class: "main-text")
     end
   end
 
@@ -48,11 +58,13 @@ module ApplicationHelper
     end
   end
 
-  def submit_button_redirect(text, redirect = "", icon = nil)
+  # trailing_icon: an icon after the label, e.g. an arrow for a button that saves and
+  # then moves on to another page
+  def submit_button_redirect(text, redirect = "", icon = nil, trailing_icon: nil)
     icon ||= "fa-floppy-disk"
     button_tag(type: "submit", name: "redirect", value: redirect, class: "btn btn-primary responsive-button") do
-      tag.i("", class: "fa #{icon}") +
-        tag.span(" #{text}", class: "main-text")
+      content = tag.i("", class: "fa #{icon}") + tag.span(" #{text}", class: "main-text")
+      trailing_icon ? content + tag.i("", class: "fa #{trailing_icon} btn-trailing-icon") : content
     end
   end
 
@@ -65,27 +77,33 @@ module ApplicationHelper
 
   def submit_export
     button_tag(type: "submit", class: "btn btn-primary left") do
-      tag.span("Export ", class: "main-text") +
-        tag.i("", class: "fa fa-file-export")
+      tag.i("", class: "fa fa-file-export") +
+        tag.span(" Export", class: "main-text")
     end
   end
 
+  # Pass icon: nil for a text-only button
   def submit_button(text, classes = "", icon = "fa-floppy-disk")
     button_tag(type: "submit", class: "btn btn-primary #{classes}") do
-      tag.i("", class: "fa #{icon}") +
-        tag.span(" #{text}")
+      label = tag.span(text)
+      icon ? tag.i("", class: "fa #{icon}") + label : label
     end
   end
 
-  def submit_button_value(icons = [], value = "")
-    if value.blank?
-      button_tag(type: "submit", class: "btn btn-primary") do
-        safe_join(icons.map { |icon| tag.i("", class: "fa #{icon}") + tag.span(" ") })
+  # Button for the Jump To searches, built from icons ("fa-…") and words in order, e.g.
+  # ["fa-box-open", "Box's", "fa-stethoscope", "Items", "fa-arrow-right"]. The words
+  # show on desktop only; phones get the icons alone.
+  def submit_button_value(parts = [], value = "")
+    content = parts.map do |part|
+      if part.start_with?("fa-")
+        tag.i("", class: "fa #{part}")
+      else
+        tag.span(part, class: "d-none d-md-inline")
       end
-    else
-      button_tag(type: "submit", class: "btn btn-primary", value: value) do
-        safe_join(icons.map { |icon| tag.i("", class: "fa #{icon}") + tag.span(" ") })
-      end
+    end
+
+    button_tag(type: "submit", class: "btn btn-primary", value: value.presence) do
+      safe_join(content)
     end
   end
 
@@ -103,21 +121,17 @@ module ApplicationHelper
     end
   end
 
-  def add_button(path, text, icon)
+  def add_button(path, text)
     link_to(path, class: "btn btn-primary responsive-button") do
       tag.i("", class: "fa fa-plus") +
-        tag.span(" ") +
-        tag.span("#{text} ", class: "main-text") +
-        tag.i("", class: "fa #{icon}")
+        tag.span(" #{text}", class: "main-text")
     end
   end
 
-  def manage_button(path, text, icon)
+  def manage_button(path, text)
     link_to(path, class: "btn btn-primary responsive-button") do
       tag.i("", class: "fa fa-list-check") +
-        tag.span(" ") +
-        tag.span("#{text} ", class: "main-text") +
-        tag.i("", class: "fa #{icon}")
+        tag.span(" #{text}", class: "main-text")
     end
   end
 

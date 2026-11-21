@@ -16,7 +16,12 @@ export function searchInto(target, { url, data }, onLoaded) {
       if (onLoaded) onLoaded();
     })
     .fail((_xhr, status) => {
-      if (status !== "abort") alert("Search could not be completed.");
+      if (status === "abort") return;
+      // Say so where the results would be, rather than in a browser alert box
+      $target.html(
+        `<p class="search-error" role="alert"><i class="fa fa-triangle-exclamation"></i>` +
+        `<span>Search could not be completed. Check your connection and try again.</span></p>`
+      );
     })
     .always((_data, status) => {
       if (status === "abort") return;

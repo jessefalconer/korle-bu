@@ -1,137 +1,32 @@
 - item ||= @item
 - submit_path ||= "item"
 = form_for item do |f|
-  .card
-    %a.card-header{data: {"bs-toggle": "collapse"}, href: "#general-#{item.id}"}
-      %i.fa.fa-house-chimney-medical
-      General
-      %i.fa.fa-pen-to-square.float-end
-    .collapse.show{id: "general-#{item.id}"}
-      .row.form-row
-        .col-12
-          .form-group
-            = f.label :object, "Base Name*"
-            = f.text_field :object, class: "form-control", placeholder: "Eg: syringe, acetaminophen, heart monitor"
-        .col-12
-          .form-group
-            = f.label :brand, "Brand/Model"
-            = f.text_field :brand, class: "form-control"
-        .col-12
-          .form-group
-            = f.label :standardized_size, "Size"
-            = f.select(:standardized_size, grouped_options_for_select(Item::GROUPED_SIZES, item.standardized_size), { include_blank: "" }, { class: "form-select" })
-
-  .card
-    %a.card-header{data: {"bs-toggle": "collapse"}, href: "#measurement1-#{item.id}"}
-      %i.fa.fa-flask
-      &nbsp;General Measurement
-      %i.fa.fa-pen-to-square.float-end
-    .collapse{class: (item.numerical_1_phrase.present? && "show" ), id: "measurement1-#{item.id}"}
-      .row.form-row
-        .col-6
-          .form-group
-            = f.label :numerical_size_1, "Value"
-            = f.number_field :numerical_size_1, min: 0, step: "any", class: "form-control"
-        .col-6
-          .form-group
-            = f.label :numerical_units_1, "Units"
-            = f.select(:numerical_units_1, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.numerical_units_1), { include_blank: "" }, { class: "form-select" })
-        .col-12
-          .form-group
-            = f.label :numerical_description_1, "Description"
-            = f.text_field :numerical_description_1, class: "form-control", placeholder: "eg: needle, tube, pill"
-
-  .card
-    %a.card-header{data: {"bs-toggle": "collapse"}, href: "#area-#{item.id}"}
-      %i.fa.fa-ruler-combined
-      &nbsp;Area
-      %i.fa.fa-pen-to-square.float-end
-    .collapse{class: (item.area_phrase.present? && "show" ), id: "area-#{item.id}"}
-      .row.form-row
-        .col-6
-          .form-group
-            = f.label :area_1, "Length"
-            = f.number_field :area_1, min: 0, step: "any", class: "form-control"
-        .col-6
-          .form-group
-            = f.label :area_2, "Width"
-            = f.number_field :area_2, min: 0, step: "any", class: "form-control"
-        .col-6
-          .form-group
-            = f.label :area_units, "Units"
-            = f.select(:area_units, options_for_select(Item::LENGTHS, item.area_units), { include_blank: "" }, { class: "form-select" })
-        .col-6
-          .form-group
-            = f.label :area_description, "Description"
-            = f.text_field :area_description, class: "form-control", placeholder: "Eg: bandage, gauze, foil"
-
-  .card
-    %a.card-header{data: {"bs-toggle": "collapse"}, href: "#range-#{item.id}"}
-      %i.fa.fa-left-right
-      Range
-      %i.fa.fa-pen-to-square.float-end
-    .collapse{class: (item.area_phrase.present? && "show" ), id: "range-#{item.id}"}
-      .row.form-row
-        .col-6
-          .form-group
-            = f.label :range_1, "Minimum"
-            = f.number_field :range_1, min: 0, step: "any", class: "form-control"
-        .col-6
-          .form-group
-            = f.label :range_2, "Maximum"
-            = f.number_field :range_2, min: 0, step: "any", class: "form-control"
-        .col-6
-          .form-group
-            = f.label :range_units, "Units"
-            = f.select(:range_units, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.range_units), { include_blank: "" }, { class: "form-select" })
-        .col-6
-          .form-group
-            = f.label :range_description, "Description"
-            = f.text_field :range_description, class: "form-control", placeholder: "Eg: 1-5ml Syringes"
-
-  .card
-    %a.card-header{data: {"bs-toggle": "collapse"}, href: "#measurement2-#{item.id}"}
-      %i.fa.fa-flask
-      &nbsp;Extra Measurement
-      %i.fa.fa-pen-to-square.float-end
-    .collapse{class: (item.numerical_2_phrase.present? && "show" ), id: "measurement2-#{item.id}"}
-      .row.form-row
-        .col-6
-          .form-group
-            = f.label :numerical_size_2, "Value"
-            = f.number_field :numerical_size_2, min: 0, step: "any", class: "form-control"
-        .col-6
-          .form-group
-            = f.label :numerical_units_2, "Units"
-            = f.select(:numerical_units_2, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.numerical_units_2), { include_blank: "" }, { class: "form-select" })
-        .col-12
-          .form-group
-            = f.label :numerical_description_2, "Description"
-            = f.text_field :numerical_description_2, class: "form-control", placeholder: "Eg: vial, canister, blade"
-
-  .card
-    %a.card-header{data: {"bs-toggle": "collapse"}, href: "#notes-#{item.id}"}
-      %i.fa.fa-clipboard-list
-      Notes
-      %i.fa.fa-pen-to-square.float-end
-    .collapse{class: (item.notes.present? && "show"), id: "notes-#{item.id}"}
-      .row.form-row
-        .col-12
-          .form-group
-            = f.label :notes
-            = f.text_field :notes, class: "form-control"
-
-  .row.select-fields
-    .col-12.col-sm-6
+  -# The fields most items use, together in the open; the rarely used ones are in the
+  -# Additional Measurement Fields drawer at the end
+  - if submit_path == "reconcile" && item.persisted?
+    .row.reconcile-start
+      .col-12
+        = link_to reconcile_start_path(item), class: "btn latest-link latest-link-primary" do
+          %i.fa.fa-down-left-and-up-right-to-center
+          %span Start Reconcile
+          %i.fa.fa-arrow-right.latest-link-arrow
+  .row.item-fields
+    .col-12
       .form-group
-        = f.label :category
-        = f.select(:category_id, options_from_collection_for_select(Category.order(:name), :id, :name, item.category_id), { include_blank: "" }, { class: "form-select" })
-    .col-12.col-sm-6
+        = f.label :object, "Base Name*"
+        = f.text_field :object, class: "form-control", placeholder: "Eg: syringe, acetaminophen, heart monitor"
+    .col-12.col-md-6
+      .form-group
+        = f.label :brand, "Brand/Model"
+        = f.text_field :brand, class: "form-control"
+    .col-12.col-md-6
       .form-group
         = f.label :unit_weight, "Unit Weight (kg)"
         = f.number_field :unit_weight, step: :any, class: "form-control"
-
-  .row.select-fields
+    .col-12
+      .form-group
+        = f.label :category
+        = f.select(:category_id, options_from_collection_for_select(Category.order(:name), :id, :name, item.category_id), { include_blank: "" }, { class: "form-select" })
     .col-6
       .form-group
         = f.label :flagged, "Flag for Review"
@@ -141,26 +36,121 @@
         .form-group
           = f.label :verified
           = f.select(:verified, options_for_select([true, false], item.verified), {}, { class: "form-select" })
+    .col-12
+      .form-group
+        = f.label :notes
+        = f.text_area :notes, rows: 3, class: "form-control"
+
+  -# The rarely used fields, at the end of the form in one drawer of sections. It opens
+  -# when the item has any of them filled in.
+  - has_measurements = [item.standardized_size, item.numerical_1_phrase, item.area_phrase, item.range_phrase, item.numerical_2_phrase].any?(&:present?)
+  .card
+    %a.card-header{data: {"bs-toggle": "collapse"}, href: "#measurements-#{item.id}"}
+      %i.fa.fa-ruler
+      Additional Measurement Fields
+      %i.fa.fa-pen-to-square.float-end
+    .collapse{class: (has_measurements && "show"), id: "measurements-#{item.id}"}
+      .measure-section
+        %h6.measure-section-title
+          %i.fa.fa-shirt
+          Clothing
+        .row.form-row
+          .col-12
+            .form-group
+              = f.label :standardized_size, "Size"
+              = f.select(:standardized_size, grouped_options_for_select(Item::GROUPED_SIZES, item.standardized_size), { include_blank: "" }, { class: "form-select" })
+
+      .measure-section
+        %h6.measure-section-title
+          %i.fa.fa-flask
+          General Measurement
+        .row.form-row
+          .col-6.col-md-3
+            .form-group
+              = f.label :numerical_size_1, "Value"
+              = f.number_field :numerical_size_1, min: 0, step: "any", class: "form-control"
+          .col-6.col-md-3
+            .form-group
+              = f.label :numerical_units_1, "Units"
+              = f.select(:numerical_units_1, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.numerical_units_1), { include_blank: "" }, { class: "form-select" })
+          .col-12.col-md-6
+            .form-group
+              = f.label :numerical_description_1, "Description"
+              = f.text_field :numerical_description_1, class: "form-control", placeholder: "eg: needle, tube, pill"
+
+      .measure-section
+        %h6.measure-section-title
+          %i.fa.fa-ruler-combined
+          Area
+        .row.form-row
+          .col-6.col-md-3
+            .form-group
+              = f.label :area_1, "Length"
+              = f.number_field :area_1, min: 0, step: "any", class: "form-control"
+          .col-6.col-md-3
+            .form-group
+              = f.label :area_2, "Width"
+              = f.number_field :area_2, min: 0, step: "any", class: "form-control"
+          .col-6.col-md-3
+            .form-group
+              = f.label :area_units, "Units"
+              = f.select(:area_units, options_for_select(Item::LENGTHS, item.area_units), { include_blank: "" }, { class: "form-select" })
+          .col-6.col-md-3
+            .form-group
+              = f.label :area_description, "Description"
+              = f.text_field :area_description, class: "form-control", placeholder: "Eg: bandage, gauze, foil"
+
+      .measure-section
+        %h6.measure-section-title
+          %i.fa.fa-left-right
+          Range
+        .row.form-row
+          .col-6.col-md-3
+            .form-group
+              = f.label :range_1, "Minimum"
+              = f.number_field :range_1, min: 0, step: "any", class: "form-control"
+          .col-6.col-md-3
+            .form-group
+              = f.label :range_2, "Maximum"
+              = f.number_field :range_2, min: 0, step: "any", class: "form-control"
+          .col-6.col-md-3
+            .form-group
+              = f.label :range_units, "Units"
+              = f.select(:range_units, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.range_units), { include_blank: "" }, { class: "form-select" })
+          .col-6.col-md-3
+            .form-group
+              = f.label :range_description, "Description"
+              = f.text_field :range_description, class: "form-control", placeholder: "Eg: 1-5ml Syringes"
+
+      .measure-section
+        %h6.measure-section-title
+          %i.fa.fa-flask
+          Extra Measurement
+        .row.form-row
+          .col-6.col-md-3
+            .form-group
+              = f.label :numerical_size_2, "Value"
+              = f.number_field :numerical_size_2, min: 0, step: "any", class: "form-control"
+          .col-6.col-md-3
+            .form-group
+              = f.label :numerical_units_2, "Units"
+              = f.select(:numerical_units_2, grouped_options_for_select(Item::GROUPED_MEASUREMENTS, item.numerical_units_2), { include_blank: "" }, { class: "form-select" })
+          .col-12.col-md-6
+            .form-group
+              = f.label :numerical_description_2, "Description"
+              = f.text_field :numerical_description_2, class: "form-control", placeholder: "Eg: vial, canister, blade"
 
   - if submit_path == "item"
     .row
       .col-12
         .btn-toolbar.list-toolbar
-          - if item.persisted?
-            = delete_button(item_path(item), "Are you sure you want to delete #{item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
           = submit_button_responsive("Save")
   - elsif submit_path == "reconcile" && redirect
     .row.padding-top
       .col-12
-        .btn-toolbar.list-toolbar.text-center
+        -# Equal-width actions; the modal's × closes without saving
+        .reconcile-actions
           - if item.persisted?
             = delete_button(item_path(item, redirect: redirect), "Are you sure you want to delete #{item.generated_name}? This will also delete any items in boxes, pallets, containers and cannot be reversed.")
           = submit_button_redirect("Save and Exit", redirect)
-          %button.btn.btn-warning{data: {"bs-dismiss": "modal"}, type: "button"}
-            %i.fa.fa-xmark
-            Cancel
-        .btn-toolbar.list-toolbar.text-center
-          = submit_button_redirect("Save and Reconcile", "reconcile_start_path", "fa-down-left-and-up-right-to-center")
-          = link_to reconcile_start_path(item), class: "btn btn-info" do
-            %i.fa.fa-down-left-and-up-right-to-center
-            Start Reconcile
+          = submit_button_redirect("Save and Start Reconcile", "reconcile_start_path", "fa-down-left-and-up-right-to-center", trailing_icon: "fa-arrow-right")

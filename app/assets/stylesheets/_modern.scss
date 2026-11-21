@@ -178,10 +178,17 @@ a:focus-visible,
   > a.btn,
   > form { margin-bottom: 6px; }
 
-  // Keep the icon toolbar on one row on phones
+  // Phones: compact toolbar buttons that keep their labels (icons alone were too
+  // ambiguous). Still 36px tall for a comfortable tap, and they wrap to a second row.
   @media (max-width: 767px) {
     > .btn:not(.btn-xs):not(.btn-sm),
-    > a.btn:not(.btn-xs):not(.btn-sm) { padding-left: 11px; padding-right: 11px; }
+    > a.btn:not(.btn-xs):not(.btn-sm),
+    > form > .btn {
+      min-height: 36px;
+      padding: 0 10px;
+      gap: 5px;
+      font-size: 13px;
+    }
   }
 }
 
@@ -245,6 +252,10 @@ $control-height: 40px;
   // Bootstrap 3 hides these with `display: none`; keep that winning over inline-flex
   &.hidden { display: none !important; }
 }
+
+// The selected-count slot in Mass Action / Duplicate / Unpack All is empty until items are
+// ticked; hide it then, or the flex gap leaves extra space after the icon
+.btn .mass-action-count:empty { display: none; }
 
 // Solid button: a flat fill with a hairline darker edge and a faint top
 // highlight, so it reads as raised without Bootstrap 3's heavy gradients.
@@ -533,14 +544,66 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 
     > .nav-item { flex: 0 0 auto; }
     .nav-link { white-space: nowrap; }
+
+    // Edge fades with a chevron hint that more tabs are off-screen. They are sticky
+    // pseudo-elements, so they stay pinned to the edges while the row scrolls; the
+    // tab-scroll script turns each on only when there is more to see that way.
+    &::before,
+    &::after {
+      content: "";
+      display: block;
+      position: sticky;
+      z-index: 1;
+      flex: 0 0 52px;
+      align-self: stretch;
+      margin: -4px 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s ease;
+      background-repeat: no-repeat;
+      background-size: 10px 10px, 100% 100%;
+    }
+
+    &::before {
+      order: -1;
+      left: -4px;
+      margin-right: -52px; // with margin-left: -4px, cancels its 52px width plus the 4px gap
+      margin-left: -4px;
+      border-radius: $radius 0 0 $radius;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M6.5 1.5 3 5l3.5 3.5' fill='none' stroke='%236b7781' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+                        linear-gradient(to left, rgba($track, 0), $track 55%);
+      background-position: left 10px center, 0 0;
+    }
+
+    &::after {
+      right: -4px;
+      margin-left: -56px;
+      margin-right: -4px;
+      border-radius: 0 $radius $radius 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3.5 1.5 7 5 3.5 8.5' fill='none' stroke='%236b7781' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),
+                        linear-gradient(to right, rgba($track, 0), $track 55%);
+      background-position: right 10px center, 0 0;
+    }
+
+    &.more-start::before,
+    &.more-end::after { opacity: 1; }
   }
 }
 
 // ---------------------------------------------------------------- Labels / badges
+// Counters: never narrower than they are tall, so 1-2 digits make a circle and
+// longer values grow into a pill
 .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.75em;
+  height: 1.75em;
+  padding: 0 .5em;
   border-radius: 999px;
   font-weight: 600;
-  padding: .25em .6em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 // ---------------------------------------------------------------- Modals
@@ -634,8 +697,10 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
   h5 { margin: 4px 0; }
 }
 
-// The item form is built from panels, which need their own inset
-.modal[id^="item-"] .modal-body { padding-left: 12px; padding-right: 12px; }
+// A form placed straight in a modal body (the reconcile lists' item modal): its field
+// rows keep their 15px column padding, so a drawer card in the same form is inset by
+// the same amount to line up with the fields
+.modal-body > form > .card { margin-left: 15px; margin-right: 15px; }
 
 // Jump To: inputs grow to fill the row, buttons stay compact
 .jump-to-body {
@@ -662,7 +727,9 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
       border-radius: $radius-sm;
     }
 
-    .btn { flex: 0 0 auto; }
+    // _overrides.scss makes these buttons inline-block, which would drop the .btn
+    // flex layout and the gap between icons and label
+    .btn { display: inline-flex; flex: 0 0 auto; }
   }
 
   .padding-top { padding-top: 6px; }
@@ -708,9 +775,6 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 
   .modal-header { padding-top: 8px; }
 
-  // Header toolbars hide button text on phones; inside a sheet there is room for it
-  .modal .responsive-button span.main-text { display: inline; }
-
   // Primary actions span the sheet so they are easy to hit with a thumb
   .modal-body {
     .col-12:last-child > .btn.float-end,
@@ -742,8 +806,11 @@ label { color: $ink; font-weight: 500; margin-bottom: 4px; }
 
   .modal-content { max-height: 88vh; }
 
-  #add-hospital-modal .modal-dialog,
-  .modal[id^="item-"] .modal-dialog { width: 760px; }
+  #add-hospital-modal .modal-dialog { width: 760px; }
+
+  // The reconcile item modal: wide enough for its three equal action buttons, the
+  // longest being "Save and Start Reconcile →"
+  .modal[id^="item-"] .modal-dialog { width: 840px; max-width: calc(100vw - 32px); }
 
   .modal-body { padding: 20px 9px 22px; }
 }
@@ -854,6 +921,13 @@ footer .flash {
   margin-right: 0;
 }
 
+// …except a field grid (.form-fields), whose columns sit side by side: pull it out by
+// the column padding so the outer fields line up with the card's own 16px padding
+.main-content > .row > [class*="col-"] > form:not(.inline-search-form) > .row.form-fields {
+  margin-left: -15px;
+  margin-right: -15px;
+}
+
 // The name / ID / status block at the top of each detail page
 .row.detail-card {
   margin: 0 0 16px;
@@ -900,29 +974,16 @@ footer .flash {
   padding: 10px;
 }
 
-// The item form's closing fields (category, weight, flags) sit below its panels.
-// On the standalone New Item page the two rows join into one card, flush with the panels.
-.main-content > .row > form > .row.select-fields {
-  margin: 0;
+// Item form: the fields that sit outside the Measurement Fields drawer (name, brand,
+// weight, category above it; flags and notes below). On the New Item page each block is
+// a white card; 1px + the 15px column padding puts the fields 16px in from its edge.
+.main-content > .row > form > .row.item-fields {
+  margin: 0 0 16px;
+  padding: 14px 1px 0;
   background: $surface;
   border: 1px solid $line;
-  border-top: 0;
-  border-bottom: 0;
-  padding-top: 14px;
-
-  &:first-of-type,
-  &:not(.row.select-fields + .row.select-fields) {
-    border-top: 1px solid $line;
-    border-radius: $radius $radius 0 0;
-  }
-
-  & + .row.select-fields {
-    padding-top: 0;
-    border-bottom: 1px solid $line;
-    border-radius: 0 0 $radius $radius;
-    box-shadow: $shadow-sm;
-    margin-bottom: 16px;
-  }
+  border-radius: $radius;
+  box-shadow: $shadow-sm;
 }
 
 // Unpacking history entries inside an open drawer
@@ -1095,14 +1156,6 @@ tr td { transition: background-color .15s ease, border-color .15s ease; }
 .modal-body .collapse .row.form-row,
 .modal-body .collapsing .row.form-row { padding: 14px 16px 0; }
 
-// Category / Weight / Flags card on the New Item page
-.main-content > .row > form > .row.select-fields {
-  padding-left: 1px;
-  padding-right: 1px;
-  padding-top: 14px;
-
-  & + .row.select-fields { padding-top: 0; }
-}
 
 // Open drawers
 .row.inline-add-item {
@@ -1267,14 +1320,6 @@ h4 > .fa, h5 > .fa, h6 > .fa,
 label > .fa,
 .drawer-caret { font-size: .8em; }
 
-// On phones the header toolbar buttons show icons only (their text is hidden),
-// so the icons set the button's width: keep them full size for an easy tap.
-@media (max-width: 767px) {
-  .header > .btn > .fa,
-  .responsive-button > .fa { font-size: .95em; }
-
-  .modal .responsive-button > .fa { font-size: .8em; }
-}
 
 // ---------------------------------------------------------------- Detail layout
 // Box / pallet / container / shipment pages: the detail card on the left and the
@@ -1347,5 +1392,243 @@ input[type="date"].form-control {
   > .row.align-items-end:last-child:has(> [class*="col-"]:last-child > .form-group:last-child),
   > form > .row.align-items-end:last-child:has(> [class*="col-"]:last-child > .form-group:last-child) {
     margin-bottom: 0;
+  }
+}
+
+// A field with its submit button at the end of the row (Notes + Unpack). The button's
+// column sits level with the input; the row's own bottom margin is the field's.
+.inline-submit-row {
+  margin-bottom: 14px;
+
+  // (> * also covers the plain .col; the old theme pads nested form-groups sideways)
+  > * > .form-group { margin-bottom: 0; padding-left: 0; padding-right: 0; }
+}
+
+// Drawer footer: an option (checkbox) on the left, the actions grouped on the right
+.drawer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+}
+
+.drawer-actions-buttons {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+// Jump To: "Latest [icon] Box  →" shortcuts in a two-column grid. Quiet buttons, so
+// the ID search buttons above stay the primary actions; the arrow sits at the far end.
+.latest-links {
+  --bs-gutter-x: 8px;
+  row-gap: 8px;
+  margin-top: 4px;
+}
+
+.btn.latest-link {
+  @include btn-quiet($ink, $brand-dark);
+  position: relative;
+  width: 100%;
+  justify-content: center;
+  padding-left: 32px;
+  padding-right: 32px; // room for the arrow, and the same on the left so the label centres
+
+  > .fa { color: $brand; }
+
+  // Pinned to the right edge, outside the centred label
+  > .latest-link-arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $muted;
+    transition: transform .15s ease;
+  }
+
+  &:hover > .latest-link-arrow { transform: translate(2px, -50%); color: $brand; }
+
+  // Phones: "Latest [icon] →"; the icon names the record, so the word is dropped
+  @media (max-width: 767px) {
+    > .latest-link-name { display: none; }
+  }
+}
+
+// Jump To box / pallet ID rows share one grid (the forms are display: contents, so
+// their fields become the grid's cells). Inputs fill the first column; each button
+// column is as wide as its widest button, so both inputs end up the same width.
+.jump-to-body .id-search-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 10px 6px;
+  margin-bottom: 10px;
+
+  > .id-search-form { display: contents; }
+}
+
+// Mass-action checkbox cells: the whole cell toggles its checkbox (mass_actions.js)
+.mass-action-cell:has(input[type="checkbox"]) { cursor: pointer; }
+
+// Box form: "Pallet  or  Container" in one row from tablet width up. The "or" sits
+// level with the selects; on phones the fields stack with the divider between.
+@media (min-width: 576px) {
+  .assignment-choice {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: end;
+    column-gap: 14px;
+
+    > .or-divider {
+      height: $control-height;
+      margin: 0 0 14px; // the selects' form-group margin, so it centres on them
+
+      &::before,
+      &::after { flex: 0 0 10px; }
+    }
+  }
+}
+
+// ---------------------------------------------------------------- Confirm dialog
+// In-app confirm (layouts/_confirm_dialog, src/confirm_dialog.js): a card on desktop,
+// a bottom sheet on phones, like the other modals.
+.confirm-dialog {
+  width: min(420px, calc(100vw - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: $surface;
+  color: $ink;
+  box-shadow: $shadow-lg;
+
+  &::backdrop { background: rgba(16, 24, 40, .45); }
+
+  &[open] { animation: confirm-in .18s $ease-out; }
+
+  form { padding: 20px 20px 16px; }
+
+  .confirm-dialog-title {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: 600;
+  }
+
+  .confirm-dialog-message {
+    margin: 0 0 20px;
+    color: $muted;
+    line-height: 1.5;
+  }
+
+  .confirm-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .btn-cancel { @include btn-quiet($ink); }
+
+  @media (max-width: 767px) {
+    width: 100%;
+    max-width: none;
+    margin: auto 0 0;
+    border-radius: 16px 16px 0 0;
+
+    &[open] { animation-name: confirm-sheet-in; }
+
+    form { padding: 20px 16px calc(16px + env(safe-area-inset-bottom)); }
+
+    // Thumb-sized buttons sharing the width; the action on the right
+    .confirm-dialog-actions > .btn { flex: 1 1 0; min-height: 44px; }
+  }
+}
+
+@keyframes confirm-in {
+  from { opacity: 0; transform: translateY(8px) scale(.98); }
+}
+
+@keyframes confirm-sheet-in {
+  from { transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confirm-dialog[open] { animation: none; }
+}
+
+// A live search that failed (src/search_request.js), shown where the results would be
+.search-error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  border: 1px solid #f1c9c9;
+  border-radius: $radius-sm;
+  background: #fdf0f0;
+  color: #a92c2c;
+  font-weight: 500;
+}
+
+// Item form "Measurements" drawer: one card holding four sections (General
+// Measurement, Area, Range, Extra Measurement), each under a small icon heading and
+// separated by a hairline
+.measure-section {
+  & + & { border-top: 1px solid $line; }
+
+  .measure-section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 14px 16px 0;
+    color: $ink;
+    font-size: 13px;
+    font-weight: 600;
+
+    > .fa { width: 1.25em; color: $brand; text-align: center; }
+  }
+
+  // (.card scope: outranks the drawer's own 14px top padding for form rows)
+  .card & > .row.form-row { padding-top: 10px; }
+}
+
+// Reconcile item modal: "Start Reconcile →" leads the form, and the actions at the
+// bottom (Delete, Save and Exit, Save and Start Reconcile) share one row in equal widths.
+// Phones stack them, full width.
+.reconcile-start { margin-bottom: 14px; }
+
+.reconcile-actions {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 8px;
+
+  > .btn { width: 100%; margin: 0; }
+
+  @media (max-width: 575px) { grid-auto-flow: row; }
+}
+
+// Solid blue version of the "label →" button (Start Reconcile in the reconcile modal)
+.btn.latest-link.latest-link-primary {
+  @include btn-solid($brand, #00648a, $brand-dark);
+
+  > .fa,
+  > .latest-link-arrow { color: #fff; }
+
+  &:hover > .latest-link-arrow { color: #fff; }
+}
+
+// A button with a trailing icon (submit_button_redirect's trailing_icon:) pins it to the
+// right edge, like the "Start Reconcile →" button; equal side padding keeps the label
+// centred
+.btn:has(> .btn-trailing-icon) {
+  position: relative;
+  padding-left: 32px;
+  padding-right: 32px;
+
+  > .btn-trailing-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
   }
 }

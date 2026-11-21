@@ -10,10 +10,12 @@
     = render partial: "layouts/edit_modal"
     - if current_user == @user
       = link_to edit_password_path, class: "btn btn-primary" do
-        %span Change Password
         %i.fa.fa-user-shield
+        %span Change Password
     - elsif can?(:change_password, @user)
       = render partial: "layouts/change_password_modal"
+    - if can?(:destroy, @user) && current_user != @user && !@user.created_records?
+      = delete_button(user_path(@user), "Are you sure you want to delete #{@user.name}? This cannot be reversed")
 
   .main-content
     .row.detail-card

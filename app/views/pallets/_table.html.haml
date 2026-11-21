@@ -9,7 +9,7 @@
       %th.d-none.d-sm-table-cell Receiver
       %th.d-none.d-sm-table-cell Created At
       - if can?(:create, Pallet)
-        %th.mass-action-cell
+        = render "layouts/select_all_header"
   %tbody
     - pallets.each do |pallet|
       %tr

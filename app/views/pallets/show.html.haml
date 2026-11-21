@@ -8,11 +8,13 @@
     - if can? :manage, Pallet
       = render partial: "layouts/edit_modal"
     - if can? :read, PackedItem
-      = manage_button(pallet_pallet_items_path(@pallet), "Items", "fa-stethoscope")
+      = manage_button(pallet_pallet_items_path(@pallet), "Items")
     - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: @pallet.name, redirect: pallet_path(@pallet), record: @pallet}
     - if current_user.admin? || current_user.receiving_manager?
       = render partial: "layouts/pallets_unpack_all_modal"
+    - if can? :destroy, @pallet
+      = delete_button(pallet_path(@pallet), "Are you sure you want to delete #{@pallet.name}? This cannot be reversed")
 
   .main-content
     .row.detail-layout

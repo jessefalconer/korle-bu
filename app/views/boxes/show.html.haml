@@ -8,12 +8,14 @@
     - if can? :manage, Box
       = render partial: "layouts/edit_modal"
     - if can?(:read, PackedItem) || can?(:unpack_all, Box)
-      = manage_button(box_box_items_path(@box), "Items", "fa-stethoscope")
+      = manage_button(box_box_items_path(@box), "Items")
     - if can?(:manage, PackedItem)
       = render partial: "layouts/mass_action_modal", locals: {name: @box.name, redirect: box_path(@box), record: @box}
       = render partial: "layouts/duplicate_modal"
     - if current_user.admin? || current_user.receiving_manager?
       = render partial: "layouts/boxes_unpack_all_modal"
+    - if can? :destroy, @box
+      = delete_button(box_path(@box), "Are you sure you want to delete #{@box.name}? This cannot be reversed")
 
   .main-content
     .row.detail-layout

@@ -32,9 +32,11 @@
           = f.label :expires
           = f.date_field :expiry_date, value: pi.expiry_date&.strftime("%Y-%m-%d"), class: "form-control", id: "expiry-#{pi.id}"
       .col-12
-        %label.checkbox-option.float-start
-          = f.check_box :show_id, value: pi.show_id, id: "show-id-#{pi.id}"
-          Generate ID?
-        .btn-toolbar.list-toolbar
-          = submit_button_responsive("Update", "float-end")
-          = delete_button(path, "Are you sure you want to delete #{pi.generated_name}?", "float-end")
+        -# Checkbox on the left; Delete then Update on the right
+        .drawer-actions
+          %label.checkbox-option
+            = f.check_box :show_id, value: pi.show_id, id: "show-id-#{pi.id}"
+            Generate ID?
+          .drawer-actions-buttons
+            = delete_button(path, "Are you sure you want to delete #{pi.generated_name}?")
+            = submit_button_responsive("Update")

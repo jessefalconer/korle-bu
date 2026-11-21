@@ -8,6 +8,8 @@
       %li.breadcrumb-item.active= @warehouse.name
     = render partial: "layouts/jump_to_modal"
     = render partial: "layouts/edit_modal"
+    - if can?(:destroy, @warehouse) && !@warehouse.associations?
+      = delete_button(warehouse_path(@warehouse), "Are you sure you want to delete #{@warehouse.name}? This cannot be reversed")
   .main-content
     .row.detail-card
       .col-12

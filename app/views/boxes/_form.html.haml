@@ -2,33 +2,42 @@
 - container_id = @box.container_id.presence || params[:container_id]
 - pallet_collection = @box.container.present? ? @box.container.pallets.accessible_by(current_ability) : Pallet.accessible_by(current_ability)
 = form_for @box do |f|
-  .form-group
-    = f.label :name
-    -# Assigned on create (see set_defaults in the model); editable afterwards
-    = f.text_field :name, class: "form-control", readonly: f.object.new_record?
-    - if f.object.new_record?
-      .form-text Assigned automatically. You can rename it after it's created.
-  .form-group
-    %label Custom ID
-    = f.number_field :custom_uid, min: 0, class: "form-control", readonly: f.object.new_record?
-  .form-group
-    = f.label :status
-    = f.select :status, options_for_select(current_user.selectable_statuses(Box), @box.status), {}, { class: "form-select" }
-  .form-group
-    %label Weight (kg)
-    = f.number_field :weight, min: 0, step: :any, class: "form-control"
-  .form-group
-    = f.label :notes
-    = f.text_field :notes, class: "form-control"
-  .form-group
-    %label Pallet Assignment
-    = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(id: :desc), :id, :name, pallet_id), { include_blank: "None" }, { class: "form-select", id: "pallet-assignment" }
-  %p.or-divider or
-  .form-group
-    %label Container Assignment
-    = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(id: :desc), :id, :name, container_id), { include_blank: "None" }, { class: "form-select", id: "container-assignment" }
+  -# Short fields share rows on wider screens; Notes is last, full width
+  .row.form-fields
+    .col-12.col-sm-6.col-lg-3
+      .form-group
+        = f.label :name
+        -# Assigned on create (see set_defaults in the model); editable afterwards
+        = f.text_field :name, class: "form-control", readonly: f.object.new_record?
+        - if f.object.new_record?
+          .form-text Assigned automatically. You can rename it after it's created.
+    .col-12.col-sm-6.col-lg-3
+      .form-group
+        %label Custom ID
+        = f.number_field :custom_uid, min: 0, class: "form-control", readonly: f.object.new_record?
+    .col-12.col-sm-6.col-lg-3
+      .form-group
+        = f.label :status
+        = f.select :status, options_for_select(current_user.selectable_statuses(Box), @box.status), {}, { class: "form-select" }
+    .col-12.col-sm-6.col-lg-3
+      .form-group
+        %label Weight (kg)
+        = f.number_field :weight, min: 0, step: :any, class: "form-control"
+    -# A box goes on a pallet or straight into a container: side by side with "or"
+    -# between them on wider screens, stacked on phones
+    .col-12
+      .assignment-choice
+        .form-group
+          %label Pallet Assignment
+          = f.select :pallet_id, options_from_collection_for_select(pallet_collection.order(id: :desc), :id, :name, pallet_id), { include_blank: "None" }, { class: "form-select", id: "pallet-assignment" }
+        %p.or-divider or
+        .form-group
+          %label Container Assignment
+          = f.select :container_id, options_from_collection_for_select(Container.accessible_by(current_ability).order(id: :desc), :id, :name, container_id), { include_blank: "None" }, { class: "form-select", id: "container-assignment" }
+    .col-12
+      .form-group
+        = f.label :notes
+        = f.text_area :notes, rows: 3, class: "form-control"
 
   .btn-toolbar.list-toolbar
-    - if @box.persisted?
-      = delete_button(box_path(@box), "Are you sure you want to delete #{@box.name}? This cannot be reversed")
     = submit_button_responsive("Save")
