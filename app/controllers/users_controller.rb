@@ -90,11 +90,11 @@ class UsersController < ApplicationController
     can?(:alter_roles, User) || masquerading_self?
   end
 
-  # Only Admins may hand out the Admin role (masqueraders testing on their own
-  # account excepted, as in can_alter_roles?).
+  # Only Admins may hand out the Admin role. Masqueraders can switch their own
+  # role to test the app, but not to Admin.
   def forbid_admin_role_grant
     return unless params.dig(:user, :role) == "Admin" && can_alter_roles?
-    return if current_user.admin? || masquerading_self?
+    return if current_user.admin?
 
     raise CanCan::AccessDenied
   end

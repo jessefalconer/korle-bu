@@ -90,7 +90,7 @@ class BoxesController < ApplicationController
       path = params[:button] == "info" ? box_path(box) : box_box_items_path(box)
       redirect_to path
     else
-      redirect_to params[:redirect],
+      redirect_to return_path(boxes_path),
                   flash: { error: "Box with custom ID #{box_params[:custom_uid]} not found." }
     end
   end

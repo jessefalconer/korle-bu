@@ -44,6 +44,21 @@ class ApplicationController < ActionController::Base
     redirect_to edit_password_path, flash: { error: "Please choose a new password before continuing." }
   end
 
+  # Forms send the page to come back to as params[:redirect] (a path, or a
+  # full URL from the referrer). Follow it only if it stays on this site;
+  # another host or anything malformed gets the fallback instead.
+  def return_path(fallback)
+    uri = URI.parse(params[:redirect].to_s)
+    return fallback if uri.host && uri.host != request.host
+
+    path = uri.path.to_s
+    return fallback unless path.start_with?("/") && !path.start_with?("//")
+
+    uri.query ? "#{path}?#{uri.query}" : path
+  rescue URI::InvalidURIError
+    fallback
+  end
+
   # Index pages accept ?display=<scope> to filter. Only names in `allowed` are
   # ever called, and the name returned comes from that list, never the request.
   def display_scope(allowed)

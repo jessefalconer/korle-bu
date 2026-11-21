@@ -38,6 +38,7 @@ class Ability
       can :reconcile, Item
     when "Receiving Manager"
       can %i[read update], User, id: user.id
+      cannot :index, User
       can :read, Item
       can :read, Category
       can :manage, Hospital, warehouse: user.warehouse

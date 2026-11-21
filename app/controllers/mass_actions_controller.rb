@@ -27,7 +27,7 @@ class MassActionsController < ApplicationController
       end
     end
 
-    redirect_to params[:redirect], flash: { success: "Records reassigned." }
+    redirect_to return_path(index_path), flash: { success: "Records reassigned." }
   end
 
   private
@@ -64,7 +64,7 @@ class MassActionsController < ApplicationController
   def redirect_if_invalid
     return if params[:status].present? || params[:box_id].present? || params[:pallet_id].present? || params[:container_id].present?
 
-    redirect_to params[:redirect], flash: { error: "No valid assignment destination selected." }
+    redirect_to return_path(index_path), flash: { error: "No valid assignment destination selected." }
   end
 
   def build_current_location

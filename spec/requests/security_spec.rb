@@ -74,6 +74,38 @@ describe "Request parameter safety", type: :request do
 
       expect(tester.reload.role).to eq("Receiving Manager")
     end
+
+    it "does not let a masquerader switch themselves to Admin" do
+      tester = create :user, status: "Active", role: "Volunteer", masquerader: true
+      sign_in tester
+      patch user_path(tester), params: { user: { role: "Admin" } }
+
+      expect(tester.reload.role).to eq("Volunteer")
+    end
+  end
+
+  describe "redirect parameters" do
+    let(:admin) { create :user, status: "Active", role: "Admin" }
+
+    before { sign_in admin }
+
+    it "follows a path on this site" do
+      post find_box_path, params: { box: { custom_uid: "nope" }, redirect: "/boxes?display=staged" }
+
+      expect(response).to redirect_to("/boxes?display=staged")
+    end
+
+    it "ignores another host and uses the fallback" do
+      post find_box_path, params: { box: { custom_uid: "nope" }, redirect: "https://evil.example/phish" }
+
+      expect(response).to redirect_to(boxes_path)
+    end
+
+    it "falls back instead of erroring when no destination is given" do
+      post mass_action_path, params: { packed_item_ids: [] }
+
+      expect(response).to redirect_to(index_path)
+    end
   end
 
   describe "PATCH /users/:id/change_password" do

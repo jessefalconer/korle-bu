@@ -5,7 +5,7 @@
     to unpack.
 - else
   %h5 Unpack and remove items. Items completely unpacked with no remaining quantity will not be shown here.
-  = render partial: "layouts/add_hospital_modal", locals: {redirect: request.original_url}
+  = render partial: "layouts/add_hospital_modal", locals: {redirect: request.fullpath}
   = render partial: "search_form"
   #search-results
     = render "packed_items/nested_unpack_form_card", items: @items

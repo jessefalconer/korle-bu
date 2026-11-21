@@ -51,6 +51,17 @@ describe "Sessions", type: :request do
       expect(session[:user_id]).to be_nil
     end
 
+    it "starts a fresh session at login" do
+      user = create(:user, status: "Active")
+      # A failed attempt writes to the session, so it has an id worth comparing.
+      post login_path, params: { email: user.email, password: "wrong-password" }
+      pre_login_id = session.id.to_s
+      expect(pre_login_id).to be_present
+
+      sign_in user
+      expect(session.id.to_s).not_to eq(pre_login_id)
+    end
+
     it "does not keep a deactivated user signed in" do
       sign_in create(:user, status: "Deactivated")
 

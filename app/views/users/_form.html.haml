@@ -17,7 +17,7 @@
       - unless (cannot? :alter_roles, User) && !@user.masquerader
         .form-group
           %label Role
-          = f.select(:role, options_for_select(current_user.admin? || (@user.masquerader && @user == current_user) ? User::ROLES : User::ROLES - ["Admin"], @user.role), {}, { class: "form-select" })
+          = f.select(:role, options_for_select(current_user.admin? ? User::ROLES : User::ROLES - ["Admin"], @user.role), {}, { class: "form-select" })
         .form-group
           %label Status
           = f.select(:status, options_for_select(User::STATUSES, @user.status), {}, { class: "form-select" })

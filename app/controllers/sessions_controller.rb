@@ -85,6 +85,8 @@ class SessionsController < ApplicationController
   def create
     @user = User.find_by(email: params[:email])
     if @user&.authenticate(params[:password])
+      # A fresh session id at login, so one planted before login is useless.
+      reset_session
       session[:user_id] = @user.id
       if @user.status == "Deactivated"
         redirect_to login_path,

@@ -24,6 +24,18 @@ describe "Role authorization", type: :request do
     response.redirect? && flash[:error] == "This action is not permitted with your user role."
   end
 
+  describe "the user list" do
+    it "is closed to receiving managers, who may still see their own profile" do
+      sign_in receiving_manager
+
+      get users_path
+      expect(denied?).to be(true)
+
+      get user_path(receiving_manager)
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
   describe "reconciliation" do
     it "is closed to volunteers" do
       original = item

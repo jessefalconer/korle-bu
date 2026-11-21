@@ -91,7 +91,7 @@ class PalletsController < ApplicationController
       path = params[:button] == "info" ? pallet_path(pallet) : pallet_pallet_items_path(pallet)
       redirect_to path
     else
-      redirect_to params[:redirect],
+      redirect_to return_path(pallets_path),
                   flash: { error: "Pallet with custom ID #{pallet_params[:custom_uid]} not found." }
     end
   end
