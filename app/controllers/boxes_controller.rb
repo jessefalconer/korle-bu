@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BoxesController < ApplicationController
+  HIDDEN_STATUSES = [Box::WAREHOUSED, Box::STAGED].freeze
+
   include BulkUnpacking
   include PlacementAuthorization
 
@@ -11,17 +13,12 @@ class BoxesController < ApplicationController
 
   def index
     scope = display_scope(%w[staged in_progress warehoused])
-    # The staged / in-progress / warehoused pages are already a status view
-    @filter = ListFilter.new(Box, params, statuses: scope ? [] : Box::STATUSES)
+    # The staged / in-progress / warehoused pages are already a status view. The
+    # main list leaves out Staged and Warehoused (they have their own menus), so
+    # its status filter doesn't offer them either.
+    @filter = ListFilter.new(Box, params, statuses: scope ? [] : Box::STATUSES - HIDDEN_STATUSES)
     boxes = Box.with_location.accessible_by(current_ability)
-    boxes = if scope
-      boxes.public_send(scope)
-    elsif @filter.statuses.empty?
-      # Staged and Warehoused have their own menus, unless asked for here
-      boxes.where.not(status: %w[Warehoused Staged])
-    else
-      boxes
-    end
+    boxes = scope ? boxes.public_send(scope) : boxes.where.not(status: HIDDEN_STATUSES)
     @boxes = @filter.apply(boxes).order(custom_uid: :desc).page params[:page]
 
     @box_options = Box.reassignable

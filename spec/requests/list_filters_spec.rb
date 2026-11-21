@@ -74,15 +74,18 @@ describe "List filters", type: :request do
       expect(names).to eq(["Loose"])
     end
 
-    it "shows Staged and Warehoused boxes when those statuses are asked for" do
+    it "leaves Staged and Warehoused out of the main box and pallet lists and their filters" do
       create :box, name: "Packing", pallet: nil, container: nil, status: Box::IN_PROGRESS
       create :box, name: "On the shelf", pallet: nil, container: nil, status: Box::WAREHOUSED
 
-      get boxes_path
+      get boxes_path(f: { status: [Box::WAREHOUSED, Box::IN_PROGRESS] })
       expect(names).to eq(["Packing"])
 
-      get boxes_path(f: { status: [Box::WAREHOUSED] })
-      expect(names).to eq(["On the shelf"])
+      %w[boxes pallets].each do |list|
+        get "/#{list}"
+        offered = response.parsed_body.css("input[name='f[status][]']").map { |box| box["value"] }
+        expect(offered).to eq(["In Progress", "Complete", "Received", "Archived"])
+      end
     end
 
     it "filters pallets and containers by receiver" do

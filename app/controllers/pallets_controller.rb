@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PalletsController < ApplicationController
+  HIDDEN_STATUSES = [Pallet::WAREHOUSED, Pallet::STAGED].freeze
+
   include BulkUnpacking
 
   load_and_authorize_resource
@@ -10,17 +12,12 @@ class PalletsController < ApplicationController
 
   def index
     scope = display_scope(%w[staged in_progress warehoused])
-    # The staged / in-progress / warehoused pages are already a status view
-    @filter = ListFilter.new(Pallet, params, statuses: scope ? [] : Pallet::STATUSES)
+    # The staged / in-progress / warehoused pages are already a status view. The
+    # main list leaves out Staged and Warehoused (they have their own menus), so
+    # its status filter doesn't offer them either.
+    @filter = ListFilter.new(Pallet, params, statuses: scope ? [] : Pallet::STATUSES - HIDDEN_STATUSES)
     pallets = Pallet.with_location.accessible_by(current_ability)
-    pallets = if scope
-      pallets.public_send(scope)
-    elsif @filter.statuses.empty?
-      # Staged and Warehoused have their own menus, unless asked for here
-      pallets.where.not(status: %w[Warehoused Staged])
-    else
-      pallets
-    end
+    pallets = scope ? pallets.public_send(scope) : pallets.where.not(status: HIDDEN_STATUSES)
     @pallets = @filter.apply(pallets).order(custom_uid: :desc).page params[:page]
 
     @box_options = Box.reassignable
