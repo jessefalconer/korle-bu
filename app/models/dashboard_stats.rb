@@ -12,7 +12,7 @@ class DashboardStats
   CACHE_TTL = 10.minutes
   WEEKS = 12
   LEADERBOARD_SIZE = 5
-  ELEPHANT_KG = 5_000
+  E30_M3_KG = 1_200
   MILESTONES = [10, 50, 100, 250, 500, 1_000, 2_500, 5_000, 10_000].freeze
 
   # A headline number compared with the period before it. `good` says which
@@ -102,8 +102,8 @@ class DashboardStats
     end
   end
 
-  def elephants_this_year
-    (weight_this_year / ELEPHANT_KG.to_f).round(1)
+  def e30_m3_this_year
+    (weight_this_year / E30_M3_KG.to_f).round(1)
   end
 
   def leaderboards

@@ -62,4 +62,8 @@ $(() => {
   $("#main-menu").append(uls);
 
   syncCollapseToggles();
+
+  // Every module's start-up code has run by now (their ready handlers were added
+  // first). Browser specs wait for this before interacting with a page.
+  document.documentElement.dataset.jsReady = "true";
 });

@@ -38,7 +38,7 @@
             %span
               %strong #{number_with_delimiter(stats.weight_this_year)} kg
               packed so far this year: about the weight of
-              %strong #{stats.elephants_this_year} #{"elephant".pluralize(stats.elephants_this_year == 1 ? 1 : 2)}.
+              %strong #{stats.e30_m3_this_year} #{"1988 BMW M3".pluralize(stats.e30_m3_this_year == 1 ? 1 : 2)}.
 
     - if packer && can?(:read, Shipment)
       .card
