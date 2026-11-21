@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class HospitalExportsController < ApplicationController
+  # Exports cover every warehouse, so only those who manage shipments (Admins) get them.
+  before_action { authorize! :manage, Shipment }
   before_action :set_export, only: :create
 
   def create

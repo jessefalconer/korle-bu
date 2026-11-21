@@ -1,23 +1,29 @@
 # frozen_string_literal: true
 
 class MassActionsController < ApplicationController
-  # TODO: sort out permissions, move to service class
-  # load_and_authorize_resource
+  include PlacementAuthorization
+
+  # TODO: move to service class
+  # Each record moved is also checked below, at its old and new location.
+  before_action { authorize! :update, PackedItem }
   before_action :build_current_location
   before_action :redirect_if_invalid
 
   def mass_action
-    PackedItem.where(id: params[:packed_item_ids]).find_each do |pi|
-      pi.update!(build_params)
-    end
-    if params[:box_id].blank?
-      Box.where(id: params[:box_ids]).find_each do |box|
-        box.update!(build_params.except(:box_id))
+    # All or nothing: one record the user may not move cancels the whole move.
+    ActiveRecord::Base.transaction do
+      PackedItem.where(id: params[:packed_item_ids]).find_each do |pi|
+        move!(pi, build_params)
       end
-    end
-    if params[:box_id].blank? && params[:pallet_id].blank?
-      Pallet.where(id: params[:pallet_ids]).find_each do |pallet|
-        pallet.update!(build_params.except(:box_id, :pallet_id))
+      if params[:box_id].blank?
+        Box.where(id: params[:box_ids]).find_each do |box|
+          move!(box, build_params.except(:box_id))
+        end
+      end
+      if params[:box_id].blank? && params[:pallet_id].blank?
+        Pallet.where(id: params[:pallet_ids]).find_each do |pallet|
+          move!(pallet, build_params.except(:box_id, :pallet_id))
+        end
       end
     end
 
@@ -25,6 +31,11 @@ class MassActionsController < ApplicationController
   end
 
   private
+
+  def move!(record, attributes)
+    assign_with_placement!(record, attributes)
+    record.save!
+  end
 
   def build_params
     @build_params ||=

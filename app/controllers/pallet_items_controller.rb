@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 class PalletItemsController < ApplicationController
+  include PlacementAuthorization
+
   before_action :set_pallet
   before_action :set_pallet_item, except: %i[create index add_with_item]
 
   def index
+    authorize! :read, @pallet
     @box_options = Box.reassignable
       .order(id: :desc)
       .pluck(:name, :id)
@@ -18,6 +21,7 @@ class PalletItemsController < ApplicationController
 
   def create
     pallet_item = @pallet.pallet_items.build(pallet_item_params)
+    authorize_placement!(:create, pallet_item)
 
     if pallet_item.save
       id_sentence = pallet_item.show_id ? "ID: ##{pallet_item.id}." : ""
@@ -30,7 +34,8 @@ class PalletItemsController < ApplicationController
   end
 
   def update
-    if @pallet_item.update(pallet_item_params)
+    assign_with_placement!(@pallet_item, pallet_item_params)
+    if @pallet_item.save
       id_sentence = @pallet_item.show_id ? "ID: ##{@pallet_item.id}." : ""
       message = { success: "#{@pallet_item.quantity} #{@pallet_item.generated_name.pluralize} updated. #{id_sentence}" }
     else
@@ -43,6 +48,8 @@ class PalletItemsController < ApplicationController
   def add_with_item
     item = Item.new(item_params)
     pallet_item = @pallet.pallet_items.build(pallet_item_params.merge(item: item))
+    authorize! :create, item
+    authorize_placement!(:create, pallet_item)
 
     if item.save && pallet_item.save
       id_sentence = pallet_item.show_id ? "ID: ##{pallet_item.id}." : ""
@@ -56,6 +63,7 @@ class PalletItemsController < ApplicationController
   end
 
   def destroy
+    authorize_placement!(:destroy, @pallet_item)
     @pallet_item.destroy
     redirect_to pallet_pallet_items_path(@pallet)
   end

@@ -4,6 +4,8 @@
 # when they must replace a temporary password set by an admin.
 class PasswordsController < ApplicationController
   skip_before_action :require_password_change
+  # Only ever acts on current_user, after checking their current password.
+  skip_authorization_check
 
   def edit
   end

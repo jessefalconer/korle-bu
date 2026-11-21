@@ -4,6 +4,7 @@ class UnpackingEventsController < ApplicationController
   before_action :set_warehouse_id
 
   def index
+    authorize! :read, UnpackingEvent
     @events = UnpackingEvent.includes(:hospital, packed_item: :item).joins(:hospital)
       .where(hospitals: { warehouse_id: current_user.warehouse_id })
       .order(created_at: :desc)
@@ -12,6 +13,7 @@ class UnpackingEventsController < ApplicationController
 
   def update
     event = UnpackingEvent.find(params.expect(:id))
+    authorize! :update, event
 
     if event.update(unpacking_event_params)
       flash[:success] = "Timestamp updated."
@@ -19,7 +21,7 @@ class UnpackingEventsController < ApplicationController
       flash[:error] = "Failed to update timestamp."
     end
 
-    redirect_back_or_to(request.referer)
+    redirect_back_or_to(unpacking_events_path)
   end
 
   private

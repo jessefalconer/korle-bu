@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 class BoxItemsController < ApplicationController
+  include PlacementAuthorization
+
   before_action :set_box
   before_action :set_box_item, except: %i[create index add_with_item]
 
   def index
+    authorize! :read, @box
     @box_options = Box.reassignable
       .order(id: :desc)
       .pluck(:name, :id)
@@ -18,6 +21,7 @@ class BoxItemsController < ApplicationController
 
   def create
     box_item = @box.box_items.build(box_item_params)
+    authorize_placement!(:create, box_item)
 
     if box_item.save
       id_sentence = box_item.show_id ? "ID: ##{box_item.id}." : ""
@@ -30,7 +34,8 @@ class BoxItemsController < ApplicationController
   end
 
   def update
-    if @box_item.update(box_item_params)
+    assign_with_placement!(@box_item, box_item_params)
+    if @box_item.save
       id_sentence = @box_item.show_id ? "ID: ##{@box_item.id}." : ""
       message = { success: "#{@box_item.quantity} #{@box_item.generated_name.pluralize} updated. #{id_sentence}" }
     else
@@ -43,6 +48,8 @@ class BoxItemsController < ApplicationController
   def add_with_item
     item = Item.new(item_params)
     box_item = @box.box_items.build(box_item_params.merge(item: item))
+    authorize! :create, item
+    authorize_placement!(:create, box_item)
 
     if item.save && box_item.save
       id_sentence = box_item.show_id ? "ID: ##{box_item.id}." : ""
@@ -56,6 +63,7 @@ class BoxItemsController < ApplicationController
   end
 
   def destroy
+    authorize_placement!(:destroy, @box_item)
     @box_item.destroy
     redirect_to box_box_items_path(@box)
   end

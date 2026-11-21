@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class BoxesController < ApplicationController
+  include PlacementAuthorization
+
   load_and_authorize_resource
   before_action :set_box, only: %i[show destroy update]
 
@@ -98,17 +100,21 @@ class BoxesController < ApplicationController
     if params[:hospital_id].blank?
       message = { error: "Please select a hospital/facility/clinic." }
     else
-      @box.box_items.each do |bi|
-        next if bi.remaining_quantity.zero?
+      UnpackingEvent.transaction do
+        @box.box_items.each do |bi|
+          next if bi.remaining_quantity.zero?
 
-        bi.unpacking_events
-          .create(
+          event = bi.unpacking_events.build(
             hospital_id: params[:hospital_id],
             notes: params[:notes],
             user: current_user,
             timestamp: params[:timestamp],
             quantity: bi.remaining_quantity
           )
+          # The hospital must be one this user may unpack to.
+          authorize! :create, event
+          event.save
+        end
       end
 
       message = { success: "#{@box.box_items.count} item(s) unpacked." }
@@ -119,13 +125,14 @@ class BoxesController < ApplicationController
 
   def duplicate
     box = Box.find(params.expect(:box_id))
+    authorize! :read, box
     deep_clone = params[:strategy] == "deep"
     pallet_id = box.pallet_id if deep_clone
     container_id = box.container_id if deep_clone
 
     ActiveRecord::Base.transaction do
       params[:duplication_count].to_i.times do
-        new_box = Box.create(
+        new_box = Box.new(
           status: box.status,
           weight: box.weight,
           user_id: box.user_id,
@@ -133,6 +140,9 @@ class BoxesController < ApplicationController
           pallet_id: pallet_id,
           container_id: container_id
         )
+        # Copies keep the source's status and (if deep) location, so check both.
+        authorize_placement!(:create, new_box)
+        new_box.save
         box.box_items.each do |bi|
           new_box.box_items.create(
             quantity: bi.quantity,

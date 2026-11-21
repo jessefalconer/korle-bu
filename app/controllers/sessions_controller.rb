@@ -4,6 +4,8 @@ class SessionsController < ApplicationController
   skip_before_action :authorized, only: %i[new create]
   skip_before_action :require_password_change, only: %i[new create destroy]
   before_action :existing_session, only: %i[new create]
+  # Login/logout and each user's own dashboard and activity.
+  skip_authorization_check
 
   def index
     # Each field gets its own where.not: a single where.not with several

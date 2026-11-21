@@ -5,7 +5,10 @@ class PalletUnpackingEventsController < ApplicationController
   before_action :set_unpacking_event, only: :destroy
 
   def create
+    authorize! :read, @packed_item
     event = @packed_item.unpacking_events.build(unpacking_event_params.merge(user: current_user))
+    # Without a hospital the save fails validation with a clearer message.
+    authorize! :create, event if event.hospital
 
     if event.save
       redirect_to pallet_pallet_items_path(@packed_item.pallet),
@@ -17,6 +20,7 @@ class PalletUnpackingEventsController < ApplicationController
   end
 
   def destroy
+    authorize! :destroy, @unpacking_event
     @unpacking_event.destroy
     redirect_to pallet_pallet_items_path(@unpacking_event.packed_item.pallet)
   end

@@ -12,6 +12,7 @@ class UsersController < ApplicationController
 
   load_and_authorize_resource
   before_action :set_user, only: %i[show destroy update change_password]
+  before_action :forbid_admin_role_grant, only: %i[create update]
 
   def index
     @users = if params[:warehouse]
@@ -86,8 +87,20 @@ class UsersController < ApplicationController
   def can_alter_roles?
     return false unless logged_in?
 
-    can?(:alter_roles, User) ||
-      (current_user.masquerader && params[:id].to_s == current_user.id.to_s)
+    can?(:alter_roles, User) || masquerading_self?
+  end
+
+  # Only Admins may hand out the Admin role (masqueraders testing on their own
+  # account excepted, as in can_alter_roles?).
+  def forbid_admin_role_grant
+    return unless params.dig(:user, :role) == "Admin" && can_alter_roles?
+    return if current_user.admin? || masquerading_self?
+
+    raise CanCan::AccessDenied
+  end
+
+  def masquerading_self?
+    current_user.masquerader && params[:id].to_s == current_user.id.to_s
   end
 
   def set_user

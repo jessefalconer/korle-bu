@@ -146,4 +146,77 @@ describe "Request parameter safety", type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
+  describe "role boundaries" do
+    let!(:admin) { create :user, status: "Active", role: "Admin" }
+    let(:shipping_manager) { create :user, status: "Active", role: "Shipping Manager" }
+    let(:new_user_params) do
+      {
+        user: {
+          email: "made-by-#{SecureRandom.hex(3)}@kbnf.org", first_name: "New", last_name: "Person",
+          phone: "604-555-0100", password: "secret12345", password_confirmation: "secret12345"
+        }
+      }
+    end
+
+    ["Volunteer", "Receiving Manager"].each do |role|
+      it "does not let a #{role} create accounts" do
+        sign_in create(:user, status: "Active", role: role, warehouse: warehouse)
+
+        expect { post users_path, params: new_user_params }.not_to change(User, :count)
+      end
+    end
+
+    it "still lets a Shipping Manager create a non-admin account" do
+      sign_in shipping_manager
+
+      expect { post users_path, params: new_user_params }.to change(User, :count).by(1)
+    end
+
+    it "does not let a Shipping Manager create an Admin" do
+      sign_in shipping_manager
+      params = new_user_params.deep_merge(user: { role: "Admin" })
+
+      expect { post users_path, params: params }.not_to change(User, :count)
+    end
+
+    it "does not let a Shipping Manager promote themselves to Admin" do
+      sign_in shipping_manager
+      patch user_path(shipping_manager), params: { user: { role: "Admin" } }
+
+      expect(shipping_manager.reload.role).to eq("Shipping Manager")
+    end
+
+    it "does not let a Shipping Manager edit, reset or delete an Admin" do
+      sign_in shipping_manager
+      patch user_path(admin), params: { user: { first_name: "Hacked", role: "Volunteer" } }
+      patch change_password_user_path(admin), params: { user: { password: "hijacked12345", password_confirmation: "hijacked12345" } }
+      delete user_path(admin)
+
+      admin.reload
+      expect(admin.first_name).not_to eq("Hacked")
+      expect(admin.role).to eq("Admin")
+      expect(admin.authenticate("hijacked12345")).to be(false)
+    end
+
+    it "still lets an Admin grant the Admin role" do
+      volunteer = create :user, status: "Active", role: "Volunteer"
+      sign_in admin
+      patch user_path(volunteer), params: { user: { role: "Admin" } }
+
+      expect(volunteer.reload.role).to eq("Admin")
+    end
+  end
+
+  describe "deactivation mid-session" do
+    it "logs the user out on their next request" do
+      volunteer = create :user, status: "Active", role: "Volunteer"
+      sign_in volunteer
+      volunteer.update!(status: "Deactivated")
+
+      get my_activity_path
+      expect(response).to redirect_to(login_path)
+      get my_activity_path
+      expect(response).to redirect_to(login_path)
+    end
+  end
 end

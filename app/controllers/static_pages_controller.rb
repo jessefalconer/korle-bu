@@ -7,6 +7,7 @@ class StaticPagesController < ApplicationController
 
   skip_before_action :authorized
   skip_before_action :require_password_change
+  skip_authorization_check
 
   def show
     page = params.require(:page)

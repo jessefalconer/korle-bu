@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
 class WarehousedItemsController < ApplicationController
+  include PlacementAuthorization
+
   before_action :set_packed_item, except: %i[create index add_with_item]
 
   def index
+    authorize! :read, PackedItem
     @packed_items = PackedItem.warehoused
       .order(created_at: :desc)
       .page params[:page]
@@ -20,6 +23,7 @@ class WarehousedItemsController < ApplicationController
 
   def create
     packed_item = PackedItem.new(packed_item_params)
+    authorize_placement!(:create, packed_item)
 
     if packed_item.save
       id_sentence = packed_item.show_id ? "ID: ##{packed_item.id}." : ""
@@ -32,7 +36,8 @@ class WarehousedItemsController < ApplicationController
   end
 
   def update
-    if @packed_item.update(packed_item_params)
+    assign_with_placement!(@packed_item, packed_item_params)
+    if @packed_item.save
       id_sentence = @packed_item.show_id ? "ID: ##{@packed_item.id}." : ""
       message = { success: "#{@packed_item.quantity} #{@packed_item.generated_name.pluralize} updated. #{id_sentence}" }
     else
@@ -46,6 +51,8 @@ class WarehousedItemsController < ApplicationController
     item = Item.new(item_params)
     packed_item = item.packed_items
       .build(packed_item_params.merge(status: PackedItem::WAREHOUSE))
+    authorize! :create, item
+    authorize_placement!(:create, packed_item)
 
     if item.save && packed_item.save
       id_sentence = packed_item.show_id ? "ID: ##{packed_item.id}." : ""
@@ -59,6 +66,7 @@ class WarehousedItemsController < ApplicationController
   end
 
   def destroy
+    authorize_placement!(:destroy, @packed_item)
     @packed_item.destroy
     redirect_to warehoused_items_path
   end

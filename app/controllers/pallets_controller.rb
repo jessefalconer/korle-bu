@@ -101,17 +101,21 @@ class PalletsController < ApplicationController
     if params[:hospital_id].blank?
       message = { error: "Please select a hospital/facility/clinic." }
     else
-      @pallet.pallet_items.each do |pi|
-        next if pi.remaining_quantity.zero?
+      UnpackingEvent.transaction do
+        @pallet.pallet_items.each do |pi|
+          next if pi.remaining_quantity.zero?
 
-        pi.unpacking_events
-          .create(
+          event = pi.unpacking_events.build(
             hospital_id: params[:hospital_id],
             notes: params[:notes],
             user: current_user,
             timestamp: params[:timestamp],
             quantity: pi.remaining_quantity
           )
+          # The hospital must be one this user may unpack to.
+          authorize! :create, event
+          event.save
+        end
       end
 
       message = { success: "#{@pallet.pallet_items.count} item(s) unpacked." }

@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 class ContainerItemsController < ApplicationController
+  include PlacementAuthorization
+
   before_action :set_container
   before_action :set_container_item, except: %i[create index add_with_item]
 
   def index
+    authorize! :read, @container
     @box_options = Box.reassignable.order(id: :desc).pluck(:name, :id)
     @pallet_options = Pallet.reassignable.order(id: :desc).pluck(:name, :id)
     @container_options = Container.in_progress.order(id: :desc).pluck(:name, :id)
@@ -12,6 +15,7 @@ class ContainerItemsController < ApplicationController
 
   def create
     container_item = @container.container_items.build(container_item_params)
+    authorize_placement!(:create, container_item)
 
     if container_item.save
       id_sentence = container_item.show_id ? "ID: ##{container_item.id}." : ""
@@ -24,7 +28,8 @@ class ContainerItemsController < ApplicationController
   end
 
   def update
-    if @container_item.update(container_item_params)
+    assign_with_placement!(@container_item, container_item_params)
+    if @container_item.save
       id_sentence = @container_item.show_id ? "ID: ##{@container_item.id}." : ""
       message = { success: "#{@container_item.quantity} #{@container_item.generated_name.pluralize} updated. #{id_sentence}" }
     else
@@ -38,6 +43,8 @@ class ContainerItemsController < ApplicationController
     item = Item.new(item_params)
     container_item = @container.container_items
       .build(container_item_params.merge(item: item))
+    authorize! :create, item
+    authorize_placement!(:create, container_item)
 
     if item.save && container_item.save
       id_sentence = container_item.show_id ? "ID: ##{container_item.id}." : ""
@@ -51,6 +58,7 @@ class ContainerItemsController < ApplicationController
   end
 
   def destroy
+    authorize_placement!(:destroy, @container_item)
     @container_item.destroy
     redirect_to container_container_items_path(@container)
   end

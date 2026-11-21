@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ReconcileItemsController < ApplicationController
+  before_action { authorize! :reconcile, Item }
   before_action :set_item, only: %i[start confirm item_instances execute]
 
   def unverified
