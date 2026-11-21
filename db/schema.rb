@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_21_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -139,6 +139,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_090000) do
     t.string "range_units", limit: 255
     t.string "range_description", limit: 255
     t.string "legacy_name", limit: 255
+    t.string "serial_number"
     t.index ["category_id"], name: "index_items_on_category_id"
     t.index ["generated_name"], name: "index_items_on_generated_name", opclass: :gin_trgm_ops, using: :gin
     t.index ["user_id"], name: "index_items_on_user_id"

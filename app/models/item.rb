@@ -99,7 +99,12 @@ class Item < ApplicationRecord
   def process_name
     [brand.to_s, object, standardized_size.to_s,
      numerical_1_phrase.to_s, numerical_2_phrase.to_s,
-     area_phrase.to_s, range_phrase.to_s].reject(&:empty?).join(" ").squish
+     area_phrase.to_s, range_phrase.to_s, serial_number_phrase.to_s].reject(&:empty?).join(" ").squish
+  end
+
+  # Last in the name, so items that differ only by serial stay distinct and searchable
+  def serial_number_phrase
+    "S/N #{serial_number}" if serial_number.present?
   end
 
   # TODO: Lots of repetition here, can be refactored

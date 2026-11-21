@@ -18,6 +18,10 @@
       .col-12
         %h5.text-muted Name
         %h4= @item.generated_name
+      - if @item.serial_number.present?
+        .col-12
+          %h6.text-muted S/N
+          %h5.serial-number= @item.serial_number
       - if @item.notes.present?
         .col-12
           %h6.text-muted Notes

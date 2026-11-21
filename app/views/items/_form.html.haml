@@ -15,11 +15,16 @@
       .form-group
         = f.label :object, "Base Name*"
         = f.text_field :object, class: "form-control", placeholder: "Eg: syringe, acetaminophen, heart monitor"
-    .col-12.col-md-6
+    .col-12.col-md-4
       .form-group
         = f.label :brand, "Brand/Model"
         = f.text_field :brand, class: "form-control"
-    .col-12.col-md-6
+    .col-12.col-md-4.col-sm-6
+      .form-group
+        = f.label :serial_number, "S/N"
+        = f.text_field :serial_number, class: "form-control serial-number", placeholder: "Serial number",
+          autocomplete: "off", spellcheck: false
+    .col-12.col-md-4.col-sm-6
       .form-group
         = f.label :unit_weight, "Unit Weight (kg)"
         = f.number_field :unit_weight, step: :any, class: "form-control"

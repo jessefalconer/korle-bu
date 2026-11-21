@@ -178,4 +178,24 @@ describe Item do
       expect(packed_item.reload.item).to eq(duplicate)
     end
   end
+
+  describe "serial numbers" do
+    it "puts the S/N at the end of the name" do
+      item = create :item, brand: "Stryker FL28C", object: "Hospital Bed", serial_number: " R20722 "
+
+      expect(item.serial_number).to eq("R20722")
+      expect(item.generated_name).to eq("Stryker FL28C Hospital Bed S/N R20722")
+    end
+
+    it "keeps otherwise identical items apart by serial" do
+      create :item, object: "Hospital Bed", serial_number: "A1"
+
+      expect(build(:item, object: "Hospital Bed", serial_number: "B2")).to be_valid
+      expect(build(:item, object: "Hospital Bed", serial_number: "A1")).not_to be_valid
+    end
+
+    it "leaves names without a serial unchanged" do
+      expect(create(:item, object: "Gauze").generated_name).to eq("Gauze")
+    end
+  end
 end

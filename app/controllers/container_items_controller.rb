@@ -77,7 +77,7 @@ class ContainerItemsController < ApplicationController
   def item_params
     params
       .expect(
-        item: %i[brand object standardized_size
+        item: %i[brand serial_number object standardized_size
                  numerical_size_1 numerical_units_1 numerical_description_1
                  numerical_size_2 numerical_units_2 numerical_description_2
                  area_1 area_2 area_units area_description

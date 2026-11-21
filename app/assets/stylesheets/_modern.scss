@@ -2379,3 +2379,9 @@ $status-critical: #d03b3b;
   font-style: italic;
   color: $muted;
 }
+
+// Serial numbers: fixed-width, so similar characters (0/O, 1/l) are easy to tell apart
+.serial-number {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: .02em;
+}
