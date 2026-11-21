@@ -6,14 +6,17 @@ class ReconcileItemsController < ApplicationController
 
   def unverified
     @items = Item.unverified.order(:generated_name).page params[:page]
+    @progress = progress("Verified", "verified")
   end
 
   def uncategorized
     @items = Item.uncategorized.order(:generated_name).page params[:page]
+    @progress = progress("Categorized", "category_id IS NOT NULL")
   end
 
   def flagged
     @items = Item.flagged.order(:generated_name).page params[:page]
+    @progress = progress("Resolved", "NOT flagged")
   end
 
   def start
@@ -57,6 +60,12 @@ class ReconcileItemsController < ApplicationController
   end
 
   private
+
+  # How many items are done for this list, and how many there are, in one query.
+  def progress(label, done_condition)
+    done, total = Item.pick(Arel.sql("COUNT(*) FILTER (WHERE #{done_condition}), COUNT(*)"))
+    { label: label, done: done.to_i, total: total.to_i }
+  end
 
   def set_item
     @item = Item.find(params.expect(:id))

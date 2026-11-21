@@ -1634,3 +1634,384 @@ input[type="date"].form-control {
     transform: translateY(-50%);
   }
 }
+
+// ---------------------------------------------------------------- Dashboard
+// Chart colours follow the data-viz palette: one blue for every single-series
+// mark, orange only to pick out "you". Numbers and labels stay in text ink.
+$viz-blue: #2a78d6;
+$viz-blue-track: #e6effa;
+$viz-you: #eb6834;
+$status-good: #0ca30c;
+$status-critical: #d03b3b;
+
+.dashboard-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 12px;
+
+  .fact-of-the-day {
+    margin: 0;
+    color: $muted;
+    flex: 1 1 280px;
+
+    .fa { color: $accent; margin-right: 6px; }
+  }
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+
+  @media (min-width: 768px) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @media (min-width: 1200px) { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+// Four tiles: two per row on phones, four across on wide screens
+.stat-grid.is-four {
+  @media (min-width: 768px) { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.stat-tile {
+  background: $sunken;
+  border-radius: $radius-sm;
+  padding: 12px;
+  min-width: 0;
+}
+
+.stat-label {
+  color: $muted;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: $ink;
+  overflow-wrap: anywhere;
+
+  .stat-unit { font-size: 14px; font-weight: 400; color: $muted; }
+}
+
+.stat-delta {
+  font-size: 13px;
+  color: $ink;
+
+  .fa { margin-right: 2px; }
+  &.is-good .fa { color: $status-good; }
+  &.is-bad .fa { color: $status-critical; }
+  &.is-flat .fa { color: $muted; }
+}
+
+.stat-compare {
+  font-size: 12px;
+  color: $muted;
+}
+
+.dashboard-charts { margin-bottom: 8px; row-gap: 16px; }
+
+.chart-title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 4px 0 2px;
+  color: $ink;
+}
+
+.chart-subtitle {
+  font-size: 13px;
+  color: $muted;
+  margin-bottom: 8px;
+}
+
+.chart-table {
+  margin-top: 6px;
+  font-size: 13px;
+
+  summary { color: $brand; cursor: pointer; }
+  table { margin-top: 6px; }
+}
+
+.empty-state {
+  color: $muted;
+  font-style: italic;
+}
+
+// Horizontal bars: a label, the bar, and its value always printed beside it
+.bar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: minmax(0, 9rem) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 14px;
+}
+
+// Long names (categories, hospitals): name and value on one line, bar beneath
+.bar-list.is-stacked .bar-row {
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "label value" "track track";
+  row-gap: 4px;
+  padding: 5px 0;
+
+  .bar-label { grid-area: label; white-space: normal; }
+  .bar-value { grid-area: value; }
+  .bar-track { grid-area: track; }
+}
+
+.bar-list.is-ranked { counter-reset: rank; }
+
+.bar-list.is-ranked .bar-label::before {
+  counter-increment: rank;
+  content: counter(rank) ".";
+  color: $muted;
+  margin-right: 6px;
+}
+
+.bar-label {
+  display: flex;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.bar-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.you-tag {
+  color: $muted;
+  margin-left: 4px;
+  flex: none;
+}
+
+.bar-track {
+  height: 10px;
+  background: $viz-blue-track;
+  border-radius: 4px;
+}
+
+.bar-fill {
+  height: 100%;
+  background: $viz-blue;
+  border-radius: 0 4px 4px 0;
+}
+
+.bar-row.is-you {
+  .bar-fill { background: $viz-you; }
+  .bar-name { font-weight: 600; }
+}
+
+.bar-value {
+  font-variant-numeric: tabular-nums;
+  color: $ink;
+  text-align: right;
+}
+
+.weight-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: $sunken;
+  border-radius: $radius-sm;
+  padding: 10px 12px;
+  margin-top: 8px;
+
+  .fa { color: $brand; font-size: 20px; }
+}
+
+.leaderboard { margin-bottom: 12px; }
+
+.your-rank {
+  font-size: 13px;
+  color: $muted;
+  margin: -4px 0 0;
+}
+
+.achievement-note {
+  text-align: right;
+  font-size: 13px;
+}
+
+.highlight-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+
+  @media (min-width: 768px) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.highlight {
+  background: $sunken;
+  border-radius: $radius-sm;
+  padding: 12px;
+  text-align: center;
+  min-width: 0;
+
+  .chart-subtitle { margin: 4px 0 0; }
+}
+
+.highlight-name {
+  font-size: 18px;
+  font-weight: 600;
+
+  .fa-fire { color: $muted; }
+  .fa-fire.is-lit { color: $accent; }
+}
+
+.highlight-value { font-size: 16px; }
+
+.highlight-item {
+  overflow-wrap: anywhere;
+}
+
+.milestones { margin-top: 4px; }
+
+.milestone-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 8px;
+}
+
+.milestone {
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+
+  &.is-reached { background: #fdf0d9; color: $ink; .fa { color: $accent; } }
+  &.is-locked { background: $sunken; color: $muted; }
+}
+
+.pipeline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 16px;
+
+  @media (min-width: 768px) { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.pipeline-stage {
+  position: relative;
+  background: $sunken;
+  border-radius: $radius-sm;
+  padding: 12px;
+
+  @media (min-width: 768px) {
+    &:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translate(50%, -50%);
+      color: $muted;
+      font-size: 18px;
+    }
+  }
+}
+
+.meter-row {
+  display: grid;
+  grid-template-columns: minmax(0, 12rem) minmax(0, 1fr) 3rem;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 0;
+  font-size: 14px;
+
+  .meter-label .text-muted { display: block; font-size: 12px; }
+}
+
+.meter {
+  height: 10px;
+  background: $viz-blue-track;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  background: $viz-blue;
+  border-radius: 999px;
+}
+
+.meter-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.stale-note {
+  color: $muted;
+  margin: 8px 0 0;
+
+  .fa { margin-right: 4px; }
+}
+
+.destination-note {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  background: $sunken;
+  border-radius: $radius-sm;
+  padding: 10px 12px;
+  margin: 8px 0 16px;
+
+  .fa { color: $accent; }
+}
+
+.quiet-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 8px;
+  columns: 1;
+
+  @media (min-width: 768px) { columns: 2; }
+
+  li {
+    break-inside: avoid;
+    padding: 3px 0;
+
+    .text-muted { margin-left: 6px; font-size: 13px; }
+  }
+}
+
+// Reconcile pages: progress through the list, using the dashboard meter
+.reconcile-progress {
+  margin-bottom: 12px;
+
+  .meter-row { grid-template-columns: minmax(0, 14rem) minmax(0, 1fr) 3rem; }
+}
+
+.reconcile-remaining {
+  margin: 6px 0 0;
+  color: $muted;
+
+  strong { color: $ink; }
+  .is-done { color: $status-good; margin-right: 4px; }
+}
+
+// Phones: label on its own line, then the meter and its percentage
+@media (max-width: 575px) {
+  .meter-row,
+  .reconcile-progress .meter-row {
+    grid-template-columns: minmax(0, 1fr) 3rem;
+
+    .meter-label { grid-column: 1 / -1; }
+  }
+}

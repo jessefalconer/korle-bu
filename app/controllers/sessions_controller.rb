@@ -8,75 +8,18 @@ class SessionsController < ApplicationController
   skip_authorization_check
 
   def index
-    # Each field gets its own where.not: a single where.not with several
-    # columns means "not all NULL", which lets partly filled-in users through.
-    @random_achievement = User
-      .where.not(achiever_name: nil)
-      .where.not(achievement_title: nil)
-      .where.not(achievement_description: nil)
-      .where.not(achievement_value: nil)
-      .where.not(achievement_max_value: nil)
-      .sample
+    @stats = DashboardStats.new(current_user, range: params[:range])
+    # Admins and shipping managers oversee every warehouse: they get the
+    # all-warehouse unpacking card and the recent records tables.
+    @overview = current_user.admin? || current_user.shipping_manager?
+    return unless @overview
 
-    @king_items = User.joins(:items)
-      .group("users.id")
-      .where(items: { created_at: 30.days.ago.. })
-      .order("count(items.id) desc")
-      .limit(1)
-      .first || User.first
-    @king_items_count = @king_items.items
-      .where(items: { created_at: 30.days.ago.. })
-      .count
-    @items_total = Item.where(items: { created_at: 30.days.ago.. }).count
-    @king_packed = User.joins(:packed_items)
-      .group("users.id")
-      .where(packed_items: { created_at: 30.days.ago.. })
-      .order("count(packed_items.id) desc")
-      .limit(1)
-      .first || User.first
-    @king_packed_count = @king_packed.packed_items
-      .where(packed_items: { created_at: 30.days.ago.. })
-      .count
-    @packed_total = PackedItem.where(packed_items: { created_at: 30.days.ago.. }).count
-    @king_verified = User.joins(:items)
-      .group("users.id")
-      .where("items.created_at >= ? AND items.verified = ?", 30.days.ago, true)
-      .order("count(items.id) desc")
-      .limit(1)
-      .first || User.first
-    @king_verified_count = @king_verified.items
-      .where("items.created_at >= ? AND items.verified = ?", 30.days.ago, true)
-      .count
-    @verified_total = Item.where("items.created_at >= ? AND items.verified = ?", 30.days.ago, true).count
-    @king_uncategorized = User.joins(:items)
-      .group("users.id")
-      .where("items.created_at >= ? AND items.category_id IS NULL", 30.days.ago)
-      .order("count(items.id) desc")
-      .limit(1)
-      .first || User.first
-    @king_uncategorized_count = @king_uncategorized.items
-      .where("items.created_at >= ? AND items.category_id IS NULL", 30.days.ago)
-      .count
-    @uncategorized_total = Item.where("items.created_at >= ? AND items.category_id IS NULL", 30.days.ago).count
-
-    @heaviest_item = PackedItem.where(packed_items: { created_at: 30.days.ago.. })
-      .order("packed_items.weight desc NULLS LAST")
-      .limit(1)
-      .first
-    @quantity_item = PackedItem.where(packed_items: { created_at: 30.days.ago.. })
-      .order("packed_items.quantity desc")
-      .limit(1)
-      .first
-
+    @recent_users = User.order(created_at: :desc).limit(10)
     @recent_items = Item.includes(:category, :user).order(created_at: :desc).limit(10)
     @recent_item_instance_counts = PackedItem.where(item_id: @recent_items.map(&:id)).group(:item_id).count
     @recent_unpacking_events = UnpackingEvent.includes(:hospital, :user, packed_item: :item)
       .order(created_at: :desc)
       .limit(10)
-
-    return unless current_user.receiving_manager?
-
-    @packed_items = PackedItem.accessible_by(current_ability)
   end
 
   def new

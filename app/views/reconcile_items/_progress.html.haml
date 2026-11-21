@@ -1,0 +1,24 @@
+-# How far through a reconcile list the catalogue is, drawn like the
+-# dashboard's meters: blue fill on a pale blue track, numbers in text.
+-# locals: progress: { label:, done:, total: }
+- done = progress[:done]
+- total = progress[:total]
+- remaining = total - done
+- share = total.zero? ? 100.0 : done * 100.0 / total
+.card.reconcile-progress
+  .card-body
+    .meter-row
+      .meter-label
+        = progress[:label]
+        %span.text-muted #{number_with_delimiter(done)} of #{number_with_delimiter(total)} items
+      .meter{role: "meter", "aria-valuenow": share.floor, "aria-valuemin": 0, "aria-valuemax": 100,
+             "aria-label": "#{progress[:label]} items"}
+        .meter-fill{style: "width: #{share.round(1)}%"}
+      .meter-value #{share.floor}%
+    %p.reconcile-remaining
+      - if remaining.zero?
+        %i.fa.fa-circle-check.is-done{"aria-hidden": "true"}
+        All done. Nothing left to reconcile here.
+      - else
+        %strong= number_with_delimiter(remaining)
+        = remaining == 1 ? "item left to go." : "items left to go."

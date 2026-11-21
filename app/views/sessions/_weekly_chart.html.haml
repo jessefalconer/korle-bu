@@ -1,0 +1,22 @@
+-# A single-series weekly column chart with a table view for screen readers
+-# and anyone who wants exact numbers.
+-# locals: series: {"Nov 17" => 12, ...}, title:, value_label: (table column heading)
+%h5.chart-title= title
+%p.chart-subtitle Last #{DashboardStats::WEEKS} weeks; the last bar is this week so far
+= column_chart series, height: "220px", colors: ["#2a78d6"],
+  dataset: { backgroundColor: "#2a78d6", borderWidth: 0, borderRadius: 4, maxBarThickness: 32 },
+  library: { plugins: { legend: { display: false } },
+             scales: { x: { grid: { display: false } },
+                       y: { grid: { color: "#e3e7ea" }, border: { display: false }, ticks: { precision: 0 } } } }
+%details.chart-table
+  %summary Show as a table
+  %table.table.table-sm
+    %thead
+      %tr
+        %th Week of
+        %th.text-end= value_label
+    %tbody
+      - series.each do |week, value|
+        %tr
+          %td= week
+          %td.text-end= number_with_delimiter(value)

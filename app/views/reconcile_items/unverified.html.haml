@@ -9,12 +9,7 @@
   .main-content
     .row
       .col-12
-        - percentage = (Item.verified.count.to_f/Item.count.to_f*100).round(2)
-        - color = Item.unverified.count.zero? ? "#3c763d" : "#007096"
-        - color = percentage < 50 ? "#8a6d3b" : color
-        %h5.text-center #{Item.verified.count}/#{Item.count} (#{percentage}%) Verified
-        = bar_chart({"" => Item.verified.count}, max: Item.count, height: "65px", colors: [color])
-        %h5.text-center #{Item.unverified.count} Remaining
+        = render "progress", progress: @progress
       .col-12
         - if @items.any?
           = render partial: "items/search_form", locals: { path: "/unverified_item_search" }

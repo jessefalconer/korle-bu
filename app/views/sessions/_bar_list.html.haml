@@ -1,0 +1,19 @@
+-# Labelled horizontal bars, longest first, scaled to the largest value.
+-# Every bar has its number printed beside it, so nothing relies on colour.
+-# locals: rows: [{label:, value:, you: false}], unit: "", empty: "", ordered: false,
+-#         stacked: false (label on its own line above the bar, for long names)
+- rows = local_assigns[:rows] || []
+- max = rows.map { |row| row[:value].to_f }.max.to_f
+- if rows.empty?
+  %p.empty-state= local_assigns[:empty] || "Nothing yet."
+- else
+  %ol.bar-list{class: [("is-ranked" if local_assigns[:ordered]), ("is-stacked" if local_assigns[:stacked])]}
+    - rows.each do |row|
+      %li.bar-row{class: ("is-you" if row[:you])}
+        .bar-label
+          %span.bar-name{title: row[:label]}= row[:label]
+          - if row[:you]
+            %span.you-tag (you)
+        .bar-track
+          .bar-fill{style: "width: #{max.zero? ? 0 : [(row[:value] / max * 100).round(1), 1].max}%"}
+        .bar-value #{number_with_delimiter(row[:value])}#{local_assigns[:unit]}

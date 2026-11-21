@@ -1,0 +1,20 @@
+-# A headline number. With a Tile it also shows the change against the
+-# previous period, coloured by whether that change is good news.
+-# locals: label:, value:, tile: nil, compare: nil, note: nil
+- tile = local_assigns[:tile]
+.stat-tile
+  .stat-label= label
+  .stat-value= value.is_a?(Numeric) ? number_with_delimiter(value) : value
+  - if tile&.comparable?
+    - state = tile.direction == :flat ? "is-flat" : (tile.good_news? ? "is-good" : "is-bad")
+    .stat-delta{class: state}
+      - if tile.direction == :flat
+        %i.fa.fa-minus{"aria-hidden": "true"}
+        No change
+      - else
+        %i.fa{class: tile.direction == :up ? "fa-arrow-up" : "fa-arrow-down", "aria-hidden": "true"}
+        %span.visually-hidden= tile.direction == :up ? "Up" : "Down"
+        = tile.change ? "#{tile.change.abs}%" : "from 0"
+      %span.stat-compare vs #{compare}
+  - elsif local_assigns[:note]
+    .stat-compare= note

@@ -1,0 +1,64 @@
+-# Where unpacked supplies went, for one warehouse or all of them.
+-# locals: unpacking: DashboardStats::Unpacking, stats: DashboardStats, title:
+- summary = unpacking.summary
+- dom_id = unpacking.all_warehouses? ? "unpacking-all" : "unpacking-warehouse"
+- bars = ->(pairs) { pairs.map { |name, units| { label: name, value: units } } }
+.card
+  %a.card-header{data: {"bs-toggle": "collapse"}, href: "##{dom_id}"} #{title} (#{stats.period_name.capitalize})
+  .card-body.collapse.show{id: dom_id}
+    .stat-grid.is-four
+      - %i[units handovers served].each do |key|
+        = render "stat_tile", label: summary[key].label, value: summary[key].value, tile: summary[key], compare: stats.previous_period_name
+      = render "stat_tile", label: "Units per handover", value: summary[:per_handover], note: "On average, this period"
+    .row.dashboard-charts
+      .col-lg-8
+        = render "weekly_chart", series: unpacking.weekly_units, title: "Units unpacked per week", value_label: "Units unpacked"
+      .col-lg-4
+        - if unpacking.all_warehouses?
+          %h5.chart-title By warehouse
+          %p.chart-subtitle Units unpacked from each warehouse's stock
+          = render "bar_list", stacked: true, rows: bars.call(unpacking.by_warehouse), empty: "Nothing unpacked in this period yet."
+        - else
+          %h5.chart-title Most unpacked items
+          %p.chart-subtitle Units
+          = render "bar_list", stacked: true, rows: bars.call(unpacking.top_items), empty: "Nothing unpacked in this period yet."
+    .row.dashboard-charts
+      .col-lg-6
+        %h5.chart-title Top destinations
+        %p.chart-subtitle Units sent to each hospital, facility or clinic
+        = render "bar_list", stacked: true, rows: bars.call(unpacking.by_destination), empty: "Nothing unpacked in this period yet."
+      .col-lg-6
+        %h5.chart-title By category
+        %p.chart-subtitle Units
+        = render "bar_list", stacked: true, rows: bars.call(unpacking.by_category), empty: "Nothing unpacked in this period yet."
+        - if unpacking.all_warehouses?
+          %h5.chart-title Most unpacked items
+          %p.chart-subtitle Units
+          = render "bar_list", stacked: true, rows: bars.call(unpacking.top_items), empty: "Nothing unpacked in this period yet."
+    - unless stats.all_time?
+      - firsts = unpacking.first_time_destinations
+      .destination-note
+        %i.fa.fa-star{"aria-hidden": "true"}
+        - if firsts.any?
+          %span
+            %strong First delivery ever:
+            = firsts.to_sentence
+        - else
+          %span No destinations received their first delivery in this period.
+    - quiet = unpacking.quiet_destinations
+    %h5.chart-title
+      %i.fa.fa-clock-rotate-left{"aria-hidden": "true"}
+      Nothing sent in #{DashboardStats::Unpacking::QUIET_AFTER.in_days.to_i}+ days
+      %span.badge.text-bg-secondary= quiet.size
+    - if quiet.any?
+      %ul.quiet-list
+        - quiet.first(8).each do |destination|
+          %li
+            = link_to destination[:name], hospital_path(destination[:id])
+            %span.text-muted= destination[:last] ? "last #{destination[:last].strftime("%Y-%m-%d")}" : "never supplied"
+      - if quiet.size > 8
+        %p.chart-subtitle
+          and #{quiet.size - 8} more.
+          = link_to "See all hospitals", hospitals_path
+    - else
+      %p.empty-state Every active destination has had a delivery recently.
