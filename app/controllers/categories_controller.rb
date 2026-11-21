@@ -2,6 +2,8 @@
 
 class CategoriesController < ApplicationController
   load_and_authorize_resource
+  include ConfirmsDeletion
+
   before_action :set_category, only: %i[show destroy update]
 
   def index

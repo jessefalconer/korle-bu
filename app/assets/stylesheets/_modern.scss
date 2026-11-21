@@ -2043,3 +2043,27 @@ $status-critical: #d03b3b;
 @media (max-width: 575px) {
   .search-keys-hint { display: none; }
 }
+
+// Confirm dialog: what else a delete changes, and the "type delete" box
+.confirm-dialog-details {
+  margin: 0 0 14px;
+  padding-left: 18px;
+  color: $ink;
+  font-size: 14px;
+
+  li + li { margin-top: 4px; }
+}
+
+.confirm-dialog-typed {
+  margin-bottom: 16px;
+
+  .form-label { font-size: 14px; color: $muted; margin-bottom: 4px; }
+  .form-label strong { color: $ink; }
+}
+
+.confirm-dialog-accept:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.confirm-dialog .confirm-dialog-message:has(+ .confirm-dialog-details:not([hidden])) { margin-bottom: 10px; }

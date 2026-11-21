@@ -37,4 +37,8 @@ class Warehouse < ApplicationRecord
       send(assoc).any?
     end.any?(true)
   end
+
+  def deletion_blockers
+    associations? ? ["it still has users, hospitals or shipments"] : []
+  end
 end

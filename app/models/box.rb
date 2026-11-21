@@ -83,6 +83,16 @@ class Box < ApplicationRecord
       (staged? || warehoused?) && !will_save_change_to_status?
   end
 
+  # ------------------------------------------------------------ Deleting
+  # Only once received; until then a box is a single confirm.
+  def requires_typed_delete?
+    received?
+  end
+
+  def deletion_impact
+    packed_lines_deleted(box_items, "in it")
+  end
+
   private
 
   def status_will_change_to_warehoused_or_staged?

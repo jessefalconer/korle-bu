@@ -11,6 +11,8 @@ class UsersController < ApplicationController
   ROLE_FIELDS = %i[role status warehouse_id].freeze
 
   load_and_authorize_resource
+  include ConfirmsDeletion
+
   before_action :set_user, only: %i[show destroy update change_password]
   before_action :forbid_admin_role_grant, only: %i[create update]
 

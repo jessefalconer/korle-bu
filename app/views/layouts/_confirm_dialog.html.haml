@@ -1,10 +1,19 @@
 -# In-app replacement for the browser's confirm() (see src/confirm_dialog.js). A native
 -# <dialog> opens above everything, including an open Bootstrap modal, and handles
 -# Escape and focus itself. The buttons close it with their value as the answer.
+-# Deleting something that holds or organizes other records also lists what else
+-# changes and asks for "delete" to be typed before the button works.
 %dialog#confirm-dialog.confirm-dialog{"aria-labelledby": "confirm-dialog-title", "aria-describedby": "confirm-dialog-message"}
   %form{method: "dialog"}
     %h5.confirm-dialog-title#confirm-dialog-title Are you sure?
     %p.confirm-dialog-message#confirm-dialog-message
+    %ul.confirm-dialog-details{hidden: true}
+    .confirm-dialog-typed{hidden: true}
+      %label.form-label{for: "confirm-dialog-word"}
+        Type
+        %strong.confirm-dialog-word-label delete
+        to confirm
+      %input.form-control#confirm-dialog-word{type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false"}
     .confirm-dialog-actions
       %button.btn.btn-cancel{type: "submit", value: "cancel"} Cancel
       %button.btn.btn-danger.confirm-dialog-accept{type: "submit", value: "confirm"}

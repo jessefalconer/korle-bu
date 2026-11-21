@@ -64,4 +64,10 @@ class User < ApplicationRecord
       send(assoc).any?
     end.any?(true)
   end
+
+  # Their records point at them, so someone who has created anything stays
+  # (deactivate them instead).
+  def deletion_blockers
+    created_records? ? ["they have created records"] : []
+  end
 end

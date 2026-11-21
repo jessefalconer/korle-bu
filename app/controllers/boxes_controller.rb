@@ -5,6 +5,8 @@ class BoxesController < ApplicationController
   include PlacementAuthorization
 
   load_and_authorize_resource
+  include ConfirmsDeletion
+
   before_action :set_box, only: %i[show destroy update]
 
   def index

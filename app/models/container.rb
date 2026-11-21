@@ -11,6 +11,11 @@ class Container < ApplicationRecord
   belongs_to :user, optional: false
   belongs_to :shipment, optional: true
 
+  after_initialize :set_defaults, if: :new_record?
+  # Before :nullify unassigns them (prepend), so we still know what was inside
+  before_destroy :note_contents, prepend: true
+  after_destroy :resync_former_contents
+
   has_many :boxes, dependent: :nullify
   has_many :box_items, through: :boxes
   has_many :pallets, dependent: :nullify
@@ -36,8 +41,6 @@ class Container < ApplicationRecord
     cascade_packed_items_location if saved_change_to_shipment_id
   end
 
-  after_initialize :set_defaults, if: :new_record?
-
   STATUSES.each do |stat|
     define_method("#{stat.parameterize(separator: "_")}?") do
       status == stat
@@ -46,6 +49,23 @@ class Container < ApplicationRecord
 
   def cascadable?
     complete? || received? || archived?
+  end
+
+  # ------------------------------------------------------------ Deleting
+  def requires_typed_delete?
+    true
+  end
+
+  def deletion_impact
+    impact = packed_lines_deleted(container_items, "packed directly in it")
+    pallet_count = pallets.count
+    box_count = boxes.count
+    if (pallet_count + box_count).positive?
+      held = [(count_of(pallet_count, "pallet") if pallet_count.positive?),
+              (count_of(box_count, "box") if box_count.positive?)].compact
+      impact << "Its #{held.to_sentence} will be unassigned from it, not deleted."
+    end
+    impact
   end
 
   private
@@ -76,5 +96,17 @@ class Container < ApplicationRecord
     self.name = name
     self.custom_uid = cid
     self.status = IN_PROGRESS
+  end
+
+  # Unassigning skips the boxes' and pallets' own callbacks, so the packed items
+  # inside would keep this container's shipment (and show up as received stock
+  # with nowhere to be). Re-derive their shipment and status from what's left.
+  def note_contents
+    @former_pallet_ids = pallets.ids
+    @former_box_ids = Box.where(container_id: id).or(Box.where(pallet_id: @former_pallet_ids)).ids
+  end
+
+  def resync_former_contents
+    PackedItem.where(pallet_id: @former_pallet_ids).or(PackedItem.where(box_id: @former_box_ids)).sync_with_parents!
   end
 end

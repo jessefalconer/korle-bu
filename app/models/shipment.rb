@@ -12,6 +12,9 @@ class Shipment < ApplicationRecord
   belongs_to :receiving_warehouse, class_name: "Warehouse", optional: false
   belongs_to :shipping_warehouse, class_name: "Warehouse", optional: false
 
+  after_initialize :set_defaults, if: :new_record?
+  after_destroy :resync_former_contents
+
   has_many :containers, dependent: :nullify
   has_many :container_items, through: :containers
   has_many :container_boxes, through: :containers, source: :boxes
@@ -32,8 +35,6 @@ class Shipment < ApplicationRecord
   after_save do
     cascade_statuses if saved_change_to_status && cascadable?
   end
-
-  after_initialize :set_defaults, if: :new_record?
 
   STATUSES.each do |stat|
     define_method("#{stat.parameterize(separator: "_")}?") do
@@ -74,6 +75,18 @@ class Shipment < ApplicationRecord
     }
   end
 
+  # ------------------------------------------------------------ Deleting
+  def requires_typed_delete?
+    true
+  end
+
+  def deletion_impact
+    count = containers.count
+    return [] if count.zero?
+
+    ["Its #{count_of(count, "container")} will be unassigned from it, not deleted."]
+  end
+
   private
 
   # TODO: Move this to a service
@@ -87,5 +100,11 @@ class Shipment < ApplicationRecord
     self.name = name
     self.custom_uid = cid
     self.status = IN_PROGRESS
+  end
+
+  # Unassigning the containers skips their callbacks, so everything packed in them
+  # would keep pointing at this (now deleted) shipment.
+  def resync_former_contents
+    PackedItem.where(shipment_id: id).sync_with_parents!
   end
 end

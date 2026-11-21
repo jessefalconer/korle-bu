@@ -14,6 +14,11 @@ class Pallet < ApplicationRecord
   belongs_to :container, optional: true
   belongs_to :category, optional: true
 
+  after_initialize :set_defaults, if: :new_record?
+  # Before :nullify unassigns them (prepend), so we still know what was on it
+  before_destroy :note_boxes, prepend: true
+  after_destroy :resync_former_boxes
+
   has_many :boxes, dependent: :nullify
   has_many :box_items, through: :boxes
   has_many :pallet_items, class_name: "PackedItem", dependent: :destroy
@@ -39,8 +44,6 @@ class Pallet < ApplicationRecord
 
   paginates_per 35
 
-  after_initialize :set_defaults, if: :new_record?
-
   before_save do
     orphan_pallet if status_will_change_to_warehoused_or_staged?
     adopt_status if adopting_by_parent?
@@ -59,6 +62,19 @@ class Pallet < ApplicationRecord
 
   def adopting_by_parent?
     container_id_change_to_be_saved&.first.nil? && (staged? || warehoused?) && !will_save_change_to_status?
+  end
+
+  # ------------------------------------------------------------ Deleting
+  # Only once received; until then a pallet is a single confirm.
+  def requires_typed_delete?
+    received?
+  end
+
+  def deletion_impact
+    impact = packed_lines_deleted(pallet_items, "packed directly on it")
+    box_count = boxes.count
+    impact << "Its #{count_of(box_count, "box")} will be unassigned from it, not deleted." if box_count.positive?
+    impact
   end
 
   private
@@ -103,5 +119,15 @@ class Pallet < ApplicationRecord
     name = "PALLET-#{cid}"
     self.name = name
     self.custom_uid = cid
+  end
+
+  # Unassigning skips the boxes' callbacks, so their packed items would keep the
+  # shipment this pallet was in. Re-derive it from what's left.
+  def note_boxes
+    @former_box_ids = boxes.ids
+  end
+
+  def resync_former_boxes
+    PackedItem.where(box_id: @former_box_ids).sync_with_parents!
   end
 end

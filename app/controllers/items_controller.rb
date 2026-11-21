@@ -4,6 +4,8 @@ class ItemsController < ApplicationController
   SEARCH_ACTIONS = %i[index_search search_form unverified_search uncategorized_search reconcile_search packed_search].freeze
 
   load_and_authorize_resource except: [:index, :show, *SEARCH_ACTIONS]
+  include ConfirmsDeletion
+
   # The item catalogue is readable by anyone signed in.
   skip_authorization_check only: %i[index show index_search]
   before_action(only: :search_form) { authorize! :create, PackedItem }

@@ -18,7 +18,7 @@
       .row
         .col-12
           %p This item is not currently in use. You may wish to delete it.
-          = delete_button(item_path(@item, redirect: "reconcile_unverified_path"), "Are you sure you want to delete #{@item.generated_name}? This cannot be reversed.")
+          = delete_button(item_path(@item, redirect: "reconcile_unverified_path"), "Are you sure you want to delete #{@item.generated_name}? This cannot be reversed.", record: @item)
     = form_for reconcile_confirm_path(@item) do |f|
       %br
       %br

@@ -15,7 +15,7 @@
     - if current_user.admin? || current_user.receiving_manager?
       = render partial: "layouts/boxes_unpack_all_modal"
     - if can? :destroy, @box
-      = delete_button(box_path(@box), "Are you sure you want to delete #{@box.name}? This cannot be reversed")
+      = delete_button(box_path(@box), "Are you sure you want to delete #{@box.name}? This cannot be reversed", record: @box)
 
   .main-content
     .row.detail-layout

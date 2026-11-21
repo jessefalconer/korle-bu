@@ -11,7 +11,7 @@
     - if can? :manage, PackedItem
       = render partial: "layouts/mass_action_modal", locals: {name: @shipment.name, redirect: shipment_path(@shipment), record: nil}
     - if can? :destroy, @shipment
-      = delete_button(shipment_path(@shipment), "Are you sure you want to delete #{@shipment.name}? This cannot be reversed")
+      = delete_button(shipment_path(@shipment), "Are you sure you want to delete #{@shipment.name}? This cannot be reversed", record: @shipment)
 
   .main-content
     .row.detail-layout

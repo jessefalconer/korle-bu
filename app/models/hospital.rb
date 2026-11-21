@@ -25,4 +25,11 @@ class Hospital < ApplicationRecord
   def full_address
     [street, postal_code, city, province, country].compact_blank.join(", ")
   end
+
+  # Unpacking records point at their hospital, so one that has received
+  # anything stays (deactivate it instead).
+  def deletion_blockers
+    count = unpacking_events.count
+    count.zero? ? [] : ["it has #{count_of(count, "unpacking record")}"]
+  end
 end

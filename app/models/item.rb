@@ -154,6 +154,15 @@ class Item < ApplicationRecord
     (same_size.to_f / all_size * 100).round(2)
   end
 
+  # ------------------------------------------------------------ Deleting
+  def requires_typed_delete?
+    true
+  end
+
+  def deletion_impact
+    packed_lines_deleted(packed_items, "of this item (in boxes, pallets and containers)")
+  end
+
   private
 
   # Collapses stray whitespace in name parts. Notes are only trimmed, so the

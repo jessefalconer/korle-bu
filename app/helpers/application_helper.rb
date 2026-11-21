@@ -46,8 +46,18 @@ module ApplicationHelper
     last["chosen_on"] == today && last["date"].present? ? last["date"] : today
   end
 
-  def delete_button(path, confirm_text, classes = "")
-    link_to(path, class: "btn btn-danger responsive-button #{classes}", data: { confirm: confirm_text, method: :delete }) do
+  # A Delete button that asks first. Pass `record:` and, if deleting it reaches
+  # beyond itself (Deletable#requires_typed_delete?), the dialog also asks for
+  # "delete" to be typed and lists what else changes. `details: false` skips that
+  # list (it runs queries) where many delete buttons share a page.
+  def delete_button(path, confirm_text, classes = "", record: nil, details: true)
+    data = { confirm: confirm_text, method: :delete }
+    if record&.requires_typed_delete?
+      data[:confirm_word] = Deletable::CONFIRM_WORD
+      data[:confirm_details] = record.deletion_impact.to_json if details
+    end
+
+    link_to(path, class: "btn btn-danger responsive-button #{classes}", data: data) do
       tag.i("", class: "fa fa-trash") +
         tag.span(" Delete", class: "main-text")
     end

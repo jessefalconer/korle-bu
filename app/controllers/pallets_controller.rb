@@ -4,6 +4,8 @@ class PalletsController < ApplicationController
   include BulkUnpacking
 
   load_and_authorize_resource
+  include ConfirmsDeletion
+
   before_action :set_pallet, only: %i[show destroy update]
 
   def index

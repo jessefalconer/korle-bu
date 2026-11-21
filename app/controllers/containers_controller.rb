@@ -2,6 +2,8 @@
 
 class ContainersController < ApplicationController
   load_and_authorize_resource
+  include ConfirmsDeletion
+
   before_action :set_container, only: %i[show destroy update]
 
   def index

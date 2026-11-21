@@ -2,6 +2,8 @@
 
 class WarehousesController < ApplicationController
   load_and_authorize_resource
+  include ConfirmsDeletion
+
   before_action :set_warehouse, only: %i[show destroy update]
 
   def index

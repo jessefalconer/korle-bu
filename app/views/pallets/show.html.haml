@@ -14,7 +14,7 @@
     - if current_user.admin? || current_user.receiving_manager?
       = render partial: "layouts/pallets_unpack_all_modal"
     - if can? :destroy, @pallet
-      = delete_button(pallet_path(@pallet), "Are you sure you want to delete #{@pallet.name}? This cannot be reversed")
+      = delete_button(pallet_path(@pallet), "Are you sure you want to delete #{@pallet.name}? This cannot be reversed", record: @pallet)
 
   .main-content
     .row.detail-layout
