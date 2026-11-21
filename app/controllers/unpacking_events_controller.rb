@@ -5,7 +5,7 @@ class UnpackingEventsController < ApplicationController
 
   def index
     authorize! :read, UnpackingEvent
-    @events = UnpackingEvent.includes(:hospital, packed_item: :item).joins(:hospital)
+    @events = UnpackingEvent.includes(:hospital, :user, packed_item: %i[item box pallet container]).joins(:hospital)
       .where(hospitals: { warehouse_id: current_user.warehouse_id })
       .order(created_at: :desc)
       .page params[:page]

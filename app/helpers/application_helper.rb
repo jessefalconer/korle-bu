@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  # The unpack forms have always counted "today" in this zone.
+  UNPACK_TIME_ZONE = "Pacific Time (US & Canada)"
+
   # Sorts a collection newest-first by `column`. A preloaded association is sorted in
   # memory, because calling `.order` on it would throw away the preload and query again.
   def sorted_desc(records, column, preload: nil)
@@ -14,10 +17,33 @@ module ApplicationHelper
 
   # <option> tags for the hospital dropdown. Unpack forms render one dropdown per
   # packed item, so the options are built once per request and reused.
+  # Category dropdown choices, loaded once per page (list pages render an item
+  # form per row).
+  def category_choices
+    @category_choices ||= Category.order(:name).pluck(:name, :id)
+  end
+
+  # How many packed items use each of these items, in one query (for list pages
+  # that show an "Instances" column).
+  def instance_counts(items)
+    ids = items.map(&:id)
+    ids.empty? ? {} : PackedItem.where(item_id: ids).group(:item_id).count
+  end
+
+  # Unpack forms start on the hospital this person last unpacked to in this
+  # session, so unpacking several boxes for one clinic needs no re-picking.
   def hospital_options
     @hospital_options ||= options_from_collection_for_select(
-      Hospital.accessible_by(current_ability).order(:name), :id, :name
+      Hospital.accessible_by(current_ability).order(:name), :id, :name, session.dig(:last_unpack, "hospital_id")
     )
+  end
+
+  # The date unpack forms start on: the one last used, if that was chosen today
+  # (so a backdated entry never carries over to tomorrow), otherwise today.
+  def unpack_date
+    today = DateTime.current.in_time_zone(UNPACK_TIME_ZONE).strftime("%Y-%m-%d")
+    last = session[:last_unpack] || {}
+    last["chosen_on"] == today && last["date"].present? ? last["date"] : today
   end
 
   def delete_button(path, confirm_text, classes = "")

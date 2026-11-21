@@ -1,0 +1,9 @@
+-# The viewer's most recently packed items, ready to add again without searching.
+-# Hidden while a search is showing results. locals: form_path:, status: nil
+- recent = Item.recently_packed_by(current_user)
+- if recent.any?
+  #recent-items
+    %h5.recent-items-title
+      %i.fa.fa-clock-rotate-left{"aria-hidden": "true"}
+      Your recent items
+    = render "items/results_form", results: recent, form_path: form_path, status: local_assigns[:status], id_prefix: "recent-"

@@ -106,4 +106,45 @@ describe "Query counts", type: :request do
   it "does not N+1 on the containers index" do
     expect_constant_queries("/containers", -> { create :container, shipment: create(:shipment) })
   end
+
+  describe "item, hospital and reconcile lists" do
+    let(:hospital) { create :hospital }
+
+    # A packed item in the container with stock left, one unpacking event and a category
+    def unpacked_container_item
+      item = create :item, category: create(:category), verified: false, flagged: true
+      packed_item(container: container, item: item, quantity: 5).tap do |pi|
+        create :unpacking_event, packed_item: pi, hospital: hospital, quantity: 1
+      end
+    end
+
+    it "does not N+1 on a container's items" do
+      expect_constant_queries("/containers/#{container.id}/container_items", -> { unpacked_container_item })
+    end
+
+    it "does not N+1 on a box's items" do
+      expect_constant_queries("/boxes/#{box.id}/box_items", lambda {
+        create(:unpacking_event, packed_item: packed_item(box: box, quantity: 3), hospital: hospital, quantity: 1)
+      })
+    end
+
+    it "does not N+1 on a hospital's unpacking history" do
+      expect_constant_queries("/hospitals/#{hospital.id}", -> { unpacked_container_item })
+    end
+
+    it "does not N+1 on the hospitals list" do
+      expect_constant_queries("/hospitals", -> { create :hospital })
+    end
+
+    it "does not N+1 on the unpacking history page" do
+      user.update!(warehouse: hospital.warehouse)
+      expect_constant_queries("/unpacking_events", -> { unpacked_container_item })
+    end
+
+    it "does not N+1 on the reconcile lists" do
+      %w[/reconcile_unverified /reconcile_flagged].each do |path|
+        expect_constant_queries(path, -> { unpacked_container_item })
+      end
+    end
+  end
 end

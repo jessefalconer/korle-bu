@@ -5,12 +5,13 @@ class HospitalsController < ApplicationController
   before_action :set_hospital, only: %i[show destroy update]
 
   def index
-    @hospitals = Hospital.accessible_by(current_ability).page params[:page]
+    @hospitals = Hospital.accessible_by(current_ability).includes(:warehouse).page params[:page]
   end
 
   def show
     @unpacking_events = @hospital
       .unpacking_events
+      .includes(:user, packed_item: %i[item box pallet container])
       .order(created_at: :desc)
       .accessible_by(current_ability).page params[:page]
   end

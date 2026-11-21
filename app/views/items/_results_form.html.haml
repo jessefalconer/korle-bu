@@ -1,4 +1,9 @@
-- if @search_results_items.none?
+-# Item rows that open into an "add to this box/pallet/..." form.
+-# locals: form_path:, status:, results: (defaults to @search_results_items),
+-#         id_prefix: "" (keeps ids unique when two lists are on one page)
+- results = local_assigns.fetch(:results, @search_results_items)
+- prefix = local_assigns[:id_prefix].to_s
+- if results.none?
   .form-group.padding-top-small
     %h5.text-center
       No results. Try simplifying your search term or removing punctuation and irregular characters.
@@ -6,34 +11,39 @@
       %em New
       tab to create one.
 - else
-  - @search_results_items.each do |item|
-    -# @param item [array][0]: id, [1]:generated_name
-    = form_for :packed_item, url: form_path, method: :post do |f|
+  - results.each do |item|
+    -# @param item [array][0]: id, [1]: generated_name, [2]: unit_weight (kg per unit)
+    - item_id, item_name, unit_weight = item
+    - unit_weight = unit_weight.to_f
+    - dom = "#{prefix}#{item_id}"
+    = form_for :packed_item, url: form_path, method: :post, html: { data: { unit_weight: (unit_weight if unit_weight.positive?) } } do |f|
       .row.inline-add-item
-        .col-12.results-item-name{data: {item_id: item[0]}}
-          %p.results-item-name-value= item[1]
-          %i.fa.fa-chevron-down.drawer-caret
+        .col-12.results-item-name{data: {item_id: item_id}, tabindex: 0, role: "button", "aria-expanded": "false"}
+          %p.results-item-name-value= item_name
+          %i.fa.fa-chevron-down.drawer-caret{"aria-hidden": "true"}
         .col-12.results-item-form.hidden
           -# One row on wider screens, bottom-aligned so Add lines up with the inputs
           .row.align-items-end
             .col-6.col-md
               .form-group
-                = f.label :quantity
-                = f.number_field :quantity, value: 1, class: "form-control", min: 1, id: "quantity-#{item[0]}"
-                = f.hidden_field :item_id, value: item[0], id: "item-#{item[0]}"
-                = f.hidden_field :status, value: status, id: "status-#{item[0]}"
+                = f.label :quantity, for: "quantity-#{dom}"
+                = f.number_field :quantity, value: 1, class: "form-control js-quantity", min: 1, id: "quantity-#{dom}"
+                = f.hidden_field :item_id, value: item_id, id: "item-#{dom}"
+                = f.hidden_field :status, value: status, id: "status-#{dom}"
             .col-6.col-md
               .form-group
-                = f.label "Weight (kg)"
-                = f.number_field :weight, step: :any, class: "form-control", id: "weight-#{item[0]}"
+                = f.label "Weight (kg)", for: "weight-#{dom}"
+                -# Filled in from the item's unit weight until someone types their own
+                = f.number_field :weight, step: :any, class: "form-control js-weight", id: "weight-#{dom}",
+                  value: (unit_weight.round(3) if unit_weight.positive?)
             .col-6.col-md
               .form-group
-                = f.label :expires
-                = f.date_field :expiry_date, value: "", class: "form-control", id: "expiry-#{item[0]}"
+                = f.label :expires, for: "expiry-#{dom}"
+                = f.date_field :expiry_date, value: "", class: "form-control", id: "expiry-#{dom}"
             .col-6.col-md-auto
               .form-group
                 %label.checkbox-option.inline-field
-                  = f.check_box :show_id, value: false, id: "show-id-#{item[0]}"
+                  = f.check_box :show_id, value: false, id: "show-id-#{dom}"
                   Generate ID?
             .col-12.col-md-auto
               .form-group.text-end

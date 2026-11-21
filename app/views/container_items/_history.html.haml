@@ -6,7 +6,7 @@
 - else
   %h5 Unpacking history for this container is shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "history-items"}
-  - @container.container_items.with_events.each do |ci|
+  - @container.container_items.with_events.includes(:item, unpacking_events: %i[hospital user]).each do |ci|
     .row.inline-add-item
       .col-12.manage-item-name
         %p
@@ -18,7 +18,7 @@
           %span.badge.text-bg-secondary= ci.quantity - ci.remaining_quantity
           %i.fa.fa-chevron-down.drawer-caret
       .col-12.manage-item-form.hidden
-        - ci.unpacking_events.order(timestamp: :desc).each do |event|
+        - ci.unpacking_events.sort_by(&:timestamp).reverse.each do |event|
           .unpacking-entry
             .entry-info
               %p

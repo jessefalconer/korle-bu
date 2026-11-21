@@ -54,7 +54,7 @@ class ItemsController < ApplicationController
   end
 
   def unverified_search
-    @items = Item.unverified.search_by_generated_name(params[:search])
+    @items = Item.unverified.includes(:category).search_by_generated_name(params[:search])
 
     render json: render_to_string(
       partial: "reconcile_items/unverified_table",
@@ -91,7 +91,7 @@ class ItemsController < ApplicationController
   def search_form
     @search_results_items = Item.search_by_generated_name(params[:search])
       .limit(25)
-      .pluck(:id, :generated_name)
+      .pluck(:id, :generated_name, :unit_weight)
     form_path = generate_form_url(params[:model], params[:id])
 
     render json: render_to_string(

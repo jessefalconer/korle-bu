@@ -7,6 +7,6 @@
 - else
   %h5 Update or remove existing items packed on this pallet.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name or ID...", assoc: "manage-items"}
-  - @pallet.pallet_items.each do |pi|
+  - @pallet.pallet_items.includes(:item).each do |pi|
     = form_for pi, url: pallet_pallet_item_path(@pallet, pi) do |f|
       = render "packed_items/manage_form_card", f: f, pi: pi, path: pallet_pallet_item_path(@pallet, pi)

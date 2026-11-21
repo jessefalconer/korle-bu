@@ -26,7 +26,7 @@
     .col-12
       .form-group
         = f.label :category
-        = f.select(:category_id, options_from_collection_for_select(Category.order(:name), :id, :name, item.category_id), { include_blank: "" }, { class: "form-select" })
+        = f.select(:category_id, options_for_select(category_choices, item.category_id), { include_blank: "" }, { class: "form-select" })
     .col-6
       .form-group
         = f.label :flagged, "Flag for Review"

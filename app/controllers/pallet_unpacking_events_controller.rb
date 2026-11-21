@@ -11,6 +11,7 @@ class PalletUnpackingEventsController < ApplicationController
     authorize! :create, event if event.hospital
 
     if event.save
+      remember_unpack(event.hospital_id, unpacking_event_params[:timestamp])
       redirect_to pallet_pallet_items_path(@packed_item.pallet),
                   flash: { success: "Unpacking logged." }
     else

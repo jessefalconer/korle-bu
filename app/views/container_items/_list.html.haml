@@ -3,5 +3,5 @@
 - else
   %h5 The shipping manifest for this box is shown here.
   = render partial: "layouts/list_quick_filter", locals: {placeholder: "Filter by name...", assoc: "manage-items"}
-  - @container.container_items.each do |pi|
+  - @container.container_items.includes(:item).each do |pi|
     = render "packed_items/list_card", pi: pi

@@ -1,5 +1,6 @@
 - comparison_item ||= ""
 - placeholder_item = Item.new(generated_name: comparison_item)
+- counts = instance_counts(@items)
 - @items.each do |item|
   %tr
     %td
@@ -12,4 +13,4 @@
 
     %td
       = link_to item_instances_path(item) do
-        %p.instances= item.packed_items.count
+        %p.instances= counts.fetch(item.id, 0)

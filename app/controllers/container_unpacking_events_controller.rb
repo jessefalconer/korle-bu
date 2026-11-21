@@ -11,6 +11,7 @@ class ContainerUnpackingEventsController < ApplicationController
     authorize! :create, event if event.hospital
 
     if event.save
+      remember_unpack(event.hospital_id, unpacking_event_params[:timestamp])
       redirect_to container_container_items_path(@packed_item.container),
                   flash: { success: "Unpacking logged." }
     else

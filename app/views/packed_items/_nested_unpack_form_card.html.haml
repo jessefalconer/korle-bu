@@ -43,8 +43,7 @@
                 .col-12.col-md-4
                   .form-group
                     %label Unpacked On
-                    - today = DateTime.current.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
-                    = f.date_field :timestamp, value: today, class: "form-control"
+                    = f.date_field :timestamp, value: unpack_date, class: "form-control"
                 -# Notes fill the row; Unpack sits at its end, level with the input
                 .col-12
                   .row.align-items-end.inline-submit-row

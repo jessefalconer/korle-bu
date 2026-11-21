@@ -3,9 +3,14 @@
   = hidden_field_tag :model, "Staged", id: "search-model"
   = hidden_field_tag :status, "Staged", id: "status"
   .input-group
-    = text_field_tag :search, params[:search], placeholder: "Begin typing to search...", class: "form-control", id: "search-params"
+    = text_field_tag :search, params[:search], placeholder: "Begin typing to search...", class: "form-control", id: "search-params", autofocus: true, autocomplete: "off",
+      "aria-label": "Search items", "aria-describedby": "search-keys-hint"
     %a.btn.btn-primary.responsive-button#packing-search-submit
       %i.fa.fa-magnifying-glass
       %span Search
 
+%p.search-keys-hint#search-keys-hint
+  Tip: press Enter to search, Enter again to open the first result, then Enter to add it.
+
 #search-results
+= render "packed_items/recent_items", form_path: staged_items_path, status: "Staged"

@@ -15,6 +15,7 @@ import "src/reassign";
 import "src/reconcile";
 import "src/mass_actions";
 import "src/tab_scroll";
+import "src/dashboard_prefs";
 import "src/confirm_dialog";
 import "chartkick";
 import "Chart.bundle";

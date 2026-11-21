@@ -5,17 +5,17 @@ class ReconcileItemsController < ApplicationController
   before_action :set_item, only: %i[start confirm item_instances execute]
 
   def unverified
-    @items = Item.unverified.order(:generated_name).page params[:page]
+    @items = Item.unverified.includes(:category).order(:generated_name).page params[:page]
     @progress = progress("Verified", "verified")
   end
 
   def uncategorized
-    @items = Item.uncategorized.order(:generated_name).page params[:page]
+    @items = Item.uncategorized.includes(:category).order(:generated_name).page params[:page]
     @progress = progress("Categorized", "category_id IS NOT NULL")
   end
 
   def flagged
-    @items = Item.flagged.order(:generated_name).page params[:page]
+    @items = Item.flagged.includes(:category).order(:generated_name).page params[:page]
     @progress = progress("Resolved", "NOT flagged")
   end
 

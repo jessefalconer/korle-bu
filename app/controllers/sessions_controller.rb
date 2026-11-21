@@ -8,7 +8,9 @@ class SessionsController < ApplicationController
   skip_authorization_check
 
   def index
-    @stats = DashboardStats.new(current_user, range: params[:range])
+    # The range picked last time sticks for the rest of the session
+    @stats = DashboardStats.new(current_user, range: params[:range].presence || session[:dashboard_range])
+    session[:dashboard_range] = @stats.range if params[:range].present?
     # Admins and shipping managers oversee every warehouse: they get the
     # all-warehouse unpacking card and the recent records tables.
     @overview = current_user.admin? || current_user.shipping_manager?
@@ -17,7 +19,7 @@ class SessionsController < ApplicationController
     @recent_users = User.order(created_at: :desc).limit(10)
     @recent_items = Item.includes(:category, :user).order(created_at: :desc).limit(10)
     @recent_item_instance_counts = PackedItem.where(item_id: @recent_items.map(&:id)).group(:item_id).count
-    @recent_unpacking_events = UnpackingEvent.includes(:hospital, :user, packed_item: :item)
+    @recent_unpacking_events = UnpackingEvent.includes(:hospital, :user, packed_item: %i[item box pallet container])
       .order(created_at: :desc)
       .limit(10)
   end

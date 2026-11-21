@@ -63,6 +63,19 @@ class Item < ApplicationRecord
   end
 
   SIMILAR_RECORDS_LIMIT = 50
+  RECENT_ITEMS_LIMIT = 8
+
+  # The items this person packed most recently, newest first, as the
+  # [id, generated_name, unit_weight] rows the packing search results use.
+  def self.recently_packed_by(user, limit: RECENT_ITEMS_LIMIT)
+    ids = PackedItem.where(user_id: user.id)
+      .group(:item_id)
+      .order(Arel.sql("MAX(packed_items.created_at) DESC"))
+      .limit(limit)
+      .pluck(:item_id)
+    rows = where(id: ids).pluck(:id, :generated_name, :unit_weight).index_by(&:first)
+    ids.filter_map { |id| rows[id] }
+  end
 
   # Closest matches first (ranked by trigram similarity). Capped because broad
   # names match hundreds of items, and only the best few are useful.

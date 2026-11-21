@@ -1,6 +1,10 @@
 import { searchInto } from "src/search_request";
 
+// The term the current results are for, so a second Enter opens the first result
+let lastSearch = null;
+
 function packingSearch(params) {
+  lastSearch = params;
   searchInto("#search-results", {
     url: "/item_search_form",
     data: {
@@ -67,10 +71,75 @@ function highlightMatches(elements, params) {
 }
 
 function initResultsDrawerListeners(params) {
-  highlightMatches(document.querySelectorAll(".results-item-name-value"), params);
+  highlightMatches(document.querySelectorAll("#search-results .results-item-name-value"), params);
+}
 
-  // Namespaced so a re-render never binds a second handler (which would open then instantly close)
-  $(".results-item-name").off("click.drawer").on("click.drawer", e => toggleDrawer(e.currentTarget));
+// ---------------------------------------------------------------- Keyboard flow
+// Search, Enter, Enter (opens the first result), quantity, Enter (adds it).
+// Result rows are buttons: Enter/Space opens one, arrow keys move between them.
+
+function focusQuantity(header) {
+  const quantity = $(header).next().find(".js-quantity")[0];
+  if (!quantity) return;
+
+  quantity.focus();
+  quantity.select();
+}
+
+function openResult(header) {
+  if (!$(header).hasClass("open")) toggleDrawer(header);
+  focusQuantity(header);
+}
+
+// Rows of whichever list is showing: search results, or recent items before a search
+function visibleResultRows() {
+  return $(".results-item-name:visible").toArray();
+}
+
+function moveFocus(from, step) {
+  const rows = visibleResultRows();
+  const index = rows.indexOf(from) + step;
+  if (index < 0) $("#search-params").trigger("focus");
+  else if (rows[index]) rows[index].focus();
+}
+
+function initResultKeyboard() {
+  // Delegated once, so rows added by later searches work too
+  $(document).on("click", ".results-item-name", e => toggleDrawer(e.currentTarget));
+
+  $(document).on("keydown", ".results-item-name", e => {
+    const row = e.currentTarget;
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      if ($(row).hasClass("open")) toggleDrawer(row);
+      else openResult(row);
+    } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      moveFocus(row, e.key === "ArrowDown" ? 1 : -1);
+    }
+  });
+}
+
+// ---------------------------------------------------------------- Weight from unit weight
+// Each result form carries its item's unit weight. Weight follows quantity × unit
+// weight until someone types a weight of their own.
+function initWeightFill() {
+  $(document).on("input", "form[data-unit-weight] .js-quantity", e => {
+    const form = e.target.form;
+    const weight = form.querySelector(".js-weight");
+    if (!weight || weight.dataset.edited) return;
+
+    const quantity = parseFloat(e.target.value);
+    const unitWeight = parseFloat(form.dataset.unitWeight);
+    weight.value = quantity > 0 ? Number((quantity * unitWeight).toFixed(3)) : "";
+  });
+
+  $(document).on("input", ".js-weight", e => { e.target.dataset.edited = "true"; });
+}
+
+// Recent items stand in for search results until something is typed
+function toggleRecentItems(searching) {
+  $("#recent-items").toggleClass("hidden", searching);
 }
 
 export function initManageDrawerListeners() {
@@ -100,18 +169,37 @@ function initPackingSearchListeners() {
   $(document).on("input", "#search-params", () => {
     clearTimeout(typingTimer);
     const params = $("#search-params").val();
+    toggleRecentItems(params !== "");
 
     if (params.length >= minimumChars) {
       typingTimer = setTimeout(searchNow, searchDelayInterval);
     } else if (params === "") {
+      lastSearch = null;
       $("#search-results").empty();
     }
   });
 
   $(document).on("click", "#packing-search-submit", searchNow);
-  $(document).on("keyup", "#search-params", e => {
-    if (e.key === "Enter") searchNow();
+
+  $(document).on("keydown", "#search-params", e => {
+    const params = $("#search-params").val();
+    const firstResult = $("#search-results .results-item-name")[0];
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      // Results already showing for this term: Enter opens the first one
+      if (params !== "" && params === lastSearch && firstResult) openResult(firstResult);
+      else searchNow();
+    } else if (e.key === "ArrowDown") {
+      const first = visibleResultRows()[0];
+      if (first) { e.preventDefault(); first.focus(); }
+    } else if (e.key === "Escape" && params !== "") {
+      $("#search-params").val("").trigger("input");
+    }
   });
+
+  initResultKeyboard();
+  initWeightFill();
 }
 
 $(() => {

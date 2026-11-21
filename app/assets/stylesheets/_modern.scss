@@ -2015,3 +2015,31 @@ $status-critical: #d03b3b;
     .meter-label { grid-column: 1 / -1; }
   }
 }
+
+// ---------------------------------------------------------------- Packing search
+.search-keys-hint {
+  font-size: 13px;
+  color: $muted;
+  margin: 6px 0 10px;
+}
+
+.recent-items-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: $ink;
+  margin: 8px 0 6px;
+
+  .fa { color: $muted; margin-right: 6px; }
+}
+
+// Result rows are keyboard buttons (Enter opens, arrows move)
+.results-item-name:focus-visible {
+  outline: 2px solid rgba($brand, .45);
+  outline-offset: -2px;
+  border-radius: $radius-sm;
+}
+
+// Phones get no keyboard tip: they have no Enter-driven flow worth explaining
+@media (max-width: 575px) {
+  .search-keys-hint { display: none; }
+}

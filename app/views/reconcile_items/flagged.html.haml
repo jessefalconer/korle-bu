@@ -19,6 +19,7 @@
                 %th.d-none.d-sm-table-cell Category
                 %th Instances
             %tbody
+              - counts = instance_counts(@items)
               - @items.each do |item|
                 %tr
                   %td
@@ -32,7 +33,7 @@
                       = item.category&.name || "N/A"
                   %td
                     = link_to item_instances_path(item) do
-                      %p.instances= item.packed_items.count
+                      %p.instances= counts.fetch(item.id, 0)
 
                 = render partial: "layouts/item_edit_modal", locals: {item: item, redirect: "reconcile_flagged_path"}
 

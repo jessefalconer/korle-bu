@@ -59,6 +59,21 @@ class ApplicationController < ActionController::Base
     fallback
   end
 
+  # Remembered for the session so the next unpack form starts on the same
+  # hospital and date (see ApplicationHelper#hospital_options and #unpack_date).
+  def remember_unpack(hospital_id, date)
+    date = begin
+      Date.iso8601(date.to_s).iso8601
+    rescue Date::Error
+      nil
+    end
+    session[:last_unpack] = {
+      "hospital_id" => hospital_id.to_i,
+      "date" => date,
+      "chosen_on" => DateTime.current.in_time_zone(ApplicationHelper::UNPACK_TIME_ZONE).strftime("%Y-%m-%d")
+    }
+  end
+
   # Index pages accept ?display=<scope> to filter. Only names in `allowed` are
   # ever called, and the name returned comes from that list, never the request.
   def display_scope(allowed)
