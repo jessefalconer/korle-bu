@@ -17,7 +17,6 @@ describe "Sessions", type: :request do
       expect(response.body).to include("theme-1")
       expect(response.body).not_to include("with-sidebar")
       expect(response.body).not_to include(privacy_path)
-      expect(response.body).not_to include(terms_path)
     end
 
     it "redirects signed-in users to the dashboard" do

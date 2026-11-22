@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Help | KBNF Inventory</title>
+  <link rel="icon" type="image/png" href="/kbnf-favicon-32x32.png" sizes="32x32">
+  <!-- This file lives in public/help.html. One guide for every role: the app's
+       Help link opens it at the reader's own section (#volunteers, #shipping, ...). -->
+  <style>
+    :root {
+      --brand: #007096; --brand-dark: #005d7d; --accent: #ed8b00;
+      --ink: #1f2a33; --muted: #6b7781; --line: #e3e7ea;
+      --canvas: #eceff3; --surface: #ffffff; --sunken: #f5f7f9; --tint: #e6effa;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+    body {
+      margin: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    .bar { height: 6px; background: var(--brand); border-bottom: 3px solid var(--accent); }
+    .page { max-width: 1080px; margin: 0 auto; padding: 24px 16px 48px; display: grid; gap: 24px; }
+    @media (min-width: 900px) { .page { grid-template-columns: 240px minmax(0, 1fr); align-items: start; } }
+
+    header.intro { grid-column: 1 / -1; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    header.intro img { width: 140px; height: auto; }
+    header.intro h1 { margin: 0; font-size: 26px; }
+    header.intro p { margin: 0; color: var(--muted); }
+    .back-link { margin-left: auto; color: var(--brand); text-decoration: none; font-weight: 600; }
+
+    nav.toc {
+      background: var(--surface); border-radius: 12px; padding: 16px 18px;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, .06);
+    }
+    @media (min-width: 900px) { nav.toc { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; } }
+    nav.toc h2 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 8px; }
+    nav.toc ol { list-style: none; margin: 0; padding: 0; }
+    nav.toc > ol > li { margin: 10px 0 2px; font-weight: 600; }
+    nav.toc ol ol { margin: 2px 0 0 12px; font-weight: 400; font-size: 14px; }
+    nav.toc a { color: var(--ink); text-decoration: none; }
+    nav.toc a:hover { color: var(--brand); text-decoration: underline; }
+
+    main { min-width: 0; }
+    section.part {
+      background: var(--surface); border-radius: 12px; padding: 8px 24px 20px; margin-bottom: 20px;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, .06);
+    }
+    @media (max-width: 600px) { section.part { padding: 4px 16px 14px; } }
+    section.part > h2 {
+      font-size: 22px; margin: 18px 0 6px; padding-bottom: 8px; border-bottom: 2px solid var(--line);
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    }
+    .who { font-size: 12px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--tint); color: var(--brand-dark); }
+    h3 { font-size: 17px; margin: 22px 0 4px; color: var(--brand-dark); }
+    p, li { max-width: 70ch; }
+    ul, ol { padding-left: 1.3em; }
+    li + li { margin-top: 4px; }
+    strong { color: var(--ink); }
+    .ui { font-weight: 600; background: var(--sunken); border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; white-space: nowrap; }
+    kbd {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px;
+      background: var(--surface); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 0 5px;
+    }
+    .tip { background: #fdf6e9; border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0; padding: 10px 14px; margin: 14px 0; }
+    .tip p { margin: 0; }
+    table { border-collapse: collapse; width: 100%; margin: 10px 0 14px; font-size: 15px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: var(--sunken); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+    .table-wrap { overflow-x: auto; }
+
+    /* Shipment structure diagram */
+    .tree { list-style: none; padding-left: 0; margin: 12px 0; }
+    .tree ul { list-style: none; padding-left: 22px; margin: 4px 0 0; border-left: 2px solid var(--line); }
+    .tree li { position: relative; margin: 6px 0; }
+    .tree ul > li::before { content: ""; position: absolute; left: -22px; top: 14px; width: 16px; border-top: 2px solid var(--line); }
+    .node { display: inline-block; padding: 2px 10px; border-radius: 8px; background: var(--tint); font-weight: 600; }
+    .node small { font-weight: 400; color: var(--muted); }
+
+    footer { grid-column: 1 / -1; color: var(--muted); font-size: 14px; text-align: center; }
+    footer a, main a { color: var(--brand); }
+  </style>
+</head>
+<body>
+  <div class="bar"></div>
+  <div class="page">
+    <header class="intro">
+      <img src="/kbnf-logo.png" alt="Korle-Bu Neuroscience Foundation">
+      <div>
+        <h1>KBNF Inventory Help</h1>
+        <p>How to pack, ship and unpack supplies with the app.</p>
+      </div>
+      <a class="back-link" href="/">Back to the app</a>
+    </header>
+
+    <nav class="toc" aria-label="Contents">
+      <h2>Contents</h2>
+      <ol>
+        <li><a href="#basics">The basics (everyone)</a>
+          <ol>
+            <li><a href="#signing-in">Signing in</a></li>
+            <li><a href="#structure">How a shipment fits together</a></li>
+            <li><a href="#statuses">Statuses</a></li>
+            <li><a href="#finding">Finding things</a></li>
+            <li><a href="#dashboard">The dashboard</a></li>
+            <li><a href="#deleting">Deleting</a></li>
+          </ol>
+        </li>
+        <li><a href="#volunteers">Volunteers: packing</a>
+          <ol>
+            <li><a href="#items">Creating items</a></li>
+            <li><a href="#packing">Packing items</a></li>
+            <li><a href="#keyboard">Packing with the keyboard</a></li>
+            <li><a href="#staging">Staging and Warehouse areas</a></li>
+            <li><a href="#moving">Moving things (Mass Action)</a></li>
+            <li><a href="#duplicating">Duplicating boxes</a></li>
+          </ol>
+        </li>
+        <li><a href="#shipping">Shipping managers</a>
+          <ol>
+            <li><a href="#reconciliation">Reconciliation</a></li>
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="#shipping-out">Getting a shipment ready</a></li>
+            <li><a href="#people">Accounts and passwords</a></li>
+          </ol>
+        </li>
+        <li><a href="#receiving">Receiving managers: unpacking</a>
+          <ol>
+            <li><a href="#your-stock">Your warehouse's stock</a></li>
+            <li><a href="#unpacking">Unpacking items</a></li>
+            <li><a href="#unpacking-many">Unpacking lots at once</a></li>
+            <li><a href="#destinations">Hospitals, facilities and clinics</a></li>
+            <li><a href="#corrections">Fixing mistakes</a></li>
+          </ol>
+        </li>
+        <li><a href="#admins">Admins</a>
+          <ol>
+            <li><a href="#roles">Who can do what</a></li>
+            <li><a href="#receiving-a-shipment">Receiving a shipment</a></li>
+            <li><a href="#warehouses">Warehouses</a></li>
+            <li><a href="#exports">Exports</a></li>
+          </ol>
+        </li>
+        <li><a href="#help">Getting help</a></li>
+      </ol>
+    </nav>
+
+    <main>
+      <!-- ============================================================ Basics -->
+      <section class="part" id="basics">
+        <h2>The basics <span class="who">Everyone</span></h2>
+
+        <h3 id="signing-in">Signing in</h3>
+        <ul>
+          <li>Accounts are made by an administrator or shipping manager. There is no public sign-up.</li>
+          <li>Your first password is temporary: you'll be asked to choose your own before you can do anything else.</li>
+          <li>To change your password later, open your name in the top right, choose <span class="ui">My Account</span>, then <span class="ui">Change Password</span>. My Account is also where you update your name, email and phone number.</li>
+          <li>For security you're signed out after <strong>72 hours without using the app</strong>, and at most <strong>14 days</strong> after signing in. Just sign in again.</li>
+        </ul>
+
+        <h3 id="structure">How a shipment fits together</h3>
+        <p>Supplies travel in layers. Items can go into any of the layers directly, so a loose item can sit in a container without a box.</p>
+        <ul class="tree" aria-label="Shipment structure">
+          <li><span class="node">Shipment <small>sent from one warehouse to another</small></span>
+            <ul>
+              <li><span class="node">Container <small>a shipping container</small></span>
+                <ul>
+                  <li><span class="node">Pallet</span>
+                    <ul><li><span class="node">Box</span> <ul><li><span class="node">Items</span></li></ul></li></ul>
+                  </li>
+                  <li><span class="node">Box</span> <ul><li><span class="node">Items</span></li></ul></li>
+                  <li><span class="node">Items</span></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <p>
+          Where something sits is set on its <span class="ui">Edit</span> form (a box's pallet or container, a pallet's container,
+          a container's shipment). It's fine to leave this blank until you know. Each record's page shows its full location
+          at the top, like <em>Home / SHIPMENT-57 / CONTAINER-57 / PALLET-402</em>.
+        </p>
+
+        <h3 id="statuses">Statuses</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Status</th><th>Means</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Warehoused</strong></td><td>Sitting in a warehouse, not yet planned for a shipment. Boxes, pallets and loose items only.</td></tr>
+              <tr><td><strong>Staged</strong></td><td>Ready and waiting to be put into a shipment. Boxes, pallets and loose items only.</td></tr>
+              <tr><td><strong>In Progress</strong></td><td>Being packed. Volunteers can still change it.</td></tr>
+              <tr><td><strong>Complete</strong></td><td>Packed and closed, ready to ship or on its way.</td></tr>
+              <tr><td><strong>Received</strong></td><td>Arrived. The receiving warehouse can now unpack it.</td></tr>
+              <tr><td><strong>Archived</strong></td><td>Finished with and kept for the record.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Statuses flow downwards: marking a shipment or container Complete, Received or Archived does the same to
+          everything inside it, and a pallet's status passes to its boxes. Making a box or pallet Staged or Warehoused
+          takes it out of whatever it was in.
+        </p>
+
+        <h3 id="finding">Finding things</h3>
+        <ul>
+          <li><span class="ui">Jump To</span> (top of most pages) opens a box or pallet by its Custom ID, searches items, and links to the newest box, pallet, container and shipment you can open.</li>
+          <li>The item, box, pallet, container and shipment lists have a <span class="ui">Filters</span> panel above the table: status, created dates, who created it, and where it's headed (its receiving warehouse, or <em>None</em> if it isn't in a shipment yet). Items can also be filtered by category and by whether they're used anywhere. A filtered list has its own link, so you can bookmark or share it.</li>
+          <li>Dropdowns with long lists have a search box: start typing to narrow them down, use the arrow keys, and press <kbd>Enter</kbd> to choose.</li>
+        </ul>
+
+        <h3 id="dashboard">The dashboard</h3>
+        <p>
+          The home page shows activity for the time range you pick (<span class="ui">30 days</span>, <span class="ui">Year</span>
+          or <span class="ui">All time</span>): what's been packed, a leaderboard, your own totals and milestones, and fun facts.
+          Managers also see shipments, data quality and where supplies were unpacked. Click a card's header to collapse it;
+          the app remembers which cards you've closed.
+        </p>
+
+        <h3 id="deleting">Deleting</h3>
+        <ul>
+          <li>Deleting asks you to confirm first.</li>
+          <li>For items, shipments, containers, and boxes or pallets that have been received, you also type <kbd>delete</kbd>, and the confirmation lists what else is affected (for example, which boxes would be unassigned).</li>
+          <li>Things still in use can't be deleted: a hospital that has received supplies, a category or warehouse that's in use, or a person who has created records. Deactivate them instead.</li>
+        </ul>
+      </section>
+
+      <!-- ============================================================ Volunteers -->
+      <section class="part" id="volunteers">
+        <h2>Packing <span class="who">Volunteers</span> <span class="who">Shipping managers</span></h2>
+        <p>
+          Volunteers catalogue items and pack them into boxes, pallets and containers. You can create boxes and pallets, and change
+          anything that is still <strong>In Progress</strong>; once something is Complete you can still see it but not change it.
+        </p>
+
+        <h3 id="items">Creating items</h3>
+        <p>
+          Every item gets a name built from its parts, so the same thing always ends up with the same name and isn't entered twice.
+          Fill in only the fields that apply:
+        </p>
+        <ul>
+          <li><strong>Base Name</strong> (required): the plain thing itself, without sizes or brands. <em>Gloves</em>, not <em>Medium nitrile gloves 50 pack</em>.</li>
+          <li><strong>Brand/Model</strong>: the maker and model, e.g. <em>Stryker FL28C</em>.</li>
+          <li><strong>S/N</strong>: the serial number, if it has one. It's added to the end of the name, so two otherwise identical beds stay separate.</li>
+          <li><strong>Unit Weight (kg)</strong>: the weight of one. When you pack the item, its weight is filled in for you from this.</li>
+          <li><strong>Size, measurements, area and range</strong>: under <span class="ui">Additional Measurement Fields</span>, for things like <em>25ga</em>, <em>15mL</em>, <em>5x10cm</em> or <em>1-5mm</em>.</li>
+          <li><strong>Category</strong>, <strong>Notes</strong>, and <strong>Flag for Review</strong> if you're not sure you've got it right.</li>
+        </ul>
+        <div class="tip"><p>For example, a <em>U-Line</em> brand, <em>Nitrile Gloves</em> base name, <em>Medium</em> size and a <em>50-Pack</em> measurement always become <strong>U-Line Nitrile Gloves Medium 50-Pack</strong>. Search before creating: the item may already exist.</p></div>
+
+        <h3 id="packing">Packing items</h3>
+        <p>Open a box, pallet or container and go to its items page. There are three tabs:</p>
+        <ul>
+          <li><strong>Search</strong>: find an existing item and add it. Before you search, <strong>Your recent items</strong> lists the last things you packed, ready to add again.</li>
+          <li><strong>New</strong>: create a new item and pack it in one go.</li>
+          <li><strong>Manage</strong>: change the quantity, weight or expiry date of what's already in it, or remove something.</li>
+        </ul>
+        <p>
+          Tap an item to open its form: quantity, weight (filled in from the item's unit weight until you type your own),
+          expiry date, and <span class="ui">Generate ID?</span> if the item needs its own ID number on its label.
+        </p>
+
+        <h3 id="keyboard">Packing with the keyboard</h3>
+        <p>On a computer you can pack without the mouse:</p>
+        <ol>
+          <li>The search box is ready when the page opens. Type the item's name and press <kbd>Enter</kbd>.</li>
+          <li>Press <kbd>Enter</kbd> again to open the first result (or use <kbd>↓</kbd> <kbd>↑</kbd> to pick another and press <kbd>Enter</kbd>).</li>
+          <li>Type the quantity (it's already selected) and press <kbd>Enter</kbd> to add it.</li>
+          <li>The page comes back with the cursor in the search box for the next item. <kbd>Esc</kbd> clears the search.</li>
+        </ol>
+
+        <h3 id="staging">Staging and Warehouse areas</h3>
+        <p>
+          Loose items, boxes and pallets that aren't in anything yet live in the <span class="ui">Staging Area</span> (ready to ship)
+          or the <span class="ui">Warehouse Area</span> (in storage). Both menus list them and let you add items straight there.
+        </p>
+
+        <h3 id="moving">Moving things (Mass Action)</h3>
+        <p>
+          Tick the rows you want to move in a list, then press <span class="ui">Mass Action</span> and choose where they go:
+          a box, pallet or container, the Staging or Warehouse area, or their current location. You can only move things into
+          places you're allowed to pack into, and if anything can't be moved, nothing is.
+        </p>
+
+        <h3 id="duplicating">Duplicating boxes</h3>
+        <p>
+          When several boxes are packed the same way, open one and press <span class="ui">Duplicate</span> to make up to
+          <strong>10 copies</strong>, with or without its pallet or container assignment.
+        </p>
+      </section>
+
+      <!-- ============================================================ Shipping managers -->
+      <section class="part" id="shipping">
+        <h2>Managing shipments and items <span class="who">Shipping managers</span> <span class="who">Admins</span></h2>
+        <p>Shipping managers can do everything volunteers can, on any box, pallet or container, plus the following.</p>
+
+        <h3 id="reconciliation">Reconciliation</h3>
+        <p>The <span class="ui">Reconciliation</span> menu keeps the item catalogue tidy. Each list shows how far through it you are:</p>
+        <ul>
+          <li><strong>Unverified</strong>: new items to check. Opening one searches for likely duplicates; tick them to <strong>merge</strong> them into this item (everything packed under the duplicates moves across), and optionally delete the empty duplicates. Verify the item when it's right.</li>
+          <li><strong>Uncategorized</strong>: items without a category.</li>
+          <li><strong>User-flagged</strong>: items someone flagged for review.</li>
+        </ul>
+
+        <h3 id="categories">Categories</h3>
+        <p>
+          Categories can be renamed at any time and every item in them follows. A category can't be deleted while items or pallets use it.
+        </p>
+
+        <h3 id="shipping-out">Getting a shipment ready</h3>
+        <ol>
+          <li>Check every box is on a pallet or in a container, every pallet is in a container, and every container is in the shipment. The shipment page lists anything still staged or warehoused that could be added.</li>
+          <li>Make sure the shipment has the right shipping and receiving warehouses: the receiving warehouse is who will be able to unpack it.</li>
+          <li>Mark containers Complete as they're closed. When the shipment leaves, it's marked Complete, and everything inside follows.</li>
+        </ol>
+
+        <h3 id="people">Accounts and passwords</h3>
+        <ul>
+          <li>Create accounts from <span class="ui">Admin › Users</span>. You set a temporary password and the person chooses their own when they first sign in.</li>
+          <li>If someone forgets their password, open their profile and set a new temporary one.</li>
+          <li>To stop someone signing in, set their status to Deactivated. They're signed out straight away.</li>
+          <li>Shipping managers can't change or delete Admin accounts, or make anyone an Admin.</li>
+        </ul>
+      </section>
+
+      <!-- ============================================================ Receiving managers -->
+      <section class="part" id="receiving">
+        <h2>Unpacking <span class="who">Receiving managers</span></h2>
+        <p>
+          Receiving managers work in one warehouse. You see shipments once they've been marked <strong>Received</strong>
+          into your warehouse, and you record where every item goes: each hand-over to a hospital, facility or clinic is
+          an <strong>unpacking</strong>.
+        </p>
+
+        <h3 id="your-stock">Your warehouse's stock</h3>
+        <ul>
+          <li>Your dashboard shows units in stock, stock by category, items <strong>expiring in the next 90 days</strong>, stock untouched for 60+ days, and where things have been unpacked to, including destinations that haven't received anything in 90+ days.</li>
+          <li>The <span class="ui">Unpack Items</span> menu has <span class="ui">List All</span> (everything with stock left), <span class="ui">Browse by Category</span>, and <span class="ui">Unpacking History</span>.</li>
+          <li>Each item shows where it is, nested as shipment › container › pallet › box.</li>
+        </ul>
+
+        <h3 id="unpacking">Unpacking items</h3>
+        <ol>
+          <li>Find the item, in <span class="ui">List All</span>, by category, or by searching, or open a received box or pallet and go to its <span class="ui">Unpack</span> tab.</li>
+          <li>Enter how many are going out (it can't be more than what's left), choose the hospital, facility or clinic, and the date.</li>
+          <li>Add a note if useful, and save.</li>
+        </ol>
+        <div class="tip"><p>The next unpack form starts on the same hospital you just used, and on the same date if you picked it today, so unpacking a whole delivery for one clinic is quick.</p></div>
+
+        <h3 id="unpacking-many">Unpacking lots at once</h3>
+        <ul>
+          <li><span class="ui">Unpack All</span> on a received box or pallet sends everything left in it to one destination.</li>
+          <li>From an item's locations page you can tick several and unpack them together.</li>
+          <li>If something can't be unpacked (for example, it's already all gone), the message says which ones and why; the rest still go through.</li>
+        </ul>
+
+        <h3 id="destinations">Hospitals, facilities and clinics</h3>
+        <p>
+          You manage the destinations for your warehouse. If one is missing while you're unpacking, use the
+          <span class="ui">Don't see your hospital/facility/clinic? Add one.</span> link under the destination list. A destination that has received supplies can't be deleted; deactivate it instead.
+        </p>
+
+        <h3 id="corrections">Fixing mistakes</h3>
+        <ul>
+          <li>To correct the date of an unpacking, open the box, pallet or container it came from, go to its <span class="ui">History</span> tab, change the date and press <span class="ui">Update</span>.</li>
+          <li>To undo an unpacking completely, delete it from the item's <span class="ui">History</span> tab. The quantity goes back into stock.</li>
+        </ul>
+      </section>
+
+      <!-- ============================================================ Admins -->
+      <section class="part" id="admins">
+        <h2>Running the app <span class="who">Admins</span></h2>
+        <p>Admins can do everything, in every warehouse.</p>
+
+        <h3 id="roles">Who can do what</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Role</th><th>Can</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Volunteer</strong></td><td>Create and pack items; create and change boxes and pallets that are In Progress; see Complete ones and the containers they go into.</td></tr>
+              <tr><td><strong>Shipping manager</strong></td><td>Everything volunteers can, on any box, pallet or container; reconcile and categorise items; see shipments and warehouses; create accounts (except Admins); see the unpacking overview.</td></tr>
+              <tr><td><strong>Receiving manager</strong></td><td>See what's been received into their own warehouse, unpack it, and manage that warehouse's hospitals, facilities and clinics.</td></tr>
+              <tr><td><strong>Admin</strong></td><td>Everything, including shipments, warehouses, exports and Admin accounts.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 id="receiving-a-shipment">Receiving a shipment</h3>
+        <p>
+          When a shipment arrives, mark it <strong>Received</strong>. Everything inside becomes Received and appears for
+          the receiving warehouse's managers to unpack. Until then they can't see it.
+        </p>
+
+        <h3 id="warehouses">Warehouses</h3>
+        <p>
+          Warehouses are where stock is, and who works there. Give every person a warehouse on their profile (receiving managers
+          only see their own), and give every shipment a shipping and a receiving warehouse.
+        </p>
+
+        <h3 id="exports">Exports</h3>
+        <p>Spreadsheet downloads (CSV files, which open in Excel or Google Sheets):</p>
+        <ul>
+          <li><strong>Shipment</strong>: everything in it, grouped by item or by category, with quantities, weights and locations. Use <span class="ui">Export</span> on the shipment's page.</li>
+          <li><strong>Hospital</strong>: what one destination received between two dates. Use <span class="ui">Export</span> on its page.</li>
+          <li><strong>Unpacking history</strong>: every unpacking between two dates, for one destination or all. Use <span class="ui">Export</span> on the Unpacking History page.</li>
+        </ul>
+      </section>
+
+      <!-- ============================================================ Help -->
+      <section class="part" id="help">
+        <h2>Getting help</h2>
+        <ul>
+          <li>Ask your shipping manager or an administrator.</li>
+          <li>Found something wrong? Use <span class="ui">About › Report a Bug</span>, or email <a href="mailto:jesse@kbnf.org?subject=KBNF%20Inventory%20question">jesse@kbnf.org</a>. Say what you were doing and include the page's address.</li>
+          <li>What's new in the app is listed under <span class="ui">About › Developer Updates</span>. How your information is handled is on the <a href="/privacy">privacy page</a>.</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>Last updated 2026-11-21 · <a href="/">Back to the app</a></footer>
+  </div>
+</body>
+</html>

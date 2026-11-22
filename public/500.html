@@ -1,93 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>We're sorry, but something went wrong (500)</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="icon" type="image/png" href="/kbnf-favicon-32x32.png"
-    sizes="32x32">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Something went wrong on our end | KBNF Inventory</title>
+  <link rel="icon" type="image/png" href="/kbnf-favicon-32x32.png" sizes="32x32">
+  <!-- This file lives in public/500.html. It is plain HTML on purpose: it has to
+       display even when the app can't, so it uses no app stylesheets or scripts. -->
   <style>
-  .rails-default-error-page {
-    background-color: #FFF;
-    color: #2E2F30;
-    text-align: center;
-    font-family: arial, sans-serif;
-    margin: 0;
-  }
-
-  .rails-default-error-page div.dialog {
-    width: 95%;
-    max-width: 33em;
-    margin: 4em auto 0;
-  }
-
-  .rails-default-error-page div.dialog > div {
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #BBB;
-    border-top: #007096 solid 4px;
-    border-top-left-radius: 9px;
-    border-top-right-radius: 9px;
-    background-color: white;
-    padding: 7px 12% 0;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
-
-  .rails-default-error-page h1 {
-    font-size: 100%;
-    color: #007096;
-    line-height: 1.5em;
-  }
-
-  .rails-default-error-page div.dialog > p {
-    margin: 0 0 1em;
-    padding: 1em;
-    background-color: #F7F7F7;
-    border: 1px solid #CCC;
-    border-right-color: #999;
-    border-left-color: #999;
-    border-bottom-color: #999;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    border-top-color: #DADADA;
-    color: #666;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-  }
-  .buttons {
-    margin-top: 25px;
-    display: inline-block;
-  }
-  a {
-    text-decoration: none;
-    padding: 1em 2em;
-
-    border-radius: 5px;
-    box-shadow: 0 3px 8px rgba(50, 50, 50, 0.17);
-    color: #fff;
-  }
-  .back {
-    margin-right: 5px;
-    background-color: #ed8b00;
-  }
-  .home {
-    margin-left: 5px;
-    background-color: #007096;
-  }
+    :root {
+      --brand: #007096; --brand-dark: #005d7d; --accent: #ed8b00;
+      --ink: #1f2a33; --muted: #6b7781; --line: #e3e7ea;
+      --canvas: #eceff3; --surface: #ffffff; --sunken: #f5f7f9;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .bar { height: 6px; background: var(--brand); border-bottom: 3px solid var(--accent); }
+    main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 32px 16px; }
+    .card {
+      width: 100%;
+      max-width: 460px;
+      background: var(--surface);
+      border-radius: 14px;
+      box-shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 12px 32px rgba(16, 24, 40, .10);
+      padding: 32px 28px 28px;
+      text-align: center;
+    }
+    .logo { width: 150px; height: auto; margin: 0 auto 20px; display: block; }
+    .code {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--sunken);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    h1 { margin: 0 0 10px; font-size: 22px; line-height: 1.3; color: var(--ink); }
+    p { margin: 0 0 12px; color: var(--muted); line-height: 1.55; font-size: 15px; }
+    .actions { display: flex; gap: 10px; justify-content: center; margin-top: 22px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 20px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--brand); color: #fff; }
+    .btn-primary:hover { background: var(--brand-dark); }
+    .btn-quiet { background: var(--surface); color: var(--ink); border-color: var(--line); }
+    .btn-quiet:hover { background: var(--sunken); }
+    .btn:focus-visible { outline: 2px solid rgba(0, 112, 150, .45); outline-offset: 2px; }
+    .help { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; }
+    .help a { color: var(--brand); }
+    @media (max-width: 420px) {
+      .card { padding: 26px 20px 22px; }
+      .actions .btn { flex: 1 1 0; }
+    }
   </style>
 </head>
-
-<body class="rails-default-error-page">
-  <!-- This file lives in public/500.html -->
-  <div class="dialog">
-    <div>
-      <h1>Oops, 500 Error: Generic HTTP Status</h1>
-      <p>Something went wrong with our servers.</p>
+<body>
+  <div class="bar"></div>
+  <main>
+    <div class="card" role="main">
+      <img class="logo" src="/kbnf-logo.png" alt="KBNF">
+      <div class="code">Error 500</div>
+      <h1>Something went wrong on our end</h1>
+      <p>This isn&#x27;t something you did. The error has been recorded.</p>
+      <p>Try again in a minute. If you were saving something, check whether it saved before trying again.</p>
+      <div class="actions">
+        <a class="btn btn-quiet" href="javascript:history.back()">Go back</a>
+        <a class="btn btn-primary" href="/">Dashboard</a>
+      </div>
+      <p class="help">If it keeps happening, <a href="mailto:jesse@kbnf.org?subject=Problem%20in%20KBNF%20Inventory&amp;body=What%20I%20was%20doing%3A%0A%0AThe%20page%20address%3A%0A">Report the problem</a> and say what you were doing.</p>
     </div>
-    <p>Contact a manager or administrator if this persists.</p>
-  </div>
-  <div class="buttons">
-    <a href="javascript:history.back()" class="back">&lt; Back</a>
-    <a href="https://inventory.kbnf.org" class="home">Home &gt;</a>
-  </div>
+  </main>
 </body>
 </html>

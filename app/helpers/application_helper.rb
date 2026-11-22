@@ -15,8 +15,30 @@ module ApplicationHelper
     end
   end
 
-  # <option> tags for the hospital dropdown. Unpack forms render one dropdown per
-  # packed item, so the options are built once per request and reused.
+  # Where the Help page (public/help.html) opens for this person: their role's section
+  def help_section_for(user)
+    if user.admin? then "admins"
+    elsif user.shipping_manager? then "shipping"
+    elsif user.receiving_manager? then "receiving"
+    else "volunteers"
+    end
+  end
+
+  # What the app runs on, shown at the foot of the sidebar: [name, logo, version]
+  def stack_versions
+    [
+      ["Ruby", "stack/ruby.svg", RUBY_VERSION],
+      ["Rails", "stack/rails.svg", Rails.version],
+      ["PostgreSQL", "stack/postgresql.svg", ApplicationHelper.postgres_version]
+    ]
+  end
+
+  # Asked once per server process: the database doesn't change version while it runs.
+  # "18.7 (Homebrew)" becomes "18.7".
+  def self.postgres_version
+    @postgres_version ||= ActiveRecord::Base.connection.select_value("SHOW server_version").split.first
+  end
+
   # Category dropdown choices, loaded once per page (list pages render an item
   # form per row).
   def category_choices

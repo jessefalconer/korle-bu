@@ -40,8 +40,6 @@ config/secrets.yml
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /vendor/bundle
-/public/packs
-/public/packs-test
 
 # Ignore key files for decrypting credentials and more.
 /config/credentials/*.key

@@ -243,45 +243,29 @@
           %i.fa.fa-fw.fa-clock-rotate-left
           My Activity
 
+    -# Pinned to the bottom of the sidebar on wide screens (see .sidebar-footer);
+    -# on phones it is copied to the end of the menu like the rest of the sidebar
+    %ul.sidebar-footer
       %li
-        %a.nav-header.collapsed{data: {"bs-target": ".about-menu", "bs-toggle": "collapse"}}
-          %i.fa.fa-fw.fa-info
-          About
-          %i.fa.fa-collapse
+        = link_to help_path(anchor: help_section_for(current_user)), class: "footer-link" do
+          -# One guide for everyone, opened at the reader's own section
+          %span.fa.fa-fw.fa-circle-question
+          Help
       %li
-        %ul.about-menu.nav.nav-list.collapse
-          %li
-            = link_to dev_updates_path do
-              %span.fa.fa-fw.fa-code
-              Developer Updates
-          - if current_user.admin? || current_user.shipping_manager?
-            %li
-              = link_to admin_help_path do
-                %span.fa.fa-fw.fa-question
-                Help
-          - elsif current_user.volunteer?
-            %li
-              = link_to volunteer_help_path do
-                %span.fa.fa-fw.fa-question
-                Help
-          - else
-            %li.disabled
-              %a
-                %span.fa.fa-fw.fa-question
-                Receiving Help (Coming Soon)
-          %li.d-sm-none
-            = link_to "mailto:jesse@kbnf.org?subject=I%20Found%20a%20Bug%21&body=Please%20reply%20with%20your%20browser%2C%20URL%20and%20name%2E", {target: "_blank",rel: "noopener noreferrer" } do
-              %span.fa.fa-fw.fa-bug
-              Report a Bug
-          %li
-            = link_to privacy_path do
-              %span.fa.fa-fw.fa-user-shield
-              Privacy
-          %li
-            = link_to terms_path do
-              %span.fa.fa-fw.fa-scale-balanced
-              Terms
-          %li.disabled
-            %a
-              %span.fa.fa-fw.fa-info
-              Version #303
+        = link_to dev_updates_path, class: "footer-link" do
+          %span.fa.fa-fw.fa-code
+          Developer Updates
+      %li
+        = link_to privacy_path, class: "footer-link" do
+          %span.fa.fa-fw.fa-user-shield
+          Privacy
+      %li
+        = link_to "mailto:jesse@kbnf.org?subject=I%20Found%20a%20Bug%21&body=Please%20reply%20with%20your%20browser%2C%20URL%20and%20name%2E", class: "footer-link", target: "_blank", rel: "noopener noreferrer" do
+          %span.fa.fa-fw.fa-bug
+          Report a Bug
+      %li.sidebar-stack
+        - stack_versions.each do |name, logo, version|
+          %span.stack-item{title: "#{name} #{version}"}
+            = image_tag logo, alt: "", width: 14, height: 14
+            = name
+            %span.stack-version= version

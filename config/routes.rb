@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   StaticPagesController::PAGES.each do |page|
     get "/#{page}", to: "static_pages#show", page: page, as: page
   end
+  # Retired pages: old bookmarks land somewhere useful instead
+  get "/terms", to: redirect("/privacy")
+  get "/admin_help", to: redirect("/help#shipping")
+  get "/volunteer_help", to: redirect("/help#volunteers")
   get "login", to: "sessions#new"
   post "login", to: "sessions#create"
   get "logout", to: "sessions#destroy"

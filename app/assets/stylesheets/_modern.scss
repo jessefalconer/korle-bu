@@ -67,7 +67,7 @@ a:focus-visible,
   &:focus { background: rgba(255, 255, 255, .12); }
 }
 
-// Phone menu: the sidebar is cloned into #main-menu (see packs/application.js)
+// Phone menu: the sidebar is cloned into #main-menu (see app/javascript/application.js)
 @media (max-width: 767px) {
   .navbar-collapse {
     max-height: calc(100vh - 56px);
@@ -896,6 +896,92 @@ footer .flash {
 }
 
 .content { border-left: 0; }
+
+// On wide screens only the page content scrolls: the navbar and the sidebar stay
+// put. The sidebar fills the height under the navbar (scrolling on its own only if
+// its open menus are taller than the screen), and Help, updates, privacy and the
+// versions the app runs on sit at its bottom.
+$navbar-height: 53px;
+
+// 769px: at exactly 768px the older theme stacks the sidebar above the content
+@media (min-width: 769px) {
+  body.with-sidebar {
+    > .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1030; // above the page, below dropdowns and modals
+    }
+
+    .sidebar-nav {
+      position: fixed;
+      top: $navbar-height;
+      bottom: 0;
+      left: 0;
+      width: 240px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+
+      > ul { flex-shrink: 0; } // open menus push the footer down, never squeeze
+    }
+  }
+
+  // Links to a spot on the page (#id) land below the navbar, not under it
+  html:has(body.with-sidebar) { scroll-padding-top: $navbar-height + 12px; }
+}
+
+@media (min-width: 768px) {
+  .sidebar-footer {
+    margin: auto 0 0; // auto pushes it below the menu, to the bottom
+    padding: 6px 0;
+    background: $surface;
+    border-top: 1px solid $line;
+  }
+}
+
+// Every footer row (the links and each version) has the same height and padding
+.sidebar-footer {
+  > li > a,
+  .stack-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 1.25em;
+    font-size: .9em;
+    line-height: 20px;
+  }
+
+  > li > a {
+    color: $muted;
+    text-decoration: none;
+
+    &:hover { color: $ink; background: $hover; }
+  }
+
+  .fa-fw { margin: 0; }
+}
+
+// One row per piece of software: logo, name and version
+.sidebar-stack {
+  color: $muted;
+
+  .stack-item { white-space: nowrap; }
+  img { flex: 0 0 auto; margin: 0 1px; } // 14px logo centred in the icons' 16px column
+  .stack-version { font-variant-numeric: tabular-nums; color: $ink; }
+}
+
+// Phone menu (a copy of the sidebar inside the navbar)
+#main-menu .footer-link { display: flex; align-items: baseline; }
+
+#main-menu .sidebar-stack {
+  color: rgba(255, 255, 255, .7);
+  font-size: 15px;
+
+  // Same row height as the menu links above
+  .stack-item { display: flex; align-items: center; gap: 8px; padding: 12px 15px; line-height: 1.4; }
+
+  .stack-version { color: #fff; }
+}
 
 // Forms on the "new" pages become white cards (the item form is already made of panels)
 .main-content > .row > [class*="col-"] > form:not(.inline-search-form),
