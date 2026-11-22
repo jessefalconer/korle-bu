@@ -157,17 +157,6 @@
                 - mine = stats.rank_on(board)
                 - if mine && mine[:rank] > DashboardStats::LEADERBOARD_SIZE
                   %p.your-rank You're ##{mine[:rank]} of #{mine[:of]} with #{number_with_delimiter(mine[:value])}.
-            - if (achievement = stats.random_achievement)
-              .col-md-6.leaderboard
-                %h5.chart-title
-                  %i.fa.fa-medal.text-warning{"aria-hidden": "true"}
-                  #{achievement.achievement_title.titleize}*
-                %p.chart-subtitle= achievement.achievement_description.titleize
-                = render "bar_list", rows: [{ label: achievement.achiever_name, value: achievement.achievement_value }]
-                %p.your-rank Out of #{number_with_delimiter(achievement.achievement_max_value)}.
-          %p.achievement-note
-            = link_to user_path(current_user) do
-              *Award someone an achievement in your settings.
           .highlight-grid
             - [["Do You Even Lift?", "Heaviest packed item", stats.heaviest_item],
                ["Bulk Discount", "Greatest single packed quantity", stats.biggest_quantity]].each do |title, caption, pick|

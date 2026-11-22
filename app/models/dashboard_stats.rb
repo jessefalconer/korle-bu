@@ -131,16 +131,6 @@ class DashboardStats
     cached("biggest") { highlight(PackedItem.order(quantity: :desc)) { |pi| pi.quantity.to_s } }
   end
 
-  def random_achievement
-    User.where.not(achiever_name: nil)
-      .where.not(achievement_title: nil)
-      .where.not(achievement_description: nil)
-      .where.not(achievement_value: nil)
-      .where.not(achievement_max_value: nil)
-      .order(Arel.sql("RANDOM()"))
-      .first
-  end
-
   # Shipments moving through the pipeline, with how much they carry.
   def pipeline
     cached("pipeline", period: false) do

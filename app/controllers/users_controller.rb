@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  PROFILE_FIELDS = %i[
-    email first_name last_name phone notes achiever_name achievement_title
-    achievement_description achievement_value achievement_max_value
-  ].freeze
+  PROFILE_FIELDS = %i[email first_name last_name phone notes].freeze
   PASSWORD_FIELDS = %i[password password_confirmation].freeze
   # Only people allowed to manage roles may set these (the form hides them for
   # everyone else; this enforces it on the server too).
